@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mapobjects.apps.MapobjectsConfig',
     'facebook.apps.FacebookConfig',
+    'events.apps.EventsConfig',
 )
 
 MIDDLEWARE_CLASSES = (
