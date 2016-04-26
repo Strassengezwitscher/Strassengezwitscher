@@ -13,3 +13,4 @@ class FacebookPage(MapObject):
 class FacebookLikeStatistic(models.Model):
     date = models.DateField()
     like_count = models.PositiveIntegerField()
+    page = models.ForeignKey(FacebookPage, null=True)
