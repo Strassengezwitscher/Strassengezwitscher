@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Straßengezwitscher</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <style type="text/css">
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-weight: 100;
+                font-size: 40px;
+                color: #2f6f9f;
+            }
+            body {
+                background-color: #f7f7f9;
+            }
+            .centered {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 100%;
+                min-height: 100px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="centered">
+            <div>Hier entsteht die neue Webseite von Straßengezwitscher.</div>
+            <div><small id="redirect-text"></small></div>
+        </div>
+
+        <script type="text/javascript">
+            var redirectTime = 5; // in seconds
+            function updateTextOrRedirect(time) {
+                if (time > 0) {
+                    var text = 'Weiterleitung zu Twitter in ' + time + ' ...';
+                    document.getElementById('redirect-text').innerHTML = text;
+                    setTimeout(function() {
+                        updateTextOrRedirect(time-1);
+                    }, 1000);
+                } else {
+                    window.location.href = 'https://twitter.com/streetcoverage';
+                }
+            }
+            (function() {
+                updateTextOrRedirect(redirectTime);
+            })();
+        </script>
+    </body>
+</html>
