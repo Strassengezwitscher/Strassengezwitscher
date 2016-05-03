@@ -6,7 +6,9 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coverage
+  - pip install coveralls
   - cd strassengezwitscher
 script:
   - coverage run --source='.' manage.py test
-  - coverage report
+after_success:
+  - coveralls
