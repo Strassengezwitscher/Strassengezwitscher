@@ -66,3 +66,6 @@ target/
 
 # IDE files
 .idea
+
+# Individual settings
+localsettings.py
