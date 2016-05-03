@@ -1,6 +1,8 @@
 strictness: high
 doc-warnings: yes
 test-warnings: yes
+uses:
+  - django
 python-targets:
   - 2
   - 3
