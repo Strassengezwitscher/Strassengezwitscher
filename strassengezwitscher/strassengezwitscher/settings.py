@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -104,3 +106,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Create a localsettings.py if you want to locally override settings
+# and don't want the changes to appear in 'git status'.
+try:
+    from strassengezwitscher.localsettings import *
+except ImportError:
+    pass
+
+TESTING = 'test' in sys.argv
+
+# speed up tests
+if TESTING:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'} # use sqlite
