@@ -9,11 +9,14 @@ install:
   - cd strassengezwitscher
 script:
   - coverage run --source='.' manage.py test
+  - echo TRAVIS_BUILD_NUMBER: $TRAVIS_BUILD_NUMBER
+  - echo TRAVIS_PYTHON_VERSION: $TRAVIS_PYTHON_VERSION
 after_success:
   - coveralls
   - cd ../.travis
   - openssl aes-256-cbc -K $encrypted_423a58ca66b3_key -iv $encrypted_423a58ca66b3_iv -in deploy_key.pem.enc -out deploy_key.pem -d
   - eval "$(ssh-agent -s)"
+  - cat deploy_key.pem
   - chmod 600 deploy_key.pem
   - ssh-add deploy_key.pem
   - ./deploy.sh
