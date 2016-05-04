@@ -13,3 +13,5 @@ script:
   - coverage run --source='.' manage.py test
 after_success:
   - coveralls
+  - chmod 600 .travis/deploy_key.pem
+  - .travis/deploy.sh
