@@ -11,7 +11,7 @@ script:
   - coverage run --source='.' manage.py test
 after_success:
   - coveralls
-  - cd ..
-  - openssl aes-256-cbc -K $encrypted_66ffcab4f261_key -iv $encrypted_66ffcab4f261_iv -in .travis/deploy_key.pem.enc -out .travis/deploy_key.pem -d
-  - chmod 600 .travis/deploy_key.pem
-  - .travis/deploy.sh
+  - cd ../.travis
+  - openssl aes-256-cbc -K $encrypted_66ffcab4f261_key -iv $encrypted_66ffcab4f261_iv -in deploy_key.pem.enc -out deploy_key.pem -d
+  - chmod 600 deploy_key.pem
+  - ./deploy.sh
