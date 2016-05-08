@@ -69,3 +69,7 @@ target/
 
 # Individual settings
 localsettings.py
+
+# Bower
+strassengezwitscher/static/
+

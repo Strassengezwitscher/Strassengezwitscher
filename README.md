@@ -9,6 +9,7 @@ Take a look at the [Wiki](https://github.com/Strassengezwitscher/Strassengezwits
 ## How to setup
 ```bash
 pip install -r requirements.txt
+bower install
 cd strassengezwitscher
 python manage.py runserver
 ```

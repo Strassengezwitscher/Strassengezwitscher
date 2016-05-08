@@ -30,7 +30,7 @@
 {% block script_extension %}
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
+    (function() {
         google.maps.event.addDomListener(window, 'load', initialize);
         function initialize() {
             /* position Amsterdam */
@@ -51,6 +51,6 @@
             var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
             marker.setMap(map);
         };
-    });
+    })();
 </script>
 {% endblock %}

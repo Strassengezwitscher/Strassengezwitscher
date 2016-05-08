@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        {% load staticfiles %}
+
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <title>Strassengezwitscher</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{% static "bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
 
         <style type="text/css">
             html, body {
@@ -38,9 +40,6 @@
 
         {% block content %}
         {% endblock %}
-
-        <script src="http://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
         {% block script_extension %}
         {% endblock %}
