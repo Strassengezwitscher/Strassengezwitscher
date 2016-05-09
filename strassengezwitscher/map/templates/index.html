@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block header_extension %}
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
 <script src="{% static 'js/controllers.js' %}"></script>
 <style type="text/css">
     #map-wrapper, #map-canvas {
@@ -29,32 +30,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block script_extension %}
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
-<script type="text/javascript">
-    (function() {
-        google.maps.event.addDomListener(window, 'load', initialize);
-        function initialize() {
-            /* position Amsterdam */
-            var latlng = new google.maps.LatLng(52.3731, 4.8922);
-
-            var mapOptions = {
-              center: latlng,
-              scrollWheel: false,
-              zoom: 13
-            };
-
-            var marker = new google.maps.Marker({
-              position: latlng,
-              url: '/',
-              animation: google.maps.Animation.DROP
-            });
-
-            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-            marker.setMap(map);
-        };
-    })();
-</script>
 {% endblock %}
