@@ -2,7 +2,9 @@ var gulp = require('gulp');
 
 var static_npm_file_paths = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
-    'node_modules/bootstrap/dist/css/bootstrap.min.css.map'
+    'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+    'node_modules/angular/angular.min.js',
+    'node_modules/angular/angular.min.js.map'
 ];
 
 gulp.task('copy_static_npm_files', function() {

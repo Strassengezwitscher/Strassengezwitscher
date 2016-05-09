@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block header_extension %}
+<script src="{% static 'js/controllers.js' %}"></script>
 <style type="text/css">
+    #map-wrapper, #map-canvas {
+        width: 100%;
+        height: 100%;
+    }
     #twitter-feed {
         position: fixed;
         width: 350px;
@@ -14,16 +20,14 @@
 {% endblock %}
 
 {% block content %}
-<div id="map-canvas" style="width: 100%; height: 100%;"></div>
-<div id="twitter-feed">
-    {% for i in "xxxx" %}
-    <div class="panel panel-default">
-        <div class="panel-heading">Tweet #{{ forloop.counter }}</div>
-        <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.
+<div id="map-wrapper" ng-controller="MapCtrl">
+    <div id="map-canvas"></div>
+    <div id="twitter-feed">
+        <div class="panel panel-default" ng-repeat="tweet in tweets">
+            <div class="panel-heading">{a tweet.author a}</div>
+            <div class="panel-body">{a tweet.text a}</div>
         </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
