@@ -19,6 +19,7 @@
     "bootstrap": "==3.3.6"
   },
   "devDependencies": {
-    "gulp": "==3.9.1"
+    "gulp": "==3.9.1",
+    "gulp-sass": "==2.3.1"
   }
 }
