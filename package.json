@@ -16,5 +16,8 @@
   },
   "dependencies": {
     "bootstrap": "==3.3.6"
+  },
+  "devDependencies": {
+    "gulp": "==3.9.1"
   }
 }
