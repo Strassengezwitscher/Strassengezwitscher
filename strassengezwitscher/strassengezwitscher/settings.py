@@ -106,7 +106,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "../node_modules"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/lib"),)
 
 # Create a localsettings.py if you want to locally override settings
 # and don't want the changes to appear in 'git status'.

@@ -72,3 +72,6 @@ localsettings.py
 
 # npm
 node_modules/
+
+# static files of npm packages
+strassengezwitscher/static/lib/
