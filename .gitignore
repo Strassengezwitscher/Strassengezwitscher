@@ -69,3 +69,6 @@ target/
 
 # Individual settings
 localsettings.py
+
+# npm
+node_modules/
