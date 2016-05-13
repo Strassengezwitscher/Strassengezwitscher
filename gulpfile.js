@@ -9,7 +9,8 @@ var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
 
-var tslint = require("gulp-tslint");
+var tslint = require('gulp-tslint');
+var sassLint = require('gulp-sass-lint');
 
 var sass_path = './strassengezwitscher/**/css/*.scss';
 var ts_path = './frontend/**/*.ts';
@@ -60,6 +61,12 @@ gulp.task('lint:typescript', function() {
             emitError: false,
             summarizeFailureOutput: true
     }));
+});
+
+gulp.task('lint:sass', function() {
+    return gulp.src(sass_path)
+        .pipe(sassLint())
+        .pipe(sassLint.format());
 });
 
 gulp.task('watch:sass', ['compile:sass'], function() {
