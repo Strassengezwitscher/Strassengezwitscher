@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var merge = require('merge2');
+var sourcemaps = require('gulp-sourcemaps');
 var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
@@ -35,10 +36,14 @@ gulp.task('compile:sass', function() {
 });
 
 gulp.task('compile:typescript', function() {
-    var tsResult = gulp.src(ts_path).pipe(typescript(tsProject));
+    var tsResult = gulp.src(ts_path)
+        .pipe(sourcemaps.init())
+        .pipe(typescript(tsProject));
     return merge([
         tsResult.dts.pipe(gulp.dest(static_complied_path)),
-        tsResult.js.pipe(gulp.dest(static_complied_path))
+        tsResult.js
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest(static_complied_path))
     ]);
 });
 
