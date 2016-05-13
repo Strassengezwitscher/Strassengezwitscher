@@ -9,6 +9,8 @@ var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
 
+var tslint = require("gulp-tslint");
+
 var sass_path = './strassengezwitscher/**/css/*.scss';
 var ts_path = './frontend/**/*.ts';
 var static_npm_file_paths = [
@@ -49,6 +51,15 @@ gulp.task('compile:typescript', function() {
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(static_complied_path))
     ]);
+});
+
+gulp.task('lint:typescript', function() {
+    return gulp.src(ts_path)
+        .pipe(tslint())
+        .pipe(tslint.report("prose", {
+            emitError: false,
+            summarizeFailureOutput: true
+    }));
 });
 
 gulp.task('watch:sass', ['compile:sass'], function() {
