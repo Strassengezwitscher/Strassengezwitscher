@@ -77,6 +77,8 @@ gulp.task('lint:sass', function() {
         .pipe(sassLint.format());
 });
 
+gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
+
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(sass_path, ['compile:sass']);
 });
