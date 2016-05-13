@@ -10,6 +10,6 @@ Take a look at the [Wiki](https://github.com/Strassengezwitscher/Strassengezwits
 ```bash
 pip install -r requirements.txt
 npm install
-cd strassengezwitscher
-python manage.py runserver
+gulp build 
+python strassengezwitscher/manage.py runserver
 ```

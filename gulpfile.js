@@ -89,6 +89,8 @@ gulp.task('watch:typescript', ['compile:typescript'], function() {
 
 gulp.task('watch', ['watch:sass', 'watch:typescript']);
 
+gulp.task('build', ['copy:staticnpmfiles', 'compile:typescript', 'compile:sass']);
+
 gulp.task('default', function() {
   // place code for your default task here
 });
