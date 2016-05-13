@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 var merge = require('merge2');
 var sourcemaps = require('gulp-sourcemaps');
@@ -52,6 +53,13 @@ gulp.task('compile:typescript', function() {
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(static_complied_path))
     ]);
+});
+
+gulp.task('lint:python', function() {
+    exec('prospector strassengezwitscher --uses django --strictness high', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    });
 });
 
 gulp.task('lint:typescript', function() {
