@@ -31,7 +31,9 @@ gulp.task('copy:staticnpmfiles', function() {
 
 gulp.task('compile:sass', function() {
     return gulp.src(sass_path)
+        .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(static_complied_path));
 });
 
