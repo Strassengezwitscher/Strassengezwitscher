@@ -1,0 +1,24 @@
+$height_navbar: 50px;
+$padding_feed: 16px;
+
+.navbar {
+    margin-bottom: 0;
+}
+
+#map-wrapper {
+    width: 100%;
+    height: calc(100% - #{$height_navbar});
+}
+
+#map-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#twitter-feed {
+    position: fixed;
+    width: 350px;
+    height: calc(100% - #{$height_navbar + 2*$padding_feed});
+    left: $padding_feed;
+    top: #{$height_navbar + $padding_feed};
+}

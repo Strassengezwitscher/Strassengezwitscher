@@ -10,6 +10,20 @@
 
         <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
+        <!-- 1. Load libraries -->
+        <!-- Polyfill(s) for older browsers -->
+        <script src="{% static 'es6-shim/es6-shim.min.js' %}"></script>
+
+        <script src="{% static 'zone.js/dist/zone.js' %}"></script>
+        <script src="{% static 'reflect-metadata/Reflect.js' %}"></script>
+        <script src="{% static 'systemjs/dist/system.src.js' %}"></script>
+
+        <!-- 2. Configure SystemJS -->
+        <script src="{% static 'systemjs.config.js' %}"></script>
+        <script>
+          System.import('static/main').catch(function(err){ console.error(err); });
+        </script>
+
         <style type="text/css">
             html, body {
                 width: 100%;
@@ -21,7 +35,7 @@
         {% endblock %}
     </head>
     <body>
-        <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar navbar-default navbar-static-top">
             <div class="navbar-header"><a class="navbar-brand" href="#">Brand</a>
                 <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
