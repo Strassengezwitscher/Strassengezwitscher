@@ -21,32 +21,32 @@ var static_npm_file_paths = [
 var static_lib_path = 'strassengezwitscher/static/lib/';
 var static_complied_path = 'strassengezwitscher/static/compiled/';
 
-gulp.task('copy_static_npm_files', function() {
+gulp.task('copy:staticnpmfiles', function() {
     return gulp.src(static_npm_file_paths, {base: 'node_modules/'})
         .pipe(gulp.dest(static_lib_path));
 });
 
-gulp.task('compile_sass', function() {
+gulp.task('compile:sass', function() {
     return gulp.src(sass_path)
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(static_complied_path));
 });
 
-gulp.task('watch_sass', ['compile_sass'], function() {
-    return gulp.watch(sass_path, ['compile_sass']);
-});
-
-gulp.task('compile_typescript', function() {
+gulp.task('compile:typescript', function() {
     return gulp.src(ts_path)
-        .pipe(typescript(tsconfig.compilerOptions))
-        .pipe(gulp.dest(static_complied_path));
+    .pipe(typescript(tsconfig.compilerOptions))
+    .pipe(gulp.dest(static_complied_path));
 });
 
-gulp.task('watch_typescript', ['compile_typescript'], function() {
-    return gulp.watch(ts_path, ['compile_typescript']);
+gulp.task('watch:sass', ['compile:sass'], function() {
+    return gulp.watch(sass_path, ['compile:sass']);
 });
 
-gulp.task('watch', ['watch_sass', 'watch_typescript']);
+gulp.task('watch:typescript', ['compile:typescript'], function() {
+    return gulp.watch(ts_path, ['compile:typescript']);
+});
+
+gulp.task('watch', ['watch:sass', 'watch:typescript']);
 
 gulp.task('default', function() {
   // place code for your default task here
