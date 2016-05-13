@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var merge = require('merge2');
 var sourcemaps = require('gulp-sourcemaps');
+var embedTemplates = require('gulp-angular-embed-templates');
 var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
@@ -44,6 +45,7 @@ gulp.task('compile:typescript', function() {
     return merge([
         tsResult.dts.pipe(gulp.dest(static_complied_path)),
         tsResult.js
+            .pipe(embedTemplates())
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(static_complied_path))
     ]);

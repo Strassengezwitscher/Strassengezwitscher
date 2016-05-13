@@ -2,15 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'map-app',
-  template: `<div id="map-wrapper">
-          <div id="map-canvas"></div>
-          <div id="twitter-feed">
-              <div class="panel panel-default" *ngFor="let tweet of tweets">
-                  <div class="panel-heading">{{ tweet.author }}</div>
-                  <div class="panel-body">{{ tweet.text }}</div>
-              </div>
-          </div>
-      </div>`
+  templateUrl: 'map.component.html'
 })
 export class MapComponent implements OnInit {
     public tweets: Array<Object>;
