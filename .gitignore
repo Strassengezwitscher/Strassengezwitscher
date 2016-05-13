@@ -76,3 +76,7 @@ node_modules/
 # static files of npm packages or compiled ones
 strassengezwitscher/static/lib/
 strassengezwitscher/static/compiled/
+
+# typings
+typings/**
+!typings/typings.d.ts

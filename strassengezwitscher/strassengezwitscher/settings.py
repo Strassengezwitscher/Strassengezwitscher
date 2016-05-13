@@ -109,6 +109,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/lib"),
     os.path.join(BASE_DIR, "static/compiled"),
+    os.path.join(BASE_DIR, "static/custom"),
 )
 
 # Create a localsettings.py if you want to locally override settings

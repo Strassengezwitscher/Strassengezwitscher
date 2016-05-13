@@ -3,18 +3,9 @@
 
 {% block header_extension %}
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
-<script src="{% static 'js/controllers.js' %}"></script>
 <link href="{% static 'map/static/css/map.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div id="map-wrapper" ng-controller="MapCtrl">
-    <div id="map-canvas"></div>
-    <div id="twitter-feed">
-        <div class="panel panel-default" ng-repeat="tweet in tweets">
-            <div class="panel-heading">{a tweet.author a}</div>
-            <div class="panel-body">{a tweet.text a}</div>
-        </div>
-    </div>
-</div>
+<map-app>Loading ....</map-app>
 {% endblock %}
