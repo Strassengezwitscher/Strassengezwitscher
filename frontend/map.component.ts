@@ -25,6 +25,21 @@ export class MapComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("Load map here");
+        const latlng = new google.maps.LatLng(52.3731, 4.8922);
+
+        const mapOptions = {
+          center: latlng,
+          scrollWheel: false,
+          zoom: 13
+        };
+
+        const marker = new google.maps.Marker({
+          position: latlng,
+          url: "/",
+          animation: google.maps.Animation.DROP
+        });
+
+        const map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        marker.setMap(map);
     }
 }
