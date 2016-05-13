@@ -35,7 +35,6 @@ export class MapComponent implements OnInit {
 
         const marker = new google.maps.Marker({
           position: latlng,
-          url: "/",
           animation: google.maps.Animation.DROP
         });
 
