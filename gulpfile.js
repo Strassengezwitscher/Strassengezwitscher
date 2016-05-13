@@ -2,8 +2,10 @@
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var merge = require('merge2');
 var typescript = require('gulp-typescript');
-var tsconfig = require('./tsconfig.json')
+var tsconfig = require('./tsconfig.json');
+var tsProject = typescript.createProject(tsconfig.compilerOptions);
 
 var sass_path = './strassengezwitscher/**/css/*.scss';
 var ts_path = './frontend/**/*.ts';
@@ -33,9 +35,11 @@ gulp.task('compile:sass', function() {
 });
 
 gulp.task('compile:typescript', function() {
-    return gulp.src(ts_path)
-    .pipe(typescript(tsconfig.compilerOptions))
-    .pipe(gulp.dest(static_complied_path));
+    var tsResult = gulp.src(ts_path).pipe(typescript(tsProject));
+    return merge([
+        tsResult.dts.pipe(gulp.dest(static_complied_path)),
+        tsResult.js.pipe(gulp.dest(static_complied_path))
+    ]);
 });
 
 gulp.task('watch:sass', ['compile:sass'], function() {
