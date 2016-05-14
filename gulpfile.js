@@ -1,5 +1,6 @@
 'use strict';
 
+var argv = require('yargs').argv;
 var gulp = require('gulp');
 var exec = require('child_process').exec;
 var sass = require('gulp-sass');
@@ -10,8 +11,10 @@ var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
 
-var tslint = require('gulp-tslint');
-var sassLint = require('gulp-sass-lint');
+if (!argv.production) {
+    var tslint = require('gulp-tslint');
+    var sassLint = require('gulp-sass-lint');
+}
 
 var sass_path = './strassengezwitscher/**/css/*.scss';
 var ts_path = './frontend/**/*.ts';
@@ -55,30 +58,6 @@ gulp.task('compile:typescript', function() {
     ]);
 });
 
-gulp.task('lint:python', function() {
-    exec('prospector strassengezwitscher --uses django --strictness high', function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-    });
-});
-
-gulp.task('lint:typescript', function() {
-    return gulp.src(ts_path)
-        .pipe(tslint())
-        .pipe(tslint.report("prose", {
-            emitError: false,
-            summarizeFailureOutput: true
-    }));
-});
-
-gulp.task('lint:sass', function() {
-    return gulp.src(sass_path)
-        .pipe(sassLint())
-        .pipe(sassLint.format());
-});
-
-gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
-
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(sass_path, ['compile:sass']);
 });
@@ -94,3 +73,29 @@ gulp.task('build', ['copy:staticnpmfiles', 'compile:typescript', 'compile:sass']
 gulp.task('default', function() {
   // place code for your default task here
 });
+
+if (!argv.production) {
+    gulp.task('lint:python', function() {
+        exec('prospector strassengezwitscher --uses django --strictness high', function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+    });
+
+    gulp.task('lint:typescript', function() {
+        return gulp.src(ts_path)
+        .pipe(tslint())
+        .pipe(tslint.report("prose", {
+            emitError: false,
+            summarizeFailureOutput: true
+        }));
+    });
+
+    gulp.task('lint:sass', function() {
+        return gulp.src(sass_path)
+        .pipe(sassLint())
+        .pipe(sassLint.format());
+    });
+
+    gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
+}
