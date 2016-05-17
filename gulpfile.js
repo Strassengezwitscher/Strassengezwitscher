@@ -8,6 +8,7 @@ var merge = require('merge2');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
+var cssnano = require('gulp-cssnano');
 var embedTemplates = require('gulp-angular-embed-templates');
 var SystemBuilder = require('systemjs-builder');
 var typescript = require('gulp-typescript');
@@ -19,7 +20,7 @@ if (!argv.production) {
     var sassLint = require('gulp-sass-lint');
 }
 
-var sass_path = './strassengezwitscher/**/css/*.scss';
+var sass_path = './frontend/**/*.scss';
 var ts_path = './frontend/**/*.ts';
 var static_npm_file_paths = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
@@ -53,6 +54,7 @@ gulp.task('compile:sass', function() {
     return gulp.src(sass_path)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
+        .pipe(concat('bundle.dev.css'))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(build_path));
 });
@@ -115,7 +117,16 @@ gulp.task('bundle:dependencies', function() {
     .pipe(gulp.dest(dist_path));
 });
 
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'compile:sass']);
+gulp.task('bundle:sass', ['compile:sass'], function() {
+    return gulp.src([
+        build_path + '/bootstrap/**/*.css',
+        build_path + '/bundle.dev.css'
+    ]).pipe(concat('bundle.css'))
+        .pipe(cssnano())
+        .pipe(gulp.dest(dist_path));
+});
+
+gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(sass_path, ['compile:sass']);

@@ -125,7 +125,6 @@ if DEBUG:
     )
 else:
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, "static/build"),
         os.path.join(BASE_DIR, "static/dist"),
     )
 
