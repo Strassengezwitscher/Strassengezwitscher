@@ -10,6 +10,7 @@
 
         <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
+        {% if debug %}
         <!-- 1. Load libraries -->
         <!-- Polyfill(s) for older browsers -->
         <script src="{% static 'es6-shim/es6-shim.min.js' %}"></script>
@@ -21,8 +22,12 @@
         <!-- 2. Configure SystemJS -->
         <script src="{% static 'systemjs.config.js' %}"></script>
         <script>
-          System.import('static/main').catch(function(err){ console.error(err); });
+            System.import('static/main').catch(function(err){ console.error(err); });
         </script>
+        {% else %}
+        <script src="{% static 'dependencies.js' %}"></script>
+        <script src="{% static 'bundle.js' %}" defer></script>
+        {% endif %}
 
         <style type="text/css">
             html, body {
