@@ -2,6 +2,6 @@
 
 import { bootstrap } from "@angular/platform-browser-dynamic";
 
-import { MapComponent } from "./map.component";
+import { StrassengezwitscherComponent } from "./sg.component";
 
-bootstrap(MapComponent);
+bootstrap(StrassengezwitscherComponent);
