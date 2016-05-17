@@ -33,15 +33,14 @@
         <script src="{% static 'bundle.js' %}" defer></script>
         {% endif %}
 
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
+
         <style type="text/css">
             html, body {
                 width: 100%;
                 height: 100%;
             }
         </style>
-
-        {% block header_extension %}
-        {% endblock %}
     </head>
     <body>
         <div class="navbar navbar-default navbar-static-top">
@@ -61,10 +60,6 @@
             </div>
         </div>
 
-        {% block content %}
-        {% endblock %}
-
-        {% block script_extension %}
-        {% endblock %}
+        <map-app>Loading ....</map-app>
     </body>
 </html>
