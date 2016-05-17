@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
 
 {% block header_extension %}
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
-<link href="{% static 'map/static/css/map.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}

@@ -8,7 +8,11 @@
         <title>Strassengezwitscher</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+
+        {% if debug %}
         <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'bundle.dev.css' %}" rel="stylesheet">
+
 
         <!-- 1. Load libraries -->
         <!-- Polyfill(s) for older browsers -->
@@ -21,8 +25,13 @@
         <!-- 2. Configure SystemJS -->
         <script src="{% static 'systemjs.config.js' %}"></script>
         <script>
-          System.import('static/main').catch(function(err){ console.error(err); });
+            System.import('static/main').catch(function(err){ console.error(err); });
         </script>
+        {% else %}
+        <link href="{% static 'bundle.css' %}" rel="stylesheet">
+        <script src="{% static 'dependencies.js' %}"></script>
+        <script src="{% static 'bundle.js' %}" defer></script>
+        {% endif %}
 
         <style type="text/css">
             html, body {

@@ -29,6 +29,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
+
 
 # Application definition
 
@@ -106,11 +110,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static/lib"),
-    os.path.join(BASE_DIR, "static/compiled"),
-    os.path.join(BASE_DIR, "static/custom"),
-)
 
 # Create a localsettings.py if you want to locally override settings
 # and don't want the changes to appear in 'git status'.
@@ -118,6 +117,17 @@ try:
     from strassengezwitscher.localsettings import *
 except ImportError:
     pass
+
+# set additonal directories for static files
+if DEBUG:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static/build"),
+    )
+else:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static/dist"),
+    )
+
 
 TESTING = 'test' in sys.argv
 

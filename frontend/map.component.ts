@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "map-app",
-  templateUrl: "map.component.html"
+    selector: "map-app",
+    templateUrl: "map.component.html"
 })
 export class MapComponent implements OnInit {
     public tweets: Array<Object>;
