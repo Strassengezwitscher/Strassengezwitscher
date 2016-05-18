@@ -17,10 +17,4 @@ import { ContactComponent } from "./contact.component";
     { path: "/", component: MapComponent },
     { path: "/contact", component: ContactComponent }
 ])
-export class StrassengezwitscherComponent implements OnInit {
-    constructor(private router: Router) {}
-
-    ngOnInit() {
-        this.router.navigate(["/"]);
-    }
-}
+export class StrassengezwitscherComponent {}
