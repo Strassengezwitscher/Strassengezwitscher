@@ -1,30 +1,25 @@
 import { Component, OnInit } from "@angular/core";
 
+import { Tweet } from "./tweet";
+import { MapService } from "./map.service";
+
 @Component({
     selector: "map-app",
-    templateUrl: "map.component.html"
+    templateUrl: "map.component.html",
+    providers: [MapService]
 })
 export class MapComponent implements OnInit {
-    public tweets: Array<Object>;
+    tweets: Tweet[];
 
-    constructor() {
-        this.tweets = [
-            {
-                "author": "Foo",
-                "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt u..."
-            },
-            {
-                "author": "Bar",
-                "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore m..."
-            },
-            {
-                "author": "Baz",
-                "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,..."
-            }
-        ];
+    constructor(private mapService: MapService) {}
+
+    getTweets() {
+        this.mapService.getTweets().then(tweets => this.tweets = tweets);
     }
 
     ngOnInit() {
+        this.getTweets();
+
         const latlng = new google.maps.LatLng(52.3731, 4.8922);
 
         const mapOptions = {
