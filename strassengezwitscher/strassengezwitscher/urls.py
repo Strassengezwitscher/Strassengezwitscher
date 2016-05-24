@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from . import views
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^intern/', include('mapobjects.urls', namespace='mapobjects')),
-    url(r'^', include('map.urls', namespace='map')),
+    url(r'^', views.index, name='index'),
 ]
