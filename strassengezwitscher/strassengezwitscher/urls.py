@@ -21,5 +21,6 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^intern/', include('mapobjects.urls', namespace='mapobjects')),
+    url(r'^facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^(?:contact)?/?$', views.index, name='index'),
 ]
