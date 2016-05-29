@@ -11,7 +11,7 @@ class MapObjectTests(APITestCase):
 
     #
     # test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
-    # via all possible REST methods (POST, GET, PATCH, PUT, DELETE)
+    # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
     # on mapobject list ("/mapobjects/"") and detail(e.g."/mapobjects/1/")
 
     # POST /mapobjects/
