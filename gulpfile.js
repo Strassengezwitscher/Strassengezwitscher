@@ -146,7 +146,7 @@ gulp.task('default', function() {
 
 if (!argv.production) {
     gulp.task('lint:python', function() {
-        exec('prospector strassengezwitscher --uses django --strictness high', function (err, stdout, stderr) {
+        exec('prospector strassengezwitscher --profile ../.landscape.yml', function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
         });
