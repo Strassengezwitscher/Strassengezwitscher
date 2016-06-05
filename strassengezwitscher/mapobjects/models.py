@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+
 class MapObject(models.Model):
     name = models.CharField(max_length=100)
     active = models.BooleanField(default=False)

@@ -128,9 +128,8 @@ else:
     )
 
 
-
 TESTING = 'test' in sys.argv
 
 # speed up tests
 if TESTING:
-    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'} # use sqlite
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}  # use sqlite
