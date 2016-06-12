@@ -1,0 +1,12 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-primary" type="submit" value="Speichern" />
+    <a class="btn btn-link" href="{% url 'events:list' %}">Zurück</a>
+</form>
+
+{% endblock %}
