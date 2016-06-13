@@ -22,13 +22,13 @@ class FacebookPageDetail(DetailView):
 class FacebookPageCreate(CreateView):
     model = FacebookPage
     template_name = 'facebook/form.html'
-    fields = ['name', 'active', 'location_long', 'location_lat', 'url']
+    fields = ['name', 'active', 'location_long', 'location_lat']
 
 
 class FacebookPageUpdate(UpdateView):
     model = FacebookPage
     template_name = 'facebook/form.html'
-    fields = ['name', 'active', 'location_long', 'location_lat', 'url']
+    fields = ['name', 'active', 'location_long', 'location_lat']
 
 
 class FacebookPageDelete(DeleteView):

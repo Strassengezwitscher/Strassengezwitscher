@@ -5,6 +5,7 @@
         "fields": {
             "name": "Test Facebook Page",
             "active": true,
+            "location": "Dresden",
             "location_lat": "0.000000",
             "location_long": "0.000000"
         }
@@ -13,7 +14,8 @@
         "pk": 1,
         "model": "facebook.facebookpage",
         "fields": {
-            "url": "http://www.google.com"
+            "notes": "Notes",
+            "facebook_id": "1234567890"
         }
     }
 ]

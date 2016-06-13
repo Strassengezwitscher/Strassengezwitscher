@@ -47,7 +47,8 @@ class FacebookPageViewTests(TestCase):
             'active': True,
             'location_lat': 0.0,
             'location_long': 0.0,
-            'url': 'http://www.google.com',
+            'notes': 'Random Note',
+            'facebook_id': '1234567890',
         }
         response = self.client.post(reverse('facebook:create'), data, follow=True)
         self.assertRedirects(response, reverse('facebook:detail', kwargs={'pk': 2}))
@@ -85,7 +86,8 @@ class FacebookPageViewTests(TestCase):
             'active': True,
             'location_lat': 0.0,
             'location_long': 0.0,
-            'url': 'http://www.google.com',
+            'notes': 'Random Note',
+            'facebook_id': '1234567890',
         }
         response = self.client.post(reverse('facebook:update', kwargs={'pk': 1}), data, follow=True)
         self.assertRedirects(response, reverse('facebook:detail', kwargs={'pk': 1}))
