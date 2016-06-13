@@ -13,8 +13,11 @@ class FacebookPage(MapObject):
     url = models.URLField()
     events = models.ManyToManyField(Event, blank=True)
 
+    def __repr__(self):
+        return '<FacebookPage %s>' % self.name
+
     def __str__(self):
-        return '%s' % self.name
+        return self.name
 
     def get_absolute_url(self):
         return reverse('facebook:detail', kwargs={'pk': self.pk})
@@ -26,5 +29,8 @@ class FacebookLikeStatistic(models.Model):
     like_count = models.PositiveIntegerField()
     page = models.ForeignKey(FacebookPage, null=True)
 
+    def __repr__(self):
+        return '<FacebookLikeStatistic at %s>' % self.date.strftime('%Y-%m-%d')
+
     def __str__(self):
-        return 'at %s' % self.date.strftime('%Y-%m-%d')
+        return '%d at %s' % (self.like_count, self.date.strftime('%Y-%m-%d'))

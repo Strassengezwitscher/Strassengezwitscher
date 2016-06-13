@@ -17,8 +17,11 @@ class Event(MapObject):
     counter_event = models.BooleanField(default=False)
     coverage = models.BooleanField()
 
+    def __repr__(self):
+        return '<Event %s>' % self.name
+
     def __str__(self):
-        return 'Event "%s"' % self.name
+        return self.name
 
     def get_absolute_url(self):
         return reverse('events:detail', kwargs={'pk': self.pk})
