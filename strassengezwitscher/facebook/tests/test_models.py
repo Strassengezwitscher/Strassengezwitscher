@@ -18,9 +18,11 @@ class FacebookPageModelTests(TestCase):
 
 class FacebookLikeStatisticModelTests(TestCase):
     def test_representation(self):
-        statistic = FacebookLikeStatistic(date=date(2012, 12, 21), like_count=42)
-        self.assertEqual(repr(statistic), '<FacebookLikeStatistic at 2012-12-21>')
+        page = FacebookPage(name='Test')
+        statistic = FacebookLikeStatistic(date=date(2012, 12, 21), like_count=42, page=page)
+        self.assertEqual(repr(statistic), '<FacebookLikeStatistic on 2012-12-21 for Test>')
 
     def test_string_representation(self):
-        statistic = FacebookLikeStatistic(date=date(2012, 12, 21), like_count=42)
-        self.assertEqual(str(statistic), '42 at 2012-12-21')
+        page = FacebookPage(name='Test')
+        statistic = FacebookLikeStatistic(date=date(2012, 12, 21), like_count=42, page=page)
+        self.assertEqual(str(statistic), '42 on 2012-12-21 for Test')

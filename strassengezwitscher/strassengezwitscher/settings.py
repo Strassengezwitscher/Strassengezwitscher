@@ -90,6 +90,7 @@ DATABASES = {
     }
 }
 
+FIXTURE_DIRS = [os.path.join(BASE_DIR, 'strassengezwitscher', 'initial')]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

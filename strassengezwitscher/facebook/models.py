@@ -10,8 +10,9 @@ from events.models import Event
 
 @python_2_unicode_compatible
 class FacebookPage(MapObject):
-    url = models.URLField()
     events = models.ManyToManyField(Event, blank=True)
+    notes = models.TextField(blank=True)
+    facebook_id = models.CharField(max_length=50)
 
     def __repr__(self):
         return '<FacebookPage %s>' % self.name
@@ -30,7 +31,7 @@ class FacebookLikeStatistic(models.Model):
     page = models.ForeignKey(FacebookPage, null=True)
 
     def __repr__(self):
-        return '<FacebookLikeStatistic at %s>' % self.date.strftime('%Y-%m-%d')
+        return '<FacebookLikeStatistic on %s for %s>' % (self.date.strftime('%Y-%m-%d'), self.page)
 
     def __str__(self):
-        return '%d at %s' % (self.like_count, self.date.strftime('%Y-%m-%d'))
+        return '%d on %s for %s' % (self.like_count, self.date.strftime('%Y-%m-%d'), self.page)
