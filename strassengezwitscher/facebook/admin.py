@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from facebook.models import FacebookPage, FacebookLikeStatistic
+
+
+admin.site.register(FacebookPage)
+admin.site.register(FacebookLikeStatistic)

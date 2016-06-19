@@ -46,7 +46,6 @@ INSTALLED_APPS = (
     'mapobjects.apps.MapobjectsConfig',
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
-    'map.apps.MapConfig',
     'rest_framework',
 )
 
@@ -92,6 +91,7 @@ DATABASES = {
     }
 }
 
+FIXTURE_DIRS = [os.path.join(BASE_DIR, 'strassengezwitscher', 'initial')]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -115,7 +115,7 @@ STATIC_URL = '/static/'
 # Create a localsettings.py if you want to locally override settings
 # and don't want the changes to appear in 'git status'.
 try:
-    from strassengezwitscher.localsettings import *
+    from strassengezwitscher.localsettings import *  # noqa
 except ImportError:
     pass
 
@@ -130,9 +130,8 @@ else:
     )
 
 
-
 TESTING = 'test' in sys.argv
 
 # speed up tests
 if TESTING:
-    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'} # use sqlite
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}  # use sqlite

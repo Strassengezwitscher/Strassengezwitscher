@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 
-import { TWEETS } from "./mock-tweets";
+import { MAPOBJECTS } from "./mock-mapObjects";
 
 @Injectable()
 export class MapService {
-    getTweets() {
-        return Promise.resolve(TWEETS);
+    getMapObjects() {
+        return Promise.resolve(MAPOBJECTS);
     }
 }

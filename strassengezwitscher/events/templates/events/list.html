@@ -1,0 +1,30 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Veranstaltungen</h1>
+{% if events %}
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+    {% for event in events %}
+    <tr>
+        <td><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></td>
+        <td>{% if event.active %} aktiviert {% else %} deaktiviert {% endif %}</td>
+        <td>
+            <a class="btn btn-default btn-sm" href="{% url 'events:update' event.id %}">Bearbeiten</a>
+            <a class="btn btn-default btn-sm" href="{% url 'events:delete' event.id %}">Löschen</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Keine Veranstaltungen verfügbar.</p>
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'events:create' %}">Veranstaltung anlegen</a>
+
+{% endblock %}

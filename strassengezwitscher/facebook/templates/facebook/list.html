@@ -1,0 +1,30 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Facebookseiten</h1>
+{% if pages %}
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+    {% for page in pages %}
+    <tr>
+        <td><a href="{% url 'facebook:detail' page.id %}">{{ page.name }}</a></td>
+        <td>{% if page.active %} aktiviert {% else %} deaktiviert {% endif %}</td>
+        <td>
+            <a class="btn btn-default btn-sm" href="{% url 'facebook:update' page.id %}">Bearbeiten</a>
+            <a class="btn btn-default btn-sm" href="{% url 'facebook:delete' page.id %}">Löschen</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No Facebook pages available.</p>
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'facebook:create' %}">Facebook-Seite anlegen</a>
+
+{% endblock %}
