@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name
 """
 WSGI config for strassengezwitscher project.
 

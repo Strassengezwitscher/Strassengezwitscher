@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name,too-many-public-methods
 from django.test import TestCase
 
 from mapobjects.models import MapObject

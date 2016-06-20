@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name,too-many-public-methods
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
