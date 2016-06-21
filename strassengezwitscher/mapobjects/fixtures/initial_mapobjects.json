@@ -33,7 +33,7 @@
     "model": "mapobjects.mapobject",
     "pk": 4,
     "fields": {
-        "name": "Amestardam4",
+        "name": "Amsterdam4",
         "active": true,
         "location_long": "4.893748",
         "location_lat": "52.371011"
