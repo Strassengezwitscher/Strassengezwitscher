@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'mapobjects.apps.MapobjectsConfig',
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
