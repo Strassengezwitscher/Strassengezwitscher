@@ -52,6 +52,7 @@ class MapObjectViewTests(APITestCase):
             u'id': 1,
             u'active': True,
             u'name': u'Amsterdam1',
+            u'location': u'Amsterdam',
             u'location_long': u'4.894045',
             u'location_lat': u'52.368829'
         }

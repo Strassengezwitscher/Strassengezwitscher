@@ -5,6 +5,7 @@
     "fields": {
         "name": "Amsterdam1",
         "active": true,
+        "location": "Amsterdam",
         "location_long": "4.894045",
         "location_lat": "52.368829"
     }
