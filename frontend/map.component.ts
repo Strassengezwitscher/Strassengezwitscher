@@ -16,10 +16,31 @@ export class MapComponent implements OnInit {
 
     constructor(private mapService: MapService) {}
 
-    closeCurrentlyOpenInfoWindow() {
-        if (this.currentlyOpenInfoWindow) {
-            this.currentlyOpenInfoWindow.close();
-        }
+    ngOnInit() {
+        this.initMap();
+        this.getMapObjects();
+    }
+
+    initMap() {
+        const latlng = new google.maps.LatLng(52.3731, 4.8922);
+        const mapOptions = {
+            center: latlng,
+            scrollWheel: false,
+            zoom: 13
+        };
+        this.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    }
+
+    getMapObjects() {
+        this.mapService.getMapObjects()
+                        .subscribe(
+                            mapObjects => this.drawMapObjects(mapObjects),
+                            error => this.errorMessage = <any>error
+                        );
+    }
+
+    drawMapObjects(mapObjects: MapObject[]) {
+        mapObjects.map((mapObject) => this.drawMapObject(mapObject));
     }
 
     drawMapObject(mapObject: MapObject) {
@@ -39,28 +60,10 @@ export class MapComponent implements OnInit {
         marker.setMap(this.map);
     }
 
-    drawMapObjects(mapObjects: MapObject[]) {
-        mapObjects.map((mapObject) => this.drawMapObject(mapObject));
-    }
-
-    getMapObjects() {
-        this.mapService.getMapObjects()
-                        .subscribe(
-                            mapObjects => this.drawMapObjects(mapObjects),
-                            error => this.errorMessage = <any>error
-                        );
-    }
-
-    ngOnInit() {
-        const latlng = new google.maps.LatLng(52.3731, 4.8922);
-        const mapOptions = {
-          center: latlng,
-          scrollWheel: false,
-          zoom: 13
-        };
-        this.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-        this.getMapObjects();
+    closeCurrentlyOpenInfoWindow() {
+        if (this.currentlyOpenInfoWindow) {
+            this.currentlyOpenInfoWindow.close();
+        }
     }
 
     showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
