@@ -9,9 +9,10 @@ import { MapObject } from "./mapObject";
     providers: [MapService]
 })
 export class MapComponent implements OnInit {
-
+    errorMessage: string;
     map: google.maps.Map;
     currentlyOpenInfoWindow: google.maps.InfoWindow;
+    mode = 'Observable';
 
     constructor(private mapService: MapService) {}
 
@@ -22,7 +23,7 @@ export class MapComponent implements OnInit {
     }
 
     drawMapObject(mapObject: MapObject) {
-        const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
+        const latLng = new google.maps.LatLng(mapObject.location_lat, mapObject.location_long);
         const infoWindow = new google.maps.InfoWindow({
             content: mapObject.name
         });
@@ -43,7 +44,11 @@ export class MapComponent implements OnInit {
     }
 
     getMapObjects() {
-        this.mapService.getMapObjects().then(mapObjects => this.drawMapObjects(mapObjects));
+        this.mapService.getMapObjects()
+                        .subscribe(
+                            mapObjects => this.drawMapObjects(mapObjects),
+                            error => this.errorMessage = <any>error
+                        );
     }
 
     ngOnInit() {
