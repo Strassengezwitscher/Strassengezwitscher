@@ -8,7 +8,7 @@ import { Observable } from "rxjs/Observable";
 export class MapService {
     constructor(private http: Http) {}
 
-    private mapObjectsUrl = "api/mapobjects/?format.json";
+    private mapObjectsUrl = "api/mapobjects.json";
 
     getMapObjects(): Observable<MapObject[]> {
         return this.http.get(this.mapObjectsUrl)
@@ -16,14 +16,19 @@ export class MapService {
                         .catch(this.handleError);
     }
 
-    private extractData(res: Response) {
-        let data = res.json() || [];
+    private extractData(response: Response) {
+        let data = response.json() || [];
         return <MapObject[]>data;
     }
 
     private handleError(error: any) {
-        let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-        console.error(errMsg); // log to console
-        return Observable.throw(errMsg);
+        let errorMessage = "Server error";
+        if (error.message) {
+            errorMessage = error.message;
+        } else if (error.status) {
+            errorMessage = `${error.status} - ${error.statusText}`;
+        }
+        console.error(errorMessage);
+        return Observable.throw(errorMessage);
     }
 }

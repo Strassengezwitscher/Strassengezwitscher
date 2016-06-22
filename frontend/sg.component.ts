@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Routes, Router, ROUTER_DIRECTIVES } from "@angular/router";
 
 // Add the RxJS Observable operators we need in this app.
-import './rxjs-operators';
+import "./rxjs-operators";
 
 import { NavBarComponent } from "./navbar.component";
 import { MapComponent } from "./map.component";

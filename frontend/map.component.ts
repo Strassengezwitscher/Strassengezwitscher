@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ViewChild, AfterViewInit } from "@angular/core";
 
 import { MapService } from "./map.service";
 import { MapObject } from "./mapObject";
@@ -8,15 +8,15 @@ import { MapObject } from "./mapObject";
     templateUrl: "map.component.html",
     providers: [MapService]
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements AfterViewInit {
     errorMessage: string;
     map: google.maps.Map;
     currentlyOpenInfoWindow: google.maps.InfoWindow;
-    mode = 'Observable';
+    @ViewChild("mapCanvas") mapCanvas;
 
     constructor(private mapService: MapService) {}
 
-    ngOnInit() {
+    ngAfterViewInit() {
         this.initMap();
         this.getMapObjects();
     }
@@ -28,7 +28,7 @@ export class MapComponent implements OnInit {
             scrollWheel: false,
             zoom: 13
         };
-        this.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
 
     getMapObjects() {
