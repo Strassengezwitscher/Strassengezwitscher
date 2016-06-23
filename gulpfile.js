@@ -16,6 +16,7 @@ var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
 
 if (!argv.production) {
+    var clean = require('gulp-clean');
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
 }
@@ -166,4 +167,9 @@ if (!argv.production) {
     });
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
+
+    gulp.task('clean', function() {
+        return gulp.src([build_path, dist_path], {read: false})
+            .pipe(clean());
+    });
 }
