@@ -1,8 +1,14 @@
 /// <reference path="../typings/browser.d.ts" />
 
 import { bootstrap } from "@angular/platform-browser-dynamic";
-import { ROUTER_PROVIDERS } from "@angular/router";
+import { HTTP_PROVIDERS } from "@angular/http";
 
 import { StrassengezwitscherComponent } from "./sg.component";
+import { APP_ROUTER_PROVIDERS } from "./sg.routes";
 
-bootstrap(StrassengezwitscherComponent, [ROUTER_PROVIDERS]);
+
+bootstrap(StrassengezwitscherComponent, [
+    APP_ROUTER_PROVIDERS,
+    HTTP_PROVIDERS
+])
+.catch(err => console.error(err));
