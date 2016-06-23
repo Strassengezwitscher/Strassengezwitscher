@@ -16,6 +16,7 @@ var tsconfig = require('./tsconfig.json');
 var tsProject = typescript.createProject(tsconfig.compilerOptions);
 
 if (!argv.production) {
+    var clean = require('gulp-clean');
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
 }
@@ -26,7 +27,6 @@ var static_npm_file_paths = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
     'node_modules/rxjs/**/*',
-    'node_modules/angular2-in-memory-web-api/**/*',
     'node_modules/@angular/**/*',
     'node_modules/systemjs/dist/system.src.js'
 ];
@@ -78,26 +78,25 @@ gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], funct
             '@angular/common.js': '@angular/common',
             '@angular/compiler.js': '@angular/compiler',
             '@angular/core.js': '@angular/core',
+            '@angular/forms.js': '@angular/forms',
             '@angular/http.js': '@angular/http',
             '@angular/platform-browser.js': '@angular/platform-browser',
             '@angular/platform-browser-dynamic.js': '@angular/platform-browser-dynamic',
             '@angular/router.js': '@angular/router',
             '@angular/router-deprecated.js': '@angular/router-deprecated',
-            '@angular/testing.js': '@angular/testing',
             '@angular/upgrade.js': '@angular/upgrade',
         },
         packages: {
           'rxjs': { defaultExtension: 'js' },
-          'angular2-in-memory-web-api': { defaultExtension: 'js' },
           '@angular/common': { main: 'index.js', defaultExtension: 'js' },
           '@angular/compiler': { main: 'index.js', defaultExtension: 'js' },
           '@angular/core': { main: 'index.js', defaultExtension: 'js' },
+          '@angular/forms': { main: 'index.js', defaultExtension: 'js' },
           '@angular/http': { main: 'index.js', defaultExtension: 'js' },
           '@angular/platform-browser': { main: 'index.js', defaultExtension: 'js' },
           '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
           '@angular/router': { main: 'index.js', defaultExtension: 'js' },
           '@angular/router-deprecated': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/testing': { main: 'index.js', defaultExtension: 'js' },
           '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' },
       }
     });
@@ -168,4 +167,9 @@ if (!argv.production) {
     });
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
+
+    gulp.task('clean', function() {
+        return gulp.src([build_path, dist_path], {read: false})
+            .pipe(clean());
+    });
 }
