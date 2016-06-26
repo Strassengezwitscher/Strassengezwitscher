@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import { ROUTER_DIRECTIVES } from "@angular/router";
 
+// Add the RxJS Observable operators we need in this app.
+import "./rxjs-operators";
+
 
 @Component({
     selector: "sg-app",
