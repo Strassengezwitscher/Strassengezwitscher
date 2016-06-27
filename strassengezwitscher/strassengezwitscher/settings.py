@@ -80,6 +80,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'strassengezwitscher.wsgi.application'
 
+# REST Framework
+# http://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    # differs from default settings as it does not include
+    # 'rest_framework.authentication.BasicAuthentication'
+    # which would interfere with the deployed develop branch's BasicAuth
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
