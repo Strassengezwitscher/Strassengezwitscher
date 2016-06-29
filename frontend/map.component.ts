@@ -44,7 +44,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     private drawMapObject(mapObject: MapObject) {
-        const latLng = new google.maps.LatLng(mapObject.location_lat, mapObject.location_long);
+        const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
         const infoWindow = new google.maps.InfoWindow({
             content: mapObject.name,
         });
