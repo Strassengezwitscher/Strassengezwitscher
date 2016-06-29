@@ -6,12 +6,12 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class MapService {
-    private const mapObjectsUrl = "api/mapobjects.json";
+    private static mapObjectsUrl = "api/mapobjects.json";
 
     constructor(private http: Http) {}
 
     public getMapObjects(): Observable<MapObject[]> {
-        return this.http.get(this.mapObjectsUrl)
+        return this.http.get(MapService.mapObjectsUrl)
                         .map(this.extractData)
                         .catch(this.handleError);
     }

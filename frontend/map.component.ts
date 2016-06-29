@@ -35,7 +35,7 @@ export class MapComponent implements AfterViewInit {
         this.mapService.getMapObjects()
                         .subscribe(
                             mapObjects => this.drawMapObjects(mapObjects),
-                            error => this.errorMessage = <any> error,
+                            error => this.errorMessage = <any> error
                         );
     }
 
