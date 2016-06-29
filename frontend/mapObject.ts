@@ -1,8 +1,8 @@
 export class MapObject {
-    id: number;
-    name: string;
-    active: boolean;
-    location: string;
-    location_long: number;
-    location_lat: number;
+    public id: number;
+    public name: string;
+    public active: boolean;
+    public location: string;
+    public location_long: number;
+    public location_lat: number;
 }
