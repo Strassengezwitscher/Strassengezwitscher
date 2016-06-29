@@ -153,7 +153,7 @@ if (!argv.production) {
 
     gulp.task('lint:typescript', function() {
         return gulp.src(ts_path)
-        .pipe(tslint())
+        .pipe(tslint({ configuration: "tslint.json" }))
         .pipe(tslint.report("prose", {
             emitError: false,
             summarizeFailureOutput: true
