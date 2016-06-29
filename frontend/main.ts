@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-reference
 /// <reference path="../typings/browser.d.ts" />
 
 import { bootstrap } from "@angular/platform-browser-dynamic";
