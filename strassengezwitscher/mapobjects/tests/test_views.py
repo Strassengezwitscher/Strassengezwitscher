@@ -16,7 +16,6 @@ class MapObjectViewTests(APITestCase):
 
     # POST /mapobjects/
     def test_create_list_mapobject(self):
-
         url = reverse('mapobjects:list')
         data = {
             'id': '1',
@@ -27,7 +26,6 @@ class MapObjectViewTests(APITestCase):
 
     # POST /mapobjects/1/
     def test_create_detail_mapobject(self):
-
         url = reverse('mapobjects:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
@@ -60,7 +58,6 @@ class MapObjectViewTests(APITestCase):
 
     # PATCH /mapobjects/
     def test_modify_list_mapobject(self):
-
         url = reverse('mapobjects:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
@@ -71,7 +68,6 @@ class MapObjectViewTests(APITestCase):
 
     # PATCH /mapobjects/1/
     def test_modify_detail_mapobject(self):
-
         url = reverse('mapobjects:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
@@ -82,7 +78,6 @@ class MapObjectViewTests(APITestCase):
 
     # PUT /mapobjects/
     def test_replace_list_mapobject(self):
-
         url = reverse('mapobjects:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
@@ -93,7 +88,6 @@ class MapObjectViewTests(APITestCase):
 
     # PUT /mapobjects/1/
     def test_replace_detail_mapobject(self):
-
         url = reverse('mapobjects:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
@@ -104,14 +98,37 @@ class MapObjectViewTests(APITestCase):
 
     # DELETE /mapobjects/
     def test_delete_list_mapobject(self):
-
         url = reverse('mapobjects:list')
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # DELETE /mapobjects/1/
     def test_delete_detail_mapobject(self):
-
         url = reverse('mapobjects:detail', kwargs={'pk': 1})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    # Test correct json urls
+    # GET /mapobjects.json
+    def test_json_list_mapobject(self):
+        url = '/api/mapobjects.json'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # GET /mapobjects/.json
+    def test_json_list_mapobject_incorrect(self):
+        url = '/api/mapobjects/.json'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /mapobjects/1.json
+    def test_json_detail_mapobject(self):
+        url = '/api/mapobjects/1.json'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # GET /mapobjects1.json
+    def test_json_detail_mapobject_incorrect(self):
+        url = '/api/mapobjects1.json'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
