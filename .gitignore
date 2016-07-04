@@ -77,5 +77,8 @@ node_modules/
 typings/**
 !typings/typings.d.ts
 
+# pyenv
+.python-version
+
 # Sensitive data
 strassengezwitscher/strassengezwitscher/initial/
