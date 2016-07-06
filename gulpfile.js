@@ -28,12 +28,13 @@ var static_npm_file_paths = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
     'node_modules/rxjs/**/*',
     'node_modules/@angular/**/*',
-    'node_modules/systemjs/dist/system.src.js'
+    'node_modules/systemjs/dist/system.src.js',
+    'node_modules/symbol-observable/**/*',
 ];
 var angular_dependencies = [
     'node_modules/es6-shim/es6-shim.min.js',
     'node_modules/zone.js/dist/zone.js',
-    'node_modules/reflect-metadata/Reflect.js'
+    'node_modules/reflect-metadata/Reflect.js',
 ];
 var build_path = 'strassengezwitscher/static/build/';
 var dist_path = 'strassengezwitscher/static/dist/';
@@ -88,6 +89,7 @@ gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], funct
         },
         packages: {
           'rxjs': { defaultExtension: 'js' },
+          'symbol-observable': { main: 'index.js', defaultExtension: 'js' },
           '@angular/common': { main: 'index.js', defaultExtension: 'js' },
           '@angular/compiler': { main: 'index.js', defaultExtension: 'js' },
           '@angular/core': { main: 'index.js', defaultExtension: 'js' },
