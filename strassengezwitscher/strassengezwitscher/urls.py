@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/mapobjects/?', include('mapobjects.urls')),
+    url(r'^api/', include('mapobjects.urls')),
     url(r'^facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^events/', include('events.urls', namespace='events')),
     url(r'^(?:contact)?/?$', views.index, name='index'),
