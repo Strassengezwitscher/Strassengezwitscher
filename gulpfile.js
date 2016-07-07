@@ -20,6 +20,7 @@ if (!argv.production) {
     var clean = require('gulp-clean');
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
+    var Server = require('karma').Server;
 }
 
 gulp.task('copy:npmfiles', function() {
@@ -122,5 +123,28 @@ if (!argv.production) {
     gulp.task('clean', function() {
         return gulp.src([config.path.build, config.path.dist], {read: false})
             .pipe(clean());
+    });
+
+    gulp.task('test', function(done) {
+        new Server({
+            configFile: __dirname + '/karma.config.js',
+        }, karmaDone).start();
+
+        function karmaDone(exitCode) {
+            remapCoverage(done, exitCode);
+        }
+
+        function remapCoverage(done, exitCode) {
+            gulp.src(/*path to coverage.json*/)
+                .pipe(remapInstanbul({
+                    basePath: config.src,
+                    reports: {
+                        'json': config.report.path + 'remap/coverage.json',
+                    }
+                }))
+                .on('finish', function() {
+                    done(exitCode);
+                });
+        }
     });
 }
