@@ -104,7 +104,7 @@ if (!argv.production) {
 
     gulp.task('lint:typescript', function() {
         return gulp.src(config.typescript.files)
-            .pipe(tslint())
+            .pipe(tslint({configuration: 'tslint.json'}))
             .pipe(tslint.report('prose', {
                 emitError: false,
                 summarizeFailureOutput: true

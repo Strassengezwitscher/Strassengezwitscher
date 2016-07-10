@@ -51,8 +51,8 @@ class MapObjectViewTests(APITestCase):
             u'active': True,
             u'name': u'Amsterdam1',
             u'location': u'Amsterdam',
-            u'location_long': u'4.894045',
-            u'location_lat': u'52.368829'
+            u'locationLong': u'4.894045',
+            u'locationLat': u'52.368829'
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
