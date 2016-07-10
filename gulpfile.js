@@ -1,5 +1,6 @@
 'use strict';
 
+var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
 var exec = require('child_process').exec;
@@ -21,118 +22,68 @@ if (!argv.production) {
     var sassLint = require('gulp-sass-lint');
 }
 
-var sass_path = './frontend/**/*.scss';
-var ts_path = './frontend/**/*.ts';
-var static_npm_file_paths = [
-    'node_modules/bootstrap/dist/css/bootstrap.min.css',
-    'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
-    'node_modules/rxjs/**/*',
-    'node_modules/@angular/**/*',
-    'node_modules/systemjs/dist/system.src.js'
-];
-var angular_dependencies = [
-    'node_modules/es6-shim/es6-shim.min.js',
-    'node_modules/zone.js/dist/zone.js',
-    'node_modules/reflect-metadata/Reflect.js'
-];
-var build_path = 'strassengezwitscher/static/build/';
-var dist_path = 'strassengezwitscher/static/dist/';
-
 gulp.task('copy:npmfiles', function() {
-    return gulp.src(static_npm_file_paths.concat(angular_dependencies), {base: 'node_modules/'})
-        .pipe(gulp.dest(build_path));
+    return gulp.src(config.npm.files, {base: config.path.npm})
+        .pipe(gulp.dest(config.path.build));
 });
 
 gulp.task('copy:systemjsconfig', function() {
-    return gulp.src('systemjs.config.js')
-        .pipe(gulp.dest(build_path));
+    return gulp.src(config.systemjs.files)
+        .pipe(gulp.dest(config.path.build));
 });
 
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
 
 gulp.task('compile:sass', function() {
-    return gulp.src(sass_path)
+    return gulp.src(config.sass.files)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat('bundle.dev.css'))
+        .pipe(concat(config.sass.bundle.dev_name))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(build_path));
+        .pipe(gulp.dest(config.path.build));
 });
 
 gulp.task('compile:typescript', function() {
-    var tsResult = gulp.src(ts_path)
+    var tsResult = gulp.src(config.typescript.files)
         .pipe(sourcemaps.init())
         .pipe(typescript(tsProject));
     return merge([
-        tsResult.dts.pipe(gulp.dest(build_path)),
+        tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
             .pipe(embedTemplates())
             .pipe(sourcemaps.write())
-            .pipe(gulp.dest(build_path))
+            .pipe(gulp.dest(config.path.build))
     ]);
 });
 
 gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], function() {
-    var builder = new SystemBuilder(build_path, {
-        map: {
-            '@angular/common.js': '@angular/common',
-            '@angular/compiler.js': '@angular/compiler',
-            '@angular/core.js': '@angular/core',
-            '@angular/forms.js': '@angular/forms',
-            '@angular/http.js': '@angular/http',
-            '@angular/platform-browser.js': '@angular/platform-browser',
-            '@angular/platform-browser-dynamic.js': '@angular/platform-browser-dynamic',
-            '@angular/router.js': '@angular/router',
-            '@angular/router-deprecated.js': '@angular/router-deprecated',
-            '@angular/upgrade.js': '@angular/upgrade',
-        },
-        packages: {
-          'rxjs': { defaultExtension: 'js' },
-          '@angular/common': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/compiler': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/core': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/forms': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/http': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/platform-browser': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/router': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/router-deprecated': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' },
-      }
-    });
+    var builder = new SystemBuilder(config.path.build, config.systemjs.config);
     builder.loader.defaultJSExtensions = true;
-    return builder.buildStatic('main', dist_path + '/bundle.js', {
-        minify: true
-    });
+    return builder.buildStatic('main', config.typescript.bundle.path, config.typescript.bundle.config);
 });
 
 gulp.task('bundle:dependencies', function() {
-    return gulp.src([
-        'node_modules/es6-shim/es6-shim.min.js',
-        'node_modules/zone.js/dist/zone.js',
-        'node_modules/reflect-metadata/Reflect.js'
-    ]).pipe(concat('dependencies.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(dist_path));
+    return gulp.src(config.npm.angular_dependencies.files)
+        .pipe(concat(config.npm.angular_dependencies.name))
+        .pipe(uglify())
+        .pipe(gulp.dest(config.path.dist));
 });
 
 gulp.task('bundle:sass', ['compile:sass'], function() {
-    return gulp.src([
-        build_path + '/bootstrap/**/*.css',
-        build_path + '/bundle.dev.css'
-    ]).pipe(concat('bundle.css'))
+    return gulp.src(config.sass.bundle.files)
+        .pipe(concat(config.sass.bundle.name))
         .pipe(cssnano())
-        .pipe(gulp.dest(dist_path));
+        .pipe(gulp.dest(config.path.dist));
 });
 
 gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
-    return gulp.watch(sass_path, ['compile:sass']);
+    return gulp.watch(config.sass.path, ['compile:sass']);
 });
 
 gulp.task('watch:typescript', ['compile:typescript'], function() {
-    return gulp.watch(ts_path, ['compile:typescript']);
+    return gulp.watch(config.typescript.files, ['compile:typescript']);
 });
 
 gulp.task('watch', ['watch:sass', 'watch:typescript']);
@@ -152,24 +103,24 @@ if (!argv.production) {
     });
 
     gulp.task('lint:typescript', function() {
-        return gulp.src(ts_path)
-        .pipe(tslint({ configuration: "tslint.json" }))
-        .pipe(tslint.report("prose", {
-            emitError: false,
-            summarizeFailureOutput: true
-        }));
+        return gulp.src(config.typescript.files)
+            .pipe(tslint({configuration: 'tslint.json'}))
+            .pipe(tslint.report('prose', {
+                emitError: false,
+                summarizeFailureOutput: true
+            }));
     });
 
     gulp.task('lint:sass', function() {
-        return gulp.src(sass_path)
-        .pipe(sassLint())
-        .pipe(sassLint.format());
+        return gulp.src(config.sass.files)
+            .pipe(sassLint())
+            .pipe(sassLint.format());
     });
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
 
     gulp.task('clean', function() {
-        return gulp.src([build_path, dist_path], {read: false})
+        return gulp.src([config.path.build, config.path.dist], {read: false})
             .pipe(clean());
     });
 }

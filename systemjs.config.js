@@ -5,12 +5,14 @@
     'app':                        'app', // 'dist',
     'rxjs':                       'static/rxjs',
     '@angular':                   'static/@angular',
+    'symbol-observable':          'static/symbol-observable'
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'main.js', defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
+    'symbol-observable':          { main: 'index.js', defaultExtension: 'js' },
   };
 
   var ngPackageNames = [

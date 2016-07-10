@@ -139,6 +139,12 @@ else:
         os.path.join(BASE_DIR, "static/dist"),
     )
 
+# set renderer for rest framework
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+        'rest_framework.renderers.JSONRenderer',
+    )
+
 
 TESTING = 'test' in sys.argv
 
