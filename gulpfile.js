@@ -21,6 +21,7 @@ if (!argv.production) {
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
     var Server = require('karma').Server;
+    var remapInstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
 
 gulp.task('copy:npmfiles', function() {
@@ -53,7 +54,7 @@ gulp.task('compile:typescript', function() {
         tsResult.js
             .pipe(embedTemplates())
             .pipe(sourcemaps.write())
-            .pipe(gulp.dest(config.path.build))
+            .pipe(gulp.dest(config.path.build + 'frontend'))
     ]);
 });
 
@@ -128,6 +129,7 @@ if (!argv.production) {
     gulp.task('test', function(done) {
         new Server({
             configFile: __dirname + '/karma.config.js',
+            singleRun: true,
         }, karmaDone).start();
 
         function karmaDone(exitCode) {
@@ -135,11 +137,13 @@ if (!argv.production) {
         }
 
         function remapCoverage(done, exitCode) {
-            gulp.src(/*path to coverage.json*/)
+            gulp.src('./report/report-json/coverage-final.json')
                 .pipe(remapInstanbul({
-                    basePath: config.src,
+                    basePath: '/Users/max/Documents/code/Strassengezwitscher/',
                     reports: {
-                        'json': config.report.path + 'remap/coverage.json',
+                        'lcovonly': config.path.report + 'remap/lcov.info',
+                        'json': config.path.report + 'remap/coverage.json',
+                        'html': config.path.report + 'remap/html-report',
                     }
                 }))
                 .on('finish', function() {

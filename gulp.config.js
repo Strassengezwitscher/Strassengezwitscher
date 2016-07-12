@@ -1,9 +1,11 @@
 module.exports = function () {
     var root = './';
     var path = {
+        root: root,
         build: root + 'strassengezwitscher/static/build/',
         dist: root + 'strassengezwitscher/static/dist/',
         npm: root + 'node_modules/',
+        report: root + 'report/',
     };
     var sass = {
         files: root + 'frontend/**/*.scss',

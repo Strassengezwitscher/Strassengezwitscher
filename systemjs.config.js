@@ -10,7 +10,7 @@
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
-    'app':                        { main: 'main.js', defaultExtension: 'js' },
+    'app':                        { main: 'frontend/main.js', defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
     'symbol-observable':          { main: 'index.js', defaultExtension: 'js' },
   };
@@ -37,12 +37,12 @@
     packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
   }
   // Most environments should use UMD; some (Karma) need the individual index files
-  var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+  var setPackageConfig = packIndex; //System.packageWithIndex ? packIndex : packUmd;
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
 
   // XXX: Fix router bundling. Remove with next release of Angular.
-  packages['@angular/router'] = { main: 'index.js', defaultExtension: 'js' };
+  // packages['@angular/router'] = { main: 'index.js', defaultExtension: 'js' };
 
   var config = {
     map: map,

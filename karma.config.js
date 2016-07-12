@@ -10,7 +10,7 @@ module.exports = function(config) {
   ];
 
   var configuration = {
-    basePath: './',
+    // basePath: '',
 
     frameworks: ['jasmine'],
     browsers: ['PhantomJS'],
@@ -27,6 +27,7 @@ module.exports = function(config) {
     },
 
     files: [
+    //   'node_modules/@angular/core/testing.js',
       'node_modules/core-js/client/shim.min.js',
       'node_modules/zone.js/dist/zone.js',
       'node_modules/zone.js/dist/async-test.js',
@@ -35,12 +36,14 @@ module.exports = function(config) {
     ],
 
     // proxied base paths
-    // proxies: {
-    //   // required for component assests fetched by Angular's compiler
+    proxies: {
+      // required for component assests fetched by Angular's compiler
     //   "/src/": "/base/src/",
     //   "/app/": "/base/src/app/",
-    //   "/node_modules/": "/base/node_modules/"
-    // },
+        // '/node_modules/': '/base/node_modules/',
+        '/static/': '/base/strassengezwitscher/static/build/',
+        '/strassengezwitscher/': '/base/strassengezwitscher/'
+    },
 
     port: 9876,
     colors: true,
@@ -48,15 +51,17 @@ module.exports = function(config) {
     autoWatch: true
   };
 
-  configuration.preprocessors[__dirname + '/frontend/' + '**/!(*.spec)+(.js)'] = ['coverage'];
+  configuration.preprocessors[gulpConfig.path.build + 'frontend/**/!(*.spec)+(.js)'] = ['coverage'];
   // configuration.preprocessors[gulpConfig.tmpApp + '**/*.js'] = ['sourcemap'];
   // configuration.preprocessors[gulpConfig.tmpTest + '**/*.js'] = ['sourcemap'];
+  // configuration.preprocessors[gulpConfig.path.build + '**/*.js'] = ['sourcemap'];
 
   var files = [
     //gulpConfig.tmpTest + 'test-helpers/global/**/*.js',
-    createFilePattern(__dirname + '/systemjs.config.js', { included: false }),
-    createFilePattern(__dirname + '/karma-test-shim.js', { included: false }),
-    createFilePattern(gulpConfig.typescript.files, { included: false, watched: false })
+    createFilePattern(gulpConfig.path.build + '**/*.js', { included: false, watched: false }),
+    createFilePattern(gulpConfig.path.root + 'systemjs.config.js', { included: true }),
+    createFilePattern(gulpConfig.path.root + 'karma-test-shim.js', { included: true }),
+    createFilePattern(gulpConfig.typescript.files, { included: false, watched: false }),
   ];
 
   configuration.files = configuration.files.concat(files);

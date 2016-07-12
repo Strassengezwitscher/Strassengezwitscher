@@ -7,9 +7,8 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 // we will call `__karma__.start()` later, once all the specs are loaded.
 __karma__.loaded = function() {};
 
-System.import('tests/helper')
+System.import('static/frontend/test-helpers/setup')
 .then(function() {
-    console.log('foo', window.__karma__.files));
     return Promise.all(
         Object.keys(window.__karma__.files)
         .filter(onlySpecFiles)
@@ -25,11 +24,13 @@ System.import('tests/helper')
 
 // Filter spec files
 function onlySpecFiles(path) {
-  return /\.spec\.js$/.test(path);
+    // console.log('onlySecFiles', path);
+    return /\.spec\.js$/.test(path);
 }
 
 // Normalize paths to module names.
 function file2moduleName(filePath) {
+    // console.log('file2moduleName', filePath);
   return filePath.replace(/\\/g, '/')
     .replace(/^\/base\//, '')
     .replace(/\.js/, '');
@@ -37,5 +38,6 @@ function file2moduleName(filePath) {
 
 // Import module path
 function importModules(path) {
+    // console.log('importModules', path);
     return System.import(path);
 }
