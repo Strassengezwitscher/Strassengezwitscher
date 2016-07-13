@@ -4,12 +4,16 @@ python:
   - "3.4"
   - "3.5"
 install:
+  - sudo apt-get install -y lcov
+  - gem install coveralls-lcov
   - pip install -r requirements.txt
   - pip install coveralls
-  - cd strassengezwitscher
+before_script:
+  - npm install -g gulp
 script:
-  - coverage run --source='.' manage.py test
+  - coverage run --source='.' strassengezwitscher/manage.py test strassengezwitscher
+  - gulp test
 after_success:
-  - coveralls
-  - cd ../.travis
-  - ./deploy.sh
+  - coveralls-lcov -v -n ./.report/remap/lcov2.info > ./.report/coverage.json
+  - coveralls --merge=./.report/coverage.json
+  - ./.travis/deploy.sh
