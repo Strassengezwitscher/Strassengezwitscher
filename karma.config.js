@@ -14,7 +14,7 @@ module.exports = function(config) {
 
     frameworks: ['jasmine'],
     browsers: ['PhantomJS'],
-    reporters: ['progress', 'coverage'],
+    reporters: ['mocha', 'coverage'],
 
     preprocessors: {},
 
