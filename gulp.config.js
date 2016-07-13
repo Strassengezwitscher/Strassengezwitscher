@@ -5,7 +5,7 @@ module.exports = function () {
         build: root + 'strassengezwitscher/static/build/',
         dist: root + 'strassengezwitscher/static/dist/',
         npm: root + 'node_modules/',
-        report: root + 'report/',
+        report: root + '.report/',
     };
     var sass = {
         files: root + 'frontend/**/*.scss',

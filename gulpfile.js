@@ -137,7 +137,7 @@ if (!argv.production) {
         }
 
         function remapCoverage(done, exitCode) {
-            gulp.src('./report/report-json/coverage-final.json')
+            gulp.src('./.report/report-json/coverage-final.json')
                 .pipe(remapInstanbul({
                     // basePath: __dirname,//'/Users/max/Documents/code/Strassengezwitscher/',
                     reports: {

@@ -20,7 +20,7 @@ module.exports = function(config) {
 
     // Generate json used for remap-istanbul
     coverageReporter: {
-      dir: 'report/',
+      dir: '.report/',
       reporters: [
         { type: 'json', subdir: 'report-json' }
       ]
