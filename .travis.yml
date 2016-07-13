@@ -18,5 +18,8 @@ script:
   - gulp test
 after_success:
   - coveralls-lcov -v -n ./.report/remap/lcov2.info > ./.report/coverage.json
+  - coveralls --merge=./.report/coverage.json --output=./coverage.json
+  - cat ./coverage.json
+  - cat ./.report/coverage.json
   - coveralls --merge=./.report/coverage.json
   - ./.travis/deploy.sh
