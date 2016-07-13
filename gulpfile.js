@@ -53,7 +53,7 @@ gulp.task('compile:typescript', function() {
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
             .pipe(embedTemplates())
-            .pipe(sourcemaps.write())
+            .pipe(sourcemaps.write('./', {sourceRoot: '/frontend'}))
             .pipe(gulp.dest(config.path.build + 'frontend'))
     ]);
 });
@@ -61,7 +61,7 @@ gulp.task('compile:typescript', function() {
 gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], function() {
     var builder = new SystemBuilder(config.path.build, config.systemjs.config);
     builder.loader.defaultJSExtensions = true;
-    return builder.buildStatic('main', config.typescript.bundle.path, config.typescript.bundle.config);
+    return builder.buildStatic('frontend/main', config.typescript.bundle.path, config.typescript.bundle.config);
 });
 
 gulp.task('bundle:dependencies', function() {
@@ -139,7 +139,7 @@ if (!argv.production) {
         function remapCoverage(done, exitCode) {
             gulp.src('./report/report-json/coverage-final.json')
                 .pipe(remapInstanbul({
-                    basePath: '/Users/max/Documents/code/Strassengezwitscher/',
+                    // basePath: __dirname,//'/Users/max/Documents/code/Strassengezwitscher/',
                     reports: {
                         'lcovonly': config.path.report + 'remap/lcov.info',
                         'json': config.path.report + 'remap/coverage.json',

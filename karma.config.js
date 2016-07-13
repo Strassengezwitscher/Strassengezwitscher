@@ -27,7 +27,6 @@ module.exports = function(config) {
     },
 
     files: [
-    //   'node_modules/@angular/core/testing.js',
       'node_modules/core-js/client/shim.min.js',
       'node_modules/zone.js/dist/zone.js',
       'node_modules/zone.js/dist/async-test.js',
@@ -54,11 +53,12 @@ module.exports = function(config) {
   configuration.preprocessors[gulpConfig.path.build + 'frontend/**/!(*.spec)+(.js)'] = ['coverage'];
   // configuration.preprocessors[gulpConfig.tmpApp + '**/*.js'] = ['sourcemap'];
   // configuration.preprocessors[gulpConfig.tmpTest + '**/*.js'] = ['sourcemap'];
-  // configuration.preprocessors[gulpConfig.path.build + '**/*.js'] = ['sourcemap'];
+  configuration.preprocessors[gulpConfig.path.build + 'frontend/**/*.js'] = ['sourcemap'];
 
   var files = [
     //gulpConfig.tmpTest + 'test-helpers/global/**/*.js',
     createFilePattern(gulpConfig.path.build + '**/*.js', { included: false, watched: false }),
+    // createFilePattern(gulpConfig.path.build + 'frontend/**/*.js', { included: true, watched: false, served: false }),
     createFilePattern(gulpConfig.path.root + 'systemjs.config.js', { included: true }),
     createFilePattern(gulpConfig.path.root + 'karma-test-shim.js', { included: true }),
     createFilePattern(gulpConfig.typescript.files, { included: false, watched: false }),

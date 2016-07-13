@@ -24,7 +24,6 @@ System.import('static/frontend/test-helpers/setup')
 
 // Filter spec files
 function onlySpecFiles(path) {
-    // console.log('onlySecFiles', path);
     return /\.spec\.js$/.test(path);
 }
 
