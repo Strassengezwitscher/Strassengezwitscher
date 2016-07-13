@@ -10,8 +10,9 @@ install:
   - gem install coveralls-lcov
   - pip install -r requirements.txt
   - pip install coveralls
-before_script:
   - npm install
+before_script:
+  - gulp build
 script:
   - coverage run --source='.' strassengezwitscher/manage.py test strassengezwitscher
   - gulp test
