@@ -53,7 +53,7 @@ gulp.task('compile:typescript', function() {
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
             .pipe(embedTemplates())
-            .pipe(sourcemaps.write('./', {sourceRoot: '/frontend'}))
+            .pipe(sourcemaps.write('./', {sourceRoot: 'frontend'}))
             .pipe(gulp.dest(config.path.build + 'frontend'))
     ]);
 });
