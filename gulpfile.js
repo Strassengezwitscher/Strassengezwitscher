@@ -53,8 +53,8 @@ gulp.task('compile:typescript', function() {
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
             .pipe(embedTemplates())
-            .pipe(sourcemaps.write('./', {sourceRoot: 'frontend'}))
-            .pipe(gulp.dest(config.path.build + 'frontend'))
+            .pipe(sourcemaps.write('./', {sourceRoot: config.path.partial.frontend}))
+            .pipe(gulp.dest(config.path.build + config.path.partial.frontend))
     ]);
 });
 
@@ -140,7 +140,7 @@ if (!argv.production) {
 
     gulp.task('test:typescript', function(done) {
         new Server({
-            configFile: __dirname + '/karma.config.js',
+            configFile: config.report.karma.configFile,
             singleRun: true,
         }, function(exitCode) {
             done(exitCode);
@@ -149,19 +149,15 @@ if (!argv.production) {
 
     gulp.task('coverage:typescript', function(done) {
         new Server({
-            configFile: __dirname + '/karma.config.js',
+            configFile: config.report.karma.configFile,
             singleRun: true,
         }, remapCoverage).start();
 
         function remapCoverage(exitCode) {
-            gulp.src('./.report/report-json/coverage-final.json')
+            console.log('path', config.report.path);
+            gulp.src(config.report.path)
                 .pipe(remapInstanbul({
-                    // basePath: __dirname,//'/Users/max/Documents/code/Strassengezwitscher/',
-                    reports: {
-                        'lcovonly': config.path.report + 'remap/lcov.info',
-                        'json': config.path.report + 'remap/coverage.json',
-                        'html': config.path.report + 'remap/html-report',
-                    }
+                    reports: config.report.remap.reports,
                 }))
                 .on('finish', function() {
                     done(exitCode);
@@ -170,7 +166,7 @@ if (!argv.production) {
     });
 
     gulp.task('coverage:python', function() {
-        var command = 'coverage run --source="./strassengezwitscher" strassengezwitscher/manage.py test strassengezwitscher';
+        var command = 'coverage run --source="." strassengezwitscher/manage.py test strassengezwitscher';
         exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
