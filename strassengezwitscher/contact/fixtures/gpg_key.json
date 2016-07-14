@@ -1,0 +1,10 @@
+[
+{
+    "model": "contact.key",
+    "pk": 1,
+    "fields": {
+        "key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\r\nComment: GPGTools - http://gpgtools.org\r\n\r\nmI0EV4Z4gQEEANn1nfQguxnkGeyic+i6rTBQirdwMkU69fQPThnrcXIcfPbCD/WB\r\n9ckTrflsxqlGEW88CsES5U78TgKoQQ2u4lzMBaD0ipMwc6Zy+EetO9sS3zuZZtcf\r\nVfWTefAs+VB5Q9pWsH5FmznP0Em6qPbWxgnjffuwStIuLmiQU8LTwfWRABEBAAG0\r\nI0pvaG4gU21pdGggPGpvaG4uc21pdGhAZXhhbXBsZS5vcmc+iLkEEwEIACMFAleG\r\neIECGwMHCwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRBv4mEgfD39m5MMA/wK\r\n3RQaJ85e9H71F6UfNnauVfgm9lztuh55wlgHltrMMEgnPnV1id8yA9FqvWWSuSWS\r\nud30DiN3UHkNZDdg8Fky62jEnY2WBpEJcwAoWVGwc95kOV9tN5BWv5qC83E0tuDn\r\nc4eGHyZHVTlTKkIwA8T9D9UVMVRNnRMm1q1Uwj4M67iNBFeGeIEBBACtHCrjxbzq\r\nO4HROpHPY8556KJnctExaRAKyde3xXI/weLlos1e576a8ijZJE+cLeOt4K3Oh1oq\r\nWhMLrv/iQ2RDKgy+6djtr7lP+GaBBH0teBwMy3zV8L/BW54uDmFEK1tS3l2Dmfw1\r\nJsOOaXiToDBnWJ4lgt2siH3liUVC1VzpswARAQABiJ8EGAEIAAkFAleGeIECGwwA\r\nCgkQb+JhIHw9/ZshOQQA15uu8LPmkBLneimQSR8bBmDZL0baVIJ3+kxre+qq51Ed\r\nkerWo0QzfCTAGvL2dmukBBm4dabbwbfXig6a1kWK5kr5UQCwyXsvWTKD+QuL8FoQ\r\nXFwVXjaVkSkLWdGsEI6fDxItlG9aR8rtaszipvADoqy+kvXiLXjXh+V5hegIyJs=\r\n=nEXZ\r\n-----END PGP PUBLIC KEY BLOCK-----",
+        "addresses": "john.smith@example.org"
+    }
+}
+]
