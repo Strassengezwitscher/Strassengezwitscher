@@ -14,8 +14,8 @@ install:
 before_script:
   - gulp build
 script:
-  - coverage run --source='.' strassengezwitscher/manage.py test strassengezwitscher
-  - gulp test
+  - gulp coverage:python
+  - gulp coverage:typescript
 after_success:
   - coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json
   - coveralls --merge=./.report/coverage.json

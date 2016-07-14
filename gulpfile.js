@@ -121,22 +121,39 @@ if (!argv.production) {
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
 
-    gulp.task('clean', function() {
-        return gulp.src([config.path.build, config.path.dist], {read: false})
+    gulp.task('clean:build', function() {
+        return gulp.src(config.path.build, {read: false})
             .pipe(clean());
     });
 
-    gulp.task('test', function(done) {
+    gulp.task('clean:dist', function() {
+        return gulp.src(config.path.dist, {read: false})
+            .pipe(clean());
+    });
+
+    gulp.task('clean:report', function() {
+        return gulp.src(config.path.report, {read: false})
+            .pipe(clean());
+    });
+
+    gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report']);
+
+    gulp.task('test:typescript', function(done) {
         new Server({
             configFile: __dirname + '/karma.config.js',
             singleRun: true,
-        }, karmaDone).start();
+        }, function(exitCode) {
+            done(exitCode);
+        }).start();
+    });
 
-        function karmaDone(exitCode) {
-            remapCoverage(done, exitCode);
-        }
+    gulp.task('coverage:typescript', function(done) {
+        new Server({
+            configFile: __dirname + '/karma.config.js',
+            singleRun: true,
+        }, remapCoverage).start();
 
-        function remapCoverage(done, exitCode) {
+        function remapCoverage(exitCode) {
             gulp.src('./.report/report-json/coverage-final.json')
                 .pipe(remapInstanbul({
                     // basePath: __dirname,//'/Users/max/Documents/code/Strassengezwitscher/',
@@ -147,8 +164,16 @@ if (!argv.production) {
                     }
                 }))
                 .on('finish', function() {
-                    done();
+                    done(exitCode);
                 });
         }
+    });
+
+    gulp.task('coverage:python', function() {
+        var command = 'coverage run --source="." strassengezwitscher/manage.py test strassengezwitscher';
+        exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
     });
 }
