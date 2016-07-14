@@ -170,7 +170,7 @@ if (!argv.production) {
     });
 
     gulp.task('coverage:python', function() {
-        var command = 'coverage run --source="." strassengezwitscher/manage.py test strassengezwitscher';
+        var command = 'coverage run --source="./strassengezwitscher" strassengezwitscher/manage.py test strassengezwitscher';
         exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
