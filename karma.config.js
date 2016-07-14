@@ -46,7 +46,7 @@ module.exports = function(config) {
 
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_WARN,
     autoWatch: true
   };
 
@@ -56,8 +56,8 @@ module.exports = function(config) {
   configuration.preprocessors[gulpConfig.path.build + 'frontend/**/*.js'] = ['sourcemap'];
 
   var files = [
-    //gulpConfig.tmpTest + 'test-helpers/global/**/*.js',
     createFilePattern(gulpConfig.path.build + '**/*.js', { included: false, watched: false }),
+    createFilePattern(gulpConfig.path.build + 'frontend/test-helpers/global/**/*.js', { included: true }),
     // createFilePattern(gulpConfig.path.build + 'frontend/**/*.js', { included: true, watched: false, served: false }),
     createFilePattern(gulpConfig.path.root + 'systemjs.config.js', { included: true }),
     createFilePattern(gulpConfig.path.root + 'karma-test-shim.js', { included: true }),

@@ -1,4 +1,6 @@
 (function(global) {
+  // ENV
+  global.ENV = global.ENV || 'development';
 
   // map tells the System loader where to look for things
   var map = {
@@ -37,12 +39,9 @@
     packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
   }
   // Most environments should use UMD; some (Karma) need the individual index files
-  var setPackageConfig = packIndex; //System.packageWithIndex ? packIndex : packUmd;
+  var setPackageConfig = System.packageWithIndex || global.ENV == 'testing' ? packIndex : packUmd;
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
-
-  // XXX: Fix router bundling. Remove with next release of Angular.
-  // packages['@angular/router'] = { main: 'index.js', defaultExtension: 'js' };
 
   var config = {
     map: map,

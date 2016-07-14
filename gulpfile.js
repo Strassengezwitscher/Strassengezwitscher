@@ -147,7 +147,7 @@ if (!argv.production) {
                     }
                 }))
                 .on('finish', function() {
-                    done(exitCode);
+                    done();
                 });
         }
     });
