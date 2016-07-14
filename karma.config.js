@@ -20,6 +20,7 @@ module.exports = function(config) {
 
     // Generate json used for remap-istanbul
     coverageReporter: {
+      includeAllSources: true,
       dir: '.report/',
       reporters: [
         { type: 'json', subdir: 'report-json' }
@@ -50,14 +51,16 @@ module.exports = function(config) {
     autoWatch: true
   };
 
-  configuration.preprocessors[gulpConfig.path.build + 'frontend/**/!(*.spec)+(.js)'] = ['coverage'];
+  configuration.preprocessors[gulpConfig.path.build + 'frontend/**/!(*.spec|main)+(.js)'] = ['coverage'];
   // configuration.preprocessors[gulpConfig.tmpApp + '**/*.js'] = ['sourcemap'];
   // configuration.preprocessors[gulpConfig.tmpTest + '**/*.js'] = ['sourcemap'];
-  configuration.preprocessors[gulpConfig.path.build + 'frontend/**/*.js'] = ['sourcemap'];
+  configuration.preprocessors[gulpConfig.path.build + '**/*.js'] = ['sourcemap'];
 
   var files = [
     createFilePattern(gulpConfig.path.build + '**/*.js', { included: false, watched: false }),
+    createFilePattern(gulpConfig.path.build + '**/*.js.map', { included: false, watched: false }),
     createFilePattern(gulpConfig.path.build + 'frontend/test-helpers/global/**/*.js', { included: true }),
+    createFilePattern('node_modules/core-js/client/shim.min.js.map', { included: false, watched: false }),
     // createFilePattern(gulpConfig.path.build + 'frontend/**/*.js', { included: true, watched: false, served: false }),
     createFilePattern(gulpConfig.path.root + 'systemjs.config.js', { included: true }),
     createFilePattern(gulpConfig.path.root + 'karma-test-shim.js', { included: true }),
