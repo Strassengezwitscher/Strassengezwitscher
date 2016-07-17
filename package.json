@@ -49,6 +49,14 @@
     "gulp-clean": "==0.3.2",
     "gulp-sass-lint": "==1.2.0",
     "gulp-tslint": "==5.0.0",
+    "jasmine-core": "==2.4.1",
+    "karma": "==1.1.1",
+    "karma-coverage": "==1.1.0",
+    "karma-jasmine": "==1.0.2",
+    "karma-mocha-reporter": "2.0.4",
+    "karma-phantomjs-launcher": "==1.0.1",
+    "karma-sourcemap-loader": "==0.3.7",
+    "remap-istanbul": "==0.6.4",
     "tslint": "==3.13.0"
   }
 }

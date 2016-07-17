@@ -27,7 +27,7 @@
         <!-- 2. Configure SystemJS -->
         <script src="{% static 'systemjs.config.js' %}"></script>
         <script>
-            System.import('static/main').catch(function(err){ console.error(err); });
+            System.import('static/frontend/main').catch(function(err){ console.error(err); });
         </script>
         {% else %}
         <link href="{% static 'bundle.css' %}" rel="stylesheet">

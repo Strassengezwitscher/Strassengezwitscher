@@ -1,10 +1,16 @@
 module.exports = function () {
     var root = './';
     var path = {
+        root: root,
         build: root + 'strassengezwitscher/static/build/',
         dist: root + 'strassengezwitscher/static/dist/',
         npm: root + 'node_modules/',
+        report: root + '.report/',
+        partial: {
+            frontend: 'frontend',
+        },
     };
+
     var sass = {
         files: root + 'frontend/**/*.scss',
         bundle: {
@@ -78,12 +84,26 @@ module.exports = function () {
         config: systemjs_config,
     }
 
+    var report = {
+        path: path.report + 'report-json/coverage-final.json',
+        karma: {
+            configFile: __dirname + '/karma.config.js',
+        },
+        remap: {
+            reports: {
+                'lcovonly': path.report + 'remap/lcov.info',
+                'html': path.report + 'remap/html-report',
+            },
+        },
+    }
+
     var config = {
         path: path,
         sass: sass,
         typescript: typescript,
         npm: npm,
         systemjs: systemjs,
+        report: report,
     };
 
     return config;
