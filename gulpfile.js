@@ -21,7 +21,7 @@ if (!argv.production) {
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
     var Server = require('karma').Server;
-    var remapInstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+    var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
 
 gulp.task('copy:npmfiles', function() {
@@ -156,7 +156,7 @@ if (!argv.production) {
         function remapCoverage(exitCode) {
             console.log('path', config.report.path);
             gulp.src(config.report.path)
-                .pipe(remapInstanbul({
+                .pipe(remapIstanbul({
                     reports: config.report.remap.reports,
                 }))
                 .on('finish', function() {
