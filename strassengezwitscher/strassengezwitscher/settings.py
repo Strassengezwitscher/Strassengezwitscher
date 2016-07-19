@@ -121,6 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = 'static/prod/'
 
 # Create a localsettings.py if you want to locally override settings
 # and don't want the changes to appear in 'git status'.
@@ -151,3 +152,7 @@ TESTING = 'test' in sys.argv
 # speed up tests
 if TESTING:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}  # use sqlite
+
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static/dist"),
+    )
