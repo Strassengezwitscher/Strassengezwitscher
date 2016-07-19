@@ -8,7 +8,7 @@ before_install:
 install:
   - sudo apt-get install -y lcov
   - gem install coveralls-lcov
-  - pip install -r requirements.txt
+  - pip install -r requirements/dev.txt
   - pip install coveralls
   - npm install
 before_script:
