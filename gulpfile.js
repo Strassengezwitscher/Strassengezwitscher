@@ -147,6 +147,14 @@ if (!argv.production) {
         }).start();
     });
 
+    gulp.task('test:e2e', function() {
+        var command = './node_modules/casperjs/bin/casperjs test e2e/';
+        exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+    });
+
     gulp.task('coverage:typescript', function(done) {
         new Server({
             configFile: config.report.karma.configFile,

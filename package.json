@@ -45,6 +45,7 @@
     "zone.js": "==0.6.12"
   },
   "devDependencies": {
+    "casperjs": "1.1.2",
     "codelyzer": "0.0.24",
     "gulp-clean": "==0.3.2",
     "gulp-sass-lint": "==1.2.0",
