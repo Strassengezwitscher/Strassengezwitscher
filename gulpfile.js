@@ -22,7 +22,6 @@ if (!argv.production) {
     var sassLint = require('gulp-sass-lint');
     var Server = require('karma').Server;
     var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
-    var terminate = require('terminate');
 }
 
 gulp.task('copy:npmfiles', function() {
@@ -157,57 +156,6 @@ if (!argv.production) {
         casper.on('close', function(exitcode) {
             done(exitcode ? 'E2E tests failed' : undefined);
         });
-    });
-
-    gulp.task('travis:e2e', function(done) {
-        console.log('Migrate db...');
-        var migrate = exec('python strassengezwitscher/manage.py migrate');
-        migrate.on('close', function () {
-            startServer();
-        });
-
-        function startServer() {
-            console.log('Starting server...');
-            var server = exec('python strassengezwitscher/manage.py runserver');
-            server.stdout.on('data', function (data) {
-                console.log(data.toString().slice(0, -1));
-            });
-
-            server.stderr.on('data', function (data) {
-                console.log('Server: ', data.toString().slice(0, -1));
-            });
-
-            console.log('Wait for server to start...');
-            var sleep = exec('sleep', ['10']);
-            sleep.on('close', function () {
-                console.log('server pid', server.pid);
-                runTests(server.pid);
-            });
-        };
-
-        function runTests(serverpid) {
-            console.log('Start running tests...');
-            var casperChild = exec('./node_modules/casperjs/bin/casperjs test e2e/');
-            casperChild.stdout.on('data', function (data) {
-                console.log('CasperJS:', data.toString().slice(0, -1));
-            });
-            casperChild.on('close', function (code) {
-                console.log('Finished testing...');
-                shutdownServer(code, serverpid);
-            });
-        }
-
-        function shutdownServer(exitCode, serverpid) {
-            var finish = function() {
-                done(exitCode ? 'E2E tests failed' : undefined);
-            };
-
-            if (serverpid) {
-                terminate(serverpid, finish);
-            } else {
-                finish();
-            }
-        }
     });
 
     gulp.task('coverage:typescript', function(done) {
