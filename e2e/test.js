@@ -5,7 +5,7 @@ casper.test.begin('Testing Google', 1, function(test){
         test.assertTitle('Google', 'Google has correct title');
     });
 
-    casper.then(function(){
+    casper.wait(100, function(){
         test.assertTitle('Strassengezwitscher', 'SG has correct title2');
     });
 
