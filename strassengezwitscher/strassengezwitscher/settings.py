@@ -15,6 +15,8 @@ import os
 
 import sys
 
+import logging
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = (
     'mapobjects.apps.MapobjectsConfig',
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
+    'contact.apps.ContactConfig',
     'rest_framework',
 )
 
@@ -91,6 +94,41 @@ REST_FRAMEWORK = {
     )
 }
 
+######################################################################################################
+#                                           Email settings
+######################################################################################################
+EMAIL_USE_TLS = True  # port 587
+EMAIL_TIMEOUT = 10  # timeout in seconds for blocking operations like the connection attempt
+
+#
+# Override the following email-related settings in localsettings.py
+#
+# list of all the people who get code error notifications
+ADMINS = [('Name1', 'email_address1'), ('Name2', 'email_address2')]
+#
+# Default email address to use for various automated correspondence; not for error reporting
+DEFAULT_FROM_EMAIL = 'user@provider'
+#
+# email address that error messages come from
+SERVER_EMAIL = 'user@provider'
+#
+# Email address to use as sender for delivering contact forms
+EMAIL_FROM_CONTACT = 'Some Name <user@provider>'
+#
+# Email addresses to use as recipients for confidential contact forms
+EMAIL_TO_CONTACT_CONFIDENTIAL = ['user@provider']
+#
+# Email addresses to use as recipients for non-confidential contact forms
+EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
+#
+# Your email provider's host and your credentials
+EMAIL_HOST = 'provider'
+EMAIL_HOST_USER = 'user@provider'
+EMAIL_HOST_PASSWORD = 'password'
+
+######################################################################################################
+
+
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -122,6 +160,47 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# According to http://12factor.net/logs we always log to stdout/stderr and do not manage log files.
+# Production log files are managed by the production execution environment, never Django itself.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+    },
+    'loggers': {
+        'strassengezwitscher': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
 # Create a localsettings.py if you want to locally override settings
 # and don't want the changes to appear in 'git status'.
 try:
@@ -151,3 +230,4 @@ TESTING = 'test' in sys.argv
 # speed up tests
 if TESTING:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}  # use sqlite
+    logging.disable(logging.CRITICAL)
