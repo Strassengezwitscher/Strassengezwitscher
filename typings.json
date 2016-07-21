@@ -1,8 +1,8 @@
 {
-  "ambientDependencies": {
-    "google.maps": "registry:dt/google.maps#3.20.0+20160414124451",
+  "globalDependencies": {
     "core-js": "registry:dt/core-js#0.0.0+20160602141332",
-    "node": "registry:dt/node#6.0.0+20160621231320",
-    "jasmine": "registry:dt/jasmine#2.2.0+20160412134438"
+    "google.maps": "registry:dt/google.maps#3.20.0+20160626235650",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+    "node": "registry:dt/node#6.0.0+20160720070758"
   }
 }
