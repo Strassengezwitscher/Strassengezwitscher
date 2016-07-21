@@ -58,6 +58,7 @@
     "karma-phantomjs-launcher": "==1.0.1",
     "karma-sourcemap-loader": "==0.3.7",
     "remap-istanbul": "==0.6.4",
+    "terminate": "1.0.8",
     "tslint": "==3.13.0"
   }
 }
