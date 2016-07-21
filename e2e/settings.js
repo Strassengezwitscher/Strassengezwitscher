@@ -2,7 +2,7 @@ module.exports = function(options) {
     var options = options || {}
     options.viewportWidth = options.hasOwnProperty('viewportWidth') ? options.viewportWidth : 1280;
     options.viewportHeight = options.hasOwnProperty('viewportHeight') ? options.viewportHeight : 1024;
-    options.timout = options.hasOwnProperty('timeout') ? options.timeout : 10000;
+    options.timeout = options.hasOwnProperty('timeout') ? options.timeout : 10000;
     options.enableBrowserLog = options.hasOwnProperty('enableBrowserLog') ? options.enableBrowserLog : false;
 
     var hostUrl = 'http://localhost:8000/';
