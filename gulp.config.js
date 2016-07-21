@@ -33,7 +33,7 @@ module.exports = function () {
     };
 
     var e2e = {
-        files = 'e2e/test_*',
+        files: 'e2e/test_*',
     }
 
     var npm = {
