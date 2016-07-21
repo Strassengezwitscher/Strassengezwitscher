@@ -175,7 +175,7 @@ if (!argv.production) {
             });
 
             console.log('Wait for server to start...');
-            var sleep = spawn('sleep', ['10']);
+            var sleep = exec('sleep', ['10']);
             sleep.on('close', function () {
                 console.log('server pid', server.pid);
                 runTests(server.pid);
