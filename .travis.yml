@@ -13,9 +13,12 @@ install:
   - npm install
 before_script:
   - gulp build
+  - python strassengezwitscher/manage.py migrate
+  - python strassengezwitscher/manage.py runserver &
 script:
   - gulp coverage:python
   - gulp coverage:typescript
+  - gulp test:e2e
 after_success:
   - coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json
   - coveralls --merge=./.report/coverage.json

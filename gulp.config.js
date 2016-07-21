@@ -32,6 +32,10 @@ module.exports = function () {
         },
     };
 
+    var e2e = {
+        files: 'e2e/test_*',
+    }
+
     var npm = {
         static: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
@@ -43,7 +47,7 @@ module.exports = function () {
         ],
         angular_dependencies: {
             files: [
-                path.npm + 'es6-shim/es6-shim.min.js',
+                path.npm + 'core-js/client/shim.min.js',
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
             ],
@@ -101,6 +105,7 @@ module.exports = function () {
         path: path,
         sass: sass,
         typescript: typescript,
+        e2e: e2e,
         npm: npm,
         systemjs: systemjs,
         report: report,
