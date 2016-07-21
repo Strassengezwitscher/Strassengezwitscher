@@ -8,11 +8,15 @@ before_install:
 install:
   - sudo apt-get install -y lcov
   - gem install coveralls-lcov
-  - pip install -r requirements.txt
+  - pip install -r requirements/dev.txt
   - pip install coveralls
   - npm install
 before_script:
   - gulp build
+  - gulp dist
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 script:
   - gulp coverage:python
   - gulp coverage:typescript
