@@ -148,7 +148,7 @@ if (!argv.production) {
     });
 
     gulp.task('test:e2e', function(done) {
-        var command = './node_modules/casperjs/bin/casperjs test e2e/';
+        var command = './node_modules/casperjs/bin/casperjs test ' + config.e2e.files;
         var casper = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
