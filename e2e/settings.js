@@ -25,9 +25,7 @@ module.exports = function(options) {
          };
     };
 
-    function setWaitTimeout(timeout) {
-         var waitTimeout = timeout || 10000;
-
+    function setWaitTimeout(waitTimeout) {
          casper.echo('Default waitFor timeout is ' + waitTimeout + 'ms.', 'INFO');
          casper.options.waitTimeout = waitTimeout;
          casper.options.pageSettings.resourceTimeout = waitTimeout;
