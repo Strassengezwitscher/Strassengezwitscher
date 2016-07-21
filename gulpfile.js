@@ -148,11 +148,14 @@ if (!argv.production) {
         }).start();
     });
 
-    gulp.task('test:e2e', function() {
+    gulp.task('test:e2e', function(done) {
         var command = './node_modules/casperjs/bin/casperjs test e2e/';
-        exec(command, function (err, stdout, stderr) {
+        var casper = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        casper.on('close', function(exitcode) {
+            done(exitcode ? 'E2E tests failed' : undefined);
         });
     });
 
