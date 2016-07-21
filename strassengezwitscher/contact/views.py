@@ -88,5 +88,4 @@ def send_form(request):
         return Response({'status': 'error', 'errors': 'Email could not be sent.'},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response({'status': 'success'},
-                    status=status.HTTP_200_OK)
+    return Response({'status': 'success'})
