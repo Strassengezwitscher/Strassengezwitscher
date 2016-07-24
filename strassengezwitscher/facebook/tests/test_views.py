@@ -13,7 +13,7 @@ class FacebookPageViewTests(TestCase):
         response = self.client.get(reverse('facebook:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('pages', response.context)
-        self.assertQuerysetEqual(response.context['pages'], [repr(page) for page in FacebookPage.objects.all()])
+        self.assertEqual(list(response.context['pages']), list(FacebookPage.objects.all()))
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('facebook:list'))
@@ -50,7 +50,7 @@ class FacebookPageViewTests(TestCase):
             'facebook_id': '1234567890',
         }
         response = self.client.post(reverse('facebook:create'), data, follow=True)
-        self.assertRedirects(response, reverse('facebook:detail', kwargs={'pk': 2}))
+        self.assertRedirects(response, reverse('facebook:detail', kwargs={'pk': 3}))
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('facebook:create'))

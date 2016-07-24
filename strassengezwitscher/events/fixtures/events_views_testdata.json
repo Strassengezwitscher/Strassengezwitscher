@@ -1,25 +1,40 @@
 [
-    {
-        "pk": 1,
-        "model": "mapobjects.mapobject",
-        "fields": {
-            "name": "Test Event",
-            "active": true,
-            "location_lat": "0.000000",
-            "location_long": "0.000000"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "events.event",
-        "fields": {
-            "date": "2013-05-16",
-            "repetition_cycle": "unbekannter Rhythmus",
-            "organizer": "you",
-            "type": "classic event",
-            "url": "http://google.com",
-            "counter_event": false,
-            "coverage": false
-        }
+{
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+        "name": "Test Event",
+        "active": true,
+        "location": "Here",
+        "location_lat": "87.654000",
+        "location_long": "45.678000",
+        "date": "2016-07-24",
+        "repetition_cycle": "unbekannter Rhythmus",
+        "organizer": "",
+        "type": "",
+        "url": "",
+        "counter_event": false,
+        "coverage": false,
+        "participants": ""
     }
+},
+{
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+        "name": "Test Event 2",
+        "active": false,
+        "location": "There",
+        "location_lat": "45.678000",
+        "location_long": "87.654000",
+        "date": "2016-07-23",
+        "repetition_cycle": "unbekannter Rhythmus",
+        "organizer": "",
+        "type": "",
+        "url": "",
+        "counter_event": false,
+        "coverage": false,
+        "participants": ""
+    }
+}
 ]

@@ -20,7 +20,8 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include('mapobjects.urls')),
+    url(r'^api/', include('facebook.urls_api', namespace='facebook_api')),
+    url(r'^api/', include('events.urls_api', namespace='events_api')),
     url(r'^api/', include('contact.urls')),
     url(r'^facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^events/', include('events.urls', namespace='events')),
