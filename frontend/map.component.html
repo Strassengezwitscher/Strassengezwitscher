@@ -1,4 +1,14 @@
 <div class="map-wrapper">
+    <div id="map-settings">
+         <label>
+            <input [(ngModel)]="showEvents" type="checkbox" (ngModelChange)="onCheckboxChange()" />
+            Veranstaltungen {{showEvents}}
+        </label>
+        <label>
+            <input [(ngModel)]="showPages" type="checkbox" (ngModelChange)="onCheckboxChange()" />
+            Facebook-Seiten {{showPages}}
+        </label>
+    </div>
     <div class="map-canvas" #mapCanvas></div>
     <div class="error-message alert alert-danger" role="alert" *ngIf="errorMessage"><strong>{{errorMessage}}</strong></div>
 </div>

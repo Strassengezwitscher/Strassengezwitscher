@@ -8,10 +8,15 @@ import { MapObject } from "./mapObject";
     templateUrl: "map.component.html",
     providers: [MapService]
 })
+
 export class MapComponent implements AfterViewInit {
+
+    currentlyOpenInfoWindow: google.maps.InfoWindow;
     errorMessage: string;
     map: google.maps.Map;
-    currentlyOpenInfoWindow: google.maps.InfoWindow;
+    showEvents: boolean = true;
+    showPages: boolean = false;
+    
     @ViewChild("mapCanvas") mapCanvas;
 
     constructor(private mapService: MapService) {}
@@ -64,6 +69,12 @@ export class MapComponent implements AfterViewInit {
         if (this.currentlyOpenInfoWindow) {
             this.currentlyOpenInfoWindow.close();
         }
+    }
+
+    onCheckboxChange(state: boolean) {
+        console.log(state);
+        console.log(this.showEvents);
+        console.log(this.showPages);
     }
 
     showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
