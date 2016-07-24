@@ -33,7 +33,7 @@ export class MapComponent implements AfterViewInit {
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> = new Map<MapObjectType, Array<google.maps.Marker>>();
-    
+
     @ViewChild("mapCanvas") private mapCanvas;
 
     constructor(private mapService: MapService) {
