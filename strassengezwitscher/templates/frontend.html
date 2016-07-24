@@ -18,7 +18,7 @@
 
         <!-- 1. Load libraries -->
         <!-- Polyfill(s) for older browsers -->
-        <script src="{% static 'es6-shim/es6-shim.min.js' %}"></script>
+        <script src="{% static 'core-js/client/shim.min.js' %}"></script>
 
         <script src="{% static 'zone.js/dist/zone.js' %}"></script>
         <script src="{% static 'reflect-metadata/Reflect.js' %}"></script>
@@ -27,7 +27,7 @@
         <!-- 2. Configure SystemJS -->
         <script src="{% static 'systemjs.config.js' %}"></script>
         <script>
-            System.import('static/main').catch(function(err){ console.error(err); });
+            System.import('static/frontend/main').catch(function(err){ console.error(err); });
         </script>
         {% else %}
         <link href="{% static 'bundle.css' %}" rel="stylesheet">

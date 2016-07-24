@@ -20,6 +20,8 @@ if (!argv.production) {
     var clean = require('gulp-clean');
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
+    var Server = require('karma').Server;
+    var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
 
 gulp.task('copy:npmfiles', function() {
@@ -56,15 +58,15 @@ gulp.task('compile:typescript', function() {
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
             .pipe(embedTemplates())
-            .pipe(sourcemaps.write())
-            .pipe(gulp.dest(config.path.build))
+            .pipe(sourcemaps.write('./', {sourceRoot: config.path.partial.frontend}))
+            .pipe(gulp.dest(config.path.build + config.path.partial.frontend))
     ]);
 });
 
 gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], function() {
     var builder = new SystemBuilder(config.path.build, config.systemjs.config);
     builder.loader.defaultJSExtensions = true;
-    return builder.buildStatic('main', config.typescript.bundle.path, config.typescript.bundle.config);
+    return builder.buildStatic('frontend/main', config.typescript.bundle.path, config.typescript.bundle.config);
 });
 
 gulp.task('bundle:dependencies', function() {
@@ -113,7 +115,7 @@ if (!argv.production) {
 
     gulp.task('lint:typescript', function() {
         return gulp.src(config.typescript.files)
-            .pipe(tslint())
+            .pipe(tslint({configuration: 'tslint.json'}))
             .pipe(tslint.report('prose', {
                 emitError: false,
                 summarizeFailureOutput: true
@@ -128,8 +130,66 @@ if (!argv.production) {
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
 
-    gulp.task('clean', function() {
-        return gulp.src([config.path.build, config.path.dist], {read: false})
+    gulp.task('clean:build', function() {
+        return gulp.src(config.path.build, {read: false})
             .pipe(clean());
+    });
+
+    gulp.task('clean:dist', function() {
+        return gulp.src(config.path.dist, {read: false})
+            .pipe(clean());
+    });
+
+    gulp.task('clean:report', function() {
+        return gulp.src(config.path.report, {read: false})
+            .pipe(clean());
+    });
+
+    gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report']);
+
+    gulp.task('test:typescript', function(done) {
+        new Server({
+            configFile: config.report.karma.configFile,
+            singleRun: true,
+        }, function(exitCode) {
+            done(exitCode);
+        }).start();
+    });
+
+    gulp.task('test:e2e', function(done) {
+        var command = 'PHANTOMJS_EXECUTABLE=./node_modules/phantomjs-prebuilt/bin/phantomjs ./node_modules/casperjs/bin/casperjs test ' + config.e2e.files;
+        var casper = exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+        casper.on('close', function(exitcode) {
+            done(exitcode ? 'E2E tests failed' : undefined);
+        });
+    });
+
+    gulp.task('coverage:typescript', function(done) {
+        new Server({
+            configFile: config.report.karma.configFile,
+            singleRun: true,
+        }, remapCoverage).start();
+
+        function remapCoverage(exitCode) {
+            console.log('path', config.report.path);
+            gulp.src(config.report.path)
+                .pipe(remapIstanbul({
+                    reports: config.report.remap.reports,
+                }))
+                .on('finish', function() {
+                    done(exitCode);
+                });
+        }
+    });
+
+    gulp.task('coverage:python', function() {
+        var command = 'coverage run strassengezwitscher/manage.py test strassengezwitscher';
+        exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
     });
 }

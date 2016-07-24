@@ -1,0 +1,8 @@
+[run]
+source = strassengezwitscher/
+
+[report]
+omit =
+    */migrations/*
+    strassengezwitscher/strassengezwitscher/settings/*
+    strassengezwitscher/strassengezwitscher/wsgi.py

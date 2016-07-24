@@ -28,7 +28,7 @@ export class MapService {
 
     private extractData(response: Response): MapObject[] {
         let data = response.json() || [];
-        return <MapObject[]>data;
+        return <MapObject[]> data;
     }
 
     private handleError(error: any) {

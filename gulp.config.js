@@ -1,11 +1,17 @@
 module.exports = function () {
     var root = './';
     var path = {
+        root: root,
         build: root + 'strassengezwitscher/static/build/',
         dist: root + 'strassengezwitscher/static/dist/',
         npm: root + 'node_modules/',
         frontend: 'frontend/',
+        report: root + '.report/',
+        partial: {
+            frontend: 'frontend',
+        },
     };
+
     var sass = {
         files: root + 'frontend/**/*.scss',
         bundle: {
@@ -31,6 +37,10 @@ module.exports = function () {
         imgFiles: path.frontend + 'img/*',
     };
 
+    var e2e = {
+        files: 'e2e/test_*',
+    }
+
     var npm = {
         static: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
@@ -42,7 +52,7 @@ module.exports = function () {
         ],
         angular_dependencies: {
             files: [
-                path.npm + 'es6-shim/es6-shim.min.js',
+                path.npm + 'core-js/client/shim.min.js',
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
             ],
@@ -83,13 +93,28 @@ module.exports = function () {
         config: systemjs_config,
     }
 
+    var report = {
+        path: path.report + 'report-json/coverage-final.json',
+        karma: {
+            configFile: __dirname + '/karma.config.js',
+        },
+        remap: {
+            reports: {
+                'lcovonly': path.report + 'remap/lcov.info',
+                'html': path.report + 'remap/html-report',
+            },
+        },
+    }
+
     var config = {
         path: path,
         sass: sass,
         typescript: typescript,
+        e2e: e2e,
         npm: npm,
         systemjs: systemjs,
         frontend: frontend,
+        report: report,
     };
 
     return config;

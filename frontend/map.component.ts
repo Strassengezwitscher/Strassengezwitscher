@@ -15,9 +15,9 @@ export class MapObjectSetting {
 }
 
 @Component({
-    selector: "map-app",
+    selector: "sg-map",
     templateUrl: "map.component.html",
-    providers: [MapService]
+    providers: [MapService],
 })
 
 export class MapComponent implements AfterViewInit {
@@ -29,7 +29,7 @@ export class MapComponent implements AfterViewInit {
     private markers: Map<MapObjectType, Array<google.maps.Marker>> = new Map<MapObjectType, Array<google.maps.Marker>>();
     private markerImageMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
     
-    @ViewChild("mapCanvas") mapCanvas;
+    @ViewChild("mapCanvas") private mapCanvas;
 
     constructor(private mapService: MapService) {
         this.initializeMarkerImageMap();
@@ -38,12 +38,12 @@ export class MapComponent implements AfterViewInit {
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] = new MapObjectSetting("Facebook-Seiten", false);
     }
 
-    ngAfterViewInit() {
+    public ngAfterViewInit() {
         this.initMap();
         this.getActiveMapObjects();
     }
 
-    initMap() {
+    private initMap() {
         const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
             center: latlng,
@@ -71,9 +71,9 @@ export class MapComponent implements AfterViewInit {
     }
 
     drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
-        const latLng = new google.maps.LatLng(mapObject.location_lat, mapObject.location_long);
+        const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
         const infoWindow = new google.maps.InfoWindow({
-            content: mapObject.name
+            content: mapObject.name,
         });
         const marker = new google.maps.Marker({
             position: latLng,
@@ -89,7 +89,7 @@ export class MapComponent implements AfterViewInit {
         this.markers.get(mapObjectType).push(marker);
     }
 
-    closeCurrentlyOpenInfoWindow() {
+    private closeCurrentlyOpenInfoWindow() {
         if (this.currentlyOpenInfoWindow) {
             this.currentlyOpenInfoWindow.close();
         }
@@ -124,7 +124,7 @@ export class MapComponent implements AfterViewInit {
         this.deleteInactiveMapObjects();
     }
 
-    showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
+    private showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
         infoWindow.open(this.map, marker);
         this.currentlyOpenInfoWindow = infoWindow;
     }
