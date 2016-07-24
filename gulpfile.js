@@ -86,7 +86,7 @@ gulp.task('bundle:sass', ['compile:sass'], function() {
 gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
-    return gulp.watch(config.sass.path, ['compile:sass']);
+    return gulp.watch(config.sass.files, ['compile:sass']);
 });
 
 gulp.task('watch:typescript', ['compile:typescript'], function() {
@@ -97,7 +97,11 @@ gulp.task('watch:frontendImgFiles', ['copy:frontendImgFiles'], function() {
     return gulp.watch(config.frontend.imgFiles, {cwd: config.root}, ['copy:frontendImgFiles']);
 });
 
-gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles']);
+gulp.task('watch:html', ['compile:typescript'], function() {
+    return gulp.watch(config.frontend.htmlFiles, ['compile:typescript']);
+});
+
+gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles', 'watch:html']);
 
 gulp.task('build', ['copy:staticfiles', 'compile:typescript', 'compile:sass']);
 
