@@ -15,12 +15,10 @@ export class MapService {
         this.initializeUrlMap();
     }
 
-    private mapObjectsUrl = "api/mapobjects.json"; // remove!!!!
     private urlMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
 
     getMapObjects(type: MapObjectType): Observable<MapObject[]> {
-        let requestUrl = this.urlMap[type];
-        requestUrl = this.mapObjectsUrl; /// remove!!!
+        let requestUrl = this.urlMap.get(type);
         return this.http.get(requestUrl)
                         .map(this.extractData)
                         .catch(this.handleError);
@@ -44,6 +42,6 @@ export class MapService {
 
     private initializeUrlMap() {
         this.urlMap.set(MapObjectType.EVENTS, "api/events.json");
-        this.urlMap.set(MapObjectType.FACEBOOK_PAGES, "api/facebookPages.json");
+        this.urlMap.set(MapObjectType.FACEBOOK_PAGES, "api/facebook.json");
     }
 }
