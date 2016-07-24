@@ -4,19 +4,29 @@ import { Http, Response } from "@angular/http";
 import { MapObject } from "./mapObject";
 import { Observable } from "rxjs/Observable";
 
+export enum MapObjectType {
+            EVENTS = 0,
+            FACEBOOK_PAGES = 1
+}
+
 @Injectable()
 export class MapService {
-    constructor(private http: Http) {}
+    constructor(private http: Http) {
+        this.initializeUrlMap();
+    }
 
-    private mapObjectsUrl = "api/mapobjects.json";
+    private mapObjectsUrl = "api/mapobjects.json"; // remove!!!!
+    private urlMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
 
-    getMapObjects(): Observable<MapObject[]> {
-        return this.http.get(this.mapObjectsUrl)
+    getMapObjects(type: MapObjectType): Observable<MapObject[]> {
+        let requestUrl = this.urlMap[type];
+        requestUrl = this.mapObjectsUrl; /// remove!!!
+        return this.http.get(requestUrl)
                         .map(this.extractData)
                         .catch(this.handleError);
     }
 
-    private extractData(response: Response) {
+    private extractData(response: Response): MapObject[] {
         let data = response.json() || [];
         return <MapObject[]>data;
     }
@@ -30,5 +40,10 @@ export class MapService {
         }
         console.error(errorMessage);
         return Observable.throw(errorMessage);
+    }
+
+    private initializeUrlMap() {
+        this.urlMap.set(MapObjectType.EVENTS, "api/events.json");
+        this.urlMap.set(MapObjectType.FACEBOOK_PAGES, "api/facebookPages.json");
     }
 }
