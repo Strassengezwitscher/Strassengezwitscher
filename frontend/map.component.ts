@@ -5,13 +5,16 @@ import { MapObjectType } from "./map.service";
 import { MapService } from "./map.service";
 
 export class MapObjectSetting {
-        constructor(name: string, active: boolean = false) {
-            this.name = name;
+        constructor(active: boolean = false, iconPath: string, name: string) {
             this.active = active;
+            this.iconPath = iconPath;
+            this.name = name;
         }
 
-    public name: string;
     public active: boolean = false;
+    public iconPath: string;
+    public name: string;
+
 }
 
 @Component({
@@ -30,20 +33,17 @@ export class MapComponent implements AfterViewInit {
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> = new Map<MapObjectType, Array<google.maps.Marker>>();
-    private markerImageMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
     
     @ViewChild("mapCanvas") private mapCanvas;
 
     constructor(private mapService: MapService) {
-        this.initializeMarkerImageMap();
         this.initializeMarkerMap();
-        this.mapObjectSettings[MapObjectType.EVENTS] = new MapObjectSetting("Veranstaltungen", true);
-        this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] = new MapObjectSetting("Facebook-Seiten", false);
+        this.initializeMapObjectSettings();
     }
 
     public ngAfterViewInit() {
         this.initMap();
-        this.getActiveMapObjects();
+        this.retrieveActiveMapObjects();
     }
 
     private initMap() {
@@ -56,7 +56,7 @@ export class MapComponent implements AfterViewInit {
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
 
-    getActiveMapObjects() {
+    private retrieveActiveMapObjects() {
         for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].active) {
                 this.mapService.getMapObjects(mapObjectType)
@@ -68,11 +68,11 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    drawMapObjects(mapObjects: MapObject[], mapObjectType: MapObjectType) {
+    private drawMapObjects(mapObjects: MapObject[], mapObjectType: MapObjectType) {
         mapObjects.map((mapObject) => this.drawMapObject(mapObject, mapObjectType));
     }
 
-    drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
+    private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
         const infoWindow = new google.maps.InfoWindow({
             content: mapObject.name,
@@ -80,7 +80,7 @@ export class MapComponent implements AfterViewInit {
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
-            icon: this.markerImageMap.get(mapObjectType)
+            icon: this.mapObjectSettings[mapObjectType].iconPath
         });
 
         marker.addListener("click", (() => {
@@ -97,18 +97,18 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    initializeMarkerImageMap() {
-        this.markerImageMap.set(MapObjectType.EVENTS, "static/img/schild_schwarz.png");
-        this.markerImageMap.set(MapObjectType.FACEBOOK_PAGES, "static/img/schild_blau.png");
+    private initializeMapObjectSettings() {
+        this.mapObjectSettings[MapObjectType.EVENTS] = new MapObjectSetting(true, "static/img/schild_schwarz.png", "Veranstaltungen");
+        this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] = new MapObjectSetting(false, "static/img/schild_blau.png", "Facebook-Seiten");
     }
 
-    initializeMarkerMap() {
+    private initializeMarkerMap() {
         for (let mapObjectType of this.mapObjectTypes) {
             this.markers.set(mapObjectType, new Array<google.maps.Marker>());
         }
     }
 
-    deleteInactiveMapObjects() {
+    private deleteInactiveMapObjects() {
         for (let mapObjectType of this.mapObjectTypes) {
             if (!this.mapObjectSettings[mapObjectType].active && this.markers.get(mapObjectType).length > 0) {
                 for (let marker of this.markers.get(mapObjectType)) {
@@ -119,8 +119,8 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    onCheckboxChange() {
-        this.getActiveMapObjects();
+    public onCheckboxChange() {
+        this.retrieveActiveMapObjects();
         this.deleteInactiveMapObjects();
     }
 
