@@ -68,8 +68,8 @@ target/
 # IDE files
 .idea
 
-# Individual settings
-localsettings.py
+# Production settings with sensitive values
+sensitive_settings.py
 
 # npm
 node_modules/
