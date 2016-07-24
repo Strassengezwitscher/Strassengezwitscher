@@ -12,12 +12,12 @@
 		</div>
 
 		<div class="form-group">
-		<label for=""> Subject: </label>
+		<label for=""> Betreff: </label>
 		<input type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject">
 		</div>
 
 		<div class="form-group">
-		<label for=""> Message: </label>
+		<label for=""> Nachricht: </label>
 		<textarea name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message"></textarea>
 		</div>
 
@@ -27,12 +27,12 @@
 		</div>
 
 		<div class="form-group">
-		<label for=""> Confidential: </label>
+		<label for=""> Vertraulich: </label>
 		<input type="checkbox" name="confidential" class="form-control" [(ngModel)]="contact.confidential">
 		</div>
 
 		<div class="form-group">
-		<label for=""> Files: </label>
+		<label for=""> Anhang: </label>
 		<input name="file" type="file" multiple class="form-control"  (change)="onFileChange($event)">
 		</div>
 
