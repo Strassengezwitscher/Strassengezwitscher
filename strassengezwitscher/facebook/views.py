@@ -1,9 +1,13 @@
+from rest_framework import generics
+
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 
 from facebook.models import FacebookPage
+from facebook.serializers import FacebookPageSerializer
+
 
 
 class FacebookPageListView(ListView):
@@ -35,3 +39,14 @@ class FacebookPageDelete(DeleteView):
     template_name = 'facebook/delete.html'
     success_url = reverse_lazy('facebook:list')
     context_object_name = 'page'
+
+
+## API Views
+class FacebookPageAPIList(generics.ListAPIView):
+    queryset = FacebookPage.objects.all()
+    serializer_class = FacebookPageSerializer
+
+
+class FacebookPageAPIDetail(generics.RetrieveAPIView):
+    queryset = FacebookPage.objects.all()
+    serializer_class = FacebookPageSerializer

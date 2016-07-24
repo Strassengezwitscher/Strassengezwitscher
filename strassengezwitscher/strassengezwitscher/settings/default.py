@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mapobjects.apps.MapobjectsConfig',
+    # 'mapobjects.apps.MapobjectsConfig',
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',

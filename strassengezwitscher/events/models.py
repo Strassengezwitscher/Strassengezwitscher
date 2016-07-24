@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
-from mapobjects.models import MapObject
+from strassengezwitscher.models import MapObject
 
 
 @python_2_unicode_compatible
