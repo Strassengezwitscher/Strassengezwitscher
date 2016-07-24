@@ -1,7 +1,8 @@
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
 
-import { MapService } from "./map.service";
 import { MapObject } from "./mapObject";
+import { MapObjectType } from "./map.service";
+import { MapService } from "./map.service";
 
 @Component({
     selector: "map-app",
@@ -23,7 +24,7 @@ export class MapComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         this.initMap();
-        this.getMapObjects();
+        this.getMapObjects(MapObjectType.EVENTS);
     }
 
     initMap() {
@@ -36,19 +37,19 @@ export class MapComponent implements AfterViewInit {
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
 
-    getMapObjects() {
-        this.mapService.getMapObjects()
+    getMapObjects(mapObjectType: MapObjectType) {
+        this.mapService.getMapObjects(mapObjectType)
                         .subscribe(
-                            mapObjects => this.drawMapObjects(mapObjects),
+                            mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
                             error => this.errorMessage = <any>error
                         );
     }
 
-    drawMapObjects(mapObjects: MapObject[]) {
-        mapObjects.map((mapObject) => this.drawMapObject(mapObject));
+    drawMapObjects(mapObjects: MapObject[], mapObjectType: MapObjectType) {
+        mapObjects.map((mapObject) => this.drawMapObject(mapObject, mapObjectType));
     }
 
-    drawMapObject(mapObject: MapObject) {
+    drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.location_lat, mapObject.location_long);
         const infoWindow = new google.maps.InfoWindow({
             content: mapObject.name
