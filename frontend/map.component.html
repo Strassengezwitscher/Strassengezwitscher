@@ -1,11 +1,11 @@
 <div class="map-wrapper">
     <div id="map-settings">
          <label>
-            <input [(ngModel)]="showEvents" type="checkbox" (ngModelChange)="onCheckboxChange()" />
+            <input [(ngModel)]="showEvents" type="checkbox" (ngModelChange)="onEventCheckboxChange()" />
             Veranstaltungen {{showEvents}}
         </label>
         <label>
-            <input [(ngModel)]="showPages" type="checkbox" (ngModelChange)="onCheckboxChange()" />
+            <input [(ngModel)]="showPages" type="checkbox" (ngModelChange)="onFacebookCheckboxChange()" />
             Facebook-Seiten {{showPages}}
         </label>
     </div>
