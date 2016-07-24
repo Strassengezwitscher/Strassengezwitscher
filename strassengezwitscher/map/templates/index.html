@@ -24,7 +24,7 @@
                 width: 100%;
                 height: 100%;
 
-                background-color: #ffd044;
+                background-color: #ffffff;
                 font-family: 'blender_book', 'Helvetica Neue', sans-serif;
             }
 
@@ -43,10 +43,10 @@
                 -webkit-box-direction: normal;
                 -webkit-box-orient: vertical;
 
-                -webkit-flex-wrap: wrap;
-                -moz-flex-wrap: wrap;
-                -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
+                -webkit-flex-wrap: no-wrap;
+                -moz-flex-wrap: no-wrap;
+                -ms-flex-wrap: no-wrap;
+                flex-wrap: no-wrap;
 
                 justify-content: center;
             }
@@ -68,37 +68,18 @@
                 -webkit-box-direction: normal;
                 -webkit-box-orient: vertical;
 
-                -webkit-flex-wrap: wrap;
-                -moz-flex-wrap: wrap;
-                -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
+                -webkit-flex-wrap: no-wrap;
+                -moz-flex-wrap: no-wrap;
+                -ms-flex-wrap: no-wrap;
+                flex-wrap: no-wrap;
 
-                justify-content: space-around;
+                justify-content: flex-start;
                 align-items: center;
             }
 
             .centered img {
                 max-height: 200px;
                 max-width: 100%;
-            }
-
-            @media (min-width: 1350px) {
-                .centered {
-                    -webkit-flex-direction: row;
-                    -moz-flex-direction: row;
-                    -ms-flex-direction: row;
-                    flex-direction: row;
-
-                    -webkit-box-direction: normal;
-                    -webkit-box-orient: horizontal;
-
-                    -webkit-flex-wrap: wrap;
-                    -moz-flex-wrap: wrap;
-                    -ms-flex-wrap: wrap;
-                    flex-wrap: wrap;
-
-                    justify-content: space-around;
-                }
             }
 
             .imprint {
@@ -108,9 +89,33 @@
             }
 
             .imprint a {
-                color: #ffffff;
+                color: #000000;
                 text-decoration: none;
                 text-transform: uppercase;
+            }
+
+            @media screen and (min-height: 600px) {
+                body {
+                    background-color: #ffd044;
+                }
+
+                .imprint a {
+                    color: #ffffff;
+                }
+            }
+
+            @media screen and (min-width: 1350px) {
+                .centered {
+                    -webkit-flex-direction: row;
+                    -moz-flex-direction: row;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+
+                    -webkit-box-direction: normal;
+                    -webkit-box-orient: horizontal;
+
+                    justify-content: space-around;
+                }
             }
         </style>
     </head>
