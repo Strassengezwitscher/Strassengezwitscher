@@ -1,21 +1,30 @@
 [
-    {
-        "pk": 1,
-        "model": "mapobjects.mapobject",
-        "fields": {
-            "name": "Test Facebook Page",
-            "active": true,
-            "location": "Dresden",
-            "location_lat": "0.000000",
-            "location_long": "0.000000"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "facebook.facebookpage",
-        "fields": {
-            "notes": "Notes",
-            "facebook_id": "1234567890"
-        }
+{
+    "model": "facebook.facebookpage",
+    "pk": 1,
+    "fields": {
+        "name": "Test page",
+        "active": true,
+        "location": "Nowhere",
+        "location_lat": "12.345000",
+        "location_long": "54.321000",
+        "notes": "",
+        "facebook_id": "1",
+        "events": []
     }
+},
+{
+    "model": "facebook.facebookpage",
+    "pk": 2,
+    "fields": {
+        "name": "Test page 2",
+        "active": false,
+        "location": "Somewhere",
+        "location_lat": "54.321000",
+        "location_long": "12.345000",
+        "notes": "",
+        "facebook_id": "2",
+        "events": []
+    }
+}
 ]

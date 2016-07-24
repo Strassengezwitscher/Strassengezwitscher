@@ -4,10 +4,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from . import views
 
-
-app_name = 'mapobjects'
+app_name = 'events_api'
 urlpatterns_raw = (
-    url(r'^mapobjects/$', views.MapObjectList.as_view(), name='list'),
-    url(r'^mapobjects/(?P<pk>[0-9]+)/$', views.MapObjectDetail.as_view(), name='detail'),
+    url(r'^events/$', views.EventAPIList.as_view(), name='list'),
+    url(r'^events/(?P<pk>[0-9]+)/$', views.EventAPIDetail.as_view(), name='detail'),
 )
 urlpatterns = format_suffix_patterns(urlpatterns_raw, allowed=['json'])

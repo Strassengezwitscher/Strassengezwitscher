@@ -2,133 +2,133 @@ import json
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from mapobjects.models import MapObject
+from facebook.models import FacebookPage
 
 
-class MapObjectViewTests(APITestCase):
+class FacebookPageAPIViewTests(APITestCase):
 
-    fixtures = ['initial_mapobjects.json']
+    fixtures = ['facebook_views_testdata.json']
 
     #
     # test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
     # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
-    # on mapobject list ("/mapobjects/"") and detail(e.g."/mapobjects/1/")
+    # on mapobject list ("/api/facebook/") and detail(e.g."/api/facebook/1/")
 
-    # POST /mapobjects/
-    def test_create_list_mapobject(self):
-        url = reverse('mapobjects:list')
+    # POST /api/facebook/
+    def test_create_list_facebook(self):
+        url = reverse('facebook_api:list')
         data = {
             'id': '1',
-            'name': 'Amsterdaaaaaaaaaaaaaaaaam',
+            'name': 'Test page',
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # POST /mapobjects/1/
-    def test_create_detail_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+    # POST /api/facebook/1/
+    def test_create_detail_facebook(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
-            'name': 'Amsterdaaaaaaaaaaaaaaaaam',
+            'name': 'Test page',
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # GET /mapobjects/
+    # GET /api/facebook/
     def test_read_list_mapobject(self):
-        url = reverse('mapobjects:list')
+        url = reverse('facebook_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(MapObject.objects.count(), 4)
+        self.assertEqual(FacebookPage.objects.count(), 2)
 
-    # GET /mapobjects/1/
+    # GET /api/facebook/1/
     def test_read_detail_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = {
             u'id': 1,
             u'active': True,
-            u'name': u'Amsterdam1',
-            u'location': u'Amsterdam',
-            u'locationLong': u'4.894045',
-            u'locationLat': u'52.368829'
+            u'name': u'Test page',
+            u'location': u'Nowhere',
+            u'locationLat': u'12.345000',
+            u'locationLong': u'54.321000',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
-    # PATCH /mapobjects/
-    def test_modify_list_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+    # PATCH /api/facebook/
+    def test_modify_list_facebook(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
-            'name': 'Amsterdaaaaaaaaaaaaaaaaam',
+            'name': 'Test page fix',
         }
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # PATCH /mapobjects/1/
-    def test_modify_detail_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+    # PATCH /api/facebook/1/
+    def test_modify_detail_facebook(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
-            'name': 'Amsterdaaaaaaaaaaaaaaaaam',
+            'name': 'Test page fix',
         }
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # PUT /mapobjects/
-    def test_replace_list_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+    # PUT /api/facebook/
+    def test_replace_list_facebook(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
-            'name': 'Amsterdaaaaaaaaaaaaaaaaam',
+            'name': 'Test page fix',
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # PUT /mapobjects/1/
-    def test_replace_detail_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+    # PUT /api/facebook/1/
+    def test_replace_detail_facebook(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
-            'name': 'Amsterdaaaaaaaaaaaaaaaaam',
+            'name': 'Test page fix',
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # DELETE /mapobjects/
-    def test_delete_list_mapobject(self):
-        url = reverse('mapobjects:list')
+    # DELETE /api/facebook/
+    def test_delete_list_facebook(self):
+        url = reverse('facebook_api:list')
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    # DELETE /mapobjects/1/
-    def test_delete_detail_mapobject(self):
-        url = reverse('mapobjects:detail', kwargs={'pk': 1})
+    # DELETE /api/facebook/1/
+    def test_delete_detail_facebook(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # Test correct json urls
-    # GET /mapobjects.json
-    def test_json_list_mapobject(self):
-        url = '/api/mapobjects.json'
+    # GET /facebook.json
+    def test_json_list_facebook(self):
+        url = '/api/facebook.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # GET /mapobjects/.json
-    def test_json_list_mapobject_incorrect(self):
-        url = '/api/mapobjects/.json'
+    # GET /api/facebook/.json
+    def test_json_list_facebook_incorrect(self):
+        url = '/api/facebook/.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    # GET /mapobjects/1.json
-    def test_json_detail_mapobject(self):
-        url = '/api/mapobjects/1.json'
+    # GET /api/facebook/1.json
+    def test_json_detail_facebook(self):
+        url = '/api/facebook/1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # GET /mapobjects1.json
-    def test_json_detail_mapobject_incorrect(self):
-        url = '/api/mapobjects1.json'
+    def test_json_detail_facebook_incorrect(self):
+        url = '/api/facebook1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
