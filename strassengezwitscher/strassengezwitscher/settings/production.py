@@ -1,6 +1,6 @@
 import os
 
-from default import *  # noqa
+from .default import *  # noqa
 
 
 # Override in sensitive_settings.py
@@ -69,6 +69,6 @@ LOGGING['loggers']['strassengezwitscher']['level'] = 'INFO'  # noqa
 # Create a sensitive_settings.py to override settings with sensible values
 # that shall not be checked in to the repository
 try:
-    from sensitive_settings import *  # noqa
+    from .sensitive_settings import *  # noqa
 except ImportError:
     pass

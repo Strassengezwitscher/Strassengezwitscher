@@ -1,6 +1,6 @@
 import os
 
-from default import *  # noqa
+from .default import *  # noqa
 
 
 SECRET_KEY = '0($mqx7@9cm@1)wa(k=*gv&6_3--7do0w++7t4jatsd8^+u*d6'  # noqa
