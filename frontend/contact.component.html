@@ -1,1 +1,41 @@
-<p>Insert contact form here.</p>
+<div class="container">
+	<h1>Kontaktformular</h1>
+	<form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+		<div class="form-group">
+		<label for="name"> Name: </label>
+		<input type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name">
+		</div>
+
+		<div class="form-group">
+		<label for=""> Email: </label>
+		<input name="email" type="email" class="form-control" [(ngModel)]="contact.email">
+		</div>
+
+		<div class="form-group">
+		<label for=""> Subject: </label>
+		<input type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject">
+		</div>
+
+		<div class="form-group">
+		<label for=""> Message: </label>
+		<textarea name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message"></textarea>
+		</div>
+
+		<div class="form-group">
+		<label for=""> Journalist: </label>
+		<input type="checkbox" name="journalist" class="form-control" [(ngModel)]="contact.journalist">
+		</div>
+
+		<div class="form-group">
+		<label for=""> Confidential: </label>
+		<input type="checkbox" name="confidential" class="form-control" [(ngModel)]="contact.confidential">
+		</div>
+
+		<div class="form-group">
+		<label for=""> Files: </label>
+		<input name="file" type="file" multiple class="form-control"  (change)="onFileChange($event)">
+		</div>
+
+		<button type="submit" class="btn btn-default" [disabled]="!contactForm.form.valid">Submit</button>
+	</form>
+</div>
