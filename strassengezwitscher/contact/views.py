@@ -2,9 +2,7 @@ from django.conf import settings
 
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import authentication_classes
-from rest_framework.decorators import api_view
-from rest_framework.decorators import parser_classes
+from rest_framework.decorators import authentication_classes, api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from strassengezwitscher.log import logger

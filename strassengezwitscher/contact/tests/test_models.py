@@ -31,7 +31,7 @@ class KeyModelTests(TestCase):
         """Test if importing a GPG private key fails."""
         file_path = os.path.join(os.path.dirname(__file__), 'files', 'private_key.asc')
         with open(file_path, 'r') as private_key_file:
-            k = Key(key=private_key_file.read()) 
+            k = Key(key=private_key_file.read())
         self.assertEqual(Key.objects.count(), 1)
         with self.assertRaises(GPGException):
             k.save()
