@@ -25,7 +25,10 @@ export class MapComponent implements AfterViewInit {
     private currentlyOpenInfoWindow: google.maps.InfoWindow;
     private errorMessage: string;
     private map: google.maps.Map;
+    // Utilized for holding status and name of different types of MapObjects
     private mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
+    // Value list of different MapObject types to decrease redundant code
+    private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> = new Map<MapObjectType, Array<google.maps.Marker>>();
     private markerImageMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
     
@@ -54,8 +57,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     getActiveMapObjects() {
-        const mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
-        for (let mapObjectType of mapObjectTypes) {
+        for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].active) {
                 this.mapService.getMapObjects(mapObjectType)
                             .subscribe(
@@ -101,15 +103,13 @@ export class MapComponent implements AfterViewInit {
     }
 
     initializeMarkerMap() {
-        const mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
-        for (let mapObjectType of mapObjectTypes) {
+        for (let mapObjectType of this.mapObjectTypes) {
             this.markers.set(mapObjectType, new Array<google.maps.Marker>());
         }
     }
 
     deleteInactiveMapObjects() {
-        const mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
-        for (let mapObjectType of mapObjectTypes) {
+        for (let mapObjectType of this.mapObjectTypes) {
             if (!this.mapObjectSettings[mapObjectType].active && this.markers.get(mapObjectType).length > 0) {
                 for (let marker of this.markers.get(mapObjectType)) {
                     marker.setMap(null);
