@@ -6,42 +6,42 @@
             {{contactErrorMessage}}
         </div>
 	</div>
-	<form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
+	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
 		<div class="form-group">
 		<label for="name"> Name: </label>
-		<input type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name">
+		<input id ="contact-name" type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name">
 		</div>
 
 		<div class="form-group">
 		<label for=""> Email: </label>
-		<input name="email" type="email" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email">
+		<input id ="contact-email" name="email" type="email" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email">
 		</div>
 
 		<div class="form-group">
 		<label for=""> Betreff: </label>
-		<input type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject">
+		<input id ="contact-subject" type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject">
 		</div>
 
 		<div class="form-group">
 		<label for=""> Nachricht: </label>
-		<textarea name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message"></textarea>
+		<textarea id="contact-message" name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message"></textarea>
 		</div>
 
 		<div class="form-group">
 		<label for=""> Journalist: </label>
-		<input type="checkbox" name="journalist" class="form-control" [(ngModel)]="contact.journalist">
+		<input id="contact-journalist" type="checkbox" name="journalist" class="form-control" [(ngModel)]="contact.journalist">
 		</div>
 
 		<div class="form-group">
 		<label for=""> Vertraulich: </label>
-		<input type="checkbox" name="confidential" class="form-control" [(ngModel)]="contact.confidential">
+		<input id="contact-confidential" type="checkbox" name="confidential" class="form-control" [(ngModel)]="contact.confidential">
 		</div>
 
 		<div class="form-group">
 		<label for=""> Anhang: </label>
-		<input name="file" type="file" multiple maxlength="50" class="form-control"  (change)="onFileChange($event)">
+		<input id="contact-file" name="file" type="file" multiple maxlength="50" class="form-control"  (change)="onFileChange($event)">
 		</div>
 
-		<button type="submit" class="btn btn-default" [disabled]="!contactForm.form.valid">Submit</button>
+		<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!contactForm.form.valid">Submit</button>
 	</form>
 </div>
