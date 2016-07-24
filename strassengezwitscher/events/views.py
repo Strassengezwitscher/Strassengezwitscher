@@ -46,7 +46,7 @@ class EventDelete(DeleteView):
     context_object_name = 'event'
 
 
-## API Views
+# API Views
 class EventAPIList(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer

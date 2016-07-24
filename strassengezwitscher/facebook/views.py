@@ -9,7 +9,6 @@ from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer
 
 
-
 class FacebookPageListView(ListView):
     model = FacebookPage
     template_name = 'facebook/list.html'
@@ -41,7 +40,7 @@ class FacebookPageDelete(DeleteView):
     context_object_name = 'page'
 
 
-## API Views
+# API Views
 class FacebookPageAPIList(generics.ListAPIView):
     queryset = FacebookPage.objects.all()
     serializer_class = FacebookPageSerializer
