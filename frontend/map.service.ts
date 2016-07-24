@@ -6,7 +6,7 @@ import { Observable } from "rxjs/Observable";
 
 export enum MapObjectType {
             EVENTS = 0,
-            FACEBOOK_PAGES = 1
+            FACEBOOK_PAGES
 }
 
 @Injectable()
