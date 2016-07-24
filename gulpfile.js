@@ -32,7 +32,12 @@ gulp.task('copy:systemjsconfig', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
+gulp.task('copy:frontendImgFiles', function() {
+    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
+        .pipe(gulp.dest(config.path.build));
+});
+
+gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig', 'copy:frontendImgFiles']);
 
 gulp.task('compile:sass', function() {
     return gulp.src(config.sass.files)
@@ -86,7 +91,11 @@ gulp.task('watch:typescript', ['compile:typescript'], function() {
     return gulp.watch(config.typescript.files, ['compile:typescript']);
 });
 
-gulp.task('watch', ['watch:sass', 'watch:typescript']);
+gulp.task('watch:frontendImgFiles', ['copy:frontendImgFiles'], function() {
+    return gulp.watch(config.frontend.imgFiles, {cwd: config.root}, ['copy:frontendImgFiles']);
+});
+
+gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles']);
 
 gulp.task('build', ['copy:staticfiles', 'compile:typescript', 'compile:sass']);
 

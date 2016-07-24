@@ -4,6 +4,7 @@ module.exports = function () {
         build: root + 'strassengezwitscher/static/build/',
         dist: root + 'strassengezwitscher/static/dist/',
         npm: root + 'node_modules/',
+        frontend: 'frontend/',
     };
     var sass = {
         files: root + 'frontend/**/*.scss',
@@ -24,6 +25,10 @@ module.exports = function () {
                 minify: true,
             },
         },
+    };
+
+    var frontend = {
+        imgFiles: path.frontend + 'img/*',
     };
 
     var npm = {
@@ -84,6 +89,7 @@ module.exports = function () {
         typescript: typescript,
         npm: npm,
         systemjs: systemjs,
+        frontend: frontend,
     };
 
     return config;
