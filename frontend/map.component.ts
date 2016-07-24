@@ -27,11 +27,11 @@ export class MapComponent implements AfterViewInit {
     }
 
     initMap() {
-        const latlng = new google.maps.LatLng(52.3731, 4.8922);
+        const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
             center: latlng,
             scrollWheel: false,
-            zoom: 13
+            zoom: 10
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
