@@ -1,6 +1,6 @@
 <div class="container">
 	<h1>Kontaktformular</h1>
-	<form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+	<form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
 		<div class="form-group">
 		<label for="name"> Name: </label>
 		<input type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name">
@@ -8,7 +8,7 @@
 
 		<div class="form-group">
 		<label for=""> Email: </label>
-		<input name="email" type="email" class="form-control" [(ngModel)]="contact.email">
+		<input name="email" type="email" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email">
 		</div>
 
 		<div class="form-group">
