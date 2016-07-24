@@ -7,9 +7,7 @@ export class ContactService {
 
     private contactURL = "api/contact/";
 
-    public addContactData (contactData: any): Observable<Response> {
-        // TODO (CHRIS) remove only here for dev
-        console.log(contactData);
+    public addContactData (contactData: any, uploads: FileList): Observable<Response> {
 
         // work around as long as angular2 http does not support multipart-form data
         return Observable.create(observer => {
@@ -22,13 +20,18 @@ export class ContactService {
           }
         }
 
+        // add files seperately
+        for (let i = 0; i < uploads.length; ++i) {
+          formData.append("files", uploads[i], uploads[i].name);
+        }
+
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
               observer.next(JSON.parse(xhr.response));
               observer.complete();
             } else {
-              observer.error(xhr.response);
+              observer.error(JSON.parse(xhr.response));
             }
           }
         };

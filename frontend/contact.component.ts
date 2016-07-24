@@ -12,20 +12,35 @@ import { Contact }        from "./contact";
     // TODO (Chris) integrate Captcha properly:  directives: [ReCaptchaComponent]
 })
 export class ContactComponent {
-    public contact = new Contact("", "", "", "", null, null, null);
-    constructor( private contactService: ContactService, private router: Router) {}
+
+    private contactErrorMessage: string;
+    private contact: Contact;
+    private uploads: FileList;
+
+    constructor( private contactService: ContactService, private router: Router) {
+        this.contact = new Contact("", "", "", "", null, null);
+    }
 
     public onFileChange(event) {
-        this.contact.files = event.srcElement.files;
+        this.uploads = event.srcElement.files;
     }
 
     public onSubmit() {
-        this.contactService.addContactData(this.contact).subscribe((data) =>
+        this.contactService.addContactData(this.contact, this.uploads).subscribe((data) =>
                                             this.router.navigate([""]), (err) => this.displayError(err));
     }
 
-    private displayError(err: any) {
-        // TODO (Chris) handle error codes
-        console.log(err);
+    public clearError() {
+        this.contactErrorMessage = "";
     }
+
+    private displayError(err: any) {
+        this.contactErrorMessage = "Fehler bei der Kontaktaufnahme: \n";
+        for (let key in err.errors) {
+          if (err.errors.hasOwnProperty(key)) {
+            this.contactErrorMessage += key + ": " + err.errors[key] + " \n";
+          }
+        }
+    }
+
 }

@@ -6,7 +6,6 @@ export class Contact {
         public subject: string,
         public message: string,
         public journalist: boolean,
-        public confidential: boolean,
-        public files: any
+        public confidential: boolean
     ) { }
 }
