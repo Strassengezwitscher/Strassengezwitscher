@@ -11,13 +11,13 @@ export enum MapObjectType {
 
 @Injectable()
 export class MapService {
+    private urlMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
+
     constructor(private http: Http) {
         this.initializeUrlMap();
     }
 
-    private urlMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
-
-    getMapObjects(type: MapObjectType): Observable<MapObject[]> {
+    public getMapObjects(type: MapObjectType): Observable<MapObject[]> {
         let requestUrl = this.urlMap.get(type);
         return this.http.get(requestUrl)
                         .map(this.extractData)

@@ -23,7 +23,8 @@ export class MapComponent implements AfterViewInit {
     private mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
-    private markers: Map<MapObjectType, Array<google.maps.Marker>> = new Map<MapObjectType, Array<google.maps.Marker>>();
+    private markers: Map<MapObjectType, Array<google.maps.Marker>> =
+        new Map<MapObjectType, Array<google.maps.Marker>>();
 
     @ViewChild("mapCanvas") private mapCanvas;
 
@@ -37,12 +38,17 @@ export class MapComponent implements AfterViewInit {
         this.retrieveActiveMapObjects();
     }
 
+    public onCheckboxChange() {
+        this.retrieveActiveMapObjects();
+        this.deleteInactiveMapObjects();
+    }
+
     private initMap() {
         const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
             center: latlng,
             scrollWheel: false,
-            zoom: 10
+            zoom: 10,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
@@ -53,7 +59,7 @@ export class MapComponent implements AfterViewInit {
                 this.mapService.getMapObjects(mapObjectType)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
-                                error => this.errorMessage = <any>error
+                                error => this.errorMessage = <any> error
                             );
             }
         }
@@ -71,7 +77,7 @@ export class MapComponent implements AfterViewInit {
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
-            icon: this.mapObjectSettings[mapObjectType].iconPath
+            icon: this.mapObjectSettings[mapObjectType].iconPath,
         });
 
         marker.addListener("click", (() => {
@@ -89,8 +95,10 @@ export class MapComponent implements AfterViewInit {
     }
 
     private initializeMapObjectSettings() {
-        this.mapObjectSettings[MapObjectType.EVENTS] = new MapObjectSetting(true, "static/img/schild_schwarz.png", "Veranstaltungen");
-        this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] = new MapObjectSetting(false, "static/img/schild_blau.png", "Facebook-Seiten");
+        this.mapObjectSettings[MapObjectType.EVENTS] =
+            new MapObjectSetting(true, "static/img/schild_schwarz.png", "Veranstaltungen");
+        this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
+            new MapObjectSetting(false, "static/img/schild_blau.png", "Facebook-Seiten");
     }
 
     private initializeMarkerMap() {
@@ -108,11 +116,6 @@ export class MapComponent implements AfterViewInit {
                 this.markers.set(mapObjectType, new Array<google.maps.Marker>());
             }
         }
-    }
-
-    public onCheckboxChange() {
-        this.retrieveActiveMapObjects();
-        this.deleteInactiveMapObjects();
     }
 
     private showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
