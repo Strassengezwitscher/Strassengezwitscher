@@ -31,7 +31,7 @@ export class ContactService {
               observer.next(JSON.parse(xhr.response));
               observer.complete();
             } else {
-              observer.error(JSON.parse(xhr.response));
+              observer.error({"error": JSON.parse(xhr.response), "status": xhr.status});
             }
           }
         };

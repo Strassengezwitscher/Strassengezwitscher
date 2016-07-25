@@ -36,10 +36,14 @@ export class ContactComponent {
 
     private displayError(err: any) {
         this.contactErrorMessage = "Fehler bei der Kontaktaufnahme: \n";
-        for (let key in err.errors) {
-          if (err.errors.hasOwnProperty(key)) {
-            this.contactErrorMessage += key + ": " + err.errors[key] + " \n";
-          }
+        if (err.status === 400) {
+            for (let key in err.error.errors) {
+                if (err.error.errors.hasOwnProperty(key)) {
+                    this.contactErrorMessage += key + ": " + err.error.errors[key] + " \n";
+                }
+            }
+        } else {
+            this.contactErrorMessage += "Interner Fehler, " + err.error.errors;
         }
     }
 
