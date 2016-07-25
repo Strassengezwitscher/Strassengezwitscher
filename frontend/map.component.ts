@@ -1,7 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
 
-import { MapObject } from "./mapObject";
-import { MapObjectType } from "./map.service";
+import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
 
 export class MapObjectSetting {

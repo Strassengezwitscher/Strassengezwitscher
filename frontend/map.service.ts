@@ -1,13 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { MapObject } from "./mapObject";
+import { MapObject, MapObjectType } from "./mapObject";
 import { Observable } from "rxjs/Observable";
-
-export enum MapObjectType {
-            EVENTS = 0,
-            FACEBOOK_PAGES
-}
 
 @Injectable()
 export class MapService {
