@@ -34,12 +34,12 @@ export class MapComponent implements AfterViewInit {
 
     public ngAfterViewInit() {
         this.initMap();
-        this.retrieveActiveMapObjects();
+        this.retrieveVisibleMapObjects();
     }
 
     public onCheckboxChange() {
-        this.retrieveActiveMapObjects();
-        this.deleteInactiveMapObjects();
+        this.retrieveVisibleMapObjects();
+        this.deleteNotVisibleMapObjects();
     }
 
     private initMap() {
@@ -52,7 +52,7 @@ export class MapComponent implements AfterViewInit {
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
 
-    private retrieveActiveMapObjects() {
+    private retrieveVisibleMapObjects() {
         for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].active) {
                 this.mapService.getMapObjects(mapObjectType)
@@ -106,7 +106,7 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private deleteInactiveMapObjects() {
+    private deleteNotVisibleMapObjects() {
         for (let mapObjectType of this.mapObjectTypes) {
             if (!this.mapObjectSettings[mapObjectType].active && this.markers.get(mapObjectType).length > 0) {
                 for (let marker of this.markers.get(mapObjectType)) {
