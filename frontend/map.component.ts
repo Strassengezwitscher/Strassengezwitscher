@@ -5,16 +5,7 @@ import { MapObjectType } from "./map.service";
 import { MapService } from "./map.service";
 
 export class MapObjectSetting {
-        constructor(active: boolean = false, iconPath: string, name: string) {
-            this.active = active;
-            this.iconPath = iconPath;
-            this.name = name;
-        }
-
-    public active: boolean = false;
-    public iconPath: string;
-    public name: string;
-
+        constructor(public active: boolean = false, public iconPath: string, public name: string) {}
 }
 
 @Component({
