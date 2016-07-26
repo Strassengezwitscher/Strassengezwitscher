@@ -19,12 +19,20 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
+    # Django admin urls
     url(r'^admin/', include(admin.site.urls)),
+
+    # APi Urls
     url(r'^api/', include('facebook.urls_api', namespace='facebook_api')),
     url(r'^api/', include('events.urls_api', namespace='events_api')),
     url(r'^api/', include('contact.urls')),
+
+    # Admin area Urls
     url(r'^facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^events/', include('events.urls', namespace='events')),
+    url(r'^users/', include('users.urls', namespace='users')),
+
+    # User area urls
     url(r'^$', views.index, name='index'),
     url(r'^(?:contact)?/?$', views.index, name='index'),
 ]

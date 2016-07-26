@@ -1,0 +1,29 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Nutzer</h1>
+{% if users %}
+<table class="table table-striped">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th></th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td><a href="{% url 'users:detail' user.id %}">{{ user.username }}</a></td>
+        <td>{{ user.email }}</td>
+        <td>
+            <a class="btn btn-default btn-sm" href="{% url 'users:update' user.id %}">Bearbeiten</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No users available.</p>
+{% endif %}
+
+<a class="btn btn-primary" href="{% url 'users:create' %}">Nutzer anlegen</a>
+
+{% endblock %}
