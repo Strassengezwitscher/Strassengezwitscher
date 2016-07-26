@@ -45,6 +45,7 @@ module.exports = function () {
             path.npm + '@angular/**/*',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
+            path.npm + 'ng2-bootstrap/**/*',
         ],
         angular_dependencies: {
             files: [

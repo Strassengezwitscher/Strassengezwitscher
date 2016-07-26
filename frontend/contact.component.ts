@@ -1,15 +1,16 @@
 import { Component }      from "@angular/core";
 import { Router }         from "@angular/router";
-// TODO (Chris) integrate Captcha properly: import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
 
 import { ContactService } from "./contact.service";
 import { Contact }        from "./contact";
+
+import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
     selector: "sg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService],
-    // TODO (Chris) integrate Captcha properly:  directives: [ReCaptchaComponent]
+    directives: [TOOLTIP_DIRECTIVES],
 })
 export class ContactComponent {
 
