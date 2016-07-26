@@ -9,22 +9,22 @@
 	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
 		<div class="form-group">
 			<label for="name"> Name: </label>
-			<input id ="contact-name" type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name">
+			<input id ="contact-name" type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name" placeholder="Optional">
 		</div>
 
 		<div class="form-group">
 			<label for="email"> Email: </label>
-			<input id ="contact-email" name="email" type="email" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email">
+			<input id ="contact-email" name="email" type="email" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" placeholder="Optional">
 		</div>
 
 		<div class="form-group">
 			<label for="subject"> Betreff: </label>
-			<input id ="contact-subject" type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject">
+			<input id ="contact-subject" type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject" placeholder="Pflichtfeld">
 		</div>
 
 		<div class="form-group">
 			<label for="message"> Nachricht: </label>
-			<textarea id="contact-message" name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message"></textarea>
+			<textarea id="contact-message" name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message" placeholder="Pflichtfeld"></textarea>
 		</div>
 
 		<div class="form-group">
