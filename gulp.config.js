@@ -40,6 +40,7 @@ module.exports = function () {
         static: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
             path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
+            path.npm + 'bootstrap/dist/fonts/*',
             path.npm + 'rxjs/**/*',
             path.npm + '@angular/**/*',
             path.npm + 'systemjs/dist/system.src.js',

@@ -28,13 +28,14 @@
 		</div>
 
 		<div class="form-group">
-			<label for="journalist"> Journalist: </label>
-			<input id="contact-journalist" type="checkbox" name="journalist" class="form-control" [(ngModel)]="contact.journalist">
+			<input id="contact-journalist" type="checkbox" name="journalist" [(ngModel)]="contact.journalist">
+			<label for="journalist"> Sind Sie Journalist? </label>
 		</div>
 
 		<div class="form-group">
-			<label for="confidential"> Vertraulich: </label>
-			<input id="contact-confidential" type="checkbox" name="confidential" class="form-control" [(ngModel)]="contact.confidential">
+			<input id="contact-confidential" type="checkbox" name="confidential" [(ngModel)]="contact.confidential">
+			<label for="confidential"> Nachricht vertraulich zu behandeln? </label>
+			<span class="glyphicon glyphicon-question-sign"></span>
 		</div>
 
 		<div class="form-group">
