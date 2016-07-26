@@ -43,6 +43,6 @@
 			<input id="contact-file" name="file" type="file" multiple maxlength="50" class="form-control" #fileInput (change)="onFileChange($event)">
 		</div>
 
-		<button id="contact-submit-button" type="submit" #submitButton class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid)">Submit</button>
+		<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid)">Submit</button>
 	</form>
 </div>

@@ -15,25 +15,29 @@ export class ContactService {
         let xhr: XMLHttpRequest = new XMLHttpRequest();
 
         for (let key in contactData) {
-          if (contactData.hasOwnProperty(key)) {
-            formData.append(key, contactData[key]);
-          }
+            if (contactData.hasOwnProperty(key)) {
+                formData.append(key, contactData[key]);
+            }
         }
 
         // add files seperately
-        for (let i = 0; i < uploads.length; ++i) {
-          formData.append("files", uploads[i], uploads[i].name);
+        if (uploads != null) {
+            for (let i = 0; i < uploads.length; ++i) {
+                formData.append("files", uploads[i], uploads[i].name);
+            }
+        } else {
+            formData.append("files", null);
         }
 
         xhr.onreadystatechange = () => {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              observer.next(JSON.parse(xhr.response));
-              observer.complete();
-            } else {
-              observer.error({"error": JSON.parse(xhr.response), "status": xhr.status});
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    observer.next(JSON.parse(xhr.response));
+                    observer.complete();
+                } else {
+                    observer.error({"error": JSON.parse(xhr.response), "status": xhr.status});
+                }
             }
-          }
         };
 
         xhr.open("POST", this.contactURL, true);
