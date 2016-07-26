@@ -83,7 +83,12 @@ gulp.task('bundle:sass', ['compile:sass'], function() {
         .pipe(gulp.dest(config.path.dist));
 });
 
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
+gulp.task('optimize:frontendImgFiles', function() {
+    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
+        .pipe(gulp.dest(config.path.dist));
+});
+
+gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass', 'optimize:frontendImgFiles']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(config.sass.files, ['compile:sass']);
