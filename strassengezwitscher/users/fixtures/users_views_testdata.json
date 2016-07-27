@@ -3,6 +3,24 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
+        "password": "pbkdf2_sha256$24000$8g5CgT2crRwW$XR7VoqTTQHwWdOxws3egcn7nqbBXRToKsKQjEgNhrbw=",
+        "last_login": "2016-07-24T13:53:33.765Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@admin.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2016-07-24T13:53:26.204Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
         "password": "pbkdf2_sha256$24000$KJXOKstWrWjI$sEuQEU7+ahIHncMl5YS/MdSbV/xG4N9rlAaYC5vwg34=",
         "last_login": null,
         "is_superuser": false,
@@ -21,7 +39,7 @@
 },
 {
     "model": "auth.user",
-    "pk": 2,
+    "pk": 3,
     "fields": {
         "password": "pbkdf2_sha256$24000$0ZN9uyY24POe$OTsEGHBg9+PVxvuo9lyTn3ZOXQchOp5MwL3zoykOocY=",
         "last_login": null,

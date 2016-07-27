@@ -10,6 +10,9 @@ class UserListView(ListView):
     template_name = 'users/list.html'
     context_object_name = 'users'
 
+    def get_queryset(self):
+        return User.objects.exclude(is_staff=True)
+
 
 class UserDetail(DetailView):
     model = User

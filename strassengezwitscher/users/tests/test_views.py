@@ -13,7 +13,7 @@ class UserViewTests(TestCase):
         response = self.client.get(reverse('users:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
-        self.assertEqual(list(response.context['users']), list(User.objects.all()))
+        self.assertEqual(len(response.context['users']), 2)  # Don't show superusers
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('users:list'))
@@ -47,7 +47,7 @@ class UserViewTests(TestCase):
             'password': '123456',
         }
         response = self.client.post(reverse('users:create'), data, follow=True)
-        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 3}))
+        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 4}))
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('users:create'))
