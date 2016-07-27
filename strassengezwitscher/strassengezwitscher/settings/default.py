@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
@@ -104,6 +105,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Set absolute URLs
+ABSOLUTE_URL_OVERRIDES = {
+    # Since we use auth.User to represent our users,
+    # we have to provide an absolute URL for the User model.
+    'auth.user': lambda u: '/users/%s/' % u.id,
+}
+
 
 # According to http://12factor.net/logs we always log to stdout/stderr and do not manage log files.
 # Production log files are managed by the production execution environment, never Django itself.
