@@ -12,9 +12,9 @@ install:
   - pip install coveralls
   - npm install
 before_script:
-  - gulp build
-  - python strassengezwitscher/manage.py migrate
-  - python strassengezwitscher/manage.py runserver &
+  - gulp dist
+  - DJANGO_SETTINGS_MODULE=strassengezwitscher.settings.production python strassengezwitscher/manage.py migrate
+  - DJANGO_SETTINGS_MODULE=strassengezwitscher.settings.production python strassengezwitscher/manage.py runserver &
 script:
   - gulp coverage:python
   - gulp coverage:typescript
