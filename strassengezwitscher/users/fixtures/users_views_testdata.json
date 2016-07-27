@@ -24,7 +24,7 @@
         "password": "pbkdf2_sha256$24000$KJXOKstWrWjI$sEuQEU7+ahIHncMl5YS/MdSbV/xG4N9rlAaYC5vwg34=",
         "last_login": null,
         "is_superuser": false,
-        "username": "jan.doe",
+        "username": "jon.doe",
         "first_name": "",
         "last_name": "",
         "email": "jon@doe.com",

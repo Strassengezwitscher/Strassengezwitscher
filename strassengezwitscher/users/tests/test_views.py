@@ -48,6 +48,7 @@ class UserViewTests(TestCase):
         }
         response = self.client.post(reverse('users:create'), data, follow=True)
         self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 4}))
+        self.assertNotEqual(User.objects.get(pk=4).password, '123456', 'User password is stored as hash.')
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('users:create'))
@@ -84,6 +85,7 @@ class UserViewTests(TestCase):
         }
         response = self.client.post(reverse('users:update', kwargs={'pk': 1}), data, follow=True)
         self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 1}))
+        self.assertNotEqual(User.objects.get(pk=1).password, '123456', 'User password is stored as hash.')
 
     def test_post_update_view_no_data(self):
         response = self.client.post(reverse('users:update', kwargs={'pk': 1}))
