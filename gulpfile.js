@@ -156,7 +156,7 @@ if (!argv.production) {
 
     gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report']);
 
-    gulp.task('test:typescript', function(done) {
+    gulp.task('test:typescript', ['build'], function(done) {
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
