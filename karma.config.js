@@ -42,7 +42,10 @@ module.exports = function(config) {
         port: 9876,
         colors: true,
         logLevel: config.LOG_WARN,
-        autoWatch: true
+        autoWatch: true,
+        client: {
+            captureConsole: false
+        }
     };
 
     configuration.preprocessors[gulpConfig.path.build + 'frontend/**/!(*.spec|main)+(.js)'] = ['coverage'];
