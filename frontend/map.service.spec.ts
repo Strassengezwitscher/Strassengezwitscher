@@ -106,6 +106,14 @@ describe("MapService", () => {
         done();
     });
 
+    it("Should return error status code and text if present", done => {
+        spyOn(service, "handleError").and.callThrough();
+        let err = {statusText: "Resource not found", status: 404};
+
+        expect(service.handleError(err).error).toBe("404 - Resource not found");
+        done();
+    });
+
     it("Should have an initialized urlMap after construction", done => {
         expect(service.urlMap.size).toBe(2);
         expect(service.urlMap.get(MapObjectType.EVENTS)).toBe("api/events.json");
