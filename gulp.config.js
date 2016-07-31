@@ -5,6 +5,7 @@ module.exports = function () {
         build: root + 'strassengezwitscher/static/build/',
         dist: root + 'strassengezwitscher/static/dist/',
         npm: root + 'node_modules/',
+        frontend: 'frontend/',
         report: root + '.report/',
         partial: {
             frontend: 'frontend',
@@ -30,6 +31,11 @@ module.exports = function () {
                 minify: true,
             },
         },
+    };
+
+    var frontend = {
+        imgFiles: path.frontend + 'img/*',
+        htmlFiles: path.frontend + '*.html',
     };
 
     var e2e = {
@@ -108,6 +114,7 @@ module.exports = function () {
         e2e: e2e,
         npm: npm,
         systemjs: systemjs,
+        frontend: frontend,
         report: report,
     };
 

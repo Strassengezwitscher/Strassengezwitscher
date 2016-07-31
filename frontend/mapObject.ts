@@ -6,3 +6,8 @@ export class MapObject {
     public locationLong: number;
     public locationLat: number;
 }
+
+export enum MapObjectType {
+            EVENTS = 0,
+            FACEBOOK_PAGES
+}

@@ -34,7 +34,12 @@ gulp.task('copy:systemjsconfig', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
+gulp.task('copy:frontendImgFiles', function() {
+    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
+        .pipe(gulp.dest(config.path.build));
+});
+
+gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig', 'copy:frontendImgFiles']);
 
 gulp.task('compile:sass', function() {
     return gulp.src(config.sass.files)
@@ -78,17 +83,30 @@ gulp.task('bundle:sass', ['compile:sass'], function() {
         .pipe(gulp.dest(config.path.dist));
 });
 
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
+gulp.task('optimize:frontendImgFiles', function() {
+    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
+        .pipe(gulp.dest(config.path.dist));
+});
+
+gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass', 'optimize:frontendImgFiles']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
-    return gulp.watch(config.sass.path, ['compile:sass']);
+    return gulp.watch(config.sass.files, ['compile:sass']);
 });
 
 gulp.task('watch:typescript', ['compile:typescript'], function() {
     return gulp.watch(config.typescript.files, ['compile:typescript']);
 });
 
-gulp.task('watch', ['watch:sass', 'watch:typescript']);
+gulp.task('watch:frontendImgFiles', ['copy:frontendImgFiles'], function() {
+    return gulp.watch(config.frontend.imgFiles, {cwd: config.root}, ['copy:frontendImgFiles']);
+});
+
+gulp.task('watch:html', ['compile:typescript'], function() {
+    return gulp.watch(config.frontend.htmlFiles, ['compile:typescript']);
+});
+
+gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles', 'watch:html']);
 
 gulp.task('build', ['copy:staticfiles', 'compile:typescript', 'compile:sass']);
 
@@ -138,7 +156,7 @@ if (!argv.production) {
 
     gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report']);
 
-    gulp.task('test:typescript', function(done) {
+    gulp.task('test:typescript', ['build'], function(done) {
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
