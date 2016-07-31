@@ -28,9 +28,10 @@ export class ContactComponent {
 
     public onFileChange(event) {
         let errorMessage = "";
-        for (let i = 0; i < event.srcElement.files.length; ++i) {
-            if (event.srcElement.files[i].name.length > this.maxFileNameLength) {
-                errorMessage += "Name des Anhangs '" + event.srcElement.files[i].name +
+
+        for (let file of event.srcElement.files) {
+            if (file.name.length > this.maxFileNameLength) {
+                errorMessage += "Name des Anhangs '" + file.name +
                                 "' zu lang (maximal 50 Zeichen)\n";
             }
         }
