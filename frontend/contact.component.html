@@ -6,6 +6,11 @@
             {{contactErrorMessage}}
         </div>
 	</div>
+	<div id="contact-success-message" *ngIf="contactSuccessMessage">
+        <div id="contact-inner-success-message" class="alert alert-success">
+            {{contactSuccessMessage}}
+        </div>
+	</div>
 	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
 		<div class="form-group">
 			<label for="name"> Name: </label>

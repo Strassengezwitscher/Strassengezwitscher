@@ -15,6 +15,7 @@ import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 export class ContactComponent {
 
     private contactErrorMessage: string;
+    private contactSuccessMessage: string;
     private contact: Contact;
     private uploads: FileList;
     private maxFileNameLength = 50;
@@ -43,12 +44,21 @@ export class ContactComponent {
     }
 
     public onSubmit() {
-        this.contactService.addContactData(this.contact, this.uploads).subscribe((data) =>
-                                            this.router.navigate([""]), (err) => this.displayError(err));
+        this.contactService.addContactData(this.contact, this.uploads).subscribe((data) => this.displaySuccess(),
+                                            (err) => this.displayError(err));
     }
 
     public clearError() {
         this.contactErrorMessage = "";
+    }
+
+    public displaySuccess() {
+        this.contactSuccessMessage = "Vielen Dank! Wir werden ihre Anfrage so schnell es geht bearbeiten!";
+        let tmpScope = this;
+        setTimeout(function(){
+            tmpScope.contactSuccessMessage = "";
+            tmpScope.router.navigate([""]);
+        }, 4000);
     }
 
     private displayError(err: any) {
