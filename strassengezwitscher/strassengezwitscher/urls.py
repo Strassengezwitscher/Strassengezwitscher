@@ -28,9 +28,9 @@ urlpatterns = [
     url(r'^api/', include('contact.urls')),
 
     # Admin area URLs
-    url(r'^facebook/', include('facebook.urls', namespace='facebook')),
-    url(r'^events/', include('events.urls', namespace='events')),
-    url(r'^users/', include('users.urls', namespace='users')),
+    url(r'^intern/facebook/', include('facebook.urls', namespace='facebook')),
+    url(r'^intern/events/', include('events.urls', namespace='events')),
+    url(r'^intern/users/', include('users.urls', namespace='users')),
 
     # User area URLs
     url(r'^$', views.index, name='index'),

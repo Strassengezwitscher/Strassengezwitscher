@@ -111,7 +111,7 @@ STATIC_URL = '/static/'
 ABSOLUTE_URL_OVERRIDES = {
     # Since we use auth.User to represent our users,
     # we have to provide an absolute URL for the User model.
-    'auth.user': lambda u: '/users/%s/' % u.id,
+    'auth.user': lambda u: '/intern/users/%s/' % u.id,
 }
 
 
