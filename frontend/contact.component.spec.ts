@@ -44,4 +44,17 @@ describe("ContactComponent", () => {
         expect(this.cc.filesValid).toEqual(true);
     });
 
+    it("check on success display correct message", function() {
+        this.cc.displaySuccess();
+        expect(this.cc.contactSuccessMessage).toEqual("Vielen Dank! " +
+            "Wir werden ihre Anfrage so schnell es geht bearbeiten!");
+    });
+
+    it("check on success reset of message", function() {
+        this.cc.displaySuccess();
+        let tmpCC = this;
+        setTimeout(function(){
+            expect(tmpCC.cc.contactSuccessMessage).toEqual("");
+        }, 5000);
+    });
 });
