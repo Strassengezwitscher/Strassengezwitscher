@@ -53,7 +53,7 @@ export class ContactComponent {
     }
 
     public displaySuccess() {
-        this.contactSuccessMessage = "Vielen Dank! Wir werden ihre Anfrage so schnell es geht bearbeiten!";
+        this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
         let tmpScope = this;
         setTimeout(function(){
             tmpScope.contactSuccessMessage = "";

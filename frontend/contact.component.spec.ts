@@ -47,7 +47,7 @@ describe("ContactComponent", () => {
     it("check on success display correct message", function() {
         this.cc.displaySuccess();
         expect(this.cc.contactSuccessMessage).toEqual("Vielen Dank! " +
-            "Wir werden ihre Anfrage so schnell es geht bearbeiten!");
+            "Wir werden Ihre Anfrage schnellstmöglich bearbeiten!");
     });
 
     it("check on success reset of message", function() {
