@@ -13,7 +13,6 @@ import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
     directives: [TOOLTIP_DIRECTIVES],
 })
 export class ContactComponent {
-
     private contactErrorMessage: string;
     private contactSuccessMessage: string;
     private contact: Contact;
