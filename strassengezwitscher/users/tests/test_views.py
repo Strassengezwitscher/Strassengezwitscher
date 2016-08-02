@@ -4,7 +4,7 @@ from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
 
-class UserViewTests(TestCase):
+class UserViewLoggedInTests(TestCase):
     fixtures = ['users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
 
@@ -111,3 +111,29 @@ class UserViewTests(TestCase):
     def test_post_update_view_without_csrf_token(self):
         response = self.csrf_client.post(reverse('users:update', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 403)
+
+
+class UserViewLoggedOutTests(TestCase):
+    # List
+    def test_get_list_view(self):
+        url = reverse('users:list')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Detail
+    def test_get_detail_view(self):
+        url = reverse('users:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Create
+    def test_get_create_view(self):
+        url = reverse('users:create')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Update
+    def test_get_update_view(self):
+        url = reverse('users:update', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
