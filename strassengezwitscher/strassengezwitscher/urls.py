@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -31,6 +32,9 @@ urlpatterns = [
     url(r'^intern/facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^intern/events/', include('events.urls', namespace='events')),
     url(r'^intern/users/', include('users.urls', namespace='users')),
+    url(r'^intern/$', views.intern_index, name='intern'),
+    url(r'^intern/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    url(r'^intern/logout/$', auth_views.logout_then_login, name='logout'),
 
     # User area URLs
     url(r'^$', views.index, name='index'),
