@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import Client, TestCase
 
@@ -7,6 +8,10 @@ from facebook.models import FacebookPage
 class FacebookPageViewTests(TestCase):
     fixtures = ['facebook_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
+
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
 
     # List
     def test_get_list_view(self):
