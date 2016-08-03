@@ -27,8 +27,8 @@ class UserViewLoggedInTests(TestCase):
     def test_get_detail_view(self):
         response = self.client.get(reverse('users:detail', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('user', response.context)
-        self.assertEqual(response.context['user'], User.objects.get(pk=1))
+        self.assertIn('user_data', response.context)
+        self.assertEqual(response.context['user_data'], User.objects.get(pk=1))
 
     def test_get_detail_view_not_existant(self):
         response = self.client.get(reverse('users:detail', kwargs={'pk': 1000}))

@@ -17,7 +17,7 @@ class UserListView(LoginRequiredMixin, ListView):
 class UserDetail(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'users/detail.html'
-    context_object_name = 'user'
+    context_object_name = 'user_data'
 
 
 class UserCreate(LoginRequiredMixin, CreateView):
@@ -33,6 +33,7 @@ class UserCreate(LoginRequiredMixin, CreateView):
 class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'users/form.html'
+    context_object_name = 'user_data'
     fields = ['username', 'first_name', 'last_name', 'email', 'password', 'is_active', 'groups']
 
     def form_valid(self, form):
