@@ -57,4 +57,10 @@ describe("ContactComponent", () => {
             expect(tmpCC.cc.contactSuccessMessage).toEqual("");
         }, 5000);
     });
+
+    it("check if script tag for recaptcha is available", function() {
+        this.cc.ngOnInit();
+        let scriptTag = document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]');
+        expect(scriptTag != null);
+    });
 });

@@ -1,8 +1,8 @@
-import { Component }      from "@angular/core";
-import { Router }         from "@angular/router";
+import { Component, OnInit }  from "@angular/core";
+import { Router }             from "@angular/router";
 
-import { ContactService } from "./contact.service";
-import { Contact }        from "./contact";
+import { ContactService }     from "./contact.service";
+import { Contact }            from "./contact";
 
 import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
@@ -12,7 +12,7 @@ import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
     providers: [ContactService],
     directives: [TOOLTIP_DIRECTIVES],
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
     private contactErrorMessage: string;
     private contactSuccessMessage: string;
     private contact: Contact;
@@ -23,6 +23,16 @@ export class ContactComponent {
     constructor( private contactService: ContactService, private router: Router) {
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
+    }
+
+    public ngOnInit() {
+        let doc = <HTMLDivElement> document.body;
+        let script = document.createElement("script");
+        script.innerHTML = "";
+        script.src = "https://www.google.com/recaptcha/api.js";
+        script.async = true;
+        script.defer = true;
+        doc.appendChild(script);
     }
 
     public onFileChange(event) {
@@ -52,7 +62,7 @@ export class ContactComponent {
         this.contactErrorMessage = "";
     }
 
-    public displaySuccess() {
+    private displaySuccess() {
         this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
         let tmpScope = this;
         setTimeout(function(){
@@ -73,5 +83,4 @@ export class ContactComponent {
             this.contactErrorMessage += "Interner Fehler, " + err.error.errors;
         }
     }
-
 }

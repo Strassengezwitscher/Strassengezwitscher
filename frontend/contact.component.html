@@ -47,7 +47,7 @@
 			<label for="file"> Anhang: </label>
 			<input id="contact-file" name="file" type="file" multiple maxlength="50" [class]="filesValid ? 'form-control ng-valid' : 'form-control ng-invalid' " #fileInput (change)="onFileChange($event)">
 		</div>
-		<div>
+		<div class="g-recaptcha" data-sitekey="6LfGriYTAAAAAHD_aJZbXN9_cq3gOqzqWSkj_cPa"></div>
 		<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid)">Submit</button>
 		<span class="glyphicon glyphicon-question-sign" tooltip="Ihre valide Nachricht wird immer verschlüsselt übertragen. Um eine verschlüsselte Antwort zu erhalten, fügen Sie bitte der Nachricht Ihren eigenen GPG Public Key im Anhang hinzu." tooltipPlacement="top"></span>
 		</div>
