@@ -4,12 +4,14 @@ import { Router }             from "@angular/router";
 import { ContactService }     from "./contact.service";
 import { Contact }            from "./contact";
 
+import { CaptchaService }     from "./captcha.service";
+
 import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
     selector: "sg-contact",
     templateUrl: "contact.component.html",
-    providers: [ContactService],
+    providers: [ContactService, CaptchaService],
     directives: [TOOLTIP_DIRECTIVES],
 })
 export class ContactComponent implements OnInit {
@@ -20,9 +22,11 @@ export class ContactComponent implements OnInit {
     private maxFileNameLength = 50;
     private filesValid = true;
 
-    constructor( private contactService: ContactService, private router: Router) {
+    constructor( private contactService: ContactService, private captchaService: CaptchaService,
+                 private router: Router) {
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
+        window['verifyCallback'] = this.verifyCallback.bind(this);
     }
 
     public ngOnInit() {
@@ -60,6 +64,11 @@ export class ContactComponent implements OnInit {
 
     public clearError() {
         this.contactErrorMessage = "";
+    }
+
+    public verifyCallback(response) {
+        console.log(response);
+        this.captchaService.validateCaptcha(response).subscribe((data) => console.log("Success",data) ,(err) => console.log("Error",err));
     }
 
     private displaySuccess() {
