@@ -11,8 +11,7 @@ from captcha.utils import validate_grecaptcha
 @authentication_classes((CsrfExemptSessionAuthentication,))
 def validate_captcha(request):
     """
-    Receives data from a contact form and creates a GPG-encrypted email including that data.
-    Depending on the data's given confidentiality the email is sent to pre-defined receivers.
+    Receives post data from the Google Recaptcha and verifies it with the Google service.
     """
     verified_reponse = validate_grecaptcha(request.data['response'])
     if verified_reponse.get("success") is not True:
