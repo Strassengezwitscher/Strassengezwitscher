@@ -18,7 +18,7 @@ module.exports = function () {
             name: 'bundle.css',
             dev_name: 'bundle.dev.css',
             files: [
-                path.build + 'bootstrap/**/*.css',
+                path.build + 'materialize-css/**/*.css',
                 path.build + 'bundle.dev.css',
             ],
         },
@@ -47,11 +47,13 @@ module.exports = function () {
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
             path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
             path.npm + 'bootstrap/dist/fonts/*',
+            path.npm + 'materialize-css/dist/css/materialize.min.css',
+            path.npm + 'materialize-css/dist/fonts/roboto/*',
+            path.npm + 'materialize-css/dist/js/materialize.min.js',
             path.npm + 'rxjs/**/*',
             path.npm + '@angular/**/*',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
-            path.npm + 'ng2-bootstrap/**/*',
         ],
         angular_dependencies: {
             files: [

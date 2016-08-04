@@ -4,13 +4,11 @@ import { Router }         from "@angular/router";
 import { ContactService } from "./contact.service";
 import { Contact }        from "./contact";
 
-import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
     selector: "sg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService],
-    directives: [TOOLTIP_DIRECTIVES],
 })
 export class ContactComponent {
     private contactErrorMessage: string;

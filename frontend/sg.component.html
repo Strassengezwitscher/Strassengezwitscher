@@ -1,16 +1,16 @@
-<div class="navbar navbar-default navbar-static-top">
-    <div class="navbar-header"><a class="navbar-brand" [routerLink]="['/']">Straßengezwitscher</a>
-        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-    </div>
-
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li><a [routerLink]="['/contact']">Kontakt</a></li>
-      </ul>
-    </div>
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper white black-text">
+            <div class="hide-on-med-and-up">
+                <a [routerLink]="['/']" class="brand-logo left "></a>
+            </div>
+            <div class="hide-on-small-only">
+                <a [routerLink]="['/']" class="brand-logo center"></a>
+            </div>
+            <ul class="right">
+                <li><a [routerLink]="['/contact']" class="black-text">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
 </div>
 <router-outlet></router-outlet>
