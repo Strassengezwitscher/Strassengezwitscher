@@ -3,7 +3,7 @@ from rest_framework import generics
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 from events.models import Event
 from events.serializers import EventSerializer
