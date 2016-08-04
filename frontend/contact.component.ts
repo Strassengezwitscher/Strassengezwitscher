@@ -21,6 +21,7 @@ export class ContactComponent implements OnInit {
     private uploads: FileList;
     private maxFileNameLength = 50;
     private filesValid = true;
+    private captchaVerfied = false;
 
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
                  private router: Router) {
@@ -68,7 +69,11 @@ export class ContactComponent implements OnInit {
 
     public verifyCallback(response) {
         console.log(response);
-        this.captchaService.validateCaptcha(response).subscribe((data) => console.log("Success",data) ,(err) => console.log("Error",err));
+        this.captchaService.validateCaptcha(response).subscribe((data) => this.verifiedCaptcha() ,(err) => console.log("Error",err));
+    }
+
+    private verifiedCaptcha() {
+        this.captchaVerfied = true;
     }
 
     private displaySuccess() {

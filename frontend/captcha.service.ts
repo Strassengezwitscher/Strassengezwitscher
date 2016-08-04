@@ -9,9 +9,9 @@ export class CaptchaService {
 
     constructor(private http: Http) {}
 
-    public validateCaptcha (reponse: any): Observable<Response> {
+    public validateCaptcha (response: any): Observable<Response> {
 
-    let body = JSON.stringify({ reponse });
+    let body = JSON.stringify({ response });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log(body)
