@@ -52,6 +52,9 @@ def reverse_func(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('auth', '0007_alter_validators_add_error_messages'),
+        ('events', '0001_initial'),
+        ('facebook', '0001_initial'),
     ]
 
     operations = [
