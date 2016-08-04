@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
     'rest_framework',
+    'captcha.apps.CaptchaConfig',
 )
 
 MIDDLEWARE_CLASSES = (
