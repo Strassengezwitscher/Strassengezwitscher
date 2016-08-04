@@ -69,7 +69,7 @@ export class ContactComponent implements OnInit {
 
     public verifyCallback(response) {
         this.captchaService.validateCaptcha(response).subscribe((data) => this.verifiedCaptcha(),
-                                                                (err) => console.log("Error", err));
+                                                                (err) => this.displayError(err));
     }
 
     private verifiedCaptcha() {
@@ -85,17 +85,7 @@ export class ContactComponent implements OnInit {
         }, 4000);
     }
 
-    private displayError(err: any) {
-        // TODO this should be handled by the service, only error message to be displayed here
-        this.contactErrorMessage = "Fehler bei der Kontaktaufnahme: \n";
-        if (err.status === 400) {
-            for (let key in err.error.errors) {
-                if (err.error.errors.hasOwnProperty(key)) {
-                    this.contactErrorMessage += key + ": " + err.error.errors[key] + " \n";
-                }
-            }
-        } else {
-            this.contactErrorMessage += "Interner Fehler, " + err.error.errors;
-        }
+    private displayError(errorMessage: string) {
+        this.contactErrorMessage = errorMessage;
     }
 }
