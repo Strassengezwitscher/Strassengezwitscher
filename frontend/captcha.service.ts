@@ -10,30 +10,28 @@ export class CaptchaService {
     constructor(private http: Http) {}
 
     public validateCaptcha (response: any): Observable<Response> {
-
     let body = JSON.stringify({ response });
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({ "Content-Type": "application/json" });
     let options = new RequestOptions({ headers: headers });
-    console.log(body)
     return this.http.post(this.captchaUrl, body, options)
                     .map(this.handleReponse)
                     .catch(this.handleError);
     }
 
     private handleReponse(response: Response) {
-        console.log("Success");
         return response.json();
     }
 
     private handleError(error: any) {
-        console.log("Error");
-        let errorMessage = "Server error";
-        if (error.message) {
-            errorMessage = error.message;
+        let errorMessage = "Interner Fehler im Captcha: \n";
+        let errors = JSON.parse(error._body).errors;
+        if (errors.length) {
+            for (let msg of errors) {
+                errorMessage += msg + " \n";
+            }
         } else if (error.status) {
             errorMessage = `${error.status} - ${error.statusText}`;
         }
-        console.error(errorMessage);
         return Observable.throw(errorMessage);
     }
 }

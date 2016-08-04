@@ -8,7 +8,8 @@ import { MockBackend } from "@angular/http/testing";
 describe("ContactComponent", () => {
 
     beforeEach(function() {
-        this.cc = new ContactComponent(new ContactService(), new CaptchaService(new Http(new MockBackend(), new BaseRequestOptions())), null);
+        this.cc = new ContactComponent(new ContactService(), new CaptchaService(
+                                       new Http(new MockBackend(), new BaseRequestOptions())), null);
     });
 
     it("check if error message is set", function () {

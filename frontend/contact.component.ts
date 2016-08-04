@@ -27,7 +27,7 @@ export class ContactComponent implements OnInit {
                  private router: Router) {
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
-        window['verifyCallback'] = this.verifyCallback.bind(this);
+        window["verifyCallback"] = this.verifyCallback.bind(this);
     }
 
     public ngOnInit() {
@@ -68,8 +68,8 @@ export class ContactComponent implements OnInit {
     }
 
     public verifyCallback(response) {
-        console.log(response);
-        this.captchaService.validateCaptcha(response).subscribe((data) => this.verifiedCaptcha() ,(err) => console.log("Error",err));
+        this.captchaService.validateCaptcha(response).subscribe((data) => this.verifiedCaptcha(),
+                                                                (err) => console.log("Error", err));
     }
 
     private verifiedCaptcha() {
@@ -86,6 +86,7 @@ export class ContactComponent implements OnInit {
     }
 
     private displayError(err: any) {
+        // TODO this should be handled by the service, only error message to be displayed here
         this.contactErrorMessage = "Fehler bei der Kontaktaufnahme: \n";
         if (err.status === 400) {
             for (let key in err.error.errors) {
