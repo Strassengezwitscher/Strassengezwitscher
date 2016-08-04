@@ -28,7 +28,7 @@ class FacebookPage(MapObject):
 class FacebookLikeStatistic(models.Model):
     date = models.DateField()
     like_count = models.PositiveIntegerField()
-    page = models.ForeignKey(FacebookPage, null=True)
+    page = models.ForeignKey(FacebookPage, models.CASCADE, null=True)
 
     def __repr__(self):
         return '<FacebookLikeStatistic on %s for %s>' % (self.date.strftime('%Y-%m-%d'), self.page)
