@@ -27,7 +27,7 @@ EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
 ######################################################################################################
 
 # This should be replaced by proper SECRET_KEY
-RECAPTCHA_SECRET_KEY = ['6LfGriYTAAAAAFjR5_np-OHSdAqrg9XtwlZT0iPi']
+RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
 
 ######################################################################################################
 
