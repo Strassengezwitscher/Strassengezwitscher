@@ -1,6 +1,6 @@
 var settings = require('./settings')();
 
-casper.test.begin('Testing Contact (User Frontend fields available)', 11, function(test) {
+casper.test.begin('Testing Contact (User Frontend fields available)', 12, function(test) {
     casper.start(settings.contactUrl);
 
     casper.waitUntilVisible('sg-contact', function then(){
@@ -15,6 +15,7 @@ casper.test.begin('Testing Contact (User Frontend fields available)', 11, functi
         test.assertExists('input#contact-confidential[type=checkbox]','Input Checkbox for confidential');
         test.assertExists('input#contact-file[type=file]','File Input for files');
         test.assertExists('button#contact-submit-button[type=submit]:disabled','Disabled submit button exists')
+        test.assertExists('#contact-recaptcha','Google recaptcha div exists')
 
     }, function timeout() {
         test.fail('Could not find element with tag "sg-contact"');

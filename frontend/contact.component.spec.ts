@@ -13,16 +13,16 @@ describe("ContactComponent", () => {
     });
 
     it("check if error message is set", function () {
-        this.cc.displayError({"status": 500, "error": {"errors": "wrong"}});
+        this.cc.displayError("Fehler bei der Kontaktaufnahme: \nInterner Fehler, wrong");
         expect(this.cc.contactErrorMessage).toEqual("Fehler bei der Kontaktaufnahme: \nInterner Fehler, wrong");
     });
-
+/* TODO move to service.spec.ts
     it("check if error message is set (status 400)", function () {
         this.cc.displayError({"status": 400, "error": {"errors": {"name": "exceeds 50", "email": "wrong"}}});
         expect(this.cc.contactErrorMessage).toEqual("Fehler bei der Kontaktaufnahme: \n" +
             "name: exceeds 50 \nemail: wrong \n");
     });
-
+*/
     it("check if error message is cleared", function () {
         this.cc.displayError({"status": 500, "error": {"errors": "wrong"}});
         this.cc.clearError();
