@@ -45,7 +45,7 @@ casper.test.begin('Testing Contact (Name max length)', 3, function(test) {
 });
 
 
-casper.test.begin('Testing Contact (Submission enabled/disabled)', 5, function(test) {
+casper.test.begin('Testing Contact (Submission disabled)', 4, function(test) {
     casper.start(settings.contactUrl);
 
     casper.waitUntilVisible('sg-contact', function then(){
@@ -59,15 +59,10 @@ casper.test.begin('Testing Contact (Submission enabled/disabled)', 5, function(t
         // test case for enabled button with subject and message, rest empty
         this.sendKeys('#contact-subject','Betreff');
         this.sendKeys('#contact-message','Tolle Nachricht');
-        test.assertExists('button#contact-submit-button:enabled', 'enabled button')
+        test.assertExists('button#contact-submit-button:disabled', 'disabled button, missing verified captcha')
         // test case for disabled button with wrong email
         this.sendKeys('#contact-email','this@doesNotWork');
         test.assertExists('button#contact-submit-button:disabled', 'disabled button, wrong email');
-        // test case for enabled button with subject and message and correct email
-        this.sendKeys('#contact-subject','Betreff');
-        this.sendKeys('#contact-message','Tolle Nachricht');
-        this.sendKeys('#contact-email','this@doesWork.com', {reset : true});
-        test.assertExists('button#contact-submit-button:enabled', 'enabled button')
     }, function timeout() {
         test.fail('Could not find element with tag "sg-contact"');
     });
