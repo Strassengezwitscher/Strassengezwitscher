@@ -11,8 +11,38 @@
 			{{contactSuccessMessage}}
 		</div>
 	</div>
-	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
-		<div class="row">
+	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+		<table style="width: 100%" cellspacing="0">
+			<tr>
+        		<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" style="width: 100%"></md-input></td>
+        		<td><md-input id="contact-email" placeholder="Email" type="email" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" style="width: 100%"></md-input></td>
+      		</tr>
+		</table>
+		<p>
+			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" style="width: 100%"></md-input>
+      	</p>
+		<p>
+			<md-input id="contact-message" placeholder="Nachricht" name="message" required [(ngModel)]="contact.message" style="width: 100%"></md-input>
+		</p>
+
+		<table style="width: 100%" cellspacing="0">
+			<tr>
+        		<td style="width: 50%">
+					<md-checkbox id="contact-journalist" name="journalist" [(ngModel)]="contact.journalist">Sind Sie Journalist?</md-checkbox>
+					<br>
+					<md-checkbox id="contact-confidential" name="confidential" [(ngModel)]="contact.confidential">Nachricht besonders vertraulich behandeln?</md-checkbox>
+				</td>
+        		<td style="width: 50%">
+					<label for="contact-file" md-raised-button>Anhang</label>
+					<input id="contact-file" name="file" type="file" (change)="onFileChange($event)" multiple hidden>
+					{{ fileInputNames || "Files" }}
+				</td>
+      		</tr>
+		</table>
+		<p>
+			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid)" color="primary">Senden</button>
+		</p>
+		<!--<div class="row">
 			<div class="input-field col s6">
 				<input id ="contact-name" type="text" maxlength="50" name="name" class="validate" [(ngModel)]="contact.name">
 				<label for="name">Name (Optional)</label>
@@ -62,6 +92,6 @@
 				<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid)">Senden</button>
 				<span class="glyphicon glyphicon-question-sign" tooltip="Ihre valide Nachricht wird immer verschlüsselt übertragen. Um eine verschlüsselte Antwort zu erhalten fügen Sie bitte der Nachricht Ihren eigenen GPG Public Key im Anhang hinzu." tooltipPlacement="top"></span>
 			</div>
-		</div>
+		</div>-->
 	</form>
 </div>

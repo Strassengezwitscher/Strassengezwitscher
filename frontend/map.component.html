@@ -1,13 +1,18 @@
 <div class="map-wrapper">
     <div class="map-canvas" #mapCanvas></div>
-    <div class="map-settings card-panel">
-        <div class="switch" *ngFor="let mapObjectSetting of mapObjectSettings" [ngClass]="{active: mapObjectSetting.active}">
-            <label>
+    <md-card class="map-settings">
+        <md-card-content>
+            <md-slide-toggle *ngFor="let mapObjectSetting of mapObjectSettings" [(ngModel)]="mapObjectSetting.active" (ngModelChange)="onCheckboxChange()">
                 {{mapObjectSetting.name}}
-                <input type="checkbox" autocomplete="off" [(ngModel)]="mapObjectSetting.active" (ngModelChange)="onCheckboxChange()">
-                <span class="lever"></span>
-            </label>
-        </div>
-    </div>
+            </md-slide-toggle>
+            <!--<div class="switch"  [ngClass]="{active: mapObjectSetting.active}">
+                <label>
+
+                    <input type="checkbox" autocomplete="off" >
+                    <span class="lever"></span>
+                </label>
+            </div>-->
+        </md-card-content>
+    </md-card>
     <div class="error-message card-panel red lighten-3" *ngIf="errorMessage"><span>{{errorMessage}}</span></div>
 </div>

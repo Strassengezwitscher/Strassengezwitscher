@@ -7,8 +7,8 @@
     'app':                        'app', // 'dist',
     'rxjs':                       'static/rxjs',
     '@angular':                   'static/@angular',
+    '@angular2-material':         'static/@angular2-material',
     'symbol-observable':          'static/symbol-observable',
-    'ng2-bootstrap':              'static/ng2-bootstrap',
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
@@ -44,6 +44,22 @@
   var setPackageConfig = System.packageWithIndex || global.ENV == 'testing' ? packIndex : packUmd;
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
+
+
+  // put the names of any of your Material components here
+  const materialPkgs = [
+    'core',
+    'button',
+    'card',
+    'icon',
+    'input',
+    'slide-toggle',
+    'toolbar',
+  ];
+
+  materialPkgs.forEach(function(pkgName) {
+    packages['@angular2-material/' + pkgName] = { main: pkgName + '.js' };
+  });
 
   var config = {
     map: map,

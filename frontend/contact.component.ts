@@ -1,5 +1,9 @@
-import { Component }      from "@angular/core";
-import { Router }         from "@angular/router";
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { MD_INPUT_DIRECTIVES } from "@angular2-material/input/input";
+import { MdButton } from "@angular2-material/button/button";
+import { MdCard } from "@angular2-material/card/card";
+import { MdCheckbox } from "@angular2-material/checkbox/checkbox";
 
 import { ContactService } from "./contact.service";
 import { Contact }        from "./contact";
@@ -9,6 +13,12 @@ import { Contact }        from "./contact";
     selector: "sg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService],
+    directives: [
+        MdCard,
+        MdCheckbox,
+        MdButton,
+        MD_INPUT_DIRECTIVES,
+    ],
 })
 export class ContactComponent {
     private contactErrorMessage: string;
@@ -17,6 +27,7 @@ export class ContactComponent {
     private uploads: FileList;
     private maxFileNameLength = 50;
     private filesValid = true;
+    private fileInputNames = "";
 
     constructor( private contactService: ContactService, private router: Router) {
         this.contact = new Contact("", "", "", "", null, null);
@@ -25,8 +36,10 @@ export class ContactComponent {
 
     public onFileChange(event) {
         let errorMessage = "";
+        let fileNames: String[] = [];
 
         for (let file of event.srcElement.files) {
+            fileNames.push(file.name);
             if (file.name.length > this.maxFileNameLength) {
                 errorMessage += "Name des Anhangs '" + file.name +
                                 "' zu lang (maximal 50 Zeichen)\n";
@@ -38,6 +51,8 @@ export class ContactComponent {
         } else {
             this.filesValid = true;
             this.uploads = event.srcElement.files;
+            this.fileInputNames = fileNames.join(", ");
+            console.log(this.fileInputNames, fileNames)
         }
     }
 

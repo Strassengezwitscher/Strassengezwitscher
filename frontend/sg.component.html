@@ -1,4 +1,18 @@
-<div class="navbar-fixed">
+<md-toolbar>
+  <span class="toolbar-menu"></span>
+  <span class="toolbar-spacer"></span>
+  <a [routerLink]="['/']" class="brand-logo"></a>
+  <span class="toolbar-spacer"></span>
+  <span class="toolbar-menu">
+    <span class="hide-on-med-and-up">
+        <a md-mini-fab [routerLink]="['/contact']"><md-icon>chat</md-icon></buatton>
+    </span>
+    <span class="hide-on-small-only">
+        <a md-button [routerLink]="['/contact']">Kontakt</a>
+    </span>
+  </span>
+</md-toolbar>
+<!--<div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper white black-text">
             <div class="hide-on-med-and-up">
@@ -12,5 +26,5 @@
             </ul>
         </div>
     </nav>
-</div>
+</div>-->
 <router-outlet></router-outlet>

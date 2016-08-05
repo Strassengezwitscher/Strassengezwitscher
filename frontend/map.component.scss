@@ -21,10 +21,6 @@ $height-navbar-mobile: 56px;
   top: #{$height-navbar + 10px};
   margin: 0;
   z-index: 99;
-
-  .switch + .switch {
-    margin-top: 8px;
-  }
 }
 
 .error-message {

@@ -1,4 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import { MD_CARD_DIRECTIVES } from "@angular2-material/card/card";
+import { MdSlideToggle } from "@angular2-material/slide-toggle/slide-toggle";
 
 import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
@@ -11,6 +13,10 @@ export class MapObjectSetting {
     selector: "sg-map",
     templateUrl: "map.component.html",
     providers: [MapService],
+    directives: [
+        MD_CARD_DIRECTIVES,
+        MdSlideToggle,
+    ],
 })
 
 export class MapComponent implements AfterViewInit {
