@@ -106,6 +106,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static/css"),  # noqa
+]
+
 
 # Set absolute URLs
 ABSOLUTE_URL_OVERRIDES = {

@@ -25,6 +25,6 @@ EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS = (
+STATICFILES_DIRS += [
     os.path.join(BASE_DIR, "static/build"),  # noqa
-)
+]
