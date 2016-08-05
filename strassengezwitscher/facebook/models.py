@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -28,7 +28,7 @@ class FacebookPage(MapObject):
 class FacebookLikeStatistic(models.Model):
     date = models.DateField()
     like_count = models.PositiveIntegerField()
-    page = models.ForeignKey(FacebookPage, null=True)
+    page = models.ForeignKey(FacebookPage, models.CASCADE, null=True)
 
     def __repr__(self):
         return '<FacebookLikeStatistic on %s for %s>' % (self.date.strftime('%Y-%m-%d'), self.page)
