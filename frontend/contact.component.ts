@@ -1,4 +1,4 @@
-import { Component, OnInit }  from "@angular/core";
+import { Component, OnInit, NgZone, OnDestroy }  from "@angular/core";
 import { Router }             from "@angular/router";
 
 import { ContactService }     from "./contact.service";
@@ -14,30 +14,37 @@ import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
     providers: [ContactService, CaptchaService],
     directives: [TOOLTIP_DIRECTIVES],
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, OnDestroy {
     private contactErrorMessage: string;
     private contactSuccessMessage: string;
     private contact: Contact;
     private uploads: FileList;
     private maxFileNameLength = 50;
-    private filesValid = true;
-    private captchaVerfied = false;
+    private filesValid;
+    private captchaVerfied;
+    private script;
 
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
-                 private router: Router) {
+                 private router: Router, private zone: NgZone) {
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
+        this.captchaVerfied = false;
         window["verifyCallback"] = this.verifyCallback.bind(this);
     }
 
     public ngOnInit() {
+        // Add script tag manually as it does not work from frontend.html, g-recaptcha not displayed
         let doc = <HTMLDivElement> document.body;
-        let script = document.createElement("script");
-        script.innerHTML = "";
-        script.src = "https://www.google.com/recaptcha/api.js";
-        script.async = true;
-        script.defer = true;
-        doc.appendChild(script);
+        this.script = document.createElement("script");
+        this.script.innerHTML = "";
+        this.script.src = "https://www.google.com/recaptcha/api.js";
+        this.script.async = true;
+        this.script.defer = true;
+        doc.appendChild(this.script);
+    }
+
+    public ngOnDestroy() {
+        this.script.parentNode.removeChild(this.script);
     }
 
     public onFileChange(event) {
@@ -72,8 +79,11 @@ export class ContactComponent implements OnInit {
                                                                 (err) => this.displayError(err));
     }
 
-    private verifiedCaptcha() {
-        this.captchaVerfied = true;
+    public verifiedCaptcha() {
+        // zone required to allow Angular to update variable
+        this.zone.run(() => {
+            this.captchaVerfied = true;
+        });
     }
 
     private displaySuccess() {
