@@ -3,16 +3,19 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from events.models import Event
+from strassengezwitscher.tests import MapObjectViewTestTemplate
 
 
-class EventAPIViewTests(APITestCase):
+class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
 
     fixtures = ['events_views_testdata.json']
+    model = Event
 
-    #
-    # test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
-    # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
-    # on mapobject list ("/api/events/") and detail(e.g."/api/events/1/")
+    """
+     Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
+     via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
+     on mapobject list ("/api/events/") and detail(e.g."/api/events/1/")
+    """
 
     # POST /api/events/
     def test_create_list_events(self):
@@ -51,8 +54,8 @@ class EventAPIViewTests(APITestCase):
             u'active': True,
             u'name': u'Test Event',
             u'location': u'Here',
-            u'locationLat': u'87.654000',
-            u'locationLong': u'45.678000',
+            u'locationLat': 87.654000,
+            u'locationLong': 45.678000,
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
@@ -132,3 +135,31 @@ class EventAPIViewTests(APITestCase):
         url = '/api/facebook1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    """
+    Test backend filters
+    """
+
+    def test_empty_filter(self):
+        url = reverse('events_api:list')
+        super(EventAPIViewTests, self).test_empty_filter(url)
+
+    def test_partial_filter(self):
+        url = reverse('events_api:list')
+        super(EventAPIViewTests, self).test_partial_filter(url)
+
+    def test_no_numbers_filter(self):
+        url = reverse('events_api:list')
+        super(EventAPIViewTests, self).test_no_numbers_filter(url)
+
+    def test_correct_filter(self):
+        url = reverse('events_api:list')
+        square_params = {
+            'min_lat' : 41.941380,
+            'min_long' : 72.467309,
+            'max_lat' : 51.267301,
+            'max_long' : 99.713402
+        }
+        super(EventAPIViewTests, self).test_correct_filter(url, square_params)
+
+
