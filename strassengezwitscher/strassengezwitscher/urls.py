@@ -1,7 +1,7 @@
 """strassengezwitscher URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
+    https://docs.djangoproject.com/en/1.10/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -21,7 +21,7 @@ from . import views
 
 urlpatterns = [
     # Django admin URLs
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
     # API URLs
     url(r'^api/', include('facebook.urls_api', namespace='facebook_api')),
