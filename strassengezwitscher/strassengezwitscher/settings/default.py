@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
     'rest_framework',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -152,6 +153,10 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'strassengezwitscher.utils.custom_exception_handler'
 }
 
 

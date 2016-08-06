@@ -3,7 +3,28 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.exceptions import ValidationError
+from rest_framework import filters
 from decimal import Decimal
+
+class MapObjectFilter(filters.BaseFilterBackend):
+
+    def filter_queryset(self, request, queryset, view):
+
+        square_params = {
+            'min_lat' : request.query_params.get('min_lat', None),
+            'min_long' : request.query_params.get('min_long', None),
+            'max_lat' : request.query_params.get('max_lat', None),
+            'max_long' : request.query_params.get('max_long', None)
+        }
+
+        if square_params['min_lat'] is not None or \
+            square_params['min_long'] is not None or\
+            square_params['max_lat'] is not None or \
+            square_params['max_long'] is not None:
+
+            return queryset.model.get_mapobjects_in_square(square_params)
+
+        return queryset
 
 
 @python_2_unicode_compatible
