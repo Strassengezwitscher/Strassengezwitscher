@@ -1,26 +1,26 @@
 from __future__ import unicode_literals
-
+from decimal import Decimal
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.exceptions import ValidationError
 from rest_framework import filters
-from decimal import Decimal
+
 
 class MapObjectFilter(filters.BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
 
         square_params = {
-            'min_lat' : request.query_params.get('min_lat', None),
-            'min_long' : request.query_params.get('min_long', None),
-            'max_lat' : request.query_params.get('max_lat', None),
-            'max_long' : request.query_params.get('max_long', None)
+            'min_lat': request.query_params.get('min_lat', None),
+            'min_long': request.query_params.get('min_long', None),
+            'max_lat': request.query_params.get('max_lat', None),
+            'max_long': request.query_params.get('max_long', None)
         }
 
         if square_params['min_lat'] is not None or \
-            square_params['min_long'] is not None or\
-            square_params['max_lat'] is not None or \
-            square_params['max_long'] is not None:
+                square_params['min_long'] is not None or\
+                square_params['max_lat'] is not None or \
+                square_params['max_long'] is not None:
 
             return queryset.model.get_mapobjects_in_square(square_params)
 
@@ -59,7 +59,8 @@ class MapObject(models.Model):
             The right top corner is called 'Max' and defined by 'max_lat' and 'max_long'.
             The MapObject to check is called 'MO'.
             'MO' is in the square iff 'MO' is right/above of 'Min' and left/below 'Max'.
-            Whenever 'Min' is left of the +180/-180 longitude and 'MO'/'Max' right of it, 'MO'/'Max' get shifted by 360 degrees.
+            Whenever 'Min' is left of the +180/-180 longitude and 'MO'/'Max' right of it, 'MO'/'Max' get
+            shifted by 360 degrees.
 
              _______.< Max
             |       |
@@ -71,31 +72,35 @@ class MapObject(models.Model):
         square_params_decimal = cls.get_as_decimals(square_params)
 
         if not cls.are_valid_params(square_params_decimal):
-            raise ValidationError({'message': "Please provide latitude values in range [-90, 90] and longitude values in range [-180, 180]."})
+            raise ValidationError(
+                {
+                    'message': ('Please provide latitude values in range [-90, 90] and'
+                                'longitude values in range [-180, 180].')
+                })
 
         return [o for o in cls.objects.all() if o.is_in_square(square_params_decimal)]
-
 
     @classmethod
     def are_valid_params(cls, square_params):
         return cls.is_valid_latitude(square_params['min_lat']) and \
-                cls.is_valid_latitude(square_params['max_lat']) and \
-                cls.is_valid_longitude(square_params['min_long']) and \
-                cls.is_valid_longitude(square_params['max_long'])
+            cls.is_valid_latitude(square_params['max_lat']) and \
+            cls.is_valid_longitude(square_params['min_long']) and \
+            cls.is_valid_longitude(square_params['max_long'])
 
     @classmethod
     def get_as_decimals(cls, square_params):
         try:
             square_params_decimal = {
-                'min_lat' : Decimal(square_params['min_lat']),
-                'max_lat' : Decimal(square_params['max_lat']),
-                'min_long' : Decimal(square_params['min_long']),
-                'max_long' : Decimal(square_params['max_long'])
+                'min_lat': Decimal(square_params['min_lat']),
+                'max_lat': Decimal(square_params['max_lat']),
+                'min_long': Decimal(square_params['min_long']),
+                'max_long': Decimal(square_params['max_long'])
             }
 
             return square_params_decimal
         except:
-            raise ValidationError({'message': "Please provide decimal values for 'min_lat', 'max_lat', 'min_long', 'max_long'."})
+            raise ValidationError(
+                {'message': "Please provide decimal values for 'min_lat', 'max_lat', 'min_long', 'max_long'."})
 
     @classmethod
     def is_valid_longitude(cls, longitude):
@@ -107,7 +112,8 @@ class MapObject(models.Model):
 
     def is_in_square(self, square_params):
         return self.is_between_latitudes(square_params['min_lat'], square_params['max_lat']) and \
-                self.is_between_longitudes(square_params['min_long'], square_params['max_long'])
+            self.is_between_longitudes(
+                square_params['min_long'], square_params['max_long'])
 
     def is_between_longitudes(self, min_long, max_long):
 
