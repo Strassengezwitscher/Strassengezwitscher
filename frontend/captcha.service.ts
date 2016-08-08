@@ -14,11 +14,11 @@ export class CaptchaService {
     let headers = new Headers({ "Content-Type": "application/json" });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.captchaUrl, body, options)
-                    .map(this.handleReponse)
+                    .map(this.handleResponse)
                     .catch(this.handleError);
     }
 
-    private handleReponse(response: Response) {
+    private handleResponse(response: Response) {
         return response.json();
     }
 

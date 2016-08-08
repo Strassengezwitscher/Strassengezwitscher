@@ -13,9 +13,9 @@ def validate_captcha(request):
     """
     Receives post data from the Google Recaptcha and verifies it with the Google service.
     """
-    verified_reponse = validate_grecaptcha(request.data['response'])
-    if verified_reponse.get("success") is not True:
-        return Response(data={'status': 'error', 'errors': verified_reponse.get('error-codes', [])},
+    verified_response = validate_grecaptcha(request.data['response'])
+    if verified_response.get("success") is not True:
+        return Response(data={'status': 'error', 'errors': verified_response.get('error-codes', [])},
                         status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'status': 'success'})

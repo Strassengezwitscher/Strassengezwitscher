@@ -4,7 +4,7 @@ from django.conf import settings
 
 def validate_grecaptcha(response):
     """
-    Takes a value of 'g-captcha-reponse' and validates the google recaptcha.
+    Takes a value of 'g-captcha-response' and validates the google recaptcha.
     """
 
     url = "https://www.google.com/recaptcha/api/siteverify"
