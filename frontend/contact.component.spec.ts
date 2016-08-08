@@ -4,12 +4,13 @@ import { CaptchaService }             from "./captcha.service";
 import { Contact }                    from "./contact";
 import { BaseRequestOptions, Http }   from "@angular/http";
 import { MockBackend }                from "@angular/http/testing";
+import { NgZone }                     from "@angular/core";
 
 describe("ContactComponent", () => {
 
     beforeEach(function() {
         this.cc = new ContactComponent(new ContactService(), new CaptchaService(
-                                       new Http(new MockBackend(), new BaseRequestOptions())), null, null);
+                                       new Http(new MockBackend(), new BaseRequestOptions())), null, new NgZone(true));
     });
 
     it("check if error message is set", function () {
@@ -66,5 +67,17 @@ describe("ContactComponent", () => {
         this.cc.ngOnInit();
         let scriptTag = document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]');
         expect(scriptTag != null);
+    });
+
+    it("check that captcha is verified", function() {
+        this.cc.verifiedCaptcha();
+        expect(this.cc.captchaVerfied).toEqual(true);
+    });
+
+    it("check if script tag for recaptcha is correctly removed", function() {
+        this.cc.ngOnInit();
+        this.cc.ngOnDestroy();
+        let scriptTag = document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]');
+        expect(scriptTag == null);
     });
 });
