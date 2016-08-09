@@ -10,7 +10,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")  # noqa
 
 
 # Password validation
@@ -68,9 +68,9 @@ EMAIL_HOST_PASSWORD = 'password'  # noqa
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS = (
+STATICFILES_DIRS += [
     os.path.join(BASE_DIR, "static/dist"),  # noqa
-)
+]
 
 # REST Framework
 # http://www.django-rest-framework.org/api-guide/settings/

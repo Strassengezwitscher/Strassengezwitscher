@@ -4,16 +4,20 @@ from django.test import Client, TestCase
 from django.contrib.auth.models import User
 
 
-class UserViewTests(TestCase):
+class UserViewLoggedInTests(TestCase):
     fixtures = ['users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
+
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
 
     # List
     def test_get_list_view(self):
         response = self.client.get(reverse('users:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
-        self.assertEqual(len(response.context['users']), 2)  # Don't show superusers
+        self.assertEqual(len(response.context['users']), 3)  # Don't show superusers
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('users:list'))
@@ -23,8 +27,8 @@ class UserViewTests(TestCase):
     def test_get_detail_view(self):
         response = self.client.get(reverse('users:detail', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('user', response.context)
-        self.assertEqual(response.context['user'], User.objects.get(pk=1))
+        self.assertIn('user_data', response.context)
+        self.assertEqual(response.context['user_data'], User.objects.get(pk=1))
 
     def test_get_detail_view_not_existant(self):
         response = self.client.get(reverse('users:detail', kwargs={'pk': 1000}))
@@ -47,8 +51,8 @@ class UserViewTests(TestCase):
             'password': '123456',
         }
         response = self.client.post(reverse('users:create'), data, follow=True)
-        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 4}))
-        self.assertNotEqual(User.objects.get(pk=4).password, '123456', 'User password is stored as hash.')
+        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 5}))
+        self.assertNotEqual(User.objects.get(pk=5).password, '123456', 'User password is stored as hash.')
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('users:create'))
@@ -107,3 +111,29 @@ class UserViewTests(TestCase):
     def test_post_update_view_without_csrf_token(self):
         response = self.csrf_client.post(reverse('users:update', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 403)
+
+
+class UserViewLoggedOutTests(TestCase):
+    # List
+    def test_get_list_view(self):
+        url = reverse('users:list')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Detail
+    def test_get_detail_view(self):
+        url = reverse('users:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Create
+    def test_get_create_view(self):
+        url = reverse('users:create')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Update
+    def test_get_update_view(self):
+        url = reverse('users:update', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
