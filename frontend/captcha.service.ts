@@ -24,11 +24,15 @@ export class CaptchaService {
 
     private handleError(error: any) {
         let errorMessage = "Interner Fehler im Captcha: \n";
-        let errors = JSON.parse(error._body).errors;
-        if (errors.length) {
-            for (let msg of errors) {
-                errorMessage += msg + " \n";
+        if (error._body) {
+            let errors = JSON.parse(error._body).errors;
+            if (errors.length) {
+                for (let msg of errors) {
+                    errorMessage += msg + " \n";
+                }
             }
+        } else if (error.message){
+            errorMessage = error.message;
         } else if (error.status) {
             errorMessage = `${error.status} - ${error.statusText}`;
         }
