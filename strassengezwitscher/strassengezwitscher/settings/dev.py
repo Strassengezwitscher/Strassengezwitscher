@@ -23,13 +23,6 @@ EMAIL_TO_CONTACT_CONFIDENTIAL = ['user@provider']
 EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
 
 ######################################################################################################
-#                                           Recaptcha settings
-######################################################################################################
-
-# This should be replaced by proper SECRET_KEY
-RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
-
-######################################################################################################
 
 # set additonal directories for static files
 STATICFILES_DIRS = (

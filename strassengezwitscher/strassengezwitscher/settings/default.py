@@ -115,6 +115,14 @@ ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: '/intern/users/%s/' % u.id,
 }
 
+######################################################################################################
+#                                           Recaptcha settings
+######################################################################################################
+
+# This is key for development purposes only
+RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
+
+######################################################################################################
 
 # According to http://12factor.net/logs we always log to stdout/stderr and do not manage log files.
 # Production log files are managed by the production execution environment, never Django itself.
