@@ -3,7 +3,6 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
-
 import { StrassengezwitscherComponent } from "./sg.component";
 import { routing } from "./sg.routing";
 
@@ -12,7 +11,6 @@ import { ContactComponent } from "./contact.component";
 
 import { MapService } from "./map.service";
 import { ContactService } from "./contact.service";
-
 
 @NgModule({
     imports: [

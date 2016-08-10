@@ -17,7 +17,7 @@ describe("MapService", () => {
                     useFactory: (backend, options) => new Http(backend, options),
                     deps: [MockBackend, BaseRequestOptions],
                 }),
-            ]
+            ],
         });
     });
 
