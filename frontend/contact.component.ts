@@ -5,13 +5,14 @@ import { ContactService }     from "./contact.service";
 import { Contact }            from "./contact";
 
 import { CaptchaService }     from "./captcha.service";
+import { ConfigurationService }      from "./config.service";
 
 import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
     selector: "sg-contact",
     templateUrl: "contact.component.html",
-    providers: [ContactService, CaptchaService],
+    providers: [ContactService, CaptchaService, ConfigurationService],
     directives: [TOOLTIP_DIRECTIVES],
 })
 export class ContactComponent implements OnInit, OnDestroy {
@@ -23,13 +24,15 @@ export class ContactComponent implements OnInit, OnDestroy {
     private filesValid;
     private captchaVerfied;
     private script;
+    private grecaptchaKey;
 
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
-                 private router: Router, private zone: NgZone) {
+                 private configService: ConfigurationService, private router: Router, private zone: NgZone) {
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
         this.captchaVerfied = false;
         window["verifyCallback"] = this.verifyCallback.bind(this);
+        this.grecaptchaKey = this.configService.getConfigEntry("data-sitekey");
     }
 
     public ngOnInit() {

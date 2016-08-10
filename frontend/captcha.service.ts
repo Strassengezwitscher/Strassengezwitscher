@@ -31,7 +31,7 @@ export class CaptchaService {
                     errorMessage += msg + " \n";
                 }
             }
-        } else if (error.message){
+        } else if (error.message) {
             errorMessage = error.message;
         } else if (error.status) {
             errorMessage = `${error.status} - ${error.statusText}`;

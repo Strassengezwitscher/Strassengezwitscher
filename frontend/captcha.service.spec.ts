@@ -33,14 +33,13 @@ describe("CaptchaService", () => {
         mockBackend.connections.subscribe(connection => {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(response)})));
         });
-        service.validateCaptcha().subscribe(response => {
-            expect(response).toContain({
+        service.validateCaptcha().subscribe(res => {
+            expect(res).toContain({
                 "status": "success",
             });
             done();
         });
     });
-
 
     it("Should return server error message if Internal Server Error occurs", done => {
         mockBackend.connections.subscribe(connection => {
@@ -49,7 +48,6 @@ describe("CaptchaService", () => {
         try {
             service.validateCaptcha().subscribe();
         } catch (error) {
-            console.log(error);
             expect(error).toBe("Internal Server Error 500");
         }
         done();

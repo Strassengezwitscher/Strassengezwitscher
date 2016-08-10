@@ -1,6 +1,7 @@
 import { ContactComponent }           from "./contact.component";
 import { ContactService }             from "./contact.service";
 import { CaptchaService }             from "./captcha.service";
+import { ConfigurationService }              from "./config.service";
 import { Contact }                    from "./contact";
 import { BaseRequestOptions, Http }   from "@angular/http";
 import { MockBackend }                from "@angular/http/testing";
@@ -9,8 +10,8 @@ import { NgZone }                     from "@angular/core";
 describe("ContactComponent", () => {
 
     beforeEach(function() {
-        this.cc = new ContactComponent(new ContactService(), new CaptchaService(
-                                       new Http(new MockBackend(), new BaseRequestOptions())), null, new NgZone(true));
+        this.cc = new ContactComponent(new ContactService(), new CaptchaService(new Http(new MockBackend(),
+                                       new BaseRequestOptions())), new ConfigurationService(), null, new NgZone(true));
     });
 
     it("check if error message is set", function () {
