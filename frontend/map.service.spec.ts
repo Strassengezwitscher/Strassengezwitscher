@@ -1,5 +1,5 @@
 import { provide } from "@angular/core";
-import { inject, beforeEachProviders } from "@angular/core/testing";
+import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
@@ -7,24 +7,21 @@ import { MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
 
 describe("MapService", () => {
-    let mockBackend;
-    let service;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                MapService,
+                MockBackend,
+                BaseRequestOptions,
+                provide(Http, {
+                    useFactory: (backend, options) => new Http(backend, options),
+                    deps: [MockBackend, BaseRequestOptions],
+                }),
+            ]
+        });
+    });
 
-    beforeEachProviders(() => [
-        MapService,
-        MockBackend,
-        BaseRequestOptions,
-        provide(Http, {
-        useFactory: (backend, options) => new Http(backend, options),
-        deps: [MockBackend, BaseRequestOptions]}),
-    ]);
-
-    beforeEach(inject([MockBackend, MapService], (_mockBackend, _service) => {
-        mockBackend = _mockBackend;
-        service = _service;
-    }));
-
-    it("Should return mocked response", done => {
+    it("Should return mocked response", inject([MockBackend, MapService], (mockBackend, service) => {
         let response = [
             {
                 "id": 13,
@@ -65,22 +62,20 @@ describe("MapService", () => {
                 "locationLat": "51.049329",
             });
             expect(mapObjects.length).toBe(2);
-            done();
         });
-    });
+    }));
 
-    it("Should return empty array if server answer is empty", done => {
+    it("Should return empty array if server answer is empty", inject([MockBackend, MapService], (mockBackend, service) => {
         let emptyResponse = [];
         mockBackend.connections.subscribe(connection => {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(emptyResponse)})));
         });
         service.getMapObjects().subscribe(mapObjects => {
             expect(mapObjects.length).toBe(0);
-            done();
         });
-    });
+    }));
 
-    it("Should return JSON Parse error if server responds malforemd", done => {
+    it("Should return JSON Parse error if server responds malforemd", inject([MockBackend, MapService], (mockBackend, service) => {
         let malformedResponse = "[{\"id\": 25, \"name\":}]";
 
         mockBackend.connections.subscribe(connection => {
@@ -91,10 +86,9 @@ describe("MapService", () => {
         } catch (error) {
             expect(error).toBe("JSON Parse error: Unexpected token '}'");
         }
-        done();
-    });
+    }));
 
-    it("Should return server error if Internal Server Error occurs", done => {
+    it("Should return server error if Internal Server Error occurs", inject([MockBackend, MapService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
             connection.mockError(new Error("Internal Server Error 500"));
         });
@@ -103,22 +97,19 @@ describe("MapService", () => {
         } catch (error) {
             expect(error).toBe("Internal Server Error 500");
         }
-        done();
-    });
+    }));
 
-    it("Should return error status code and text if present", done => {
+    it("Should return error status code and text if present", inject([MapService], (service) => {
         spyOn(service, "handleError").and.callThrough();
         let err = {statusText: "Resource not found", status: 404};
 
         expect(service.handleError(err).error).toBe("404 - Resource not found");
-        done();
-    });
+    }));
 
-    it("Should have an initialized urlMap after construction", done => {
+    it("Should have an initialized urlMap after construction", inject([MapService], (service) => {
         expect(service.urlMap.size).toBe(2);
         expect(service.urlMap.get(MapObjectType.EVENTS)).toBe("api/events.json");
         expect(service.urlMap.get(MapObjectType.FACEBOOK_PAGES)).toBe("api/facebook.json");
-        done();
-    });
+    }));
 
 });

@@ -51,6 +51,7 @@ module.exports = function () {
             path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'rxjs/**/*',
             path.npm + '@angular/**/*',
+            path.npm + '@angular2-material',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
             path.npm + 'ng2-bootstrap/**/*',
