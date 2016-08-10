@@ -1,12 +1,9 @@
-import { Component, OnInit, NgZone, OnDestroy }  from "@angular/core";
-import { Router }             from "@angular/router";
-
-import { ContactService }     from "./contact.service";
-import { Contact }            from "./contact";
-
-import { CaptchaService }     from "./captcha.service";
-import { ConfigurationService }      from "./config.service";
-
+import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import { ContactService } from "./contact.service";
+import { Contact } from "./contact";
+import { CaptchaService } from "./captcha.service";
+import { ConfigurationService } from "./config.service";
 import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({

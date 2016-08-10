@@ -1,11 +1,11 @@
-import { ContactComponent }           from "./contact.component";
-import { ContactService }             from "./contact.service";
-import { CaptchaService }             from "./captcha.service";
-import { ConfigurationService }              from "./config.service";
-import { Contact }                    from "./contact";
-import { BaseRequestOptions, Http }   from "@angular/http";
-import { MockBackend }                from "@angular/http/testing";
-import { NgZone }                     from "@angular/core";
+import { ContactComponent } from "./contact.component";
+import { ContactService } from "./contact.service";
+import { CaptchaService } from "./captcha.service";
+import { ConfigurationService } from "./config.service";
+import { Contact } from "./contact";
+import { BaseRequestOptions, Http } from "@angular/http";
+import { MockBackend } from "@angular/http/testing";
+import { NgZone } from "@angular/core";
 
 describe("ContactComponent", () => {
 
