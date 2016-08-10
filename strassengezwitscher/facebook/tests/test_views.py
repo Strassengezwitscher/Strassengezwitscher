@@ -1,12 +1,17 @@
-from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.urls import reverse
 from django.test import Client, TestCase
 
 from facebook.models import FacebookPage
 
 
-class FacebookPageViewTests(TestCase):
+class FacebookPageViewLoggedInTests(TestCase):
     fixtures = ['facebook_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
+
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
 
     # List
     def test_get_list_view(self):
@@ -135,3 +140,35 @@ class FacebookPageViewTests(TestCase):
     def test_post_delete_view_without_csrf_token(self):
         response = self.csrf_client.post(reverse('facebook:delete', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 403)
+
+
+class FacebookPageViewLoggedOutTests(TestCase):
+    # List
+    def test_get_list_view(self):
+        url = reverse('facebook:list')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Detail
+    def test_get_detail_view(self):
+        url = reverse('facebook:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Create
+    def test_get_create_view(self):
+        url = reverse('facebook:create')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Update
+    def test_get_update_view(self):
+        url = reverse('facebook:update', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Delete
+    def test_get_delete_view(self):
+        url = reverse('facebook:delete', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)

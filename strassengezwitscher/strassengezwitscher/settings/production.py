@@ -10,7 +10,27 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")  # noqa
+
+
+# Password validation
+# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
 
 ######################################################################################################
 #                                           Email settings
@@ -48,9 +68,9 @@ EMAIL_HOST_PASSWORD = 'password'  # noqa
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS = (
+STATICFILES_DIRS += [
     os.path.join(BASE_DIR, "static/dist"),  # noqa
-)
+]
 
 # REST Framework
 # http://www.django-rest-framework.org/api-guide/settings/
