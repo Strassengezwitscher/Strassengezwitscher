@@ -1,6 +1,6 @@
-import { Injectable }     from "@angular/core";
-import { Response }       from "@angular/http";
-import { Observable }     from "rxjs/Observable";
+import { Injectable } from "@angular/core";
+import { Response } from "@angular/http";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class ContactService {
@@ -35,7 +35,7 @@ export class ContactService {
                         observer.next(JSON.parse(xhr.response));
                         observer.complete();
                     } else {
-                        observer.error({"error": JSON.parse(xhr.response), "status": xhr.status});
+                        observer.error(this.handleError({"error": JSON.parse(xhr.response), "status": xhr.status}));
                     }
                 }
             };
@@ -43,5 +43,19 @@ export class ContactService {
             xhr.open("POST", this.contactURL, true);
             xhr.send(formData);
         });
+    }
+
+    private handleError(err: any) {
+        let contactErrorMessage = "Fehler bei der Kontaktaufnahme: \n";
+        if (err.status === 400) {
+            for (let key in err.error.errors) {
+                if (err.error.errors.hasOwnProperty(key)) {
+                    contactErrorMessage += key + ": " + err.error.errors[key] + " \n";
+                }
+            }
+        } else {
+            contactErrorMessage += "Interner Fehler, " + err.error.errors;
+        }
+        return contactErrorMessage;
     }
 }

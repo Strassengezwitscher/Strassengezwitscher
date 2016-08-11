@@ -44,11 +44,10 @@ module.exports = function () {
 
     var npm = {
         static: [
-            // path.npm + 'bootstrap/dist/css/bootstrap.min.css',
-            // path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
-            // path.npm + 'bootstrap/dist/fonts/*',
-            // path.npm + 'materialize-css/dist/css/materialize.min.css',
-            // path.npm + 'materialize-css/dist/fonts/roboto/*',
+            path.npm + 'bootstrap/dist/css/bootstrap.min.css',
+            path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
+            path.npm + 'bootstrap/dist/js/bootstrap.min.js',
+            path.npm + 'bootstrap/dist/fonts/*',
             path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'materialize-css/dist/js/materialize.min.js',
             path.npm + 'rxjs/**/*',

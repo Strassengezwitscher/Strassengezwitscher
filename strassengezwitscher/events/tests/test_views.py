@@ -1,12 +1,17 @@
-from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.urls import reverse
 from django.test import Client, TestCase
 
 from events.models import Event
 
 
-class EventViewTests(TestCase):
+class EventViewLoggedInTests(TestCase):
     fixtures = ['events_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
+
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
 
     # List
     def test_get_list_view(self):
@@ -145,3 +150,35 @@ class EventViewTests(TestCase):
     def test_post_delete_view_without_csrf_token(self):
         response = self.csrf_client.post(reverse('events:delete', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 403)
+
+
+class EventViewLoggedOutTests(TestCase):
+    # List
+    def test_get_list_view(self):
+        url = reverse('events:list')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Detail
+    def test_get_detail_view(self):
+        url = reverse('events:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Create
+    def test_get_create_view(self):
+        url = reverse('events:create')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Update
+    def test_get_update_view(self):
+        url = reverse('events:update', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Delete
+    def test_get_delete_view(self):
+        url = reverse('events:delete', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)

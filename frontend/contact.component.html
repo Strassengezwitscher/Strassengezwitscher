@@ -52,6 +52,9 @@
 				</td>
 			</tr>
 		</table>
+
+		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="grecaptchaKey" data-callback="verifyCallback"></div>
+
 		<p>
 			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid)" color="accent">Senden</button>
 		</p>
@@ -66,6 +69,7 @@
 				<label for="email">Email (Optional)</label>
 			</div>
 
+<<<<
 			<div class="input-field col s12">
 				<input id ="contact-subject" type="text" name="subject" class="validate" required [(ngModel)]="contact.subject">
 				<label for="subject">Betreff</label>
@@ -105,6 +109,22 @@
 				<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid)">Senden</button>
 				<span class="glyphicon glyphicon-question-sign" tooltip="Ihre valide Nachricht wird immer verschlüsselt übertragen. Um eine verschlüsselte Antwort zu erhalten fügen Sie bitte der Nachricht Ihren eigenen GPG Public Key im Anhang hinzu." tooltipPlacement="top"></span>
 			</div>
-		</div>-->
+		</div>
+
+		<div class="form-group">
+			<input id="contact-confidential" type="checkbox" name="confidential" [(ngModel)]="contact.confidential">
+			<label for="confidential"> Nachricht besonders vertraulich behandeln? </label>
+			<span class="glyphicon glyphicon-question-sign" tooltip="Durch das Setzen dieses Häkchens wird Ihre Nachricht nur an einen ausgewählten internen Kreis übermittelt." tooltipPlacement="right"></span>
+		</div>
+==
+		<div class="form-group">
+			<label for="file"> Anhang: </label>
+			<input id="contact-file" name="file" type="file" multiple maxlength="50" [class]="filesValid ? 'form-control ng-valid' : 'form-control ng-invalid' " #fileInput (change)="onFileChange($event)">
+		</div>
+		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="grecaptchaKey" data-callback="verifyCallback"></div>
+		<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid && captchaVerfied)">Submit</button>
+		<span class="glyphicon glyphicon-question-sign" tooltip="Ihre valide Nachricht wird immer verschlüsselt übertragen. Um eine verschlüsselte Antwort zu erhalten, fügen Sie bitte der Nachricht Ihren eigenen GPG Public Key im Anhang hinzu." tooltipPlacement="top"></span>
+		</div>
+-->
 	</form>
 </div>

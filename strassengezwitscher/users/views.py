@@ -1,11 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-
 from django.contrib.auth.models import User
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
@@ -14,13 +14,13 @@ class UserListView(ListView):
         return User.objects.exclude(is_staff=True)
 
 
-class UserDetail(DetailView):
+class UserDetail(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'users/detail.html'
-    context_object_name = 'user'
+    context_object_name = 'user_data'
 
 
-class UserCreate(CreateView):
+class UserCreate(LoginRequiredMixin, CreateView):
     model = User
     template_name = 'users/form.html'
     fields = ['username', 'email', 'password', 'groups']
@@ -30,9 +30,10 @@ class UserCreate(CreateView):
         return super(UserCreate, self).form_valid(form)
 
 
-class UserUpdate(UpdateView):
+class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'users/form.html'
+    context_object_name = 'user_data'
     fields = ['username', 'first_name', 'last_name', 'email', 'password', 'is_active', 'groups']
 
     def form_valid(self, form):

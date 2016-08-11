@@ -2,14 +2,14 @@
 
 {% block content %}
 
-<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+<h1>{{ user_data.first_name }} {{ user_data.last_name }}</h1>
 <ul>
-    <li><b>Username:</b> {{ user.username }}</li>
-    <li><b>Email:</b> {{ user.email }}</li>
-    <li><b>Active:</b> {{ user.is_active }}</li>
+    <li><b>Username:</b> {{ user_data.username }}</li>
+    <li><b>Email:</b> {{ user_data.email }}</li>
+    <li><b>Active:</b> {{ user_data.is_active }}</li>
     <li><b>Rollen:</b>
         <ul>
-            {% for group in user.groups.all %}
+            {% for group in user_data.groups.all %}
                 <li>{{ group }}</li>
             {% endfor %}
         </ul>

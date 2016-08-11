@@ -1,22 +1,22 @@
-import { ContactComponent }   from "./contact.component";
-import { ContactService }     from "./contact.service";
-import { Contact }            from "./contact";
+import { ContactComponent } from "./contact.component";
+import { ContactService } from "./contact.service";
+import { CaptchaService } from "./captcha.service";
+import { ConfigurationService } from "./config.service";
+import { Contact } from "./contact";
+import { BaseRequestOptions, Http } from "@angular/http";
+import { MockBackend } from "@angular/http/testing";
+import { NgZone } from "@angular/core";
 
 describe("ContactComponent", () => {
 
     beforeEach(function() {
-        this.cc = new ContactComponent(new ContactService(), null);
+        this.cc = new ContactComponent(new ContactService(), new CaptchaService(new Http(new MockBackend(),
+                                       new BaseRequestOptions())), new ConfigurationService(), null, new NgZone(true));
     });
 
     it("check if error message is set", function () {
-        this.cc.displayError({"status": 500, "error": {"errors": "wrong"}});
+        this.cc.displayError("Fehler bei der Kontaktaufnahme: \nInterner Fehler, wrong");
         expect(this.cc.contactErrorMessage).toEqual("Fehler bei der Kontaktaufnahme: \nInterner Fehler, wrong");
-    });
-
-    it("check if error message is set (status 400)", function () {
-        this.cc.displayError({"status": 400, "error": {"errors": {"name": "exceeds 50", "email": "wrong"}}});
-        expect(this.cc.contactErrorMessage).toEqual("Fehler bei der Kontaktaufnahme: \n" +
-            "name: exceeds 50 \nemail: wrong \n");
     });
 
     it("check if error message is cleared", function () {
@@ -56,5 +56,23 @@ describe("ContactComponent", () => {
         setTimeout(function(){
             expect(tmpCC.cc.contactSuccessMessage).toEqual("");
         }, 5000);
+    });
+
+    it("check if script tag for recaptcha is available", function() {
+        this.cc.ngOnInit();
+        let scriptTag = document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]');
+        expect(scriptTag != null);
+    });
+
+    it("check that captcha is verified", function() {
+        this.cc.verifiedCaptcha();
+        expect(this.cc.captchaVerfied).toEqual(true);
+    });
+
+    it("check if script tag for recaptcha is correctly removed", function() {
+        this.cc.ngOnInit();
+        this.cc.ngOnDestroy();
+        let scriptTag = document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]');
+        expect(scriptTag == null);
     });
 });
