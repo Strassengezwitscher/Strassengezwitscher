@@ -14,12 +14,12 @@
 	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
 		<table style="width: 100%" cellspacing="0">
 			<tr>
-        		<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" style="width: 100%"></md-input></td>
-        		<td><md-input id="contact-email" placeholder="Email" type="email" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" style="width: 100%"></md-input></td>
+				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
+				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
       		</tr>
 		</table>
 		<div>
-			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" style="width: 100%"></md-input>
+			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" dividerColor="accent" style="width: 100%"></md-input>
 		</div>
 		<div class="input-field">
 			<textarea id="contact-message" class="materialize-textarea" name="message" required [(ngModel)]="contact.message"></textarea>
@@ -53,7 +53,7 @@
 			</tr>
 		</table>
 		<p>
-			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid)" color="primary">Senden</button>
+			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid)" color="accent">Senden</button>
 		</p>
 		<!--<div class="row">
 			<div class="input-field col s6">

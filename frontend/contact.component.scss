@@ -44,12 +44,12 @@ textarea.materialize-textarea {
 }
 
 textarea.materialize-textarea:focus {
-  border-bottom: 1px solid #26a69a;
-  box-shadow: 0 1px 0 0 #26a69a;
+  border-bottom: 1px solid #9c27b0;
+  box-shadow: 0 1px 0 0 #9c27b0;
 }
 
 textarea.materialize-textarea:focus:not([readonly]) + label {
-  color: #26a69a;
+  color: #9c27b0;
 }
 
 textarea.materialize-textarea.validate + label {
