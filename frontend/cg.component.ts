@@ -5,10 +5,10 @@ import { ROUTER_DIRECTIVES } from "@angular/router";
 import "./rxjs-operators";
 
 @Component({
-    selector: "sg-app",
-    templateUrl: "sg.component.html",
+    selector: "cg-app",
+    templateUrl: "cg.component.html",
     directives: [
         ROUTER_DIRECTIVES,
     ],
 })
-export class StrassengezwitscherComponent {}
+export class CrowdgezwitscherComponent {}

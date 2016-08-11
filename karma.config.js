@@ -35,8 +35,8 @@ module.exports = function(config) {
 
         // proxied base paths
         proxies: {
-            '/static/': '/base/strassengezwitscher/static/build/',
-            '/strassengezwitscher/': '/base/strassengezwitscher/'
+            '/static/': '/base/crowdgezwitscher/static/build/',
+            '/crowdgezwitscher/': '/base/crowdgezwitscher/'
         },
 
         port: 9876,

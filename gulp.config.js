@@ -2,8 +2,8 @@ module.exports = function () {
     var root = './';
     var path = {
         root: root,
-        build: root + 'strassengezwitscher/static/build/',
-        dist: root + 'strassengezwitscher/static/dist/',
+        build: root + 'crowdgezwitscher/static/build/',
+        dist: root + 'crowdgezwitscher/static/dist/',
         npm: root + 'node_modules/',
         frontend: 'frontend/',
         report: root + '.report/',

@@ -7,7 +7,7 @@ import { ConfigurationService } from "./config.service";
 import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
-    selector: "sg-contact",
+    selector: "cg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService, CaptchaService, ConfigurationService],
     directives: [TOOLTIP_DIRECTIVES],

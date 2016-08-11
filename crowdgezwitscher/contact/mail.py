@@ -11,7 +11,7 @@ from django.core import mail
 
 from gnupg import GPG
 
-from strassengezwitscher.log import logger
+from crowdgezwitscher.log import logger
 from contact.models import Key
 from contact.utils import GPGException, TemporaryDirectory, handle_gpg_error
 

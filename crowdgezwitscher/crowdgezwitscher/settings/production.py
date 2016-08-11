@@ -87,7 +87,7 @@ REST_FRAMEWORK = {
     )
 }
 
-LOGGING['loggers']['strassengezwitscher']['level'] = 'INFO'  # noqa
+LOGGING['loggers']['crowdgezwitscher']['level'] = 'INFO'  # noqa
 
 # Create a sensitive_settings.py to override settings with sensible values
 # that shall not be checked in to the repository

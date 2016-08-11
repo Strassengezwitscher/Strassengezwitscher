@@ -5,10 +5,10 @@ import { bootstrap } from "@angular/platform-browser-dynamic";
 import { HTTP_PROVIDERS } from "@angular/http";
 import { disableDeprecatedForms, provideForms } from "@angular/forms";
 
-import { StrassengezwitscherComponent } from "./sg.component";
-import { APP_ROUTER_PROVIDERS } from "./sg.routes";
+import { CrowdgezwitscherComponent } from "./cg.component";
+import { APP_ROUTER_PROVIDERS } from "./cg.routes";
 
-bootstrap(StrassengezwitscherComponent, [
+bootstrap(CrowdgezwitscherComponent, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     disableDeprecatedForms(),
