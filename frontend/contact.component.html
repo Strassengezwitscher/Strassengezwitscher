@@ -18,12 +18,13 @@
         		<td><md-input id="contact-email" placeholder="Email" type="email" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" style="width: 100%"></md-input></td>
       		</tr>
 		</table>
-		<p>
+		<div>
 			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" style="width: 100%"></md-input>
-      	</p>
-		<p>
-			<md-input id="contact-message" placeholder="Nachricht" name="message" required [(ngModel)]="contact.message" style="width: 100%"></md-input>
-		</p>
+		</div>
+		<div class="input-field">
+			<textarea id="contact-message" class="materialize-textarea" name="message" required [(ngModel)]="contact.message"></textarea>
+			<label for="contact-message">Nachricht *</label>
+		</div>
 
 		<table style="width: 100%" cellspacing="0">
 			<tr>
