@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
+    'captcha.apps.CaptchaConfig',
     'rest_framework',
 ]
 
@@ -116,6 +117,15 @@ ABSOLUTE_URL_OVERRIDES = {
     # we have to provide an absolute URL for the User model.
     'auth.user': lambda u: '/intern/users/%s/' % u.id,
 }
+
+######################################################################################################
+#                                           Recaptcha settings
+######################################################################################################
+
+# This is the default key, for which all verification requests will pass.
+RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
+
+######################################################################################################
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'intern'

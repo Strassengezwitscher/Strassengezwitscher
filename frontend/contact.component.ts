@@ -1,28 +1,50 @@
-import { Component }      from "@angular/core";
-import { Router }         from "@angular/router";
-
+import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
 import { ContactService } from "./contact.service";
-import { Contact }        from "./contact";
-
+import { Contact } from "./contact";
+import { CaptchaService } from "./captcha.service";
+import { ConfigurationService } from "./config.service";
 import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
     selector: "sg-contact",
     templateUrl: "contact.component.html",
-    providers: [ContactService],
+    providers: [ContactService, CaptchaService, ConfigurationService],
     directives: [TOOLTIP_DIRECTIVES],
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit, OnDestroy {
     private contactErrorMessage: string;
     private contactSuccessMessage: string;
     private contact: Contact;
     private uploads: FileList;
     private maxFileNameLength = 50;
-    private filesValid = true;
+    private filesValid;
+    private captchaVerfied;
+    private script;
+    private grecaptchaKey;
 
-    constructor( private contactService: ContactService, private router: Router) {
+    constructor( private contactService: ContactService, private captchaService: CaptchaService,
+                 private configService: ConfigurationService, private router: Router, private zone: NgZone) {
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
+        this.captchaVerfied = false;
+        window["verifyCallback"] = this.verifyCallback.bind(this);
+        this.grecaptchaKey = this.configService.getConfigEntry("data-sitekey");
+    }
+
+    public ngOnInit() {
+        // Add script tag manually as it does not work from frontend.html, g-recaptcha not displayed
+        let doc = <HTMLDivElement> document.body;
+        this.script = document.createElement("script");
+        this.script.innerHTML = "";
+        this.script.src = "https://www.google.com/recaptcha/api.js";
+        this.script.async = true;
+        this.script.defer = true;
+        doc.appendChild(this.script);
+    }
+
+    public ngOnDestroy() {
+        this.script.parentNode.removeChild(this.script);
     }
 
     public onFileChange(event) {
@@ -52,7 +74,19 @@ export class ContactComponent {
         this.contactErrorMessage = "";
     }
 
-    public displaySuccess() {
+    public verifyCallback(response) {
+        this.captchaService.validateCaptcha(response).subscribe((data) => this.verifiedCaptcha(),
+                                                                (err) => this.displayError(err));
+    }
+
+    public verifiedCaptcha() {
+        // zone required to allow Angular to update variable
+        this.zone.run(() => {
+            this.captchaVerfied = true;
+        });
+    }
+
+    private displaySuccess() {
         this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
         let tmpScope = this;
         setTimeout(function(){
@@ -61,17 +95,7 @@ export class ContactComponent {
         }, 4000);
     }
 
-    private displayError(err: any) {
-        this.contactErrorMessage = "Fehler bei der Kontaktaufnahme: \n";
-        if (err.status === 400) {
-            for (let key in err.error.errors) {
-                if (err.error.errors.hasOwnProperty(key)) {
-                    this.contactErrorMessage += key + ": " + err.error.errors[key] + " \n";
-                }
-            }
-        } else {
-            this.contactErrorMessage += "Interner Fehler, " + err.error.errors;
-        }
+    private displayError(errorMessage: string) {
+        this.contactErrorMessage = errorMessage;
     }
-
 }
