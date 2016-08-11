@@ -1,11 +1,11 @@
-import { StrassengezwitscherComponent } from './sg.component';
+import { StrassengezwitscherComponent } from "./sg.component";
 
-describe('StrassengezwitscherComponent', () => {
+describe("StrassengezwitscherComponent", () => {
 
   beforeEach(function() {
     this.app = new StrassengezwitscherComponent();
   });
 
-  it('true is true', () => expect(true).toEqual(true));
+  it("true is true", () => expect(true).toEqual(true));
 
 });
