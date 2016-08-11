@@ -122,7 +122,7 @@ ABSOLUTE_URL_OVERRIDES = {
 #                                           Recaptcha settings
 ######################################################################################################
 
-# This is key for development purposes only
+# This is the default key, for which all verification requests will pass.
 RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
 
 ######################################################################################################
