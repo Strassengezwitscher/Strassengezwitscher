@@ -4,6 +4,7 @@ import { MD_INPUT_DIRECTIVES } from "@angular2-material/input/input";
 import { MdButton } from "@angular2-material/button/button";
 import { MdCard } from "@angular2-material/card/card";
 import { MdCheckbox } from "@angular2-material/checkbox/checkbox";
+import { MdIcon, MdIconRegistry } from "@angular2-material/icon/icon";
 
 import { ContactService } from "./contact.service";
 import { Contact }        from "./contact";
@@ -13,10 +14,12 @@ import { Contact }        from "./contact";
     selector: "sg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService],
+    viewProviders: [MdIconRegistry],
     directives: [
         MdCard,
         MdCheckbox,
         MdButton,
+        MdIcon,
         MD_INPUT_DIRECTIVES,
     ],
 })
