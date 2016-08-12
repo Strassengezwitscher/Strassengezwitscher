@@ -116,7 +116,7 @@ gulp.task('default', function() {
 
 if (!argv.production) {
     gulp.task('lint:python', function() {
-        exec('prospector strassengezwitscher --profile ../.landscape.yml', function (err, stdout, stderr) {
+        exec('prospector crowdgezwitscher --profile ../.landscape.yml', function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
         });
@@ -198,7 +198,7 @@ if (!argv.production) {
     });
 
     gulp.task('coverage:python', function() {
-        var command = 'coverage run strassengezwitscher/manage.py test strassengezwitscher';
+        var command = 'coverage run crowdgezwitscher/manage.py test crowdgezwitscher';
         exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);

@@ -3,15 +3,15 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib import auth
 
-from strassengezwitscher.models import MapObject
+from crowdgezwitscher.models import MapObject
 
 
-class StrassengezwitscherTests(TestCase):
+class CrowdgezwitscherTests(TestCase):
     def test_serves_angular_tag(self):
         response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<sg-app>', response.content)
-        self.assertIn(b'</sg-app>', response.content)
+        self.assertIn(b'<cg-app>', response.content)
+        self.assertIn(b'</cg-app>', response.content)
 
     def login(self):
         self.user = User.objects.create_user('user', 'user@host.org', 'password')

@@ -8,7 +8,7 @@ export class MapObjectSetting {
 }
 
 @Component({
-    selector: "sg-map",
+    selector: "cg-map",
     templateUrl: "map.component.html",
     providers: [MapService],
 })

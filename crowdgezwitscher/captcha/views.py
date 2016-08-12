@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import authentication_classes, api_view
 
-from strassengezwitscher.auth import CsrfExemptSessionAuthentication
+from crowdgezwitscher.auth import CsrfExemptSessionAuthentication
 
 from captcha.utils import validate_grecaptcha
 

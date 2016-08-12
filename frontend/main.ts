@@ -3,6 +3,6 @@
 
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
-import { StrassengezwitscherModule } from "./sg.module";
+import { CrowdgezwitscherModule } from "./cg.module";
 
-platformBrowserDynamic().bootstrapModule(StrassengezwitscherModule);
+platformBrowserDynamic().bootstrapModule(CrowdgezwitscherModule);
