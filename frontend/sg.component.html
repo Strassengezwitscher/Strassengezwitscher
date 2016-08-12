@@ -1,30 +1,17 @@
 <md-toolbar>
-  <span class="toolbar-menu"></span>
-  <span class="toolbar-spacer"></span>
-  <a [routerLink]="['/']" class="brand-logo"></a>
-  <span class="toolbar-spacer"></span>
-  <span class="toolbar-menu">
-    <span class="hide-on-med-and-up">
-        <a md-mini-fab [routerLink]="['/contact']"><md-icon>chat</md-icon></buatton>
+    <span class="toolbar-menu"></span>
+    <span class="toolbar-spacer"></span>
+    <a [routerLink]="['/']" class="brand-logo"></a>
+    <span class="toolbar-spacer"></span>
+    <span class="toolbar-menu">
+        <span class="hide-on-med-and-up">
+            <button md-icon-button [routerLink]="['/contact']">
+                <md-icon>chat</md-icon>
+            </button>
+        </span>
+        <span class="hide-on-small-only">
+            <a md-button [routerLink]="['/contact']">Kontakt</a>
+        </span>
     </span>
-    <span class="hide-on-small-only">
-        <a md-button [routerLink]="['/contact']">Kontakt</a>
-    </span>
-  </span>
 </md-toolbar>
-<!--<div class="navbar-fixed">
-    <nav>
-        <div class="nav-wrapper white black-text">
-            <div class="hide-on-med-and-up">
-                <a [routerLink]="['/']" class="brand-logo left "></a>
-            </div>
-            <div class="hide-on-small-only">
-                <a [routerLink]="['/']" class="brand-logo center"></a>
-            </div>
-            <ul class="right">
-                <li><a [routerLink]="['/contact']" class="black-text">Kontakt</a></li>
-            </ul>
-        </div>
-    </nav>
-</div>-->
 <router-outlet></router-outlet>
