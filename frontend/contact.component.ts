@@ -23,6 +23,8 @@ export class ContactComponent implements OnInit, OnDestroy {
     private script;
     private grecaptchaKey;
 
+    private isMessageInputFocused = false;
+
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
                  private configService: ConfigurationService, private router: Router, private zone: NgZone) {
         this.contact = new Contact("", "", "", "", null, null);
@@ -65,7 +67,6 @@ export class ContactComponent implements OnInit, OnDestroy {
             this.filesValid = true;
             this.uploads = event.srcElement.files;
             this.fileInputNames = fileNames.join(", ");
-            console.log(this.fileInputNames, fileNames)
         }
     }
 

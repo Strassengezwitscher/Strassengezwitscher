@@ -22,8 +22,8 @@
 			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" dividerColor="accent" style="width: 100%"></md-input>
 		</div>
 		<div class="input-field">
-			<textarea id="contact-message" class="materialize-textarea" name="message" required [(ngModel)]="contact.message"></textarea>
-			<label for="contact-message">Nachricht *</label>
+			<textarea id="contact-message" class="materialize-textarea" name="message" required [(ngModel)]="contact.message" (focus)="isMessageInputFocused = true" (blur)="isMessageInputFocused = false"></textarea>
+			<label for="contact-message" [class.active]="isMessageInputFocused">Nachricht *</label>
 		</div>
 
 		<table style="width: 100%" cellspacing="0">
