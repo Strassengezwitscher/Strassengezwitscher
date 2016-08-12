@@ -1,29 +1,26 @@
 import { provide } from "@angular/core";
-import { inject, beforeEachProviders } from "@angular/core/testing";
+import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
 import { CaptchaService } from "./captcha.service";
 
 describe("CaptchaService", () => {
-    let mockBackend;
-    let service;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                CaptchaService,
+                MockBackend,
+                BaseRequestOptions,
+                provide(Http, {
+                    useFactory: (backend, options) => new Http(backend, options),
+                    deps: [MockBackend, BaseRequestOptions],
+                }),
+            ],
+        });
+    });
 
-    beforeEachProviders(() => [
-        CaptchaService,
-        MockBackend,
-        BaseRequestOptions,
-        provide(Http, {
-        useFactory: (backend, options) => new Http(backend, options),
-        deps: [MockBackend, BaseRequestOptions]}),
-    ]);
-
-    beforeEach(inject([MockBackend, CaptchaService], (_mockBackend, _service) => {
-        mockBackend = _mockBackend;
-        service = _service;
-    }));
-
-    it("Should return mocked response", done => {
+    it("Should return mocked response", inject([MockBackend, CaptchaService], (mockBackend, service) => {
         let response = [
             {
                 "status": "success",
@@ -37,11 +34,11 @@ describe("CaptchaService", () => {
             expect(res).toContain({
                 "status": "success",
             });
-            done();
         });
-    });
+    }));
 
-    it("Should return server error message if Internal Server Error occurs", done => {
+    it("Should return server error message if Internal Server Error occurs",
+       inject([MockBackend, CaptchaService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
             connection.mockError(new Error("Internal Server Error 500"));
         });
@@ -50,23 +47,19 @@ describe("CaptchaService", () => {
         } catch (error) {
             expect(error).toBe("Internal Server Error 500");
         }
-        done();
-    });
+    }));
 
-    it("Should return error status code and text if present", done => {
+    it("Should return error status code and text if present", inject([CaptchaService], (service) => {
         spyOn(service, "handleError").and.callThrough();
         let err = {statusText: "Resource not found", status: 404};
 
         expect(service.handleError(err).error).toBe("404 - Resource not found");
-        done();
-    });
+    }));
 
-    it("Should return custom error message", done => {
+    it("Should return custom error message", inject([CaptchaService], (service) => {
         spyOn(service, "handleError").and.callThrough();
         let err = {_body: '{"errors":["missing-input-secret"] }', status: 400};
 
         expect(service.handleError(err).error).toBe("Interner Fehler im Captcha: \nmissing-input-secret \n");
-        done();
-    });
-
+    }));
 });

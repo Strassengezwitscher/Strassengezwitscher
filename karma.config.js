@@ -6,7 +6,7 @@ module.exports = function(config) {
     */
     var dependencies = [
         '@angular',
-        'rxjs'
+        'rxjs',
     ];
 
     var configuration = {
@@ -36,7 +36,7 @@ module.exports = function(config) {
         // proxied base paths
         proxies: {
             '/static/': '/base/crowdgezwitscher/static/build/',
-            '/crowdgezwitscher/': '/base/crowdgezwitscher/'
+            '/crowdgezwitscher/': '/base/crowdgezwitscher/',
         },
 
         port: 9876,
@@ -49,7 +49,7 @@ module.exports = function(config) {
     };
 
     configuration.preprocessors[gulpConfig.path.build + 'frontend/**/!(*.spec|main)+(.js)'] = ['coverage'];
-    configuration.preprocessors[gulpConfig.path.build + '**/*.js'] = ['sourcemap'];
+    configuration.preprocessors[gulpConfig.path.build + '**/*.js.map'] = ['sourcemap'];
 
     var files = [
         createFilePattern(gulpConfig.path.build + '**/*.js', { included: false, watched: false }),

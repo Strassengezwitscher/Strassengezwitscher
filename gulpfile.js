@@ -124,8 +124,11 @@ if (!argv.production) {
 
     gulp.task('lint:typescript', function() {
         return gulp.src(config.typescript.files)
-            .pipe(tslint({configuration: 'tslint.json'}))
-            .pipe(tslint.report('prose', {
+            .pipe(tslint({
+                configuration: 'tslint.json',
+                formatter: 'prose'
+            }))
+            .pipe(tslint.report({
                 emitError: false,
                 summarizeFailureOutput: true
             }));
