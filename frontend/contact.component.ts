@@ -91,6 +91,10 @@ export class ContactComponent implements OnInit, OnDestroy {
         });
     }
 
+    public blurMessageInput() {
+        this.isMessageInputFocused = (this.contact.message !== "");
+    }
+
     private displaySuccess() {
         this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
         let tmpScope = this;
