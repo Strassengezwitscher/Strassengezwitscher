@@ -4,7 +4,8 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
 import { StrassengezwitscherComponent } from "./sg.component";
-import { routing } from "./sg.routing";
+import { MaterialModule } from "./material.module";
+import { RoutingModule } from "./sg.routing";
 
 import { MapComponent } from "./map.component";
 import { ContactComponent } from "./contact.component";
@@ -17,7 +18,8 @@ import { ContactService } from "./contact.service";
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing,
+        MaterialModule,
+        RoutingModule,
     ],
     declarations: [
         StrassengezwitscherComponent,

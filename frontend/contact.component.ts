@@ -1,10 +1,5 @@
 import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
-import { MD_INPUT_DIRECTIVES } from "@angular2-material/input/input";
-import { MdButton } from "@angular2-material/button/button";
-import { MdCard } from "@angular2-material/card/card";
-import { MdCheckbox } from "@angular2-material/checkbox/checkbox";
-import { MdIcon, MdIconRegistry } from "@angular2-material/icon/icon";
 
 import { ContactService } from "./contact.service";
 import { Contact } from "./contact";
@@ -15,14 +10,6 @@ import { ConfigurationService } from "./config.service";
     selector: "sg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService, CaptchaService, ConfigurationService],
-    viewProviders: [MdIconRegistry],
-    directives: [
-        MdCard,
-        MdCheckbox,
-        MdButton,
-        MdIcon,
-        MD_INPUT_DIRECTIVES,
-    ],
 })
 export class ContactComponent implements OnInit, OnDestroy {
     private contactErrorMessage: string;
