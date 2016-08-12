@@ -28,7 +28,7 @@ module.exports = function () {
         bundle: {
             path: path.dist + 'bundle.js',
             config: {
-                minify: true,
+                minify: false,
             },
         },
     };
