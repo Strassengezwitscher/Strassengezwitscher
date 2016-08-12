@@ -24,31 +24,8 @@ a.brand-logo {
   cursor: pointer;
 }
 
-/*.nav-wrapper a.brand-logo {
-  background: url(img/cg-logo.svg) no-repeat center;
-  height: 100%;
-  width: 250px;
-  background-size: 100% 70%;
-}
-
-.switch label input[type=checkbox]:checked+.lever {
-  background-color: lighten($sg-blue, 25%);
-
-  &::after {
-    background-color: $sg-blue;
+@media #{$medium-and-up} {
+  .toolbar-menu {
+    flex-basis: 88px;
   }
 }
-
-@media only screen and (min-width: 600px) {
-  .nav-wrapper a.brand-logo {
-    width: 300px;
-    background-size: 100% 75%;
-  }
-}
-*/
-
-  @media #{$medium-and-up} {
-    .toolbar-menu {
-      flex-basis: 88px;
-    }
-  }

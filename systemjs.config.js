@@ -45,22 +45,6 @@
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
 
-
-  // put the names of any of your Material components here
-  const materialPkgs = [
-    'core',
-    'button',
-    'card',
-    'icon',
-    'input',
-    'slide-toggle',
-    'toolbar',
-  ];
-
-  materialPkgs.forEach(function(pkgName) {
-    packages['@angular2-material/' + pkgName] = { main: pkgName + '.js' };
-  });
-
   var config = {
     map: map,
     packages: packages
