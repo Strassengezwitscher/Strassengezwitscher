@@ -7,6 +7,7 @@ import { CaptchaService } from "./captcha.service";
 import { ConfigurationService } from "./config.service";
 
 @Component({
+    moduleId: module.id,
     selector: "cg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService, CaptchaService, ConfigurationService],

@@ -5,6 +5,7 @@ import { ROUTER_DIRECTIVES } from "@angular/router";
 import "./rxjs-operators";
 
 @Component({
+    moduleId: module.id,
     selector: "cg-app",
     templateUrl: "cg.component.html",
     directives: [
