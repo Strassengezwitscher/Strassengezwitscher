@@ -2,7 +2,7 @@
 import shutil
 import tempfile
 
-from strassengezwitscher.log import logger
+from crowdgezwitscher.log import logger
 
 
 class GPGException(ValueError):

@@ -3,9 +3,9 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
-import { StrassengezwitscherComponent } from "./sg.component";
+import { CrowdgezwitscherComponent } from "./cg.component";
 import { MaterialModule } from "./material.module";
-import { RoutingModule } from "./sg.routing";
+import { RoutingModule } from "./cg.routing";
 
 import { MapComponent } from "./map.component";
 import { ContactComponent } from "./contact.component";
@@ -22,7 +22,7 @@ import { ContactService } from "./contact.service";
         RoutingModule,
     ],
     declarations: [
-        StrassengezwitscherComponent,
+        CrowdgezwitscherComponent,
         MapComponent,
         ContactComponent,
     ],
@@ -30,6 +30,6 @@ import { ContactService } from "./contact.service";
         MapService,
         ContactService,
     ],
-    bootstrap: [ StrassengezwitscherComponent ],
+    bootstrap: [ CrowdgezwitscherComponent ],
 })
-export class StrassengezwitscherModule {}
+export class CrowdgezwitscherModule {}

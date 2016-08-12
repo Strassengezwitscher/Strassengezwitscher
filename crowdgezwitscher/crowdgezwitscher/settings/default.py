@@ -1,5 +1,5 @@
 """
-Django settings for strassengezwitscher project.
+Django settings for crowdgezwitscher project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.10/topics/settings/
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'strassengezwitscher.urls'
+ROOT_URLCONF = 'crowdgezwitscher.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'strassengezwitscher.wsgi.application'
+WSGI_APPLICATION = 'crowdgezwitscher.wsgi.application'
 
 
 # Database
@@ -84,7 +84,7 @@ DATABASES = {
 }
 
 
-FIXTURE_DIRS = [os.path.join(BASE_DIR, 'strassengezwitscher', 'initial')]
+FIXTURE_DIRS = [os.path.join(BASE_DIR, 'crowdgezwitscher', 'initial')]
 
 
 # Internationalization
@@ -162,7 +162,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'strassengezwitscher': {
+        'crowdgezwitscher': {
             'handlers': ['console', 'mail_admins'],
             'level': 'DEBUG',
             'propagate': True,

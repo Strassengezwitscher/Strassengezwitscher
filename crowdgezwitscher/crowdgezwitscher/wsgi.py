@@ -1,6 +1,6 @@
 # pylint: disable=invalid-name
 """
-WSGI config for strassengezwitscher project.
+WSGI config for crowdgezwitscher project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -12,6 +12,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "strassengezwitscher.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "crowdgezwitscher.settings")
 
 application = get_wsgi_application()

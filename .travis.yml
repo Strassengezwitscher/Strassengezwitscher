@@ -13,8 +13,8 @@ install:
   - npm install
 before_script:
   - gulp dist
-  - DJANGO_SETTINGS_MODULE=strassengezwitscher.settings.production python strassengezwitscher/manage.py migrate
-  - DJANGO_SETTINGS_MODULE=strassengezwitscher.settings.production python strassengezwitscher/manage.py runserver --insecure &
+  - DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py migrate
+  - DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure &
 script:
   - gulp coverage:python
   - gulp coverage:typescript

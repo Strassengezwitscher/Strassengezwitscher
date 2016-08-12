@@ -1,8 +1,8 @@
 [run]
-source = strassengezwitscher/
+source = crowdgezwitscher/
 
 [report]
 omit =
     */migrations/*
-    strassengezwitscher/strassengezwitscher/settings/*
-    strassengezwitscher/strassengezwitscher/wsgi.py
+    crowdgezwitscher/crowdgezwitscher/settings/*
+    crowdgezwitscher/crowdgezwitscher/wsgi.py

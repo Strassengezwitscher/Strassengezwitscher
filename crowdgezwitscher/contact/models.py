@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from gnupg import GPG
 
-from strassengezwitscher.log import logger
+from crowdgezwitscher.log import logger
 from contact.utils import GPGException, TemporaryDirectory, addresses_for_key, handle_gpg_error
 
 

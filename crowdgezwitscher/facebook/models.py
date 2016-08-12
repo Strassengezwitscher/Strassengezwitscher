@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
-from strassengezwitscher.models import MapObject
+from crowdgezwitscher.models import MapObject
 from events.models import Event
 
 

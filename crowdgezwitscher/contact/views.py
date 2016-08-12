@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from strassengezwitscher.log import logger
-from strassengezwitscher.auth import CsrfExemptSessionAuthentication
+from crowdgezwitscher.log import logger
+from crowdgezwitscher.auth import CsrfExemptSessionAuthentication
 from contact.forms import ContactForm
 from contact.mail import GPGEmailMessage
 from contact.utils import GPGException

@@ -2,4 +2,4 @@
 import logging
 
 # main logger to be used by our business logic
-logger = logging.getLogger('strassengezwitscher')
+logger = logging.getLogger('crowdgezwitscher')
