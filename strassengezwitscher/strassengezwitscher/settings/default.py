@@ -154,10 +154,6 @@ LOGGING = {
     },
 }
 
-REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'strassengezwitscher.utils.custom_exception_handler'
-}
-
 
 TESTING = 'test' in sys.argv
 

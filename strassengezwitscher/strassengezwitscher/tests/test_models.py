@@ -13,7 +13,6 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(name='Test')
         self.assertEqual(str(obj), 'Test')
 
-
     ###############################
     # Test is_between_longitudes()
     ###############################
@@ -169,30 +168,30 @@ class MapObjectModelTests(TestCase):
     def test_are_valid_params_incomplete(self):
 
         rect_params = {
-            'min_lat' : None,
-            'max_lat' : '40.0',
-            'min_long' : '80.0',
-            'max_long' : '90.0'
+            'min_lat': None,
+            'max_lat': '40.0',
+            'min_long': '80.0',
+            'max_long': '90.0'
         }
         with self.assertRaises(ValidationError):
             MapObject.get_as_decimals(rect_params)
 
     def test_are_valid_params_no_numeric(self):
         rect_params = {
-            'min_lat' : 'abcd',
-            'max_lat' : '40.0',
-            'min_long' : '80.0',
-            'max_long' : '90.0'
+            'min_lat': 'abcd',
+            'max_lat': '40.0',
+            'min_long': '80.0',
+            'max_long': '90.0'
         }
         with self.assertRaises(ValidationError):
             MapObject.get_as_decimals(rect_params)
 
     def test_are_valid_params(self):
         rect_params = {
-            'min_lat' : '30.0',
-            'max_lat' : '40.0',
-            'min_long' : '80.0',
-            'max_long' : '90.0'
+            'min_lat': '30.0',
+            'max_lat': '40.0',
+            'min_long': '80.0',
+            'max_long': '90.0'
         }
 
         rect_params_decimals = MapObject.get_as_decimals(rect_params)

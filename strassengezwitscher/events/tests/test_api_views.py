@@ -1,12 +1,14 @@
 import json
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from events.models import Event
-from strassengezwitscher.tests.test_views import MapObjectViewTestTemplate
+
+from strassengezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
-class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
+class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
 
     fixtures = ['events_views_testdata.json']
     model = Event
@@ -121,7 +123,8 @@ class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
         url = '/api/events/.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
- # GET /api/events/1.json
+
+    # GET /api/events/1.json
     def test_json_detail_events(self):
         url = '/api/events/1.json'
         response = self.client.get(url)

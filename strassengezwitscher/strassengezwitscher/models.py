@@ -18,11 +18,7 @@ class MapObjectFilter(filters.BaseFilterBackend):
             'max_long': request.query_params.get('max_long')
         }
 
-        if rect_params['min_lat'] is not None or \
-                rect_params['min_long'] is not None or\
-                rect_params['max_lat'] is not None or \
-                rect_params['max_long'] is not None:
-
+        if any([rect_params[field] is not None for field in ['min_lat', 'min_long', 'max_lat', 'max_long']]):
             return queryset.model.get_mapobjects_in_rect(rect_params)
 
         return queryset

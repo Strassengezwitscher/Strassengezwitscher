@@ -11,5 +11,4 @@ class FacebookPageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FacebookPage
-        fields = ('id', 'name', 'active', 'location',
-                  'locationLong', 'locationLat')
+        fields = ('id', 'name', 'active', 'location', 'locationLong', 'locationLat')

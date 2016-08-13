@@ -5,10 +5,10 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from facebook.models import FacebookPage
-from strassengezwitscher.tests.test_views import MapObjectViewTestTemplate
+from strassengezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
-class FacebookPageAPIViewTests(APITestCase, MapObjectViewTestTemplate):
+class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
 
     fixtures = ['facebook_views_testdata.json']
     model = FacebookPage
