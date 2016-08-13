@@ -163,40 +163,40 @@ class MapObjectModelTests(TestCase):
         self.assertTrue(MapObject.is_valid_latitude(latitude))
 
     ###############################
-    # Test are_valid_square_params()
+    # Test are_valid_rect_params()
     ###############################
 
     def test_are_valid_params_incomplete(self):
 
-        square_params = {
+        rect_params = {
             'min_lat' : None,
             'max_lat' : '40.0',
             'min_long' : '80.0',
             'max_long' : '90.0'
         }
         with self.assertRaises(ValidationError):
-            MapObject.get_as_decimals(square_params)
+            MapObject.get_as_decimals(rect_params)
 
     def test_are_valid_params_no_numeric(self):
-        square_params = {
+        rect_params = {
             'min_lat' : 'abcd',
             'max_lat' : '40.0',
             'min_long' : '80.0',
             'max_long' : '90.0'
         }
         with self.assertRaises(ValidationError):
-            MapObject.get_as_decimals(square_params)
+            MapObject.get_as_decimals(rect_params)
 
     def test_are_valid_params(self):
-        square_params = {
+        rect_params = {
             'min_lat' : '30.0',
             'max_lat' : '40.0',
             'min_long' : '80.0',
             'max_long' : '90.0'
         }
 
-        square_params_decimals = MapObject.get_as_decimals(square_params)
-        self.assertEqual(square_params_decimals['min_lat'], 30.0)
-        self.assertEqual(square_params_decimals['max_lat'], 40.0)
-        self.assertEqual(square_params_decimals['min_long'], 80.0)
-        self.assertEqual(square_params_decimals['max_long'], 90.0)
+        rect_params_decimals = MapObject.get_as_decimals(rect_params)
+        self.assertEqual(rect_params_decimals['min_lat'], 30.0)
+        self.assertEqual(rect_params_decimals['max_lat'], 40.0)
+        self.assertEqual(rect_params_decimals['min_long'], 80.0)
+        self.assertEqual(rect_params_decimals['max_long'], 90.0)

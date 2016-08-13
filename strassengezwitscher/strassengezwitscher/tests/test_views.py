@@ -30,18 +30,18 @@ class MapObjectViewTestTemplate(object):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_invalid_numbers_filter(self, url):
-        square_params = {
+        rect_params = {
             'min_lat': -400.0,
             'min_long': -200.0,
             'max_lat': 400.0,
             'max_long': 300.0
         }
-        response = self.client.get(url, square_params)
+        response = self.client.get(url, rect_params)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_correct_filter(self, url, square_params):
+    def test_correct_filter(self, url, rect_params):
 
-        response = self.client.get(url, square_params)
+        response = self.client.get(url, rect_params)
         filtered_objects = json.loads(response.content.decode("utf-8"))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -49,8 +49,8 @@ class MapObjectViewTestTemplate(object):
         self.assertLess(len(filtered_objects), self.model.objects.count())
 
         for o in filtered_objects:
-            self.assertGreaterEqual(o['locationLat'], Decimal(square_params['min_lat']))
-            self.assertGreaterEqual(o['locationLong'], Decimal(square_params['min_long']))
-            self.assertLessEqual(o['locationLat'], Decimal(square_params['max_lat']))
-            self.assertLessEqual(o['locationLong'], Decimal(square_params['max_long']))
+            self.assertGreaterEqual(o['locationLat'], Decimal(rect_params['min_lat']))
+            self.assertGreaterEqual(o['locationLong'], Decimal(rect_params['min_long']))
+            self.assertLessEqual(o['locationLat'], Decimal(rect_params['max_lat']))
+            self.assertLessEqual(o['locationLong'], Decimal(rect_params['max_long']))
 

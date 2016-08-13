@@ -156,10 +156,10 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectViewTestTemplate):
 
     def test_correct_filter(self):
         url = reverse('facebook_api:list')
-        square_params = {
+        rect_params = {
             'min_lat': 53.854762,
             'min_long': 10.656980,
             'max_lat': 55.592905,
             'max_long': 14.084714
         }
-        super(FacebookPageAPIViewTests, self).test_correct_filter(url, square_params)
+        super(FacebookPageAPIViewTests, self).test_correct_filter(url, rect_params)

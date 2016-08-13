@@ -155,10 +155,10 @@ class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
 
     def test_correct_filter(self):
         url = reverse('events_api:list')
-        square_params = {
+        rect_params = {
             'min_lat': 41.941380,
             'min_long': 72.467309,
             'max_lat': 51.267301,
             'max_long': 99.713402
         }
-        super(EventAPIViewTests, self).test_correct_filter(url, square_params)
+        super(EventAPIViewTests, self).test_correct_filter(url, rect_params)
