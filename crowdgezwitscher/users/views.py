@@ -1,11 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = 'users.view_user'
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
@@ -14,13 +15,15 @@ class UserListView(LoginRequiredMixin, ListView):
         return User.objects.exclude(is_staff=True)
 
 
-class UserDetail(LoginRequiredMixin, DetailView):
+class UserDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    permission_required = 'users.view_user'
     model = User
     template_name = 'users/detail.html'
     context_object_name = 'user_data'
 
 
-class UserCreate(LoginRequiredMixin, CreateView):
+class UserCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'users.add_user'
     model = User
     template_name = 'users/form.html'
     fields = ['username', 'email', 'password', 'groups']
@@ -30,7 +33,8 @@ class UserCreate(LoginRequiredMixin, CreateView):
         return super(UserCreate, self).form_valid(form)
 
 
-class UserUpdate(LoginRequiredMixin, UpdateView):
+class UserUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'users.change_user'
     model = User
     template_name = 'users/form.html'
     context_object_name = 'user_data'
