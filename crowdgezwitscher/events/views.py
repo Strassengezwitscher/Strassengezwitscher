@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 from events.models import Event
 from events.serializers import EventSerializer
-from strassengezwitscher.models import MapObjectFilter
+from crowdgezwitscher.models import MapObjectFilter
 
 
 class EventListView(LoginRequiredMixin, ListView):

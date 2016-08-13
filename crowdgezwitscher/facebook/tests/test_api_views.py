@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from facebook.models import FacebookPage
-from strassengezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
+from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
 class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):

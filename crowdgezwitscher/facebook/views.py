@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer
-from strassengezwitscher.models import MapObjectFilter
+from crowdgezwitscher.models import MapObjectFilter
 
 
 class FacebookPageListView(LoginRequiredMixin, ListView):
