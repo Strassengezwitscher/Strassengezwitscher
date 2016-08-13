@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 
 from events.models import Event
 from events.serializers import EventSerializer
+from crowdgezwitscher.models import MapObjectFilter
 
 
 class EventListView(LoginRequiredMixin, ListView):
@@ -51,6 +52,7 @@ class EventDelete(LoginRequiredMixin, DeleteView):
 class EventAPIList(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filter_backends = (MapObjectFilter,)
 
 
 class EventAPIDetail(generics.RetrieveAPIView):

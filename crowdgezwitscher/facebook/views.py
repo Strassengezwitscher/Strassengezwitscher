@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 
 from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer
+from crowdgezwitscher.models import MapObjectFilter
 
 
 class FacebookPageListView(LoginRequiredMixin, ListView):
@@ -45,6 +46,7 @@ class FacebookPageDelete(LoginRequiredMixin, DeleteView):
 class FacebookPageAPIList(generics.ListAPIView):
     queryset = FacebookPage.objects.all()
     serializer_class = FacebookPageSerializer
+    filter_backends = (MapObjectFilter,)
 
 
 class FacebookPageAPIDetail(generics.RetrieveAPIView):

@@ -1,16 +1,19 @@
 import json
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from facebook.models import FacebookPage
+from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
-class FacebookPageAPIViewTests(APITestCase):
+class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
 
     fixtures = ['facebook_views_testdata.json']
+    model = FacebookPage
 
-    #
-    # test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
+    # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
     # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
     # on mapobject list ("/api/facebook/") and detail(e.g."/api/facebook/1/")
 
@@ -51,8 +54,8 @@ class FacebookPageAPIViewTests(APITestCase):
             u'active': True,
             u'name': u'Test page',
             u'location': u'Nowhere',
-            u'locationLat': u'12.345000',
-            u'locationLong': u'54.321000',
+            u'locationLat': 12.345000,
+            u'locationLong': 54.321000,
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
@@ -132,3 +135,33 @@ class FacebookPageAPIViewTests(APITestCase):
         url = '/api/facebook1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    #
+    # Test backend filters
+    #
+
+    def test_empty_filter(self):
+        url = reverse('facebook_api:list')
+        super(FacebookPageAPIViewTests, self).test_empty_filter(url)
+
+    def test_partial_filter(self):
+        url = reverse('facebook_api:list')
+        super(FacebookPageAPIViewTests, self).test_partial_filter(url)
+
+    def test_no_numbers_filter(self):
+        url = reverse('facebook_api:list')
+        super(FacebookPageAPIViewTests, self).test_no_numbers_filter(url)
+
+    def test_invalid_numbers_filter(self):
+        url = reverse('facebook_api:list')
+        super(FacebookPageAPIViewTests, self).test_invalid_numbers_filter(url)
+
+    def test_correct_filter(self):
+        url = reverse('facebook_api:list')
+        rect_params = {
+            'min_lat': 53.854762,
+            'min_long': 10.656980,
+            'max_lat': 55.592905,
+            'max_long': 14.084714
+        }
+        super(FacebookPageAPIViewTests, self).test_correct_filter(url, rect_params)
