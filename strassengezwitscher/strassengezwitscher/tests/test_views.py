@@ -1,9 +1,10 @@
+import json
+from decimal import Decimal
+
 from django.urls import reverse
 from django.test import TestCase
 from rest_framework import status
 
-import json
-from decimal import Decimal
 
 class StrassengezwitscherTests(TestCase):
     def test_serves_angular_tag(self):
