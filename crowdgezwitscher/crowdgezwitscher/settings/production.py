@@ -68,7 +68,7 @@ EMAIL_HOST_PASSWORD = 'password'  # noqa
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS += [
+STATICFILES_DIRS += [  # noqa
     os.path.join(BASE_DIR, "static/dist"),  # noqa
 ]
 
