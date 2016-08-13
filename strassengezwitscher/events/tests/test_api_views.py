@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from events.models import Event
-from strassengezwitscher.tests import MapObjectViewTestTemplate
+from strassengezwitscher.tests.test_views import MapObjectViewTestTemplate
 
 
 class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
@@ -11,11 +11,9 @@ class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
     fixtures = ['events_views_testdata.json']
     model = Event
 
-    """
-     Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
-     via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
-     on mapobject list ("/api/events/") and detail(e.g."/api/events/1/")
-    """
+    # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
+    # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
+    # on mapobject list ("/api/events/") and detail(e.g."/api/events/1/")
 
     # POST /api/events/
     def test_create_list_events(self):
@@ -123,8 +121,7 @@ class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
         url = '/api/events/.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    # GET /api/events/1.json
+ # GET /api/events/1.json
     def test_json_detail_events(self):
         url = '/api/events/1.json'
         response = self.client.get(url)
@@ -136,9 +133,9 @@ class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    """
-    Test backend filters
-    """
+    #
+    # Test backend filters
+    #
 
     def test_empty_filter(self):
         url = reverse('events_api:list')
@@ -152,14 +149,16 @@ class EventAPIViewTests(APITestCase, MapObjectViewTestTemplate):
         url = reverse('events_api:list')
         super(EventAPIViewTests, self).test_no_numbers_filter(url)
 
+    def test_invalid_numbers_filter(self):
+        url = reverse('events_api:list')
+        super(EventAPIViewTests, self).test_invalid_numbers_filter(url)
+
     def test_correct_filter(self):
         url = reverse('events_api:list')
         square_params = {
-            'min_lat' : 41.941380,
-            'min_long' : 72.467309,
-            'max_lat' : 51.267301,
-            'max_long' : 99.713402
+            'min_lat': 41.941380,
+            'min_long': 72.467309,
+            'max_lat': 51.267301,
+            'max_long': 99.713402
         }
         super(EventAPIViewTests, self).test_correct_filter(url, square_params)
-
-

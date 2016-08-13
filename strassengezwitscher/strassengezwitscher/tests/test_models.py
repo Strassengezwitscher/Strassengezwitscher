@@ -1,19 +1,7 @@
-from django.urls import reverse
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
-from rest_framework import status
 
 from strassengezwitscher.models import MapObject
-
-import json
-from decimal import Decimal
-
-class StrassengezwitscherTests(TestCase):
-    def test_serves_angular_tag(self):
-        response = self.client.get(reverse('index'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<sg-app>', response.content)
-        self.assertIn(b'</sg-app>', response.content)
 
 
 class MapObjectModelTests(TestCase):
@@ -25,14 +13,16 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(name='Test')
         self.assertEqual(str(obj), 'Test')
 
-    """
-        Test is_between_longitudes()
-    """
+
+    ###############################
+    # Test is_between_longitudes()
+    ###############################
+
     #
     # Case 1: Min' < 'Max' --> no shift of points
     #
 
-    # 'H' [left of] 'Min' [left of] 'Max'
+    # 'MO' [left of] 'Min' [left of] 'Max'
     def test_is_between_longitudes_a(self):
         min_long = 100
         location_long = 0
@@ -41,7 +31,7 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_long=location_long)
         self.assertFalse(obj.is_between_longitudes(min_long=min_long, max_long=max_long))
 
-    # 'Min' [left of] 'H' [left of] 'Max'
+    # 'Min' [left of] 'MO' [left of] 'Max'
     def test_is_between_longitudes_b(self):
         min_long = 100
         location_long = 130
@@ -50,7 +40,7 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_long=location_long)
         self.assertTrue(obj.is_between_longitudes(min_long=min_long, max_long=max_long))
 
-    # 'Min' [left of] 'Max' [left of] 'H'
+    # 'Min' [left of] 'Max' [left of] 'MO'
     def test_is_between_longitudes_c(self):
         min_long = 100
         location_long = 170
@@ -64,7 +54,7 @@ class MapObjectModelTests(TestCase):
     # --> 'Min' [left of] +180/-180 [left of] 'Max'
     #
 
-    # 'H' [left of] 'Min' [left of] +180/-180 [left of] 'Max'
+    # 'MO' [left of] 'Min' [left of] +180/-180 [left of] 'Max'
     # --> 'Max' has to be shifted
     def test_is_between_longitudes_d(self):
         min_long = 45
@@ -74,7 +64,7 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_long=location_long)
         self.assertFalse(obj.is_between_longitudes(min_long=min_long, max_long=max_long))
 
-    # 'Min' [left of] 'H' [left of] +180/-180 [left of] 'Max'
+    # 'Min' [left of] 'MO' [left of] +180/-180 [left of] 'Max'
     # --> 'Max' has to be shifted
     def test_is_between_longitudes_e(self):
         min_long = 45
@@ -84,8 +74,8 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_long=location_long)
         self.assertTrue(obj.is_between_longitudes(min_long=min_long, max_long=max_long))
 
-    # 'Min' [left of] +180/-180 [left of] 'H' [left of] 'Max'
-    # --> 'Max' and 'H' have to be shifted
+    # 'Min' [left of] +180/-180 [left of] 'MO' [left of] 'Max'
+    # --> 'Max' and 'MO' have to be shifted
     def test_is_between_longitudes_f(self):
         min_long = 45
         location_long = -170
@@ -94,8 +84,8 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_long=location_long)
         self.assertTrue(obj.is_between_longitudes(min_long=min_long, max_long=max_long))
 
-    # 'Min' [left of] +180/-180 [left of] 'Max' [left of] 'H'
-    # --> 'Max' and 'H' have to be shifted
+    # 'Min' [left of] +180/-180 [left of] 'Max' [left of] 'MO'
+    # --> 'Max' and 'MO' have to be shifted
     def test_is_between_longitudes_g(self):
         min_long = 45
         location_long = -120
@@ -104,9 +94,9 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_long=location_long)
         self.assertFalse(obj.is_between_longitudes(min_long=min_long, max_long=max_long))
 
-    """
-        Test is_between_latitudes()
-    """
+    ###############################
+    # Test is_between_latitudes()
+    ###############################
 
     def test_is_between_latitudes_below(self):
         min_lat = 30
@@ -132,10 +122,9 @@ class MapObjectModelTests(TestCase):
         obj = MapObject(location_lat=location_lat)
         self.assertFalse(obj.is_between_latitudes(min_lat=min_lat, max_lat=max_lat))
 
-
-    """
-        Test is_valid_longitude()
-    """
+    ###############################
+    # Test is_valid_longitude()
+    ###############################
 
     def test_is_valid_longitude_too_high(self):
         longitude = 181
@@ -153,10 +142,9 @@ class MapObjectModelTests(TestCase):
         longitude = -180
         self.assertTrue(MapObject.is_valid_longitude(longitude))
 
-
-    """
-        Test is_valid_latitude()
-    """
+    ###############################
+    # Test is_valid_latitude()
+    ###############################
 
     def test_is_valid_latitude_too_high(self):
         latitude = 91
@@ -174,9 +162,9 @@ class MapObjectModelTests(TestCase):
         latitude = -90
         self.assertTrue(MapObject.is_valid_latitude(latitude))
 
-    """
-        Test are_valid_square_params()
-    """
+    ###############################
+    # Test are_valid_square_params()
+    ###############################
 
     def test_are_valid_params_incomplete(self):
 
@@ -212,37 +200,3 @@ class MapObjectModelTests(TestCase):
         self.assertEqual(square_params_decimals['max_lat'], 40.0)
         self.assertEqual(square_params_decimals['min_long'], 80.0)
         self.assertEqual(square_params_decimals['max_long'], 90.0)
-
-
-class MapObjectViewTestTemplate(object):
-
-    def test_empty_filter(self, url):
-        response = self.client.get(url)
-        filtered_objects = json.loads(response.content.decode("utf-8"))
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(filtered_objects), self.model.objects.count())
-
-    def test_partial_filter(self, url):
-        response = self.client.get(url, {'min_lat': 10.0, 'min_long': 11.0})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_no_numbers_filter(self, url):
-        response = self.client.get(url, {'min_lat': 'a', 'min_long': 'b', 'max_lat': 'c', 'max_long': 'd'})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_correct_filter(self, url, square_params):
-
-        response = self.client.get(url, square_params)
-        filtered_objects = json.loads(response.content.decode("utf-8"))
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertGreater(len(filtered_objects), 0)
-        self.assertLess(len(filtered_objects), self.model.objects.count())
-
-        for o in filtered_objects:
-            self.assertGreaterEqual(o['locationLat'], Decimal(square_params['min_lat']))
-            self.assertGreaterEqual(o['locationLong'], Decimal(square_params['min_long']))
-            self.assertLessEqual(o['locationLat'], Decimal(square_params['max_lat']))
-            self.assertLessEqual(o['locationLong'], Decimal(square_params['max_long']))
-

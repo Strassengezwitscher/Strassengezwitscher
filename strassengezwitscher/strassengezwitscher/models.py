@@ -11,10 +11,10 @@ class MapObjectFilter(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
 
         square_params = {
-            'min_lat': request.query_params.get('min_lat', None),
-            'min_long': request.query_params.get('min_long', None),
-            'max_lat': request.query_params.get('max_lat', None),
-            'max_long': request.query_params.get('max_long', None)
+            'min_lat': request.query_params.get('min_lat'),
+            'min_long': request.query_params.get('min_long'),
+            'max_lat': request.query_params.get('max_lat'),
+            'max_long': request.query_params.get('max_long')
         }
 
         if square_params['min_lat'] is not None or \
@@ -74,7 +74,7 @@ class MapObject(models.Model):
         if not cls.are_valid_params(square_params_decimal):
             raise ValidationError(
                 {
-                    'message': ('Please provide latitude values in range [-90, 90] and'
+                    'message': ('Please provide latitude values in range [-90, 90] and '
                                 'longitude values in range [-180, 180].')
                 })
 
@@ -116,18 +116,17 @@ class MapObject(models.Model):
                 square_params['min_long'], square_params['max_long'])
 
     def is_between_longitudes(self, min_long, max_long):
-
         location_long = self.location_long
         if min_long > max_long:
 
             # 'Min' [left of] +180/-180 [left of] 'Max'
             # --> shift 'Max'
-            max_long = max_long + 360
+            max_long += 360
 
             if location_long < 0:
                 # 'Min' [left of] +180/-180 [left of] 'MO'
                 # --> shift 'MO'
-                location_long = self.location_long + 360
+                location_long += 360
 
         return min_long <= location_long <= max_long
 

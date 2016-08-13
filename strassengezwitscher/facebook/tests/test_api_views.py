@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from facebook.models import FacebookPage
-from strassengezwitscher.tests import MapObjectViewTestTemplate
+from strassengezwitscher.tests.test_views import MapObjectViewTestTemplate
 
 
 class FacebookPageAPIViewTests(APITestCase, MapObjectViewTestTemplate):
@@ -11,11 +11,9 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectViewTestTemplate):
     fixtures = ['facebook_views_testdata.json']
     model = FacebookPage
 
-    """
-     Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
-     via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
-     on mapobject list ("/api/facebook/") and detail(e.g."/api/facebook/1/")
-    """
+    # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
+    # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
+    # on mapobject list ("/api/facebook/") and detail(e.g."/api/facebook/1/")
 
     # POST /api/facebook/
     def test_create_list_facebook(self):
@@ -136,9 +134,9 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    """
-    Test backend filters
-    """
+    #
+    # Test backend filters
+    #
 
     def test_empty_filter(self):
         url = reverse('facebook_api:list')
@@ -152,13 +150,16 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectViewTestTemplate):
         url = reverse('facebook_api:list')
         super(FacebookPageAPIViewTests, self).test_no_numbers_filter(url)
 
+    def test_invalid_numbers_filter(self):
+        url = reverse('facebook_api:list')
+        super(FacebookPageAPIViewTests, self).test_invalid_numbers_filter(url)
+
     def test_correct_filter(self):
         url = reverse('facebook_api:list')
         square_params = {
-            'min_lat' : 53.854762,
-            'min_long' : 10.656980,
-            'max_lat' : 55.592905,
-            'max_long' : 14.084714
+            'min_lat': 53.854762,
+            'min_long': 10.656980,
+            'max_lat': 55.592905,
+            'max_long': 14.084714
         }
         super(FacebookPageAPIViewTests, self).test_correct_filter(url, square_params)
-
