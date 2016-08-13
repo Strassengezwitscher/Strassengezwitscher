@@ -1,0 +1,21 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>{{ user_data.first_name }} {{ user_data.last_name }}</h1>
+<ul>
+    <li><b>Username:</b> {{ user_data.username }}</li>
+    <li><b>Email:</b> {{ user_data.email }}</li>
+    <li><b>Active:</b> {{ user_data.is_active }}</li>
+    <li><b>Rollen:</b>
+        <ul>
+            {% for group in user_data.groups.all %}
+                <li>{{ group }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>
+
+<a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+
+{% endblock %}

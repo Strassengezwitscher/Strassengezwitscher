@@ -1,0 +1,39 @@
+html {
+    height: 100%;
+}
+body {
+    background: #538eb8; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #538eb8, #ffd044); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #538eb8, #ffd044); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #538eb8, #ffd044); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #538eb8, #ffd044); /* Standard syntax */
+}
+
+.login-panel {
+    position:absolute;
+    top:25%;
+    left: 50%;
+    width: 400px;
+    transform: translate(-50%, -25%);
+}
+
+.form-login input[type="text"]
+{
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-login input[type="password"]
+{
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.warning {
+    background-color: #fcf8e3;
+}
+
+.error {
+    background-color: #f2dede;
+}

@@ -1,4 +1,4 @@
-# Strassengezwitscher
+# Crowdgezwitscher
 
 [![Build Status](https://travis-ci.org/Strassengezwitscher/Strassengezwitscher.svg?branch=develop)](https://travis-ci.org/Strassengezwitscher/Strassengezwitscher)
 [![Coverage Status](https://coveralls.io/repos/github/Strassengezwitscher/Strassengezwitscher/badge.svg?branch=develop)](https://coveralls.io/github/Strassengezwitscher/Strassengezwitscher?branch=develop)
@@ -10,6 +10,6 @@ Take a look at the [Wiki](https://github.com/Strassengezwitscher/Strassengezwits
 ```bash
 pip install -r requirements.txt
 npm install
-gulp build 
-python strassengezwitscher/manage.py runserver
+gulp build
+python crowdgezwitscher/manage.py runserver
 ```

@@ -2,8 +2,8 @@ module.exports = function () {
     var root = './';
     var path = {
         root: root,
-        build: root + 'strassengezwitscher/static/build/',
-        dist: root + 'strassengezwitscher/static/dist/',
+        build: root + 'crowdgezwitscher/static/build/',
+        dist: root + 'crowdgezwitscher/static/dist/',
         npm: root + 'node_modules/',
         frontend: 'frontend/',
         report: root + '.report/',
@@ -46,9 +46,12 @@ module.exports = function () {
         static: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
             path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
+            path.npm + 'bootstrap/dist/js/bootstrap.min.js',
             path.npm + 'bootstrap/dist/fonts/*',
+            path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'rxjs/**/*',
             path.npm + '@angular/**/*',
+            path.npm + '@angular2-material',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
             path.npm + 'ng2-bootstrap/**/*',

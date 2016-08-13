@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <base href="/">
+
+        {% load static %}
+
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Crowdgezwitscher</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+        {% if debug %}
+        <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'bundle.dev.css' %}" rel="stylesheet">
+
+
+        <!-- 1. Load libraries -->
+        <!-- Polyfill(s) for older browsers -->
+        <script src="{% static 'core-js/client/shim.min.js' %}"></script>
+
+        <script src="{% static 'zone.js/dist/zone.js' %}"></script>
+        <script src="{% static 'reflect-metadata/Reflect.js' %}"></script>
+        <script src="{% static 'systemjs/dist/system.src.js' %}"></script>
+
+        <!-- 2. Configure SystemJS -->
+        <script src="{% static 'systemjs.config.js' %}"></script>
+        <script>
+            System.import('static/frontend/main').catch(function(err){ console.error(err); });
+        </script>
+        {% else %}
+        <link href="{% static 'bundle.css' %}" rel="stylesheet">
+        <script src="{% static 'dependencies.js' %}"></script>
+        <script src="{% static 'bundle.js' %}" defer></script>
+        {% endif %}
+
+        <script src="https://maps.googleapis.com/maps/api/js?extension=.js&output=embed"></script>
+
+        <style type="text/css">
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <cg-app>Loading ....</cg-app>
+    </body>
+</html>

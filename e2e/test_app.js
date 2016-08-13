@@ -1,10 +1,10 @@
 var settings = require('./settings')();
 
-casper.test.begin('Testing Strassengezwitscher App (User Frontend)', 1, function(test) {
+casper.test.begin('Testing Crowdgezwitscher App (User Frontend)', 1, function(test) {
     casper.start(settings.frontendUrl);
 
     casper.then(function() {
-        test.assertTitle('Strassengezwitscher', 'Strassengezwitscher has correct title');
+        test.assertTitle('Crowdgezwitscher', 'Crowdgezwitscher has correct title');
     });
 
     casper.run(function(){
