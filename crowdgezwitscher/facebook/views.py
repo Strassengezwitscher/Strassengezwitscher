@@ -33,14 +33,14 @@ class FacebookPageCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView
 
 
 class FacebookPageUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = 'facebook.add_facebookpage'
+    permission_required = 'facebook.change_facebookpage'
     model = FacebookPage
     template_name = 'facebook/form.html'
     fields = ['name', 'active', 'location_long', 'location_lat']
 
 
 class FacebookPageDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    permission_required = 'facebook.add_facebookpage'
+    permission_required = 'facebook.delete_facebookpage'
     model = FacebookPage
     template_name = 'facebook/delete.html'
     success_url = reverse_lazy('facebook:list')
