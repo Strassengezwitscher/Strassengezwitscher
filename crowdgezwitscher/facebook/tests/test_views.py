@@ -6,12 +6,11 @@ from facebook.models import FacebookPage
 
 
 class FacebookPageViewLoggedInTests(TestCase):
-    fixtures = ['facebook_views_testdata']
+    fixtures = ['facebook_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
 
     def setUp(self):
-        self.user = User.objects.create_user('user', 'user@host.org', 'password')
-        self.client.login(username='user', password='password')
+        self.client.login(username='adm', password='adm')
 
     # List
     def test_get_list_view(self):
