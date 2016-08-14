@@ -12,11 +12,21 @@
     </tr>
     {% for event in events %}
     <tr>
-        <td><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></td>
+        <td>
+            {% if perms.events.view_event %}
+                <a href="{% url 'events:detail' event.id %}">{{ event.name }}</a>
+            {% else %}
+                {{ event.name }}
+            {% endif %}
+        </td>
         <td>{% if event.active %} aktiviert {% else %} deaktiviert {% endif %}</td>
         <td>
-            <a class="btn btn-default btn-sm" href="{% url 'events:update' event.id %}">Bearbeiten</a>
-            <a class="btn btn-default btn-sm" href="{% url 'events:delete' event.id %}">Löschen</a>
+            {% if perms.events.change_event %}
+                <a class="btn btn-default btn-sm" href="{% url 'events:update' event.id %}">Bearbeiten</a>
+            {% endif %}
+            {% if perms.events.delete_event %}
+                <a class="btn btn-default btn-sm" href="{% url 'events:delete' event.id %}">Löschen</a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
@@ -25,6 +35,8 @@
 <p>Keine Veranstaltungen verfügbar.</p>
 {% endif %}
 
-<a class="btn btn-primary" href="{% url 'events:create' %}">Veranstaltung anlegen</a>
+{% if perms.events.add_event %}
+    <a class="btn btn-primary" href="{% url 'events:create' %}">Veranstaltung anlegen</a>
+{% endif %}
 
 {% endblock %}

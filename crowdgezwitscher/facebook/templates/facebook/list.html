@@ -12,11 +12,21 @@
     </tr>
     {% for page in pages %}
     <tr>
-        <td><a href="{% url 'facebook:detail' page.id %}">{{ page.name }}</a></td>
+        <td>
+            {% if perms.facebook.view_facebookpage %}
+                <a href="{% url 'facebook:detail' page.id %}">{{ page.name }}</a>
+            {% else %}
+                {{ page.name }}
+            {% endif %}
+        </td>
         <td>{% if page.active %} aktiviert {% else %} deaktiviert {% endif %}</td>
         <td>
-            <a class="btn btn-default btn-sm" href="{% url 'facebook:update' page.id %}">Bearbeiten</a>
-            <a class="btn btn-default btn-sm" href="{% url 'facebook:delete' page.id %}">Löschen</a>
+            {% if perms.facebook.change_facebookpage %}
+                <a class="btn btn-default btn-sm" href="{% url 'facebook:update' page.id %}">Bearbeiten</a>
+            {% endif %}
+            {% if perms.facebook.delete_facebookpage %}
+                <a class="btn btn-default btn-sm" href="{% url 'facebook:delete' page.id %}">Löschen</a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
@@ -25,6 +35,9 @@
 <p>No Facebook pages available.</p>
 {% endif %}
 
-<a class="btn btn-primary" href="{% url 'facebook:create' %}">Facebook-Seite anlegen</a>
+{% if perms.facebook.add_facebookpage %}
+    <a class="btn btn-primary" href="{% url 'facebook:create' %}">Facebook-Seite anlegen</a>
+{% endif %}
+
 
 {% endblock %}
