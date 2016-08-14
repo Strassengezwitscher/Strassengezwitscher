@@ -6,6 +6,7 @@ from events.models import Event
 
 
 class EventViewLoggedInTests(TestCase):
+    """User testing the views is logged in and has all required permissions."""
     fixtures = ['events_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
 
@@ -152,6 +153,7 @@ class EventViewLoggedInTests(TestCase):
 
 
 class EventViewLoggedOutTests(TestCase):
+    """User testing the views is not logged."""
     # List
     def test_get_list_view(self):
         url = reverse('events:list')

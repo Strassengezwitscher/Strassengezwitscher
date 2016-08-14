@@ -6,6 +6,7 @@ from facebook.models import FacebookPage
 
 
 class FacebookPageViewLoggedInTests(TestCase):
+    """User testing the views is logged in and has all required permissions."""
     fixtures = ['facebook_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
 
@@ -142,6 +143,7 @@ class FacebookPageViewLoggedInTests(TestCase):
 
 
 class FacebookPageViewLoggedOutTests(TestCase):
+    """User testing the views is not logged."""
     # List
     def test_get_list_view(self):
         url = reverse('facebook:list')
