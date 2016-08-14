@@ -11,7 +11,7 @@ class FacebookPageViewLoggedInTests(TestCase):
     csrf_client = Client(enforce_csrf_checks=True)
 
     def setUp(self):
-        self.client.login(username='adm', password='adm')
+        self.client.login(username='john.doe', password='john.doe')
 
     # List
     def test_get_list_view(self):
