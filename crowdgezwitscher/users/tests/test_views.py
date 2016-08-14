@@ -18,7 +18,6 @@ class UserViewLoggedInTests(TestCase):
         response = self.client.get(reverse('users:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
-        self.assertEqual(len(response.context['users']), 3)  # Don't show superusers
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('users:list'))
@@ -26,7 +25,7 @@ class UserViewLoggedInTests(TestCase):
 
     # Detail
     def test_get_detail_view(self):
-        response = self.client.get(reverse('users:detail', kwargs={'pk': 3}))  # todo
+        response = self.client.get(reverse('users:detail', kwargs={'pk': 3}))
         self.assertEqual(response.status_code, 200)
         self.assertIn('user_data', response.context)
         self.assertEqual(response.context['user_data'], User.objects.get(pk=3))
@@ -149,3 +148,29 @@ class UserViewNoPermissionTests(TestCase):
         url = reverse('users:update', kwargs={'pk': 3})
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+
+class UserViewNoStuffUsersAccessibleTests(TestCase):
+    """Test that staff users (able to log in to Django's admin UI) are not accessible from the intern area."""
+    fixtures = ['users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='adm', password='adm')
+
+    # List
+    def test_get_list_view(self):
+        response = self.client.get(reverse('users:list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('users', response.context)
+        self.assertEqual(User.objects.count(), 4)
+        self.assertEqual(len(response.context['users']), 3)
+
+    # Detail
+    def test_get_detail_view(self):
+        response = self.client.get(reverse('users:detail', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, 404)
+
+    # Update
+    def test_get_update_view(self):
+        response = self.client.get(reverse('users:update', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, 404)

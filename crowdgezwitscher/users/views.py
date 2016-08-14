@@ -4,25 +4,24 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 
+from .mixins import NoStaffMixin
 
-class UserListView(PermissionRequiredMixin, ListView):
+
+class UserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
     permission_required = 'auth.view_user'
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
 
-    def get_queryset(self):
-        return User.objects.exclude(is_staff=True)
 
-
-class UserDetail(PermissionRequiredMixin, DetailView):
+class UserDetail(PermissionRequiredMixin, NoStaffMixin, DetailView):
     permission_required = 'auth.view_user'
     model = User
     template_name = 'users/detail.html'
     context_object_name = 'user_data'
 
 
-class UserCreate(PermissionRequiredMixin, CreateView):
+class UserCreate(PermissionRequiredMixin, NoStaffMixin, CreateView):
     permission_required = 'auth.add_user'
     model = User
     template_name = 'users/form.html'
@@ -33,7 +32,7 @@ class UserCreate(PermissionRequiredMixin, CreateView):
         return super(UserCreate, self).form_valid(form)
 
 
-class UserUpdate(PermissionRequiredMixin, UpdateView):
+class UserUpdate(PermissionRequiredMixin, NoStaffMixin, UpdateView):
     permission_required = 'auth.change_user'
     model = User
     template_name = 'users/form.html'
