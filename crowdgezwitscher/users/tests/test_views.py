@@ -114,33 +114,6 @@ class UserViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class UserViewLoggedOutTests(TestCase):
-    """User testing the views is not logged."""
-    # List
-    def test_get_list_view(self):
-        url = reverse('users:list')
-        response = self.client.get(url)
-        self.assertRedirects(response, reverse('login') + '?next=' + url)
-
-    # Detail
-    def test_get_detail_view(self):
-        url = reverse('users:detail', kwargs={'pk': 3})
-        response = self.client.get(url)
-        self.assertRedirects(response, reverse('login') + '?next=' + url)
-
-    # Create
-    def test_get_create_view(self):
-        url = reverse('users:create')
-        response = self.client.get(url)
-        self.assertRedirects(response, reverse('login') + '?next=' + url)
-
-    # Update
-    def test_get_update_view(self):
-        url = reverse('users:update', kwargs={'pk': 3})
-        response = self.client.get(url)
-        self.assertRedirects(response, reverse('login') + '?next=' + url)
-
-
 class UserViewNoPermissionTests(TestCase):
     """User testing the views is logged in as a Moderator but lacks the required permissons."""
     fixtures = ['users_views_testdata']

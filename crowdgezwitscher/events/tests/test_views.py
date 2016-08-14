@@ -152,8 +152,8 @@ class EventViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class EventViewLoggedOutTests(TestCase):
-    """User testing the views is not logged."""
+class EventViewNoPermissionTests(TestCase):
+    """User testing the views is not logged and therefore lacking the required permissions."""
     # List
     def test_get_list_view(self):
         url = reverse('events:list')

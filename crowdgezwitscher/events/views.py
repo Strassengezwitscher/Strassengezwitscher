@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -11,21 +11,21 @@ from events.serializers import EventSerializer
 from crowdgezwitscher.models import MapObjectFilter
 
 
-class EventListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class EventListView(PermissionRequiredMixin, ListView):
     permission_required = 'events.view_event'
     model = Event
     template_name = 'events/list.html'
     context_object_name = 'events'
 
 
-class EventDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class EventDetail(PermissionRequiredMixin, DetailView):
     permission_required = 'events.view_event'
     model = Event
     template_name = 'events/detail.html'
     context_object_name = 'event'
 
 
-class EventCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class EventCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'events.add_event'
     model = Event
     template_name = 'events/form.html'
@@ -35,7 +35,7 @@ class EventCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     ]
 
 
-class EventUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class EventUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'events.change_event'
     model = Event
     template_name = 'events/form.html'
@@ -45,7 +45,7 @@ class EventUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     ]
 
 
-class EventDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class EventDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'events.delete_event'
     model = Event
     template_name = 'events/delete.html'
