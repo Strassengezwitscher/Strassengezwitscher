@@ -3,6 +3,7 @@
 var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 var merge = require('merge2');
@@ -29,6 +30,19 @@ gulp.task('copy:npmfiles', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
+gulp.task('copy:config', function() {
+    if (!argv.production) {
+        return gulp.src(config.path.frontend_config + 'dev_conf')
+        .pipe(rename('config.ts'))
+        .pipe(gulp.dest(config.path.frontend));
+    } else {
+        return gulp.src(config.path.frontend_config + 'prod_conf')
+        .pipe(rename('config.ts'))
+        .pipe(gulp.dest(config.path.frontend));
+    }
+
+});
+
 gulp.task('copy:systemjsconfig', function() {
     return gulp.src(config.systemjs.files)
         .pipe(gulp.dest(config.path.build));
@@ -50,7 +64,7 @@ gulp.task('compile:sass', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('compile:typescript', function() {
+gulp.task('compile:typescript', ['copy:config'], function() {
     var tsResult = gulp.src(config.typescript.files)
         .pipe(sourcemaps.init())
         .pipe(typescript(tsProject));

@@ -1,0 +1,4 @@
+export class Config {
+    public dataSitekey = "INSERT_KEY_HERE";
+    constructor() {}
+}
