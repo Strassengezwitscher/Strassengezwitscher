@@ -1,55 +1,69 @@
 <div class="container">
-	<h1>Kontaktformular</h1>
-	<div id="contact-error-message" *ngIf="contactErrorMessage">
-        <div id="contact-inner-error-message" class="error-message alert alert-danger contact-error-message">
-            <button type="button" class="close" (click)="clearError()">&times;</button>
-            {{contactErrorMessage}}
-        </div>
-	</div>
-	<div id="contact-success-message" *ngIf="contactSuccessMessage">
-        <div id="contact-inner-success-message" class="alert alert-success">
-            {{contactSuccessMessage}}
-        </div>
-	</div>
-	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
-		<div class="form-group">
-			<label for="name"> Name: </label>
-			<input id ="contact-name" type="text" maxlength="50" name="name" class="form-control" [(ngModel)]="contact.name" placeholder="Optional">
+	<h1>Kontakt</h1>
+
+	<md-card class="contact-card contact-card-success" *ngIf="contactSuccessMessage">
+		<span>{{contactSuccessMessage}}</span>
+	</md-card>
+
+	<md-card class="contact-card contact-card-error" *ngIf="contactErrorMessage">
+		<span>{{contactErrorMessage}}</span>
+		<button md-icon-button (click)="clearError()">
+			<md-icon>clear</md-icon>
+		</button>
+	</md-card>
+
+	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+		<table style="width: 100%" cellspacing="0">
+			<tr>
+				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
+				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
+			</tr>
+		</table>
+		<div>
+			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" dividerColor="accent" style="width: 100%"></md-input>
+		</div>
+		<div class="input-field">
+			<textarea id="contact-message" class="materialize-textarea" name="message" required [(ngModel)]="contact.message" (focus)="isMessageInputFocused = true" (blur)="blurMessageInput()"></textarea>
+			<label for="contact-message" [class.active]="isMessageInputFocused">Nachricht *</label>
 		</div>
 
-		<div class="form-group">
-			<label for="email"> Email: </label>
-			<input id ="contact-email" name="email" type="email" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" placeholder="Optional">
-		</div>
+		<table style="width: 100%" cellspacing="0">
+			<tr>
+				<td style="width: 50%">
+					<md-checkbox id="contact-journalist" name="journalist" [(ngModel)]="contact.journalist">Sind Sie Journalist?</md-checkbox>
+					<br>
+					<md-checkbox id="contact-confidential" name="confidential" [(ngModel)]="contact.confidential">
+						Nachricht besonders vertraulich behandeln?
+						<md-icon style="font-size:16px;" md-tooltip="Durch das Setzen dieses Häkchens wird Ihre Nachricht nur an einen ausgewählten internen Kreis übermittelt." tooltip-position="after">info</md-icon>
+					</md-checkbox>
+				</td>
+				<td style="width: 50%">
+					<label for="contact-file" md-raised-button>Anhang</label>
+					<input id="contact-file" name="file" type="file" (change)="onFileChange($event)" multiple hidden>
+					{{ fileInputNames || "Wählen Sie Dateien als Anhang" }}
+				</td>
+			</tr>
+		</table>
+		<br>
+		<p>* Pflichtfelder</p>
 
-		<div class="form-group">
-			<label for="subject"> Betreff: </label>
-			<input id ="contact-subject" type="text" name="subject" class="form-control" required [(ngModel)]="contact.subject" placeholder="Pflichtfeld">
-		</div>
+		<br>
+		<table style="width: 100%" cellspacing="0">
+			<tr>
+				<td style="width: 30px">
+					<md-icon>info_outline</md-icon>
+				</td>
+				<td>
+					Ihre valide Nachricht wird immer PGP-verschlüsselt an uns übertragen. Um eine verschlüsselte Antwort zu erhalten, fügen Sie bitte der Nachricht Ihren eigenen GPG Public Key als Anhang hinzu.
+				</td>
+			</tr>
+		</table>
+		<br>
 
-		<div class="form-group">
-			<label for="message"> Nachricht: </label>
-			<textarea id="contact-message" name="message" cols="40" rows="10" class="form-control" required [(ngModel)]="contact.message" placeholder="Pflichtfeld"></textarea>
-		</div>
-
-		<div class="form-group">
-			<input id="contact-journalist" type="checkbox" name="journalist" [(ngModel)]="contact.journalist">
-			<label for="journalist"> Sind Sie Journalist? </label>
-		</div>
-
-		<div class="form-group">
-			<input id="contact-confidential" type="checkbox" name="confidential" [(ngModel)]="contact.confidential">
-			<label for="confidential"> Nachricht besonders vertraulich behandeln? </label>
-			<span class="glyphicon glyphicon-question-sign" tooltip="Durch das Setzen dieses Häkchens wird Ihre Nachricht nur an einen ausgewählten internen Kreis übermittelt." tooltipPlacement="right"></span>
-		</div>
-
-		<div class="form-group">
-			<label for="file"> Anhang: </label>
-			<input id="contact-file" name="file" type="file" multiple maxlength="50" [class]="filesValid ? 'form-control ng-valid' : 'form-control ng-invalid' " #fileInput (change)="onFileChange($event)">
-		</div>
 		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="grecaptchaKey" data-callback="verifyCallback"></div>
-		<button id="contact-submit-button" type="submit" class="btn btn-default" [disabled]="!(contactForm.form.valid && filesValid && captchaVerfied)">Submit</button>
-		<span class="glyphicon glyphicon-question-sign" tooltip="Ihre valide Nachricht wird immer verschlüsselt übertragen. Um eine verschlüsselte Antwort zu erhalten, fügen Sie bitte der Nachricht Ihren eigenen GPG Public Key im Anhang hinzu." tooltipPlacement="top"></span>
-		</div>
+
+		<p>
+			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid && captchaVerfied)" color="accent">Senden</button>
+		</p>
 	</form>
 </div>

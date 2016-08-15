@@ -1,16 +1,16 @@
 import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
+
 import { ContactService } from "./contact.service";
 import { Contact } from "./contact";
 import { CaptchaService } from "./captcha.service";
 import { ConfigurationService } from "./config.service";
-import { TOOLTIP_DIRECTIVES } from "ng2-bootstrap/components/tooltip";
 
 @Component({
+    moduleId: module.id,
     selector: "cg-contact",
     templateUrl: "contact.component.html",
     providers: [ContactService, CaptchaService, ConfigurationService],
-    directives: [TOOLTIP_DIRECTIVES],
 })
 export class ContactComponent implements OnInit, OnDestroy {
     private contactErrorMessage: string;
@@ -19,9 +19,12 @@ export class ContactComponent implements OnInit, OnDestroy {
     private uploads: FileList;
     private maxFileNameLength = 50;
     private filesValid;
+    private fileInputNames = "";
     private captchaVerfied;
     private script;
     private grecaptchaKey;
+
+    private isMessageInputFocused = false;
 
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
                  private configService: ConfigurationService, private router: Router, private zone: NgZone) {
@@ -49,8 +52,10 @@ export class ContactComponent implements OnInit, OnDestroy {
 
     public onFileChange(event) {
         let errorMessage = "";
+        let fileNames: String[] = [];
 
         for (let file of event.srcElement.files) {
+            fileNames.push(file.name);
             if (file.name.length > this.maxFileNameLength) {
                 errorMessage += "Name des Anhangs '" + file.name +
                                 "' zu lang (maximal 50 Zeichen)\n";
@@ -62,6 +67,7 @@ export class ContactComponent implements OnInit, OnDestroy {
         } else {
             this.filesValid = true;
             this.uploads = event.srcElement.files;
+            this.fileInputNames = fileNames.join(", ");
         }
     }
 
@@ -84,6 +90,10 @@ export class ContactComponent implements OnInit, OnDestroy {
         this.zone.run(() => {
             this.captchaVerfied = true;
         });
+    }
+
+    public blurMessageInput() {
+        this.isMessageInputFocused = (this.contact.message !== "");
     }
 
     private displaySuccess() {

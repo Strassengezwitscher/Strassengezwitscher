@@ -4,7 +4,8 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
 import { CrowdgezwitscherComponent } from "./cg.component";
-import { routing } from "./cg.routing";
+import { MaterialModule } from "./material.module";
+import { RoutingModule } from "./cg.routing";
 
 import { MapComponent } from "./map.component";
 import { ContactComponent } from "./contact.component";
@@ -17,7 +18,8 @@ import { ContactService } from "./contact.service";
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing,
+        MaterialModule,
+        RoutingModule,
     ],
     declarations: [
         CrowdgezwitscherComponent,

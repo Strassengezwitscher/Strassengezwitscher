@@ -7,8 +7,8 @@
     'app':                        'app', // 'dist',
     'rxjs':                       'static/rxjs',
     '@angular':                   'static/@angular',
+    '@angular2-material':         'static/@angular2-material',
     'symbol-observable':          'static/symbol-observable',
-    'ng2-bootstrap':              'static/ng2-bootstrap',
   };
 
   // packages tells the System loader how to load when no filename and/or no extension

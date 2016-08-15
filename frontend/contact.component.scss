@@ -1,11 +1,115 @@
-.ng-valid {
-  border-left: 5px solid #42a948;
+.contact-card {
+  margin-bottom: 16px;
 }
 
-.ng-invalid {
-  border-left: 5px solid #a94442;
+.contact-card-success {
+  background-color: #dff0d8;
 }
 
-.contact-error-message {
-  white-space: pre-line;
+.contact-card-error {
+  background-color: #f2dede;
+
+  .md-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button {
+      height: 18px;
+      width: 18px;
+
+      span.md-button-wrapper {
+        position: absolute;
+        top: 0;
+        right: -3px;
+
+        md-icon {
+          font-size: 16px;
+        }
+      }
+    }
+  }
 }
+
+// ----------------
+// Begin: Workoaround for missing textarea component of angular/material2
+// ----------------
+$highlight-color: #9c27b0;
+$border-color: #9e9e9e;
+
+textarea.materialize-textarea {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid $border-color;
+  border-radius: 0;
+  box-shadow: 0;
+  box-sizing: content-box;
+  color: inherit;
+  font: inherit;
+  font-size: 1rem;
+  height: 2rem;
+  margin: 0 0 20px;
+  min-height: 2rem;
+  outline: 0;
+  overflow: auto;
+  overflow-y: hidden;
+  padding: .8rem 0 1.6rem;
+  resize: 0;
+  transition: all .3s;
+  width: 100%;
+
+  &:focus {
+    border-bottom: 1px solid $highlight-color;
+    box-shadow: 0 1px 0 0 $highlight-color;
+
+    &:not([readonly]) + label {
+      color: $highlight-color;
+    }
+  }
+
+  &.validate + label {
+    pointer-events: 0;
+    width: 100%;
+  }
+
+  & + label:after {
+    content: '';
+    display: block;
+    opacity: 0;
+    position: absolute;
+    top: 60px;
+    transition: .2s opacity ease-out, .2s color ease-out;
+  }
+}
+
+.input-field {
+  margin-top: 1rem;
+  position: relative;
+
+  label {
+    color: $border-color;
+    cursor: text;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-size: 1rem;
+    position: absolute;
+    top: .8rem;
+    transition: .2s ease-out;
+
+    &.active {
+      -webkit-transform: translateY(-140%);
+      font-size: .8rem;
+      transform: translateY(-140%);
+    }
+  }
+}
+
+.hiddendiv {
+  display: none;
+  overflow-wrap: break-word;
+  padding-top: 1.2rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+// ----------------
+// End: Workoaround for missing textarea component of angular/material2
+// ----------------

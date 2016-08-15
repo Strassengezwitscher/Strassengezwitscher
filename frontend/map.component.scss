@@ -1,11 +1,12 @@
-$height-navbar: 50px;
+$height-navbar: 64px;
+$height-navbar-mobile: 56px;
 
 .navbar {
   margin-bottom: 0;
 }
 
 .map-wrapper {
-  height: calc(100% - #{$height-navbar});
+  height: calc(100% - #{$height-navbar-mobile});
   width: 100%;
 }
 
@@ -16,8 +17,9 @@ $height-navbar: 50px;
 
 .map-settings {
   position: absolute;
-  right: 15px;
-  top: 65px;
+  right: 10px;
+  top: #{$height-navbar + 10px};
+  margin: 0;
   z-index: 99;
 }
 
@@ -28,4 +30,10 @@ $height-navbar: 50px;
   position: absolute;
   text-align: center;
   transform: translateX(-50%);
+}
+
+@media only screen and (min-width: 600px) {
+  .map-wrapper {
+    height: calc(100% - #{$height-navbar});
+  }
 }

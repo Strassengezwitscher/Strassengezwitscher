@@ -18,7 +18,7 @@ module.exports = function () {
             name: 'bundle.css',
             dev_name: 'bundle.dev.css',
             files: [
-                path.build + 'bootstrap/**/*.css',
+                path.build + 'materialize-css/**/*.css',
                 path.build + 'bundle.dev.css',
             ],
         },
@@ -28,7 +28,7 @@ module.exports = function () {
         bundle: {
             path: path.dist + 'bundle.js',
             config: {
-                minify: true,
+                minify: false,
             },
         },
     };
@@ -50,17 +50,17 @@ module.exports = function () {
             path.npm + 'bootstrap/dist/fonts/*',
             path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'rxjs/**/*',
-            path.npm + '@angular/**/*',
-            path.npm + '@angular2-material',
+            path.npm + '@angular/**/*.+(js|js.map)',
+            path.npm + '@angular2-material/**/*',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
-            path.npm + 'ng2-bootstrap/**/*',
         ],
         angular_dependencies: {
             files: [
                 path.npm + 'core-js/client/shim.min.js',
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
+                path.npm + 'hammerjs/hammer.js',
             ],
             name: 'dependencies.js',
         },

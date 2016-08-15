@@ -1,0 +1,31 @@
+@import 'base';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.toolbar-menu {
+  flex-basis: 40px;
+}
+
+.toolbar-spacer {
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  flex: 1 1 auto;
+}
+
+a.brand-logo {
+  background: url(img/cg-logo.svg) no-repeat center;
+  height: 100%;
+  width: 250px;
+  background-size: 100% 70%;
+  cursor: pointer;
+}
+
+@media #{$medium-and-up} {
+  .toolbar-menu {
+    flex-basis: 88px;
+  }
+}
