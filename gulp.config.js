@@ -26,9 +26,9 @@ module.exports = function () {
     var typescript = {
         files: root + 'frontend/**/*.ts',
         bundle: {
-            path: path.dist + 'bundle.js',
+            path: path.dist + 'bundle-ngc.js',
             config: {
-                minify: false,
+                minify: true,
             },
         },
     };

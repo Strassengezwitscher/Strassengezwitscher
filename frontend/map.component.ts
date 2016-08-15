@@ -17,16 +17,16 @@ export class MapObjectSetting {
 export class MapComponent implements AfterViewInit {
 
     private currentlyOpenInfoWindow: google.maps.InfoWindow;
-    private errorMessage: string;
+    public errorMessage: string;
     private map: google.maps.Map;
     // Utilized for holding status and name of different types of MapObjects
-    private mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
+    public mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
 
-    @ViewChild("mapCanvas") private mapCanvas;
+    @ViewChild("mapCanvas") public mapCanvas;
 
     constructor(private mapService: MapService) {
         this.initializeMarkerMap();

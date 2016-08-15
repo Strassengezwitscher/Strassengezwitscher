@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "es2015",
+    "target": "es5",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
@@ -10,7 +10,7 @@
     "noImplicitAny": false
   },
   "files": [
-    "compiled/main-ngc.ts"
+      "main.ts"
   ],
   "exclude": [
     "node_modules",

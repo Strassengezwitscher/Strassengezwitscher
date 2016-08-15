@@ -13,18 +13,18 @@ import { ConfigurationService } from "./config.service";
     providers: [ContactService, CaptchaService, ConfigurationService],
 })
 export class ContactComponent implements OnInit, OnDestroy {
-    private contactErrorMessage: string;
-    private contactSuccessMessage: string;
-    private contact: Contact;
+    public contactErrorMessage: string;
+    public contactSuccessMessage: string;
+    public contact: Contact;
     private uploads: FileList;
     private maxFileNameLength = 50;
-    private filesValid;
-    private fileInputNames = "";
-    private captchaVerfied;
+    public filesValid;
+    public fileInputNames = "";
+    public captchaVerfied;
     private script;
-    private grecaptchaKey;
+    public grecaptchaKey;
 
-    private isMessageInputFocused = false;
+    public isMessageInputFocused = false;
 
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
                  private configService: ConfigurationService, private router: Router, private zone: NgZone) {

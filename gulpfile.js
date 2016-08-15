@@ -63,10 +63,10 @@ gulp.task('compile:typescript', function() {
     ]);
 });
 
-gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], function() {
-    var builder = new SystemBuilder(config.path.build, config.systemjs.config);
+gulp.task('bundle:typescript', function() {
+    var builder = new SystemBuilder("./compiled2", config.systemjs.config);
     builder.loader.defaultJSExtensions = true;
-    return builder.buildStatic('frontend/main', config.typescript.bundle.path, config.typescript.bundle.config);
+    return builder.buildStatic('main-ngc', config.typescript.bundle.path, config.typescript.bundle.config);
 });
 
 gulp.task('bundle:dependencies', function() {
@@ -112,6 +112,25 @@ gulp.task('build', ['copy:staticfiles', 'compile:typescript', 'compile:sass']);
 
 gulp.task('default', function() {
   // place code for your default task here
+});
+
+var rollup = require('rollup').rollup;
+var commonjs = require('rollup-plugin-commonjs');
+var nodeResolve = require('rollup-plugin-node-resolve');
+
+gulp.task('rollup', function () {
+  return rollup({
+    entry: 'compiled2/main-ngc.js',
+    plugins: [
+      nodeResolve({ jsnext: true }),
+      commonjs()
+    ]
+  }).then(function (bundle) {
+    return bundle.write({
+      format: 'iife',
+      dest: 'compiled3/main.js'
+    });
+  });
 });
 
 if (!argv.production) {
