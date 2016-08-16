@@ -4,6 +4,7 @@ var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
 var rename = require('gulp-rename');
+var fs = require('fs');
 var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 var merge = require('merge2');
@@ -31,16 +32,18 @@ gulp.task('copy:npmfiles', function() {
 });
 
 gulp.task('copy:config', function() {
-    if (!argv.production) {
-        return gulp.src(config.path.frontend_config + 'dev_conf')
-        .pipe(rename('config.ts'))
-        .pipe(gulp.dest(config.path.frontend));
-    } else {
-        return gulp.src(config.path.frontend_config + 'prod_conf')
-        .pipe(rename('config.ts'))
-        .pipe(gulp.dest(config.path.frontend));
+    if (argv.production) {
+        fs.stat(config.path.frontend_config + 'prod_conf', function(err, stat) {
+            if(err == null) {
+                return gulp.src(config.path.frontend_config + 'prod_conf')
+                .pipe(rename('config.ts'))
+                .pipe(gulp.dest(config.path.frontend));
+            }
+        });
     }
-
+    return gulp.src(config.path.frontend_config + 'dev_conf')
+    .pipe(rename('config.ts'))
+    .pipe(gulp.dest(config.path.frontend));
 });
 
 gulp.task('copy:systemjsconfig', function() {
