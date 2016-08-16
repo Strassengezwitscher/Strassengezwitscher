@@ -24,15 +24,15 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <a href="{% url 'events:list' %}">Verantstaltungen</a>
+            <a href="{% url 'events:list' %}">Veranstaltungen</a>
         </h3>
     </div>
     <div class="panel-body">
         Es gibt insgesamt {{ event_count }}
         {% if event_count == 1 %}
-            Verantstaltung.
+            Veranstaltung.
         {% else %}
-            Verantstaltungen.
+            Veranstaltungen.
         {% endif %}
     </div>
 </div>
@@ -50,13 +50,13 @@
         {% if active_user_count == 1 %}
             aktiven Nutzer
         {% else %}
-            active Nutzer
+            aktive Nutzer
         {% endif %}
         und {{ inactive_user_count }}
         {% if inactive_user_count == 1 %}
             inaktiven Nutzer.
         {% else %}
-            inactive Nutzer.
+            inaktive Nutzer.
         {% endif %}
     </div>
 </div>

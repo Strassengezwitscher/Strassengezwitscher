@@ -15,6 +15,6 @@ def intern_index(request):
     return render(request, 'dashboard.html', {
         'facebook_page_count': FacebookPage.objects.count(),
         'event_count': Event.objects.count(),
-        'active_user_count': User.objects.exclude(is_staff=True).exclude(is_active=False).count(),
-        'inactive_user_count': User.objects.exclude(is_staff=True).exclude(is_active=True).count(),
+        'active_user_count': User.objects.exclude(is_staff=True, is_active=False).count(),
+        'inactive_user_count': User.objects.exclude(is_staff=True, is_active=True).count(),
     })
