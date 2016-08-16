@@ -14,7 +14,7 @@ class UserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
     context_object_name = 'users'
 
     def get_queryset(self):
-        return User.objects.filter(is_active=True)
+        return super(UserListView, self).get_queryset().exclude(is_active=False)
 
 
 class InactiveUserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
@@ -24,7 +24,7 @@ class InactiveUserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
     context_object_name = 'users'
 
     def get_queryset(self):
-        return User.objects.filter(is_active=False)
+        return super(InactiveUserListView, self).get_queryset().exclude(is_active=True)
 
 
 class UserDetail(PermissionRequiredMixin, NoStaffMixin, DetailView):
