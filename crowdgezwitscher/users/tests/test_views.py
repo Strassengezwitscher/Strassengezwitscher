@@ -30,7 +30,7 @@ class UserViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
         self.assertTrue(all(not user.is_active for user in response.context['users']))
-        self.assertEqual(len(response.context['users']), 1)  # Don't show superusers and active users
+        self.assertEqual(len(response.context['users']), 1)
 
     def test_post_inactive_list_view_not_allowed(self):
         response = self.client.post(reverse('users:list_inactive'))
@@ -144,7 +144,7 @@ class UserViewNoPermissionTests(TestCase):
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
 
-    # List
+    # List inactive
     def test_get_inactive_list_view(self):
         url = reverse('users:list_inactive')
         response = self.client.get(url)
