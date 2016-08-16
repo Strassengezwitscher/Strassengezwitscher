@@ -63,8 +63,8 @@ class UserViewLoggedInTests(TestCase):
             'password': '123456',
         }
         response = self.client.post(reverse('users:create'), data, follow=True)
-        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 5}))
-        self.assertNotEqual(User.objects.get(pk=5).password, '123456', 'User password is stored as hash.')
+        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 6}))
+        self.assertNotEqual(User.objects.get(pk=6).password, '123456', 'User password is stored as hash.')
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('users:create'))
@@ -180,7 +180,7 @@ class UserViewNoStaffUsersAccessibleTests(TestCase):
         response = self.client.get(reverse('users:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
-        self.assertEqual(User.objects.count(), 4)
+        self.assertEqual(User.objects.count(), 5)
         self.assertEqual(len(response.context['users']), 3)
 
     # Detail
