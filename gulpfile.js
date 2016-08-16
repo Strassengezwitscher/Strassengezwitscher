@@ -115,10 +115,14 @@ gulp.task('default', function() {
 });
 
 if (!argv.production) {
-    gulp.task('lint:python', function() {
-        exec('prospector crowdgezwitscher --profile ../.landscape.yml', function (err, stdout, stderr) {
+    gulp.task('lint:python', function(done) {
+        var command = 'prospector crowdgezwitscher --profile ../.landscape.yml';
+        var lint = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        lint.on('close', function(exitcode) {
+            done(exitcode);
         });
     });
 
@@ -179,6 +183,17 @@ if (!argv.production) {
         });
     });
 
+    gulp.task('test:python', function(done) {
+        var command = 'python crowdgezwitscher/manage.py test crowdgezwitscher';
+        var test = exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+        test.on('close', function(exitcode) {
+            done(exitcode);
+        });
+    });
+
     gulp.task('coverage:typescript', function(done) {
         new Server({
             configFile: config.report.karma.configFile,
@@ -197,11 +212,14 @@ if (!argv.production) {
         }
     });
 
-    gulp.task('coverage:python', function() {
+    gulp.task('coverage:python', function(done) {
         var command = 'coverage run crowdgezwitscher/manage.py test crowdgezwitscher';
-        exec(command, function (err, stdout, stderr) {
+        var coverage = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        coverage.on('close', function(exitcode) {
+            done(exitcode);
         });
     });
 }
