@@ -10,6 +10,8 @@
     <li><b>Veranstaltungen:</b> {{ page.events.count }}</li>
 </ul>
 
-<a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
+{% if perms.facebook.view_facebookpage %}
+    <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
+{% endif %}
 
 {% endblock %}

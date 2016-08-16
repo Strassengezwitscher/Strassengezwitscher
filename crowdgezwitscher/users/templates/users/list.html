@@ -13,10 +13,18 @@
     </tr>
     {% for user in users %}
     <tr>
-        <td><a href="{% url 'users:detail' user.id %}">{{ user.username }}</a></td>
+        <td>
+            {% if perms.auth.view_user %}
+                <a href="{% url 'users:detail' user.id %}">{{ user.username }}</a>
+            {% else %}
+                {{ user.username }}
+            {% endif %}
+        </td>
         <td>{{ user.email }}</td>
         <td>
-            <a class="btn btn-default btn-sm" href="{% url 'users:update' user.id %}">Bearbeiten</a>
+            {% if perms.auth.change_user %}
+                <a class="btn btn-default btn-sm" href="{% url 'users:update' user.id %}">Bearbeiten</a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
@@ -25,7 +33,11 @@
 <p>Keine Nutzer vorhanden.</p>
 {% endif %}
 
-<a class="btn btn-primary" href="{% url 'users:create' %}">Nutzer anlegen</a>
-<a class="btn btn-link" href="{% url 'users:list_inactive' %}">Inaktive Nutzer</a>
+{% if perms.auth.add_user %}
+    <a class="btn btn-primary" href="{% url 'users:create' %}">Nutzer anlegen</a>
+{% endif %}
+{% if perms.auth.view_user %}
+    <a class="btn btn-link" href="{% url 'users:list_inactive' %}">Inaktive Nutzer</a>
+{% endif %}
 
 {% endblock %}

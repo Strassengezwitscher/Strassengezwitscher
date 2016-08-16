@@ -1,35 +1,41 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 
+from .mixins import NoStaffMixin
 
-class UserListView(LoginRequiredMixin, ListView):
+
+class UserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
+    permission_required = 'auth.view_user'
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
 
     def get_queryset(self):
-        return User.objects.exclude(is_staff=True).filter(is_active=True)
+        return User.objects.filter(is_active=True)
 
 
-class InactiveUserListView(LoginRequiredMixin, ListView):
+class InactiveUserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
+    permission_required = 'auth.view_user'
     model = User
     template_name = 'users/list_inactive.html'
     context_object_name = 'users'
 
     def get_queryset(self):
-        return User.objects.exclude(is_staff=True).filter(is_active=False)
+        return User.objects.filter(is_active=False)
 
 
-class UserDetail(LoginRequiredMixin, DetailView):
+class UserDetail(PermissionRequiredMixin, NoStaffMixin, DetailView):
+    permission_required = 'auth.view_user'
     model = User
     template_name = 'users/detail.html'
     context_object_name = 'user_data'
 
 
-class UserCreate(LoginRequiredMixin, CreateView):
+class UserCreate(PermissionRequiredMixin, NoStaffMixin, CreateView):
+    permission_required = 'auth.add_user'
     model = User
     template_name = 'users/form.html'
     fields = ['username', 'email', 'password', 'groups']
@@ -39,7 +45,8 @@ class UserCreate(LoginRequiredMixin, CreateView):
         return super(UserCreate, self).form_valid(form)
 
 
-class UserUpdate(LoginRequiredMixin, UpdateView):
+class UserUpdate(PermissionRequiredMixin, NoStaffMixin, UpdateView):
+    permission_required = 'auth.change_user'
     model = User
     template_name = 'users/form.html'
     context_object_name = 'user_data'
