@@ -30,6 +30,7 @@ class UserViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
         self.assertTrue(all(not user.is_active for user in response.context['users']))
+        self.assertTrue(all(not user.is_superuser for user in response.context['users']))
         self.assertEqual(len(response.context['users']), 1)
 
     def test_post_inactive_list_view_not_allowed(self):
@@ -181,6 +182,7 @@ class UserViewNoStaffUsersAccessibleTests(TestCase):
         response = self.client.get(reverse('users:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
+        self.assertTrue(all(user.is_active for user in response.context['users']))
         self.assertTrue(all(not user.is_superuser for user in response.context['users']))
         self.assertEqual(User.objects.count(), 5)
         self.assertEqual(len(response.context['users']), 3)
