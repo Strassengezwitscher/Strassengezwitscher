@@ -122,7 +122,7 @@ if (!argv.production) {
             console.log(stderr);
         });
         lint.on('close', function(exitcode) {
-            done(exitcode);
+            done(exitcode ? new Error('Python linting failed') : 0);
         });
     });
 
@@ -168,7 +168,7 @@ if (!argv.production) {
             configFile: config.report.karma.configFile,
             singleRun: true,
         }, function(exitCode) {
-            done(exitCode);
+            done(exitcode ? new Error('Typescript tests failed') : 0);
         }).start();
     });
 
@@ -179,7 +179,7 @@ if (!argv.production) {
             console.log(stderr);
         });
         casper.on('close', function(exitcode) {
-            done(exitcode ? 'E2E tests failed' : undefined);
+            done(exitcode ? new Error('E2E tests failed') : 0);
         });
     });
 
@@ -190,7 +190,7 @@ if (!argv.production) {
             console.log(stderr);
         });
         test.on('close', function(exitcode) {
-            done(exitcode);
+            done(exitcode ? new Error('Python tests failed') : 0);
         });
     });
 
@@ -200,14 +200,14 @@ if (!argv.production) {
             singleRun: true,
         }, remapCoverage).start();
 
-        function remapCoverage(exitCode) {
+        function remapCoverage(exitcode) {
             console.log('path', config.report.path);
             gulp.src(config.report.path)
                 .pipe(remapIstanbul({
                     reports: config.report.remap.reports,
                 }))
                 .on('finish', function() {
-                    done(exitCode);
+                    done(exitcode ? new Error('Typescript coverage report failed') : 0);
                 });
         }
     });
@@ -219,7 +219,7 @@ if (!argv.production) {
             console.log(stderr);
         });
         coverage.on('close', function(exitcode) {
-            done(exitcode);
+            done(exitcode ? new Error('Python coverage report failed') : 0);
         });
     });
 }
