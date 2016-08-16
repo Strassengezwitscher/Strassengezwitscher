@@ -115,10 +115,14 @@ gulp.task('default', function() {
 });
 
 if (!argv.production) {
-    gulp.task('lint:python', function() {
-        exec('prospector crowdgezwitscher --profile ../.landscape.yml', function (err, stdout, stderr) {
+    gulp.task('lint:python', function(done) {
+        var command = 'prospector crowdgezwitscher --profile ../.landscape.yml';
+        var lint = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        lint.on('close', function(exitcode) {
+            done(exitcode ? new Error('Python linting failed') : 0);
         });
     });
 
@@ -164,7 +168,7 @@ if (!argv.production) {
             configFile: config.report.karma.configFile,
             singleRun: true,
         }, function(exitCode) {
-            done(exitCode);
+            done(exitcode ? new Error('Typescript tests failed') : 0);
         }).start();
     });
 
@@ -175,7 +179,18 @@ if (!argv.production) {
             console.log(stderr);
         });
         casper.on('close', function(exitcode) {
-            done(exitcode ? 'E2E tests failed' : undefined);
+            done(exitcode ? new Error('E2E tests failed') : 0);
+        });
+    });
+
+    gulp.task('test:python', function(done) {
+        var command = 'python crowdgezwitscher/manage.py test crowdgezwitscher';
+        var test = exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+        test.on('close', function(exitcode) {
+            done(exitcode ? new Error('Python tests failed') : 0);
         });
     });
 
@@ -185,23 +200,26 @@ if (!argv.production) {
             singleRun: true,
         }, remapCoverage).start();
 
-        function remapCoverage(exitCode) {
+        function remapCoverage(exitcode) {
             console.log('path', config.report.path);
             gulp.src(config.report.path)
                 .pipe(remapIstanbul({
                     reports: config.report.remap.reports,
                 }))
                 .on('finish', function() {
-                    done(exitCode);
+                    done(exitcode ? new Error('Typescript coverage report failed') : 0);
                 });
         }
     });
 
-    gulp.task('coverage:python', function() {
+    gulp.task('coverage:python', function(done) {
         var command = 'coverage run crowdgezwitscher/manage.py test crowdgezwitscher';
-        exec(command, function (err, stdout, stderr) {
+        var coverage = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        coverage.on('close', function(exitcode) {
+            done(exitcode ? new Error('Python coverage report failed') : 0);
         });
     });
 }
