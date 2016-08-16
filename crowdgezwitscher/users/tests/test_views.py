@@ -168,7 +168,7 @@ class UserViewNoPermissionTests(TestCase):
         self.assertRedirects(response, reverse('login') + '?next=' + url)
 
 
-class UserViewNoStuffUsersAccessibleTests(TestCase):
+class UserViewNoStaffUsersAccessibleTests(TestCase):
     """Test that staff users (able to log in to Django's admin UI) are not accessible from the intern area."""
     fixtures = ['users_views_testdata']
 
