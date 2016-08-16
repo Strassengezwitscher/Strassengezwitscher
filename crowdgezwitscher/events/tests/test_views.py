@@ -6,12 +6,12 @@ from events.models import Event
 
 
 class EventViewLoggedInTests(TestCase):
-    fixtures = ['events_views_testdata']
+    """User testing the views is logged in and has all required permissions."""
+    fixtures = ['events_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
 
     def setUp(self):
-        self.user = User.objects.create_user('user', 'user@host.org', 'password')
-        self.client.login(username='user', password='password')
+        self.client.login(username='john.doe', password='john.doe')
 
     # List
     def test_get_list_view(self):
@@ -152,7 +152,8 @@ class EventViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class EventViewLoggedOutTests(TestCase):
+class EventViewNoPermissionTests(TestCase):
+    """User testing the views is not logged and therefore lacking the required permissions."""
     # List
     def test_get_list_view(self):
         url = reverse('events:list')

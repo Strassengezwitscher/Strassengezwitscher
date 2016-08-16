@@ -29,9 +29,15 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="{% url 'facebook:list' %}">Facebook-Seiten</a></li>
-                        <li><a href="{% url 'events:list' %}">Veranstaltungen</a></li>
-                        <li><a href="{% url 'users:list' %}">Nutzer</a></li>
+                        {% if perms.facebook.view_facebookpage %}
+                            <li><a href="{% url 'facebook:list' %}">Facebook-Seiten</a></li>
+                        {% endif %}
+                        {% if perms.events.view_event %}
+                            <li><a href="{% url 'events:list' %}">Veranstaltungen</a></li>
+                        {% endif %}
+                        {% if perms.auth.view_user %}
+                            <li><a href="{% url 'users:list' %}">Nutzer</a></li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">

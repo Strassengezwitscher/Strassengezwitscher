@@ -6,7 +6,9 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input class="btn btn-primary" type="submit" value="Speichern" />
-    <a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+    {% if perms.auth.view_user %}
+        <a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+    {% endif %}
 </form>
 
 {% endblock %}

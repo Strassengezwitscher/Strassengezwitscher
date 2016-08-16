@@ -16,6 +16,8 @@
     </li>
 </ul>
 
-<a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+{% if perms.auth.view_user %}
+    <a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+{% endif %}
 
 {% endblock %}
