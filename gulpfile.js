@@ -32,18 +32,15 @@ gulp.task('copy:npmfiles', function() {
 });
 
 gulp.task('copy:config', function() {
-    if (argv.production) {
-        fs.stat(config.path.frontend_config + 'prod_conf', function(err, stat) {
-            if(err == null) {
-                return gulp.src(config.path.frontend_config + 'prod_conf')
-                .pipe(rename('config.ts'))
-                .pipe(gulp.dest(config.path.frontend));
-            }
-        });
-    }
-    return gulp.src(config.path.frontend_config + 'dev_conf')
-    .pipe(rename('config.ts'))
-    .pipe(gulp.dest(config.path.frontend));
+    fs.stat(config.path.frontend_config + 'prod_conf', function(err, stat) {
+        var config_path = config.path.frontend_config + 'dev_conf';
+        if(err == null && argv.production) {
+            config_path = config.path.frontend_config + 'prod_conf';
+        }
+        return gulp.src(config_path)
+        .pipe(rename('config.ts'))
+        .pipe(gulp.dest(config.path.frontend));
+    });
 });
 
 gulp.task('copy:systemjsconfig', function() {
