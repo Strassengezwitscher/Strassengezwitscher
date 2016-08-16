@@ -17,10 +17,21 @@ class UserViewLoggedInTests(TestCase):
         response = self.client.get(reverse('users:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('users', response.context)
-        self.assertEqual(len(response.context['users']), 3)  # Don't show superusers
+        self.assertEqual(len(response.context['users']), 3)  # Don't show superusers and inactive users
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('users:list'))
+        self.assertEqual(response.status_code, 405)
+
+    # List inactive
+    def test_get_inactive_list_view(self):
+        response = self.client.get(reverse('users:list_inactive'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('users', response.context)
+        self.assertEqual(len(response.context['users']), 1)  # Don't show superusers and active users
+
+    def test_post_inactive_list_view_not_allowed(self):
+        response = self.client.post(reverse('users:list_inactive'))
         self.assertEqual(response.status_code, 405)
 
     # Detail
@@ -51,8 +62,8 @@ class UserViewLoggedInTests(TestCase):
             'password': '123456',
         }
         response = self.client.post(reverse('users:create'), data, follow=True)
-        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 5}))
-        self.assertNotEqual(User.objects.get(pk=5).password, '123456', 'User password is stored as hash.')
+        self.assertRedirects(response, reverse('users:detail', kwargs={'pk': 6}))
+        self.assertNotEqual(User.objects.get(pk=6).password, '123456', 'User password is stored as hash.')
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('users:create'))
@@ -117,6 +128,12 @@ class UserViewLoggedOutTests(TestCase):
     # List
     def test_get_list_view(self):
         url = reverse('users:list')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # List
+    def test_get_inactive_list_view(self):
+        url = reverse('users:list_inactive')
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
 

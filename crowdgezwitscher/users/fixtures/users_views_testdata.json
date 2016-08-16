@@ -56,5 +56,25 @@
         ],
         "user_permissions": []
     }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$0ZN9uyY24POe$OTsEGHBg9+PVxvuo9lyTn3ZOXQchOp5MwL3zoykOocY=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "tom.doe",
+        "first_name": "",
+        "last_name": "",
+        "email": "tom@doe.com",
+        "is_staff": false,
+        "is_active": false,
+        "date_joined": "2016-08-15T17:41:01.984Z",
+        "groups": [
+            2
+        ],
+        "user_permissions": []
+    }
 }
 ]

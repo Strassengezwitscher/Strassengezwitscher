@@ -11,7 +11,16 @@ class UserListView(LoginRequiredMixin, ListView):
     context_object_name = 'users'
 
     def get_queryset(self):
-        return User.objects.exclude(is_staff=True)
+        return User.objects.exclude(is_staff=True).filter(is_active=True)
+
+
+class InactiveUserListView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'users/list_inactive.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        return User.objects.exclude(is_staff=True).filter(is_active=False)
 
 
 class UserDetail(LoginRequiredMixin, DetailView):
