@@ -13,6 +13,19 @@ class UserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
     template_name = 'users/list.html'
     context_object_name = 'users'
 
+    def get_queryset(self):
+        return super(UserListView, self).get_queryset().exclude(is_active=False)
+
+
+class InactiveUserListView(PermissionRequiredMixin, NoStaffMixin, ListView):
+    permission_required = 'auth.view_user'
+    model = User
+    template_name = 'users/list_inactive.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        return super(InactiveUserListView, self).get_queryset().exclude(is_active=True)
+
 
 class UserDetail(PermissionRequiredMixin, NoStaffMixin, DetailView):
     permission_required = 'auth.view_user'
