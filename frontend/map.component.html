@@ -1,3 +1,28 @@
+<md-sidenav-layout class="app-sidenav-container">
+<md-sidenav #sidenav mode="side" class="app-sidenav">
+    <div [ngSwitch]="mapSideInfoState">
+        <div *ngSwitchCase="'info'">
+            <md-card>
+                {{currentlyActiveMapObject.name}}
+            </md-card>
+            <md-card>
+                <label>Ort:</label> {{currentlyActiveMapObject.location}}
+            </md-card>
+            <md-card>
+                <label>Zusatz Informationen:</label>
+            </md-card>
+            <md-card>
+                <label>Twitter</label>
+            </md-card>
+            <md-card>
+            <button md-raised-button (click)="sidenav.toggle()">Schließen</button>
+            </md-card>
+        </div>
+        <div *ngSwitchCase="'add'">
+        Here to be content for adding mapObject
+        </div>
+    </div>
+</md-sidenav>
 <div class="map-wrapper">
     <div class="map-canvas" #mapCanvas></div>
     <md-card class="map-settings">
@@ -9,3 +34,4 @@
     </md-card>
     <div class="error-message card-panel red lighten-3" *ngIf="errorMessage"><span>{{errorMessage}}</span></div>
 </div>
+</md-sidenav-layout>

@@ -31,6 +31,7 @@
     "@angular2-material/core": "2.0.0-alpha.7-2",
     "@angular2-material/icon": "2.0.0-alpha.7-2",
     "@angular2-material/input": "2.0.0-alpha.7-2",
+    "@angular2-material/sidenav": "2.0.0-alpha.7-2",
     "@angular2-material/slide-toggle": "2.0.0-alpha.7-2",
     "@angular2-material/toolbar": "2.0.0-alpha.7-2",
     "@angular2-material/tooltip": "2.0.0-alpha.7-2",

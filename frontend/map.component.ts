@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
 import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
@@ -16,7 +16,6 @@ export class MapObjectSetting {
 
 export class MapComponent implements AfterViewInit {
 
-    private currentlyOpenInfoWindow: google.maps.InfoWindow;
     private errorMessage: string;
     private map: google.maps.Map;
     // Utilized for holding status and name of different types of MapObjects
@@ -25,12 +24,16 @@ export class MapComponent implements AfterViewInit {
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
+    private mapSideInfoState: string;
+    private currentlyActiveMapObject: MapObject = new MapObject();
 
     @ViewChild("mapCanvas") private mapCanvas;
+    @ViewChild("sidenav") private sidenav;
 
-    constructor(private mapService: MapService) {
+    constructor(private mapService: MapService,  private zone: NgZone) {
         this.initializeMarkerMap();
         this.initializeMapObjectSettings();
+        this.mapSideInfoState = "info";
     }
 
     public ngAfterViewInit() {
@@ -71,9 +74,6 @@ export class MapComponent implements AfterViewInit {
 
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
-        const infoWindow = new google.maps.InfoWindow({
-            content: mapObject.name,
-        });
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
@@ -81,17 +81,11 @@ export class MapComponent implements AfterViewInit {
         });
 
         marker.addListener("click", (() => {
-            this.closeCurrentlyOpenInfoWindow();
-            this.showInfoWindowForMarker(marker, infoWindow);
+            this.openSideNav();
+            this.updateCurrentlyActiveMapObject(mapObject);
         }));
         marker.setMap(this.map);
         this.markers.get(mapObjectType).push(marker);
-    }
-
-    private closeCurrentlyOpenInfoWindow() {
-        if (this.currentlyOpenInfoWindow) {
-            this.currentlyOpenInfoWindow.close();
-        }
     }
 
     private initializeMapObjectSettings() {
@@ -118,8 +112,15 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
-        infoWindow.open(this.map, marker);
-        this.currentlyOpenInfoWindow = infoWindow;
+    private updateCurrentlyActiveMapObject(mapObject: MapObject) {
+        this.zone.run(() => {
+            this.currentlyActiveMapObject = mapObject;
+        });
+    }
+
+    private openSideNav() {
+        if (!this.sidenav._isOpened) {
+            this.sidenav.toggle();
+        }
     }
 }

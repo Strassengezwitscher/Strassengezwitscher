@@ -6,7 +6,7 @@ $height-navbar-mobile: 56px;
 }
 
 .map-wrapper {
-  height: calc(100% - #{$height-navbar-mobile});
+  height: 100%;
   width: 100%;
 }
 
@@ -16,11 +16,21 @@ $height-navbar-mobile: 56px;
 }
 
 .map-settings {
+  margin: 0;
   position: absolute;
   right: 10px;
   top: #{$height-navbar + 10px};
-  margin: 0;
   z-index: 99;
+}
+
+.app-sidenav-container {
+  height: 100%;
+}
+
+.app-sidenav {
+  height: 100%;
+  padding: 10px;
+  width: 10%;
 }
 
 .error-message {
