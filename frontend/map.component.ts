@@ -24,16 +24,15 @@ export class MapComponent implements AfterViewInit {
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
-    private mapSideInfoState: string;
     private currentlyActiveMapObject: MapObject = new MapObject();
+    private currentlyActiveMapObjectType: MapObjectType = null;
 
     @ViewChild("mapCanvas") private mapCanvas;
     @ViewChild("sidenav") private sidenav;
 
-    constructor(private mapService: MapService,  private zone: NgZone) {
+    constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
         this.initializeMapObjectSettings();
-        this.mapSideInfoState = "info";
     }
 
     public ngAfterViewInit() {
@@ -81,8 +80,7 @@ export class MapComponent implements AfterViewInit {
         });
 
         marker.addListener("click", (() => {
-            this.openSideNav();
-            this.updateCurrentlyActiveMapObject(mapObject);
+            this.updateCurrentlyActiveMapObjectInfo(mapObject, mapObjectType);
         }));
         marker.setMap(this.map);
         this.markers.get(mapObjectType).push(marker);
@@ -112,15 +110,10 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private updateCurrentlyActiveMapObject(mapObject: MapObject) {
+    private updateCurrentlyActiveMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType) {
         this.zone.run(() => {
             this.currentlyActiveMapObject = mapObject;
+            this.currentlyActiveMapObjectType = mapObjectType;
         });
-    }
-
-    private openSideNav() {
-        if (!this.sidenav._isOpened) {
-            this.sidenav.toggle();
-        }
     }
 }
