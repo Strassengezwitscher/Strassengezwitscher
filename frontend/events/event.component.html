@@ -1,0 +1,39 @@
+<md-card>
+    <div>
+        <h3>{{activeEvent.name}}</h3>
+    </div>
+    <div>
+        <h3>Ort</h3>
+        <div>{{activeEvent.location}}</div>
+    </div>
+    <div *ngIf="activeEvent.date">
+        <h3>Datum</h3>
+        <div>{{activeEvent.date}}</div>
+    </div>
+    <div *ngIf="activeEvent.repetition_cycle">
+        <h3>Wiederholungszyklus</h3>
+        <div>{{activeEvent.repetition_cycle}}</div>
+    </div>
+    <div *ngIf="activeEvent.organizer">
+        <h3>Organisator</h3>
+        <div>{{activeEvent.organizer}}</div>
+    </div>
+    <div *ngIf="activeEvent.participants">
+        <h3>Teilnehmer</h3>
+        <div>{{activeEvent.participants}}</div>
+    </div>
+    <div *ngIf="activeEvent.type">
+        <h3>Art</h3>
+        <div>{{activeEvent.type}}</div>
+    </div>
+    <div *ngIf="activeEvent.counter_event">
+        <h3>Gegen-Event</h3>
+    </div>
+    <div *ngIf="activeEvent.url">
+        <h3>Link</h3>
+        <div>{{activeEvent.url}}</div>
+    </div>
+    <div *ngIf="activeEvent.coverage">
+        Twitter Feed
+    </div>
+</md-card>

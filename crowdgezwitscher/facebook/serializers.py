@@ -9,6 +9,7 @@ class FacebookPageSerializer(serializers.ModelSerializer):
         model = FacebookPage
         fields = ('id', 'name', 'location', 'events', 'notes', 'facebook_id')
 
+
 class FacebookPageSerializerShortened(serializers.ModelSerializer):
     # TODO unify with EventSerializerShortened, issue: Cannot use ModelSerializer with Abstract Models.
     locationLong = serializers.DecimalField(

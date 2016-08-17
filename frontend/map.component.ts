@@ -1,6 +1,7 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
 import { FacebookPageComponent } from "./facebookPage/facebookPage.component";
+import { EventComponent } from "./events/event.component";
 import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
 
@@ -13,7 +14,7 @@ export class MapObjectSetting {
     selector: "cg-map",
     templateUrl: "map.component.html",
     providers: [MapService],
-    directives: [FacebookPageComponent],
+    directives: [FacebookPageComponent, EventComponent],
 })
 
 export class MapComponent implements AfterViewInit {
