@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from facebook.models import FacebookPage
-from facebook.serializers import FacebookPageSerializer
+from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 from crowdgezwitscher.models import MapObjectFilter
 
 
@@ -50,7 +50,7 @@ class FacebookPageDelete(PermissionRequiredMixin, DeleteView):
 # API Views
 class FacebookPageAPIList(generics.ListAPIView):
     queryset = FacebookPage.objects.all()
-    serializer_class = FacebookPageSerializer
+    serializer_class = FacebookPageSerializerShortened
     filter_backends = (MapObjectFilter,)
 
 
