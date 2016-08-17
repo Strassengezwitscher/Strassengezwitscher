@@ -167,7 +167,7 @@ if (!argv.production) {
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
-        }, function(exitCode) {
+        }, function(exitcode) {
             done(exitcode ? new Error('Typescript tests failed') : 0);
         }).start();
     });
