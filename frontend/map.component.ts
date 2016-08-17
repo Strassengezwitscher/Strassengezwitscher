@@ -1,5 +1,6 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
+import { FacebookPageComponent } from "./facebookPage/facebookPage.component";
 import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
 
@@ -12,6 +13,7 @@ export class MapObjectSetting {
     selector: "cg-map",
     templateUrl: "map.component.html",
     providers: [MapService],
+    directives: [FacebookPageComponent],
 })
 
 export class MapComponent implements AfterViewInit {
@@ -28,7 +30,6 @@ export class MapComponent implements AfterViewInit {
     private currentlyActiveMapObjectType: MapObjectType = null;
 
     @ViewChild("mapCanvas") private mapCanvas;
-    @ViewChild("sidenav") private sidenav;
 
     constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
