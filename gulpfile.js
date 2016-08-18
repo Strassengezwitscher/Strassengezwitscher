@@ -34,7 +34,7 @@ gulp.task('copy:npmfiles', function() {
 gulp.task('copy:sensitive_config', function() {
     fs.stat(config.path.frontend_config + 'sensitive_conf.ts', function(err, stat) {
         if(err != null) {
-            return gulp.src(config.path.frontend_config + 'sensitive_conf_dummy')
+            return gulp.src(config.path.frontend_config + 'sensitive_conf_dummy.ts')
                 .pipe(rename('sensitive_conf.ts'))
                 .pipe(gulp.dest(config.path.frontend_config));
         }
@@ -42,10 +42,10 @@ gulp.task('copy:sensitive_config', function() {
 });
 
 gulp.task('copy:config', ['copy:sensitive_config'] , function() {
-    var config_path = config.path.frontend_config + ((argv.production) ? 'prod_conf': 'dev_conf');
+    var config_path = config.path.frontend_config + ((argv.production) ? 'prod_conf.ts': 'dev_conf.ts');
     return gulp.src(config_path)
         .pipe(rename('config.ts'))
-        .pipe(gulp.dest(config.path.frontend));
+        .pipe(gulp.dest(config.path.frontend_config));
 });
 
 gulp.task('copy:systemjsconfig', function() {
