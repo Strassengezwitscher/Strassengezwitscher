@@ -4,35 +4,35 @@ import { Router } from "@angular/router";
 import { ContactService } from "./contact.service";
 import { Contact } from "./contact";
 import { CaptchaService } from "./captcha.service";
-import { ConfigurationService } from "./config.service";
+import { Config } from "./config";
 
 @Component({
     moduleId: module.id,
     selector: "cg-contact",
     templateUrl: "contact.component.html",
-    providers: [ContactService, CaptchaService, ConfigurationService],
+    providers: [ContactService, CaptchaService],
 })
 export class ContactComponent implements OnInit, OnDestroy {
     private contactErrorMessage: string;
     private contactSuccessMessage: string;
     private contact: Contact;
+    private config: Config;
     private uploads: FileList;
     private maxFileNameLength = 50;
     private filesValid;
     private fileInputNames = "";
     private captchaVerfied;
     private script;
-    private grecaptchaKey;
 
     private isMessageInputFocused = false;
 
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
-                 private configService: ConfigurationService, private router: Router, private zone: NgZone) {
+                 private router: Router, private zone: NgZone) {
+        this.config = new Config();
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
         this.captchaVerfied = false;
         window["verifyCallback"] = this.verifyCallback.bind(this);
-        this.grecaptchaKey = this.configService.getConfigEntry("data-sitekey");
     }
 
     public ngOnInit() {
