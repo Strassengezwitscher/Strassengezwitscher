@@ -58,6 +58,7 @@ export class MapComponent implements AfterViewInit {
             streetViewControl: false,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
+        this.map.addListener("click", () =>  this.updateCurrentlyActiveMapObjectInfo(null, null));
     }
 
     private retrieveVisibleMapObjects() {
