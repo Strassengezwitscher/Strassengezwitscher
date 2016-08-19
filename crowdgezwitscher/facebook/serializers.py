@@ -7,7 +7,7 @@ class FacebookPageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FacebookPage
-        fields = ('id', 'name', 'location', 'events', 'notes', 'facebook_id')
+        fields = ('id', 'name', 'location', 'notes', 'facebook_id')
 
 
 class FacebookPageSerializerShortened(serializers.ModelSerializer):
