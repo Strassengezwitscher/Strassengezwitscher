@@ -1,17 +1,10 @@
-<md-card>
-    <div>
-        <h3>{{activePage.name}}</h3>
-    </div>
-    <div>
-        <h3>Ort</h3>
-        <div>{{activePage.location}}</div>
-    </div>
-    <div>
-        <h3>Notes</h3>
-        <div>{{activePage.notes}}</div>
-    </div>
-    <div>
-        <h3>Facebook Link</h3>
-        <div>{{activePage.facebook_id}}</div>
-    </div>
+<md-card class="facebook-card">
+    <md-card-title>{{activePage.name}}</md-card-title>
+    <md-card-subtitle>{{activePage.location}}</md-card-subtitle>
+    <md-card-content>
+        {{activePage.notes}}
+    </md-card-content>
+    <md-card-actions>
+        <a md-button href="#{{activePage.facebook_id}}">zur Facebook-Seite</a>
+    </md-card-actions>
 </md-card>

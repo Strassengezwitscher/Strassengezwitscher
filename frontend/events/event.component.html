@@ -1,39 +1,38 @@
-<md-card>
-    <div>
-        <h3>{{activeEvent.name}}</h3>
-    </div>
-    <div>
-        <h3>Ort</h3>
-        <div>{{activeEvent.location}}</div>
-    </div>
-    <div *ngIf="activeEvent.date">
-        <h3>Datum</h3>
-        <div>{{activeEvent.date}}</div>
-    </div>
-    <div *ngIf="activeEvent.repetition_cycle">
-        <h3>Wiederholungszyklus</h3>
-        <div>{{activeEvent.repetition_cycle}}</div>
-    </div>
-    <div *ngIf="activeEvent.organizer">
-        <h3>Organisator</h3>
-        <div>{{activeEvent.organizer}}</div>
-    </div>
-    <div *ngIf="activeEvent.participants">
-        <h3>Teilnehmer</h3>
-        <div>{{activeEvent.participants}}</div>
-    </div>
-    <div *ngIf="activeEvent.type">
-        <h3>Art</h3>
-        <div>{{activeEvent.type}}</div>
-    </div>
-    <div *ngIf="activeEvent.counter_event">
-        <h3>Gegen-Event</h3>
-    </div>
-    <div *ngIf="activeEvent.url">
-        <h3>Link</h3>
-        <div>{{activeEvent.url}}</div>
-    </div>
-    <div *ngIf="activeEvent.coverage">
-        Twitter Feed
-    </div>
+<md-card class="event-card">
+    <md-card-title>{{activeEvent.name}}</md-card-title>
+    <md-card-subtitle>{{activeEvent.location}}</md-card-subtitle>
+    <md-card-content>
+        <p *ngIf="activeEvent.date">
+            <strong>Datum:</strong><br>
+            {{activeEvent.date}}
+        </p>
+        <p *ngIf="activeEvent.repetition_cycle">
+            <strong>Wiederholungszyklus:</strong><br>
+            {{activeEvent.repetition_cycle}}
+        </p>
+        <p *ngIf="activeEvent.organizer">
+            <strong>Organisator:</strong><br>
+            {{activeEvent.organizer}}
+        </p>
+        <p *ngIf="activeEvent.participants">
+            <strong>Teilnehmer:</strong><br>
+            {{activeEvent.participants}}
+        </p>
+        <p *ngIf="activeEvent.type">
+            <strong>Art:</strong><br>
+            {{activeEvent.type}}
+        </p>
+        <p *ngIf="activeEvent.counter_event">
+            <strong>Gegenveranstaltung:</strong><br>
+            {{activeEvent.counter_event}}
+        </p>
+        <p *ngIf="activeEvent.coverage">
+            <strong>Berichterstattung:</strong><br>
+            {{activeEvent.coverage}} (Twitter-Feed)
+        </p>
+
+    </md-card-content>
+    <md-card-actions *ngIf="activeEvent.url">
+        <a md-button href="{{activeEvent.url}}">zur Verantstaltung</a>
+    </md-card-actions>
 </md-card>

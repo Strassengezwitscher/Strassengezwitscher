@@ -35,7 +35,7 @@ module.exports = function () {
 
     var frontend = {
         imgFiles: path.frontend + 'img/*',
-        htmlFiles: path.frontend + '*.html',
+        htmlFiles: path.frontend + '**/*.html',
     };
 
     var e2e = {

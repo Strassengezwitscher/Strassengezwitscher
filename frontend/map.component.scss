@@ -29,6 +29,13 @@ $height-navbar-mobile: 56px;
   position: absolute;
   top: #{$height-navbar + 50px};
   z-index: 99;
+  width: 300px;
+  max-height: calc(100vh - #{$height-navbar} - 50px);
+
+  & > * {
+    display: flex;
+    max-height: calc(100vh - #{$height-navbar} - 50px - 8px);
+  }
 }
 
 .error-message {
