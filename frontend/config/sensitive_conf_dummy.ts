@@ -3,5 +3,4 @@
  * It is changed in the production environment, else never used.
  */
 export class SensitiveConfig {
-    constructor() {}
 }
