@@ -1,5 +1,6 @@
 $height-navbar: 64px;
 $height-navbar-mobile: 56px;
+$card-padding: 10px;
 
 .navbar {
   margin-bottom: 0;
@@ -18,23 +19,22 @@ $height-navbar-mobile: 56px;
 .map-settings {
   margin: 0;
   position: absolute;
-  right: 10px;
-  top: #{$height-navbar-mobile + 10px};
+  right: $card-padding;
+  top: #{$height-navbar-mobile + $card-padding};
   z-index: 99;
 }
 
 .map-infos {
-  left: 10px;
+  left: $card-padding;
   margin: 0;
   position: absolute;
-  top: #{$height-navbar-mobile + 10px};
+  top: #{$height-navbar-mobile + $card-padding};
   z-index: 99;
   width: 300px;
-  max-height: calc(100vh - #{$height-navbar-mobile} - 50px);
 
   & > * {
     display: flex;
-    max-height: calc(100vh - #{$height-navbar-mobile} - 50px - 8px);
+    max-height: calc(100vh - #{$height-navbar-mobile + 2*$card-padding});
   }
 }
 
@@ -53,15 +53,14 @@ $height-navbar-mobile: 56px;
   }
 
   .map-settings {
-      top: #{$height-navbar + 10px};
+      top: #{$height-navbar + $card-padding};
   }
 
   .map-infos {
-    top: #{$height-navbar + 10px};
-    max-height: calc(100vh - #{$height-navbar} - 50px);
+    top: #{$height-navbar + $card-padding};
 
     & > * {
-      max-height: calc(100vh - #{$height-navbar} - 50px - 8px);
+      max-height: calc(100vh - #{$height-navbar + 2*$card-padding});
     }
   }
 }
