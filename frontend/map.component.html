@@ -11,5 +11,5 @@
         <cg-event-detail *ngSwitchCase="0" [id]="currentlyActiveMapObject.id"></cg-event-detail>
         <cg-fb-detail *ngSwitchCase="1" [id]="currentlyActiveMapObject.id"></cg-fb-detail>
     </div>
-    <div class="error-message card-panel red lighten-3" *ngIf="errorMessage"><span>{{errorMessage}}</span></div>
+    <md-card class="error-message" *ngIf="errorMessage">{{errorMessage}}</md-card>
 </div>

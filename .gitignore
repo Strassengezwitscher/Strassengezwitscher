@@ -71,6 +71,10 @@ target/
 # Production settings with sensitive values
 sensitive_settings.py
 
+# Frontend production settings with sensitive values
+sensitive_conf.ts
+config.ts
+
 # npm
 node_modules/
 

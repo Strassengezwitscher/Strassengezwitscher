@@ -39,7 +39,8 @@ $card-padding: 10px;
 }
 
 .error-message {
-  bottom: 0;
+  background-color: #f2dede;
+  bottom: 10px;
   left: 50%;
   min-width: 200px;
   position: absolute;

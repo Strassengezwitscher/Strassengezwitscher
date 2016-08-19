@@ -3,6 +3,8 @@
 var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
+var rename = require('gulp-rename');
+var fs = require('fs');
 var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 var merge = require('merge2');
@@ -29,6 +31,23 @@ gulp.task('copy:npmfiles', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
+gulp.task('copy:sensitive_config', function() {
+    fs.stat(config.path.frontend_config + 'sensitive_conf.ts', function(err, stat) {
+        if(err != null) {
+            return gulp.src(config.path.frontend_config + 'sensitive_conf_dummy')
+                .pipe(rename('sensitive_conf.ts'))
+                .pipe(gulp.dest(config.path.frontend_config));
+        }
+    });
+});
+
+gulp.task('copy:config', ['copy:sensitive_config'] , function() {
+    var config_path = config.path.frontend_config + ((argv.production) ? 'prod_conf': 'dev_conf');
+    return gulp.src(config_path)
+        .pipe(rename('config.ts'))
+        .pipe(gulp.dest(config.path.frontend));
+});
+
 gulp.task('copy:systemjsconfig', function() {
     return gulp.src(config.systemjs.files)
         .pipe(gulp.dest(config.path.build));
@@ -50,7 +69,7 @@ gulp.task('compile:sass', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('compile:typescript', function() {
+gulp.task('compile:typescript', ['copy:config'], function() {
     var tsResult = gulp.src(config.typescript.files)
         .pipe(sourcemaps.init())
         .pipe(typescript(tsProject));

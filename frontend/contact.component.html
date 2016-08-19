@@ -60,7 +60,7 @@
 		</table>
 		<br>
 
-		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="grecaptchaKey" data-callback="verifyCallback"></div>
+		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
 
 		<p>
 			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid && captchaVerfied)" color="accent">Senden</button>
