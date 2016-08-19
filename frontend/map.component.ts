@@ -53,6 +53,9 @@ export class MapComponent implements AfterViewInit {
             center: latlng,
             scrollWheel: false,
             zoom: 10,
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
     }
