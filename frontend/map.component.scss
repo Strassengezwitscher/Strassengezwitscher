@@ -40,8 +40,8 @@ $card-padding: 10px;
 
 .error-message {
   background-color: #f2dede;
-  bottom: 10px;
-  left: 50%;
+  bottom: $card-padding;
+  left: 50vw;
   min-width: 200px;
   position: absolute;
   text-align: center;
