@@ -7,13 +7,13 @@ $card-padding: 10px;
 }
 
 .map-wrapper {
-  height: calc(100% - #{$height-navbar-mobile});
-  width: 100%;
+  height: calc(100vh - #{$height-navbar-mobile});
+  width: 100vw;
 }
 
 .map-canvas {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 .map-settings {
@@ -49,7 +49,7 @@ $card-padding: 10px;
 
 @media only screen and (min-width: 600px) {
   .map-wrapper {
-    height: calc(100% - #{$height-navbar});
+    height: calc(100vh - #{$height-navbar});
   }
 
   .map-settings {
