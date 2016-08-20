@@ -62,6 +62,13 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
+    # GET /api/events/1000/
+    def test_read_detail_not_existant_mapobject(self):
+        url = reverse('events_api:detail', kwargs={'pk': 1000})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(json.loads(response.content.decode("utf-8"))['detail'], "Not found.")
+
     # PATCH /api/events/
     def test_modify_list_events(self):
         url = reverse('events_api:detail', kwargs={'pk': 1})
