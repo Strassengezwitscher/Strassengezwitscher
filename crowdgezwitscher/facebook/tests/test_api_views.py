@@ -69,6 +69,14 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json.loads(response.content.decode("utf-8"))['detail'], "Not found.")
 
+    # GET /api/facebook/3/
+    def test_read_detail_inactive_mapobject(self):
+        self.assertFalse(FacebookPage.objects.get(pk=3).active)
+        url = reverse('facebook_api:detail', kwargs={'pk': 3})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(json.loads(response.content.decode("utf-8"))['detail'], "Not found.")
+
     # PATCH /api/facebook/
     def test_modify_list_facebook(self):
         url = reverse('facebook_api:detail', kwargs={'pk': 1})
