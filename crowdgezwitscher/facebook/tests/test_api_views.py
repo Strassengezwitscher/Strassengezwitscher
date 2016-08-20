@@ -42,7 +42,10 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         url = reverse('facebook_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(FacebookPage.objects.count(), 2)
+        facebook_pages = json.loads(response.content.decode("utf-8"))
+        self.assertTrue(all(facebook_page['active'] for facebook_page in facebook_pages))
+        self.assertEqual(len(facebook_pages), 2)
+        self.assertTrue(len(facebook_pages) < len(FacebookPage.object.count()))
 
     # GET /api/facebook/1/
     def test_read_detail_mapobject(self):

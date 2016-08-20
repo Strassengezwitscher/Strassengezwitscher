@@ -60,7 +60,7 @@ class EventViewLoggedInTests(TestCase):
             'coverage': False,
         }
         response = self.client.post(reverse('events:create'), data, follow=True)
-        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 3}))
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('events:create'))

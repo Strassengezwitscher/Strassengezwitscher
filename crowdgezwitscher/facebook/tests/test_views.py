@@ -55,7 +55,7 @@ class FacebookPageViewLoggedInTests(TestCase):
             'facebook_id': '1234567890',
         }
         response = self.client.post(reverse('facebook:create'), data, follow=True)
-        self.assertRedirects(response, reverse('facebook:detail', kwargs={'pk': 3}))
+        self.assertRedirects(response, reverse('facebook:detail', kwargs={'pk': 4}))
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('facebook:create'))

@@ -42,7 +42,10 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         url = reverse('events_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Event.objects.count(), 2)
+        events = json.loads(response.content.decode("utf-8"))
+        self.assertTrue(all(event['active'] for event in events))
+        self.assertEqual(len(events), 2)
+        self.assertTrue(len(events) < len(Event.object.count()))
 
     # GET /api/events/1/
     def test_read_detail_mapobject(self):
