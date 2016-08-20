@@ -11,7 +11,7 @@ class MapObjectApiViewTestTemplate(object):
         filtered_objects = json.loads(response.content.decode("utf-8"))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(filtered_objects), self.model.objects.count())
+        self.assertEqual(len(filtered_objects), 2)
 
     def test_partial_filter(self, url):
         response = self.client.get(url, {'min_lat': 10.0, 'min_long': 11.0})
