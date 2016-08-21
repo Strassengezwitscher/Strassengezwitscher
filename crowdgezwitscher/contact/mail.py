@@ -33,7 +33,7 @@ class GPGEmailMessage(EmailMessage):
             available_recipients.extend(key.addresses.split(', '))
         logger.debug("available_recipients: %s", available_recipients)
         if not all(recipient in available_recipients for recipient in self.recipients()):
-            logger.error("Public key not present for at least one of these recipient: %s", self.recipients())
+            logger.error("Public key not present for at least one of these recipients: %s", self.recipients())
             raise GPGException("Public key not present for at least one recipient")
 
         # encryption
