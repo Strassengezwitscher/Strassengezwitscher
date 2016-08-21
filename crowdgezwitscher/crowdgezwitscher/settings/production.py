@@ -10,7 +10,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")  # noqa
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static/")  # noqa
 
 
 # Password validation
