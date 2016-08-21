@@ -8,7 +8,7 @@ class MapObjectApiViewTestTemplate(object):
 
     def test_empty_filter(self, url):
         response = self.client.get(url)
-        filtered_objects = json.loads(response.content.decode("utf-8"))
+        filtered_objects = response.data
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(filtered_objects), 2)
@@ -34,7 +34,7 @@ class MapObjectApiViewTestTemplate(object):
     def test_correct_filter(self, url, rect_params):
 
         response = self.client.get(url, rect_params)
-        filtered_objects = json.loads(response.content.decode("utf-8"))
+        filtered_objects = response.data
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreater(len(filtered_objects), 0)
