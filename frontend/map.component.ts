@@ -88,6 +88,9 @@ export class MapComponent implements AfterViewInit {
 
         marker.addListener("click", (() => {
             this.updateCurrentlyActiveMapObjectInfo(mapObject, mapObjectType);
+            if (this.willInfoBoxHideMarker(marker)) {
+                this.map.panTo(marker.getPosition());
+            }
         }));
         marker.setMap(this.map);
         this.markers.get(mapObjectType).push(marker);
@@ -130,5 +133,19 @@ export class MapComponent implements AfterViewInit {
         setTimeout(function(){
             tmpScope.errorMessage = "";
         }, this.errorMessageDisplayTime);
+    }
+
+    private willInfoBoxHideMarker(marker: google.maps.Marker) {
+        const infoBoxWidth = 320; // incl. padding
+        const windowWidth = this.mapCanvas.nativeElement.clientWidth;
+
+        const longitudeWest = this.map.getBounds().getSouthWest().lng();
+        const longitudeEast = this.map.getBounds().getNorthEast().lng();
+        const mapWidth = longitudeEast - longitudeWest;
+        const markerLngRelative = marker.getPosition().lng() - longitudeWest;
+
+        // We compare the ratio of the width of info box and window with the ratio of the longitude
+        // of the marker (realtive to the left border of the map) and the range of shown longitude of the map.
+        return (infoBoxWidth / windowWidth) > (markerLngRelative / mapWidth);
     }
 }
