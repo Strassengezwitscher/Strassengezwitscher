@@ -7,7 +7,6 @@ import { MdIconModule } from "@angular2-material/icon/icon";
 import { MdInputModule } from "@angular2-material/input/input";
 import { MdToolbarModule } from "@angular2-material/toolbar/toolbar";
 import { MdTooltipModule } from "@angular2-material/tooltip/tooltip";
-import { MdSidenavModule } from "@angular2-material/sidenav/sidenav";
 
 const MATERIAL_MODULES = [
   MdButtonModule,
@@ -18,7 +17,6 @@ const MATERIAL_MODULES = [
   MdSlideToggleModule,
   MdToolbarModule,
   MdTooltipModule,
-  MdSidenavModule,
 ];
 
 @NgModule({
