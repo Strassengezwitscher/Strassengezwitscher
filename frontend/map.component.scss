@@ -1,32 +1,42 @@
 $height-navbar: 64px;
 $height-navbar-mobile: 56px;
+$card-padding: 10px;
 
 .navbar {
   margin-bottom: 0;
 }
 
-.map-wrapper {
-  height: calc(100% - #{$height-navbar-mobile});
-  width: 100%;
-}
-
 .map-canvas {
-  height: 100%;
-  width: 100%;
+  height: calc(100% - #{$height-navbar-mobile});;
+  width: 100vw;
 }
 
 .map-settings {
-  position: absolute;
-  right: 10px;
-  top: #{$height-navbar + 10px};
   margin: 0;
+  position: absolute;
+  right: $card-padding;
+  top: #{$height-navbar-mobile + $card-padding};
   z-index: 99;
+}
+
+.map-infos {
+  left: $card-padding;
+  margin: 0;
+  position: absolute;
+  top: #{$height-navbar-mobile + $card-padding};
+  z-index: 99;
+  width: 300px;
+
+  & > * {
+    display: flex;
+    max-height: calc(100vh - #{$height-navbar-mobile + 2*$card-padding});
+  }
 }
 
 .error-message {
   background-color: #f2dede;
-  bottom: 10px;
-  left: 50%;
+  bottom: $card-padding;
+  left: 50vw;
   min-width: 200px;
   position: absolute;
   text-align: center;
@@ -34,7 +44,19 @@ $height-navbar-mobile: 56px;
 }
 
 @media only screen and (min-width: 600px) {
-  .map-wrapper {
+  .map-canvas {
     height: calc(100% - #{$height-navbar});
+  }
+
+  .map-settings {
+      top: #{$height-navbar + $card-padding};
+  }
+
+  .map-infos {
+    top: #{$height-navbar + $card-padding};
+
+    & > * {
+      max-height: calc(100vh - #{$height-navbar + 2*$card-padding});
+    }
   }
 }

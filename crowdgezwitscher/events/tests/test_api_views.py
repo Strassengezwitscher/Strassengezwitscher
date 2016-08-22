@@ -38,27 +38,32 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # GET /api/events/
-    def test_read_list_mapobject(self):
+    def test_read_list_events(self):
         url = reverse('events_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         events = response.data
-        self.assertTrue(all(event['active'] for event in events))
+        for attr in ('id', 'name', 'locationLong', 'locationLat'):
+            self.assertTrue(all(attr in obj for obj in events))
         self.assertEqual(len(events), 2)
         self.assertTrue(len(events) < Event.objects.count())
 
     # GET /api/events/1/
-    def test_read_detail_mapobject(self):
+    def test_read_detail_events(self):
         url = reverse('events_api:detail', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = {
             u'id': 1,
-            u'active': True,
             u'name': u'Test Event',
             u'location': u'Here',
-            u'locationLat': 87.654000,
-            u'locationLong': 45.678000,
+            u'date': u'2016-07-24',
+            u'repetitionCycle': u'unbekannter Rhythmus',
+            u'type': u'',
+            u'url': u'',
+            u'counterEvent': False,
+            u'coverage': False,
+            u'participants': u'',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 

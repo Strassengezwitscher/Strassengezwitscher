@@ -38,27 +38,28 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # GET /api/facebook/
-    def test_read_list_mapobject(self):
+    def test_read_list_facebook(self):
         url = reverse('facebook_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         facebook_pages = response.data
-        self.assertTrue(all(facebook_page['active'] for facebook_page in facebook_pages))
+        for attr in ('id', 'name', 'locationLong', 'locationLat'):
+            self.assertTrue(all(attr in obj for obj in facebook_pages))
         self.assertEqual(len(facebook_pages), 2)
         self.assertTrue(len(facebook_pages) < FacebookPage.objects.count())
 
     # GET /api/facebook/1/
-    def test_read_detail_mapobject(self):
+    def test_read_detail_facebook(self):
         url = reverse('facebook_api:detail', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = {
             u'id': 1,
-            u'active': True,
             u'name': u'Test page',
             u'location': u'Nowhere',
-            u'locationLat': 12.345000,
-            u'locationLong': 54.321000,
+            u'facebookId': u'1',
+            u'notes': u'',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
@@ -146,7 +147,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # GET /mapobjects1.json
+    # GET /facebook1.json
     def test_json_detail_facebook_incorrect(self):
         url = '/api/facebook1.json'
         response = self.client.get(url)

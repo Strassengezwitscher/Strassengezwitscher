@@ -1,5 +1,7 @@
-import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
+import { FacebookPageComponent } from "./facebookPage/facebookPage.component";
+import { EventComponent } from "./events/event.component";
 import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
 
@@ -12,12 +14,13 @@ export class MapObjectSetting {
     selector: "cg-map",
     templateUrl: "map.component.html",
     providers: [MapService],
+    directives: [FacebookPageComponent, EventComponent],
 })
 
 export class MapComponent implements AfterViewInit {
 
-    private currentlyOpenInfoWindow: google.maps.InfoWindow;
     private errorMessage: string;
+    private errorMessageDisplayTime: number = 5000;
     private map: google.maps.Map;
     // Utilized for holding status and name of different types of MapObjects
     private mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
@@ -25,10 +28,12 @@ export class MapComponent implements AfterViewInit {
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
+    private currentlyActiveMapObject: MapObject = new MapObject();
+    private currentlyActiveMapObjectType: MapObjectType = null;
 
     @ViewChild("mapCanvas") private mapCanvas;
 
-    constructor(private mapService: MapService) {
+    constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
         this.initializeMapObjectSettings();
     }
@@ -49,8 +54,12 @@ export class MapComponent implements AfterViewInit {
             center: latlng,
             scrollWheel: false,
             zoom: 10,
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
+        this.map.addListener("click", () =>  this.updateCurrentlyActiveMapObjectInfo(null, null));
     }
 
     private retrieveVisibleMapObjects() {
@@ -59,7 +68,7 @@ export class MapComponent implements AfterViewInit {
                 this.mapService.getMapObjects(mapObjectType)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
-                                error => this.errorMessage = <any> error
+                                error => this.setErrorMessage(<any> error)
                             );
             }
         }
@@ -71,9 +80,6 @@ export class MapComponent implements AfterViewInit {
 
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
-        const infoWindow = new google.maps.InfoWindow({
-            content: mapObject.name,
-        });
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
@@ -81,17 +87,13 @@ export class MapComponent implements AfterViewInit {
         });
 
         marker.addListener("click", (() => {
-            this.closeCurrentlyOpenInfoWindow();
-            this.showInfoWindowForMarker(marker, infoWindow);
+            this.updateCurrentlyActiveMapObjectInfo(mapObject, mapObjectType);
+            if (this.willInfoBoxHideMarker(marker)) {
+                this.map.panTo(marker.getPosition());
+            }
         }));
         marker.setMap(this.map);
         this.markers.get(mapObjectType).push(marker);
-    }
-
-    private closeCurrentlyOpenInfoWindow() {
-        if (this.currentlyOpenInfoWindow) {
-            this.currentlyOpenInfoWindow.close();
-        }
     }
 
     private initializeMapObjectSettings() {
@@ -118,8 +120,32 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private showInfoWindowForMarker(marker: google.maps.Marker, infoWindow: google.maps.InfoWindow) {
-        infoWindow.open(this.map, marker);
-        this.currentlyOpenInfoWindow = infoWindow;
+    private updateCurrentlyActiveMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType) {
+        this.zone.run(() => {
+            this.currentlyActiveMapObject = mapObject;
+            this.currentlyActiveMapObjectType = mapObjectType;
+        });
+    }
+
+    private setErrorMessage(errorMessage: string) {
+        this.errorMessage = errorMessage;
+        const tmpScope = this;
+        setTimeout(function(){
+            tmpScope.errorMessage = "";
+        }, this.errorMessageDisplayTime);
+    }
+
+    private willInfoBoxHideMarker(marker: google.maps.Marker) {
+        const infoBoxWidth = 320; // incl. padding
+        const windowWidth = this.mapCanvas.nativeElement.clientWidth;
+
+        const longitudeWest = this.map.getBounds().getSouthWest().lng();
+        const longitudeEast = this.map.getBounds().getNorthEast().lng();
+        const mapWidth = longitudeEast - longitudeWest;
+        const markerLngRelative = marker.getPosition().lng() - longitudeWest;
+
+        // We compare the ratio of the width of info box and window with the ratio of the longitude
+        // of the marker (realtive to the left border of the map) and the range of shown longitude of the map.
+        return (infoBoxWidth / windowWidth) > (markerLngRelative / mapWidth);
     }
 }
