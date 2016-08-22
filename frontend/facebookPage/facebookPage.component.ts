@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
 import { FacebookPage } from "./facebookPage";
 import { FacebookPageService } from "./facebookPage.service";
@@ -13,6 +13,7 @@ import { FacebookPageService } from "./facebookPage.service";
 export class FacebookPageComponent implements OnChanges {
     private activePage: FacebookPage;
     @Input("id") private id: number;
+    @Output() private onError = new EventEmitter<string>();
     constructor(private fbPageService: FacebookPageService) {
         this.activePage = new FacebookPage();
     }
@@ -27,7 +28,7 @@ export class FacebookPageComponent implements OnChanges {
         this.fbPageService.getFacebookPage(id)
                             .subscribe(
                                 fbPage => this.setActivePage(fbPage),
-                                error => console.log(error)
+                                error => this.onError.emit(error)
                             );
     }
 

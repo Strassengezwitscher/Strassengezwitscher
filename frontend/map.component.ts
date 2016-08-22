@@ -67,7 +67,7 @@ export class MapComponent implements AfterViewInit {
                 this.mapService.getMapObjects(mapObjectType)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
-                                error => this.errorMessage = <any> error
+                                error => this.setErrorMessage(<any> error)
                             );
             }
         }
@@ -121,5 +121,9 @@ export class MapComponent implements AfterViewInit {
             this.currentlyActiveMapObject = mapObject;
             this.currentlyActiveMapObjectType = mapObjectType;
         });
+    }
+
+    private setErrorMessage(errorMessage: string) {
+        this.errorMessage = errorMessage;
     }
 }

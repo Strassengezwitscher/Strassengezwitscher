@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
 import { Event } from "./event";
 import { EventService } from "./event.service";
@@ -13,6 +13,7 @@ import { EventService } from "./event.service";
 export class EventComponent implements OnChanges {
     private activeEvent: Event;
     @Input("id") private id: number;
+    @Output() private onError = new EventEmitter<string>();
     constructor(private eventService: EventService) {
         this.activeEvent = new Event();
     }
@@ -27,7 +28,7 @@ export class EventComponent implements OnChanges {
         this.eventService.getEvent(id)
                         .subscribe(
                             event => this.setActiveEvent(event),
-                            error => console.log(error)
+                            error => this.onError.emit(error)
                         );
     }
 
