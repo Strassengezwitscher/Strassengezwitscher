@@ -12,7 +12,6 @@ var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
-var embedTemplates = require('gulp-angular-embed-templates');
 var SystemBuilder = require('systemjs-builder');
 var typescript = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
@@ -58,6 +57,11 @@ gulp.task('copy:frontendImgFiles', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
+gulp.task('copy:html', function() {
+    return gulp.src(config.frontend.htmlFiles, {base: config.path.root})
+        .pipe(gulp.dest(config.path.build));
+});
+
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig', 'copy:frontendImgFiles']);
 
 gulp.task('compile:sass', function() {
@@ -76,7 +80,6 @@ gulp.task('compile:typescript', ['copy:config'], function() {
     return merge([
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
-            .pipe(embedTemplates())
             .pipe(sourcemaps.write('./', {sourceRoot: config.path.partial.frontend}))
             .pipe(gulp.dest(config.path.build + config.path.partial.frontend))
     ]);
@@ -121,36 +124,36 @@ gulp.task('watch:frontendImgFiles', ['copy:frontendImgFiles'], function() {
     return gulp.watch(config.frontend.imgFiles, {cwd: config.root}, ['copy:frontendImgFiles']);
 });
 
-gulp.task('watch:html', ['compile:typescript'], function() {
-    return gulp.watch(config.frontend.htmlFiles, ['compile:typescript']);
+gulp.task('watch:html', ['copy:html'], function() {
+    return gulp.watch(config.frontend.htmlFiles, {cwd: config.root}, ['copy:html']);
 });
 
 gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles', 'watch:html']);
 
-gulp.task('build', ['copy:staticfiles', 'compile:typescript', 'compile:sass']);
+gulp.task('build', ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass']);
 
 gulp.task('default', function() {
   // place code for your default task here
 });
 
-var rollup = require('rollup').rollup;
-var commonjs = require('rollup-plugin-commonjs');
-var nodeResolve = require('rollup-plugin-node-resolve');
+// var rollup = require('rollup').rollup;
+// var commonjs = require('rollup-plugin-commonjs');
+// var nodeResolve = require('rollup-plugin-node-resolve');
 
-gulp.task('rollup', function () {
-  return rollup({
-    entry: 'compiled2/main-ngc.js',
-    plugins: [
-      nodeResolve({ jsnext: true }),
-      commonjs()
-    ]
-  }).then(function (bundle) {
-    return bundle.write({
-      format: 'iife',
-      dest: 'compiled3/main.js'
-    });
-  });
-});
+// gulp.task('rollup', function () {
+//   return rollup({
+//     entry: 'compiled2/main-ngc.js',
+//     plugins: [
+//       nodeResolve({ jsnext: true }),
+//       commonjs()
+//     ]
+//   }).then(function (bundle) {
+//     return bundle.write({
+//       format: 'iife',
+//       dest: 'compiled3/main.js'
+//     });
+//   });
+// });
 
 if (!argv.production) {
     gulp.task('lint:python', function(done) {
