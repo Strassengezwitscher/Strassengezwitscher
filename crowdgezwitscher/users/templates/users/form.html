@@ -1,0 +1,14 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-primary" type="submit" value="Speichern" />
+    {% if perms.auth.view_user %}
+        <a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+    {% endif %}
+</form>
+
+{% endblock %}

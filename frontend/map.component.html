@@ -1,0 +1,13 @@
+<div class="map-canvas" #mapCanvas></div>
+<md-card class="map-settings">
+    <md-card-content>
+        <md-slide-toggle *ngFor="let mapObjectSetting of mapObjectSettings" [(ngModel)]="mapObjectSetting.active" (ngModelChange)="onCheckboxChange()">
+            {{mapObjectSetting.name}}
+        </md-slide-toggle>
+    </md-card-content>
+</md-card>
+<div [ngSwitch]= "currentlyActiveMapObjectType" class="map-infos">
+    <cg-event-detail *ngSwitchCase="0" [id]="currentlyActiveMapObject.id" (onError)="setErrorMessage($event)"></cg-event-detail>
+    <cg-fb-detail *ngSwitchCase="1" [id]="currentlyActiveMapObject.id" (onError)="setErrorMessage($event)"></cg-fb-detail>
+</div>
+<md-card class="error-message" *ngIf="errorMessage">{{errorMessage}}</md-card>

@@ -1,0 +1,42 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Veranstaltungen</h1>
+{% if events %}
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+    {% for event in events %}
+    <tr>
+        <td>
+            {% if perms.events.view_event %}
+                <a href="{% url 'events:detail' event.id %}">{{ event.name }}</a>
+            {% else %}
+                {{ event.name }}
+            {% endif %}
+        </td>
+        <td>{% if event.active %} aktiviert {% else %} deaktiviert {% endif %}</td>
+        <td>
+            {% if perms.events.change_event %}
+                <a class="btn btn-default btn-sm" href="{% url 'events:update' event.id %}">Bearbeiten</a>
+            {% endif %}
+            {% if perms.events.delete_event %}
+                <a class="btn btn-default btn-sm" href="{% url 'events:delete' event.id %}">Löschen</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Keine Veranstaltungen verfügbar.</p>
+{% endif %}
+
+{% if perms.events.add_event %}
+    <a class="btn btn-primary" href="{% url 'events:create' %}">Veranstaltung anlegen</a>
+{% endif %}
+
+{% endblock %}

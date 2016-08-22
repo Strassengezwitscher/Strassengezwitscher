@@ -1,0 +1,40 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Inaktive Nutzer</h1>
+
+{% if users %}
+<table class="table table-striped">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th></th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>
+            {% if perms.auth.view_user %}
+                <a href="{% url 'users:detail' user.id %}">{{ user.username }}</a>
+            {% else %}
+                {{ user.username }}
+            {% endif %}
+        </td>
+        <td>{{ user.email }}</td>
+        <td>
+            {% if perms.auth.change_user %}
+                <a class="btn btn-default btn-sm" href="{% url 'users:update' user.id %}">Bearbeiten</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Keine inaktiven Nutzer vorhanden.</p>
+{% endif %}
+
+{% if perms.auth.view_user %}
+    <a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
+{% endif %}
+
+{% endblock %}

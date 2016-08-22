@@ -1,0 +1,38 @@
+<md-card class="event-card">
+    <md-card-title>{{activeEvent.name}}</md-card-title>
+    <md-card-subtitle>{{activeEvent.location}}</md-card-subtitle>
+    <md-card-content>
+        <p *ngIf="activeEvent.date">
+            <strong>Datum:</strong><br>
+            {{activeEvent.date}}
+        </p>
+        <p *ngIf="activeEvent.repetitionCycle">
+            <strong>Wiederholungszyklus:</strong><br>
+            {{activeEvent.repetitionCycle}}
+        </p>
+        <p *ngIf="activeEvent.organizer">
+            <strong>Organisator:</strong><br>
+            {{activeEvent.organizer}}
+        </p>
+        <p *ngIf="activeEvent.participants">
+            <strong>Teilnehmer:</strong><br>
+            {{activeEvent.participants}}
+        </p>
+        <p *ngIf="activeEvent.type">
+            <strong>Art:</strong><br>
+            {{activeEvent.type}}
+        </p>
+        <p *ngIf="activeEvent.counterEvent">
+            <strong>Gegenveranstaltung:</strong><br>
+            {{activeEvent.counterEvent}}
+        </p>
+        <p *ngIf="activeEvent.coverage">
+            <strong>Berichterstattung:</strong><br>
+            {{activeEvent.coverage}} (Twitter-Feed)
+        </p>
+
+    </md-card-content>
+    <md-card-actions *ngIf="activeEvent.url">
+        <a md-button href="{{activeEvent.url}}">zur Verantstaltung</a>
+    </md-card-actions>
+</md-card>

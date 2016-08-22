@@ -1,0 +1,8 @@
+[run]
+source = crowdgezwitscher/
+
+[report]
+omit =
+    */migrations/*
+    crowdgezwitscher/crowdgezwitscher/settings/*
+    crowdgezwitscher/crowdgezwitscher/wsgi.py

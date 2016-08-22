@@ -3,11 +3,24 @@ python:
   - "2.7"
   - "3.4"
   - "3.5"
+before_install:
+  - npm install -g npm@latest
 install:
+  - sudo apt-get install -y lcov
+  - gem install coveralls-lcov
   - pip install -r requirements.txt
   - pip install coveralls
-  - cd strassengezwitscher
+  - npm install
+before_script:
+  - gulp dist
+  - DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py migrate
+  - DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure &
 script:
-  - coverage run manage.py test
+  - gulp coverage:python
+  - gulp coverage:typescript
+  - gulp test:e2e
 after_success:
-  - coveralls
+  - coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json
+  - coveralls --merge=./.report/coverage.json
+  - cd .travis
+  - ./deploy.sh

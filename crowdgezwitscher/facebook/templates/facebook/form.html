@@ -1,0 +1,14 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-primary" type="submit" value="Speichern" />
+    {% if perms.facebook.view_facebookpage %}
+        <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
+    {% endif %}
+</form>
+
+{% endblock %}

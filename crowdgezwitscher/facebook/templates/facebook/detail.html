@@ -1,0 +1,17 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>{{ page.name }}</h1>
+<ul>
+    <li><b>Aktiv:</b> {{ page.active }}</li>
+    <li><b>Position:</b> {{ page.location_lat }} {{ page.location_long }}</li>
+    <li><b>Link:</b> {{ page.url }}</li>
+    <li><b>Veranstaltungen:</b> {{ page.events.count }}</li>
+</ul>
+
+{% if perms.facebook.view_facebookpage %}
+    <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
+{% endif %}
+
+{% endblock %}

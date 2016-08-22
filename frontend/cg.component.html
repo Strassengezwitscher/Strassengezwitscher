@@ -1,0 +1,17 @@
+<md-toolbar>
+    <span class="toolbar-menu"></span>
+    <span class="toolbar-spacer"></span>
+    <a [routerLink]="['/']" class="brand-logo"></a>
+    <span class="toolbar-spacer"></span>
+    <span class="toolbar-menu">
+        <span class="hide-on-med-and-up">
+            <button md-icon-button [routerLink]="['/contact']">
+                <md-icon>chat</md-icon>
+            </button>
+        </span>
+        <span class="hide-on-small-only">
+            <a md-button [routerLink]="['/contact']">Kontakt</a>
+        </span>
+    </span>
+</md-toolbar>
+<router-outlet></router-outlet>

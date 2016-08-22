@@ -44,6 +44,7 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+.report/
 
 # Translations
 *.mo
@@ -66,3 +67,23 @@ target/
 
 # IDE files
 .idea
+
+# Production settings with sensitive values
+sensitive_settings.py
+
+# Frontend production settings with sensitive values
+frontend/config/sensitive_conf.ts
+frontend/config/config.ts
+
+# npm
+node_modules/
+
+# typings
+typings/**
+!typings/typings.d.ts
+
+# pyenv
+.python-version
+
+# Sensitive data
+crowdgezwitscher/crowdgezwitscher/initial/

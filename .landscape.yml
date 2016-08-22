@@ -1,6 +1,12 @@
-strictness: high
-doc-warnings: yes
+strictness: veryhigh
+doc-warnings: no
 test-warnings: yes
+uses:
+  - django
 python-targets:
   - 2
   - 3
+max-line-length: 120
+pylint:
+  disable:
+    - too-many-ancestors
