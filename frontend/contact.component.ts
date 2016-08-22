@@ -10,6 +10,7 @@ import { Config } from "./config/config";
     moduleId: module.id,
     selector: "cg-contact",
     templateUrl: "contact.component.html",
+    styleUrls: ["contact.component.css"],
     providers: [ContactService, CaptchaService],
 })
 export class ContactComponent implements OnInit, OnDestroy {

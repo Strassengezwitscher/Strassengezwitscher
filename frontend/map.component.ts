@@ -11,6 +11,7 @@ export class MapObjectSetting {
     moduleId: module.id,
     selector: "cg-map",
     templateUrl: "map.component.html",
+    styleUrls: ["map.component.css"],
     providers: [MapService],
 })
 

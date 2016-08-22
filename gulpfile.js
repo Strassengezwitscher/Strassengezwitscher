@@ -65,10 +65,9 @@ gulp.task('copy:html', function() {
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig', 'copy:frontendImgFiles']);
 
 gulp.task('compile:sass', function() {
-    return gulp.src(config.sass.files)
+    return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat(config.sass.bundle.dev_name))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(config.path.build));
 });
