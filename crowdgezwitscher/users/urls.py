@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^new/$', views.UserCreate.as_view(), name='create'),
     url(r'^(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='detail'),
     url(r'^(?P<pk>[0-9]+)/edit$', views.UserUpdate.as_view(), name='update'),
+    url(r'^inactive$', views.InactiveUserListView.as_view(), name='list_inactive'),
 ]

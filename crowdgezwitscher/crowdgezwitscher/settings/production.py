@@ -10,7 +10,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")  # noqa
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static/")  # noqa
 
 
 # Password validation
@@ -68,7 +68,7 @@ EMAIL_HOST_PASSWORD = 'password'  # noqa
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS += [
+STATICFILES_DIRS += [  # noqa
     os.path.join(BASE_DIR, "static/dist"),  # noqa
 ]
 

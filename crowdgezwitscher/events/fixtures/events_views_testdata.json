@@ -23,10 +23,29 @@
     "pk": 2,
     "fields": {
         "name": "Test Event 2",
-        "active": false,
+        "active": true,
         "location": "There",
         "location_lat": "45.678000",
         "location_long": "87.654000",
+        "date": "2016-07-23",
+        "repetition_cycle": "unbekannter Rhythmus",
+        "organizer": "",
+        "type": "",
+        "url": "",
+        "counter_event": false,
+        "coverage": false,
+        "participants": ""
+    }
+},
+{
+    "model": "events.event",
+    "pk": 3,
+    "fields": {
+        "name": "Inactive Test Event",
+        "active": false,
+        "location": "Wow, much water",
+        "location_lat": "0.0",
+        "location_long": "0.0",
         "date": "2016-07-23",
         "repetition_cycle": "unbekannter Rhythmus",
         "organizer": "",

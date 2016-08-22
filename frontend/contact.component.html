@@ -16,7 +16,7 @@
 		<table style="width: 100%" cellspacing="0">
 			<tr>
 				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
-				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
+				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
 			</tr>
 		</table>
 		<div>
@@ -44,6 +44,8 @@
 				</td>
 			</tr>
 		</table>
+		<br>
+		<p>* Pflichtfelder</p>
 
 		<br>
 		<table style="width: 100%" cellspacing="0">
@@ -58,7 +60,7 @@
 		</table>
 		<br>
 
-		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="grecaptchaKey" data-callback="verifyCallback"></div>
+		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
 
 		<p>
 			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid && captchaVerfied)" color="accent">Senden</button>

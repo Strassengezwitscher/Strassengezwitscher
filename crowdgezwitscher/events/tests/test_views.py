@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.urls import reverse
 from django.test import Client, TestCase
 
@@ -6,12 +5,12 @@ from events.models import Event
 
 
 class EventViewLoggedInTests(TestCase):
-    fixtures = ['events_views_testdata']
+    """User testing the views is logged in and has all required permissions."""
+    fixtures = ['events_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
 
     def setUp(self):
-        self.user = User.objects.create_user('user', 'user@host.org', 'password')
-        self.client.login(username='user', password='password')
+        self.client.login(username='john.doe', password='john.doe')
 
     # List
     def test_get_list_view(self):
@@ -60,7 +59,7 @@ class EventViewLoggedInTests(TestCase):
             'coverage': False,
         }
         response = self.client.post(reverse('events:create'), data, follow=True)
-        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 3}))
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('events:create'))
@@ -152,7 +151,8 @@ class EventViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class EventViewLoggedOutTests(TestCase):
+class EventViewNoPermissionTests(TestCase):
+    """User testing the views is not logged and therefore lacking the required permissions."""
     # List
     def test_get_list_view(self):
         url = reverse('events:list')

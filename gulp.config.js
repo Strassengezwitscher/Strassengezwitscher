@@ -10,6 +10,7 @@ module.exports = function () {
         partial: {
             frontend: 'frontend',
         },
+        frontend_config: 'frontend/config/',
     };
 
     var sass = {
@@ -28,7 +29,7 @@ module.exports = function () {
         bundle: {
             path: path.dist + 'bundle-ngc.js',
             config: {
-                minify: true,
+                minify: false,
             },
         },
     };

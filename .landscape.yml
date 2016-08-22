@@ -1,6 +1,6 @@
 strictness: veryhigh
 doc-warnings: no
-test-warnings: no
+test-warnings: yes
 uses:
   - django
 python-targets:

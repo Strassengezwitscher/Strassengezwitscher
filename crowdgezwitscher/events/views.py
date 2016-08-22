@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -8,21 +8,25 @@ from django.urls import reverse_lazy
 
 from events.models import Event
 from events.serializers import EventSerializer
+from crowdgezwitscher.models import MapObjectFilter
 
 
-class EventListView(LoginRequiredMixin, ListView):
+class EventListView(PermissionRequiredMixin, ListView):
+    permission_required = 'events.view_event'
     model = Event
     template_name = 'events/list.html'
     context_object_name = 'events'
 
 
-class EventDetail(LoginRequiredMixin, DetailView):
+class EventDetail(PermissionRequiredMixin, DetailView):
+    permission_required = 'events.view_event'
     model = Event
     template_name = 'events/detail.html'
     context_object_name = 'event'
 
 
-class EventCreate(LoginRequiredMixin, CreateView):
+class EventCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'events.add_event'
     model = Event
     template_name = 'events/form.html'
     fields = [
@@ -31,7 +35,8 @@ class EventCreate(LoginRequiredMixin, CreateView):
     ]
 
 
-class EventUpdate(LoginRequiredMixin, UpdateView):
+class EventUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'events.change_event'
     model = Event
     template_name = 'events/form.html'
     fields = [
@@ -40,7 +45,8 @@ class EventUpdate(LoginRequiredMixin, UpdateView):
     ]
 
 
-class EventDelete(LoginRequiredMixin, DeleteView):
+class EventDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'events.delete_event'
     model = Event
     template_name = 'events/delete.html'
     success_url = reverse_lazy('events:list')
@@ -49,10 +55,11 @@ class EventDelete(LoginRequiredMixin, DeleteView):
 
 # API Views
 class EventAPIList(generics.ListAPIView):
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializer
+    filter_backends = (MapObjectFilter,)
 
 
 class EventAPIDetail(generics.RetrieveAPIView):
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializer

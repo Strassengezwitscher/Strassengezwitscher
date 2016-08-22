@@ -3,6 +3,8 @@
 var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
+var rename = require('gulp-rename');
+var fs = require('fs');
 var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 var merge = require('merge2');
@@ -29,6 +31,23 @@ gulp.task('copy:npmfiles', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
+gulp.task('copy:sensitive_config', function() {
+    fs.stat(config.path.frontend_config + 'sensitive_conf.ts', function(err, stat) {
+        if(err != null) {
+            return gulp.src(config.path.frontend_config + 'sensitive_conf_dummy.ts')
+                .pipe(rename('sensitive_conf.ts'))
+                .pipe(gulp.dest(config.path.frontend_config));
+        }
+    });
+});
+
+gulp.task('copy:config', ['copy:sensitive_config'] , function() {
+    var config_path = config.path.frontend_config + ((argv.production) ? 'prod_conf.ts': 'dev_conf.ts');
+    return gulp.src(config_path)
+        .pipe(rename('config.ts'))
+        .pipe(gulp.dest(config.path.frontend_config));
+});
+
 gulp.task('copy:systemjsconfig', function() {
     return gulp.src(config.systemjs.files)
         .pipe(gulp.dest(config.path.build));
@@ -50,7 +69,7 @@ gulp.task('compile:sass', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('compile:typescript', function() {
+gulp.task('compile:typescript', ['copy:config'], function() {
     var tsResult = gulp.src(config.typescript.files)
         .pipe(sourcemaps.init())
         .pipe(typescript(tsProject));
@@ -134,10 +153,14 @@ gulp.task('rollup', function () {
 });
 
 if (!argv.production) {
-    gulp.task('lint:python', function() {
-        exec('prospector crowdgezwitscher --profile ../.landscape.yml', function (err, stdout, stderr) {
+    gulp.task('lint:python', function(done) {
+        var command = 'prospector crowdgezwitscher --profile ../.landscape.yml';
+        var lint = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        lint.on('close', function(exitcode) {
+            done(exitcode ? new Error('Python linting failed') : 0);
         });
     });
 
@@ -182,8 +205,8 @@ if (!argv.production) {
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
-        }, function(exitCode) {
-            done(exitCode);
+        }, function(exitcode) {
+            done(exitcode ? new Error('Typescript tests failed') : 0);
         }).start();
     });
 
@@ -194,7 +217,18 @@ if (!argv.production) {
             console.log(stderr);
         });
         casper.on('close', function(exitcode) {
-            done(exitcode ? 'E2E tests failed' : undefined);
+            done(exitcode ? new Error('E2E tests failed') : 0);
+        });
+    });
+
+    gulp.task('test:python', function(done) {
+        var command = 'python crowdgezwitscher/manage.py test crowdgezwitscher';
+        var test = exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+        test.on('close', function(exitcode) {
+            done(exitcode ? new Error('Python tests failed') : 0);
         });
     });
 
@@ -204,23 +238,26 @@ if (!argv.production) {
             singleRun: true,
         }, remapCoverage).start();
 
-        function remapCoverage(exitCode) {
+        function remapCoverage(exitcode) {
             console.log('path', config.report.path);
             gulp.src(config.report.path)
                 .pipe(remapIstanbul({
                     reports: config.report.remap.reports,
                 }))
                 .on('finish', function() {
-                    done(exitCode);
+                    done(exitcode ? new Error('Typescript coverage report failed') : 0);
                 });
         }
     });
 
-    gulp.task('coverage:python', function() {
+    gulp.task('coverage:python', function(done) {
         var command = 'coverage run crowdgezwitscher/manage.py test crowdgezwitscher';
-        exec(command, function (err, stdout, stderr) {
+        var coverage = exec(command, function (err, stdout, stderr) {
             console.log(stdout);
             console.log(stderr);
+        });
+        coverage.on('close', function(exitcode) {
+            done(exitcode ? new Error('Python coverage report failed') : 0);
         });
     });
 }
