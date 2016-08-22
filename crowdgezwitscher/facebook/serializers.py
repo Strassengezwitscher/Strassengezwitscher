@@ -4,10 +4,11 @@ from facebook.models import FacebookPage
 
 
 class FacebookPageSerializer(serializers.ModelSerializer):
+    facebookId = serializers.CharField(source='facebook_id')
 
     class Meta:
         model = FacebookPage
-        fields = ('id', 'name', 'location', 'notes', 'facebook_id')
+        fields = ('id', 'name', 'location', 'notes', 'facebookId')
 
 
 class FacebookPageSerializerShortened(serializers.ModelSerializer):

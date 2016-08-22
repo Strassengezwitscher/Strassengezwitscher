@@ -6,9 +6,9 @@
             <strong>Datum:</strong><br>
             {{activeEvent.date}}
         </p>
-        <p *ngIf="activeEvent.repetition_cycle">
+        <p *ngIf="activeEvent.repetitionCycle">
             <strong>Wiederholungszyklus:</strong><br>
-            {{activeEvent.repetition_cycle}}
+            {{activeEvent.repetitionCycle}}
         </p>
         <p *ngIf="activeEvent.organizer">
             <strong>Organisator:</strong><br>
@@ -22,9 +22,9 @@
             <strong>Art:</strong><br>
             {{activeEvent.type}}
         </p>
-        <p *ngIf="activeEvent.counter_event">
+        <p *ngIf="activeEvent.counterEvent">
             <strong>Gegenveranstaltung:</strong><br>
-            {{activeEvent.counter_event}}
+            {{activeEvent.counterEvent}}
         </p>
         <p *ngIf="activeEvent.coverage">
             <strong>Berichterstattung:</strong><br>

@@ -58,10 +58,10 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             u'name': u'Test Event',
             u'location': u'Here',
             u'date': u'2016-07-24',
-            u'repetition_cycle': u'unbekannter Rhythmus',
+            u'repetitionCycle': u'unbekannter Rhythmus',
             u'type': u'',
             u'url': u'',
-            u'counter_event': False,
+            u'counterEvent': False,
             u'coverage': False,
             u'participants': u'',
         }

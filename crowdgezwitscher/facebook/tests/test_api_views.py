@@ -58,7 +58,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             u'id': 1,
             u'name': u'Test page',
             u'location': u'Nowhere',
-            u'facebook_id': u'1',
+            u'facebookId': u'1',
             u'notes': u'',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)

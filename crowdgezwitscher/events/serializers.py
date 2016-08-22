@@ -4,10 +4,12 @@ from events.models import Event
 
 
 class EventSerializer(serializers.ModelSerializer):
+    repetitionCycle = serializers.CharField(source='repetition_cycle')
+    counterEvent = serializers.BooleanField(source='counter_event')
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'location', 'date', 'repetition_cycle', 'type', 'url', 'counter_event',
+        fields = ('id', 'name', 'location', 'date', 'repetitionCycle', 'type', 'url', 'counterEvent',
                   'coverage', 'participants')
 
 

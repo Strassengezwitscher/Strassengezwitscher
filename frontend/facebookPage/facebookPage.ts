@@ -4,5 +4,5 @@ export class FacebookPage {
     public location: string;
     public events: number[];
     public notes: string;
-    public facebook_id: string;
+    public facebookId: string;
 }
