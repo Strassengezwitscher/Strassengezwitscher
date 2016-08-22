@@ -97,9 +97,9 @@ export class MapComponent implements AfterViewInit {
 
     private initializeMapObjectSettings() {
         this.mapObjectSettings[MapObjectType.EVENTS] =
-            new MapObjectSetting(true, "static/img/schild_schwarz.png", "Veranstaltungen");
+            new MapObjectSetting(true, "static/schild_schwarz.png", "Veranstaltungen");
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
-            new MapObjectSetting(false, "static/img/schild_blau.png", "Facebook-Seiten");
+            new MapObjectSetting(false, "static/schild_blau.png", "Facebook-Seiten");
     }
 
     private initializeMarkerMap() {

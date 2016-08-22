@@ -52,17 +52,12 @@ gulp.task('copy:systemjsconfig', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:frontendImgFiles', function() {
-    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
-        .pipe(gulp.dest(config.path.build));
-});
-
 gulp.task('copy:html', function() {
     return gulp.src(config.frontend.htmlFiles, {base: config.path.root})
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig', 'copy:frontendImgFiles']);
+gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
 
 gulp.task('compile:sass', function() {
     return gulp.src(config.sass.files, {base: config.path.root})
@@ -104,12 +99,7 @@ gulp.task('bundle:sass', ['compile:sass'], function() {
         .pipe(gulp.dest(config.path.dist));
 });
 
-gulp.task('optimize:frontendImgFiles', function() {
-    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
-        .pipe(gulp.dest(config.path.dist));
-});
-
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass', 'optimize:frontendImgFiles']);
+gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(config.sass.files, ['compile:sass']);
@@ -119,15 +109,11 @@ gulp.task('watch:typescript', ['compile:typescript'], function() {
     return gulp.watch(config.typescript.files, ['compile:typescript']);
 });
 
-gulp.task('watch:frontendImgFiles', ['copy:frontendImgFiles'], function() {
-    return gulp.watch(config.frontend.imgFiles, {cwd: config.root}, ['copy:frontendImgFiles']);
-});
-
 gulp.task('watch:html', ['copy:html'], function() {
     return gulp.watch(config.frontend.htmlFiles, {cwd: config.root}, ['copy:html']);
 });
 
-gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles', 'watch:html']);
+gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:html']);
 
 gulp.task('build', ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass']);
 
