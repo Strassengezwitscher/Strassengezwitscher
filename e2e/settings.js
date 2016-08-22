@@ -5,7 +5,7 @@ module.exports = function(options) {
     options.timeout = options.hasOwnProperty('timeout') ? options.timeout : 10000;
     options.enableBrowserLog = options.hasOwnProperty('enableBrowserLog') ? options.enableBrowserLog : false;
 
-    var hostUrl = 'http://localhost:8000/';
+    var hostUrl = 'http://localhost:8000/map/';
 
     function init() {
         setViewportSize(options.viewportWidth, options.viewportHeight);

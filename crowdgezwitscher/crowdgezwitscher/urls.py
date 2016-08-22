@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^intern/logout/$', auth_views.logout_then_login, name='logout'),
 
     # User area URLs
-    url(r'^$', views.index, name='index'),
-    url(r'^(?:contact)?/?$', views.index, name='index'),
+    url(r'^$', views.landingpage, name='landingpage'),
+    url(r'^map/$', views.index, name='index'),
+    url(r'^map/(?:contact)?/?$', views.index, name='index'),
 ]
