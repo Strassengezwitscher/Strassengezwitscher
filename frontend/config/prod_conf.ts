@@ -1,10 +1,16 @@
-import { SensitiveConfig } from "./config/sensitive_conf";
+import { enableProdMode } from "@angular/core";
+
+import { SensitiveConfig } from "./sensitive_conf";
 
 export class Config {
-
     public dataSitekey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+
     constructor() {
         this.initFromSensitiveConfig(new SensitiveConfig());
+    }
+
+    public configure() {
+        enableProdMode();
     }
 
     private initFromSensitiveConfig(sConf: SensitiveConfig) {

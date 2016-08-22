@@ -1,4 +1,3 @@
-import json
 from decimal import Decimal
 
 from rest_framework import status
@@ -8,10 +7,10 @@ class MapObjectApiViewTestTemplate(object):
 
     def test_empty_filter(self, url):
         response = self.client.get(url)
-        filtered_objects = json.loads(response.content.decode("utf-8"))
+        filtered_objects = response.data
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(filtered_objects), self.model.objects.count())
+        self.assertEqual(len(filtered_objects), 2)
 
     def test_partial_filter(self, url):
         response = self.client.get(url, {'min_lat': 10.0, 'min_long': 11.0})
@@ -34,7 +33,7 @@ class MapObjectApiViewTestTemplate(object):
     def test_correct_filter(self, url, rect_params):
 
         response = self.client.get(url, rect_params)
-        filtered_objects = json.loads(response.content.decode("utf-8"))
+        filtered_objects = response.data
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertGreater(len(filtered_objects), 0)
