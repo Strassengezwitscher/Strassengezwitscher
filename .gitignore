@@ -72,8 +72,8 @@ target/
 sensitive_settings.py
 
 # Frontend production settings with sensitive values
-frontend/**/sensitive_conf.ts
-frontend/**/config.ts
+frontend/config/sensitive_conf.ts
+frontend/config/config.ts
 
 # npm
 node_modules/
