@@ -20,6 +20,7 @@ export class MapObjectSetting {
 export class MapComponent implements AfterViewInit {
 
     private errorMessage: string;
+    private errorMessageDisplayTime: number = 5000;
     private map: google.maps.Map;
     // Utilized for holding status and name of different types of MapObjects
     private mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
@@ -125,5 +126,9 @@ export class MapComponent implements AfterViewInit {
 
     private setErrorMessage(errorMessage: string) {
         this.errorMessage = errorMessage;
+        const tmpScope = this;
+        setTimeout(function(){
+            tmpScope.errorMessage = "";
+        }, this.errorMessageDisplayTime);
     }
 }
