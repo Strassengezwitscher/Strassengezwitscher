@@ -98,11 +98,7 @@ export class ContactComponent implements OnInit, OnDestroy {
 
     private displaySuccess() {
         this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
-        let tmpScope = this;
-        setTimeout(function(){
-            tmpScope.contactSuccessMessage = "";
-            tmpScope.router.navigate([""]);
-        }, 4000);
+        this.contact = new Contact("", "", "", "", null, null);
     }
 
     private displayError(errorMessage: string) {

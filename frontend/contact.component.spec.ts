@@ -49,12 +49,9 @@ describe("ContactComponent", () => {
             "Wir werden Ihre Anfrage schnellstmöglich bearbeiten!");
     });
 
-    it("check on success reset of message", function() {
+    it("check on success contact is set to empty contact", function() {
         this.cc.displaySuccess();
-        let tmpCC = this;
-        setTimeout(function(){
-            expect(tmpCC.cc.contactSuccessMessage).toEqual("");
-        }, 5000);
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
     });
 
     it("check if script tag for recaptcha is available", function() {
