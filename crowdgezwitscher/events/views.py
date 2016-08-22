@@ -55,11 +55,11 @@ class EventDelete(PermissionRequiredMixin, DeleteView):
 
 # API Views
 class EventAPIList(generics.ListAPIView):
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializer
     filter_backends = (MapObjectFilter,)
 
 
 class EventAPIDetail(generics.RetrieveAPIView):
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializer

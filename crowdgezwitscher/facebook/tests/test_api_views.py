@@ -42,7 +42,10 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         url = reverse('facebook_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(FacebookPage.objects.count(), 2)
+        facebook_pages = response.data
+        self.assertTrue(all(facebook_page['active'] for facebook_page in facebook_pages))
+        self.assertEqual(len(facebook_pages), 2)
+        self.assertTrue(len(facebook_pages) < FacebookPage.objects.count())
 
     # GET /api/facebook/1/
     def test_read_detail_mapobject(self):
@@ -58,6 +61,19 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             u'locationLong': 54.321000,
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
+
+    # GET /api/facebook/1000/
+    def test_read_detail_not_existant_mapobject(self):
+        url = reverse('facebook_api:detail', kwargs={'pk': 1000})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    # GET /api/facebook/3/
+    def test_read_detail_inactive_mapobject(self):
+        self.assertFalse(FacebookPage.objects.get(pk=3).active)
+        url = reverse('facebook_api:detail', kwargs={'pk': 3})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     # PATCH /api/facebook/
     def test_modify_list_facebook(self):

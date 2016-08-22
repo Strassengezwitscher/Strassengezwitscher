@@ -42,7 +42,10 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         url = reverse('events_api:list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Event.objects.count(), 2)
+        events = response.data
+        self.assertTrue(all(event['active'] for event in events))
+        self.assertEqual(len(events), 2)
+        self.assertTrue(len(events) < Event.objects.count())
 
     # GET /api/events/1/
     def test_read_detail_mapobject(self):
@@ -58,6 +61,19 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             u'locationLong': 45.678000,
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
+
+    # GET /api/events/1000/
+    def test_read_detail_not_existant_mapobject(self):
+        url = reverse('events_api:detail', kwargs={'pk': 1000})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    # GET /api/events/3/
+    def test_read_detail_inactive_mapobject(self):
+        self.assertFalse(Event.objects.get(pk=3).active)
+        url = reverse('events_api:detail', kwargs={'pk': 3})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     # PATCH /api/events/
     def test_modify_list_events(self):

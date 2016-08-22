@@ -49,11 +49,11 @@ class FacebookPageDelete(PermissionRequiredMixin, DeleteView):
 
 # API Views
 class FacebookPageAPIList(generics.ListAPIView):
-    queryset = FacebookPage.objects.all()
+    queryset = FacebookPage.objects.filter(active=True)
     serializer_class = FacebookPageSerializer
     filter_backends = (MapObjectFilter,)
 
 
 class FacebookPageAPIDetail(generics.RetrieveAPIView):
-    queryset = FacebookPage.objects.all()
+    queryset = FacebookPage.objects.filter(active=True)
     serializer_class = FacebookPageSerializer
