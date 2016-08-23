@@ -9,7 +9,6 @@ import { RoutingModule } from "./cg.routing";
 
 import { MapComponent } from "./map.component";
 import { ContactComponent } from "./contact.component";
-import { ContactSuccessComponent } from "./contactSuccess.component";
 
 import { MapService } from "./map.service";
 import { ContactService } from "./contact.service";
@@ -26,7 +25,6 @@ import { ContactService } from "./contact.service";
         CrowdgezwitscherComponent,
         MapComponent,
         ContactComponent,
-        ContactSuccessComponent,
     ],
     providers: [
         MapService,
