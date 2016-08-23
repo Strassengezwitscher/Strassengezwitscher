@@ -2,7 +2,12 @@
 	<h1>Kontakt</h1>
 
 	<md-card class="contact-card contact-card-success" *ngIf="contactSuccessMessage">
-		<span>{{contactSuccessMessage}}</span>
+		<md-card-content>
+			<span>{{contactSuccessMessage}}</span>
+		</md-card-content>
+		<md-card-actions>
+			<button [routerLink]="['/']" md-raised-button>Zurück zur Startseite</button>
+		</md-card-actions>
 	</md-card>
 
 	<md-card class="contact-card contact-card-error" *ngIf="contactErrorMessage">
