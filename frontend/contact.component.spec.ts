@@ -54,6 +54,15 @@ describe("ContactComponent", () => {
         expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
     });
 
+    it("check on success form is set to invisible", function() {
+        this.cc.displaySuccess();
+        expect(this.cc.formVisible).toEqual(false);
+    });
+
+    it("check form is visible ", function() {
+        expect(this.cc.formVisible).toEqual(true);
+    });
+
     it("check if script tag for recaptcha is available", function() {
         this.cc.ngOnInit();
         let scriptTag = document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]');

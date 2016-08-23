@@ -23,6 +23,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     private fileInputNames = "";
     private captchaVerfied;
     private script;
+    private formVisible = true;
 
     private isMessageInputFocused = false;
 
@@ -97,6 +98,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     }
 
     private displaySuccess() {
+        this.formVisible = false;
         this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
         this.contact = new Contact("", "", "", "", null, null);
     }
