@@ -1,15 +1,5 @@
 <div class="container">
 	<h1>Kontakt</h1>
-
-	<md-card class="contact-card contact-card-success" *ngIf="contactSuccessMessage">
-		<md-card-content>
-			<span>{{contactSuccessMessage}}</span>
-		</md-card-content>
-		<md-card-actions>
-			<button [routerLink]="['/']" md-raised-button>Zurück zur Startseite</button>
-		</md-card-actions>
-	</md-card>
-
 	<md-card class="contact-card contact-card-error" *ngIf="contactErrorMessage">
 		<span>{{contactErrorMessage}}</span>
 		<button md-icon-button (click)="clearError()">
@@ -17,7 +7,7 @@
 		</button>
 	</md-card>
 
-	<form *ngIf="formVisible" id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
 		<table style="width: 100%" cellspacing="0">
 			<tr>
 				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
