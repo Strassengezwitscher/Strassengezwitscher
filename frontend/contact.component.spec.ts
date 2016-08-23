@@ -49,18 +49,30 @@ describe("ContactComponent", () => {
             "Wir werden Ihre Anfrage schnellstmöglich bearbeiten!");
     });
 
-    it("check on success contact is set to empty contact", function() {
-        this.cc.displaySuccess();
+    it("Should reset the contact parameter", function() {
+        this.cc.resetContact();
         expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
     });
 
-    it("check on success form is set to invisible", function() {
-        this.cc.displaySuccess();
-        expect(this.cc.formVisible).toEqual(false);
+    it("Should reset contact form's success message", function() {
+        this.cc.contactSuccessMessage = "Test";
+        this.cc.appendCaptchaScript();
+        this.cc.resetContactForm();
+        expect(this.cc.contactSuccessMessage).toEqual("");
     });
 
-    it("check form is visible ", function() {
-        expect(this.cc.formVisible).toEqual(true);
+    it("Should reset contact form's contact model", function() {
+        this.cc.contact = new Contact("test", "", "", "", null, null);
+        this.cc.appendCaptchaScript();
+        this.cc.resetContactForm();
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+    });
+
+    it("Should reset contact form's captcha verified flag", function() {
+        this.cc.captchaVerified = true;
+        this.cc.appendCaptchaScript();
+        this.cc.resetContactForm();
+        expect(this.cc.captchaVerified).toEqual(false);
     });
 
     it("check if script tag for recaptcha is available", function() {
@@ -71,7 +83,7 @@ describe("ContactComponent", () => {
 
     it("check that captcha is verified", function() {
         this.cc.verifiedCaptcha();
-        expect(this.cc.captchaVerfied).toEqual(true);
+        expect(this.cc.captchaVerified).toEqual(true);
     });
 
     it("check if script tag for recaptcha is correctly removed", function() {

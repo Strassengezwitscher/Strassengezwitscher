@@ -21,9 +21,8 @@ export class ContactComponent implements OnInit, OnDestroy {
     private maxFileNameLength = 50;
     private filesValid;
     private fileInputNames = "";
-    private captchaVerfied;
+    private captchaVerified;
     private script;
-    private formVisible = true;
 
     private isMessageInputFocused = false;
 
@@ -32,23 +31,17 @@ export class ContactComponent implements OnInit, OnDestroy {
         this.config = new Config();
         this.contact = new Contact("", "", "", "", null, null);
         this.filesValid = true;
-        this.captchaVerfied = false;
+        this.captchaVerified = false;
         window["verifyCallback"] = this.verifyCallback.bind(this);
     }
 
     public ngOnInit() {
         // Add script tag manually as it does not work from frontend.html, g-recaptcha not displayed
-        let doc = <HTMLDivElement> document.body;
-        this.script = document.createElement("script");
-        this.script.innerHTML = "";
-        this.script.src = "https://www.google.com/recaptcha/api.js";
-        this.script.async = true;
-        this.script.defer = true;
-        doc.appendChild(this.script);
+        this.appendCaptchaScript();
     }
 
     public ngOnDestroy() {
-        this.script.parentNode.removeChild(this.script);
+        this.removeCaptchaScript();
     }
 
     public onFileChange(event) {
@@ -89,7 +82,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     public verifiedCaptcha() {
         // zone required to allow Angular to update variable
         this.zone.run(() => {
-            this.captchaVerfied = true;
+            this.captchaVerified = true;
         });
     }
 
@@ -97,13 +90,37 @@ export class ContactComponent implements OnInit, OnDestroy {
         this.isMessageInputFocused = (this.contact.message !== "");
     }
 
-    private displaySuccess() {
-        this.formVisible = false;
-        this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
+    public resetContactForm() {
+        this.resetContact();
+        this.contactSuccessMessage = "";
+        this.captchaVerified = false;
+        this.removeCaptchaScript();
+        this.appendCaptchaScript();
+    }
+
+    private resetContact() {
         this.contact = new Contact("", "", "", "", null, null);
+    }
+
+    private displaySuccess() {
+        this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
     }
 
     private displayError(errorMessage: string) {
         this.contactErrorMessage = errorMessage;
+    }
+
+    private removeCaptchaScript() {
+        this.script.parentNode.removeChild(this.script);
+    }
+
+    private appendCaptchaScript() {
+        let doc = <HTMLDivElement> document.body;
+        this.script = document.createElement("script");
+        this.script.innerHTML = "";
+        this.script.src = "https://www.google.com/recaptcha/api.js";
+        this.script.async = true;
+        this.script.defer = true;
+        doc.appendChild(this.script);
     }
 }
