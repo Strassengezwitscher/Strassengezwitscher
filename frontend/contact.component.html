@@ -6,8 +6,8 @@
 			<span>{{contactSuccessMessage}}</span>
 		</md-card-content>
 		<md-card-actions>
-			<button [routerLink]="['/']" md-raised-button>Zurück zur Startseite</button>
-			<button (click)="resetContactForm()" md-raised-button>Neues Kontaktformular</button>
+			<button md-button [routerLink]="['/']" >Zurück zur Startseite</button>
+			<button md-button (click)="resetContactForm()">Neue Nachricht</button>
 		</md-card-actions>
 	</md-card>
 
