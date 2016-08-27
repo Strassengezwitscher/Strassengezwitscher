@@ -2,7 +2,13 @@
 	<h1>Kontakt</h1>
 
 	<md-card class="contact-card contact-card-success" *ngIf="contactSuccessMessage">
-		<span>{{contactSuccessMessage}}</span>
+		<md-card-content>
+			<span>{{contactSuccessMessage}}</span>
+		</md-card-content>
+		<md-card-actions>
+			<button md-button [routerLink]="['/']" >Zurück zur Startseite</button>
+			<button md-button (click)="resetContactForm()">Neue Nachricht</button>
+		</md-card-actions>
 	</md-card>
 
 	<md-card class="contact-card contact-card-error" *ngIf="contactErrorMessage">
@@ -12,7 +18,7 @@
 		</button>
 	</md-card>
 
-	<form id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+	<form *ngIf="!contactSuccessMessage" id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
 		<table style="width: 100%" cellspacing="0">
 			<tr>
 				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
@@ -63,7 +69,7 @@
 		<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
 
 		<p>
-			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid && captchaVerfied)" color="accent">Senden</button>
+			<button md-raised-button id="contact-submit-button" type="submit" [disabled]="!(contactForm.form.valid && filesValid && captchaVerified)" color="accent">Senden</button>
 		</p>
 	</form>
 </div>
