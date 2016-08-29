@@ -18,3 +18,7 @@ def intern_index(request):
         'active_user_count': User.objects.exclude(is_staff=True, is_active=False).count(),
         'inactive_user_count': User.objects.exclude(is_staff=True, is_active=True).count(),
     })
+
+@login_required
+def intern_mattermost(request):
+    return render(request, 'mattermost.html')

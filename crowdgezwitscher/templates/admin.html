@@ -38,6 +38,7 @@
                         {% if perms.auth.view_user %}
                             <li><a href="{% url 'users:list' %}">Nutzer</a></li>
                         {% endif %}
+                            <li><a href="{% url 'mattermost' %}">Team-Chat</a>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{% url 'index' %}">Nutzerbereich</a></li>
