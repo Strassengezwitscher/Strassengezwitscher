@@ -10,6 +10,10 @@ def index(request):
     return render(request, 'frontend.html')
 
 
+def landingpage(request):
+    return render(request, 'landingpage.html')
+
+
 @login_required
 def intern_index(request):
     return render(request, 'dashboard.html', {

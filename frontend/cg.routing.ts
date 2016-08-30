@@ -5,11 +5,11 @@ import { ContactComponent } from "./contact.component";
 
 const appRoutes: Routes = [
     {
-        path: "",
+        path: "map",
         component: MapComponent,
     },
     {
-        path: "contact",
+        path: "map/contact",
         component: ContactComponent,
     },
 ];
