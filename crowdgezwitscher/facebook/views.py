@@ -10,13 +10,16 @@ from django.urls import reverse_lazy
 from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 from crowdgezwitscher.models import MapObjectFilter
-
+from crowdgezwitscher.widgets import SelectizeSelectMultiple
 
 
 class FacebookPageForm(ModelForm):
     class Meta:
         model = FacebookPage
         fields = ('name', 'active', 'location_long', 'location_lat', 'events')
+        widgets = {
+            'events': SelectizeSelectMultiple()
+        }
 
 
 class FacebookPageListView(PermissionRequiredMixin, ListView):

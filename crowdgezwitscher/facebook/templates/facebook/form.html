@@ -3,8 +3,7 @@
 {% load static %}
 
 {% block header %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.3/css/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.3/js/standalone/selectize.min.js"></script>
+{{ form.media }}
 {% endblock%}
 
 {% block content %}
@@ -51,17 +50,9 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.events.errors }}
             <div class="form-group">
-            <label for="{{ form.events.id_for_label }}" style="width: 100%">
-                {{ form.events.label }}
-                <br>
-                <select class="select-foo form-control" id="{{ form.events.id_for_label }}" name="{{ form.events.html_name }}" multiple="multiple">
-                    {% for id, name in form.events.field.choices %}
-                        <option value="{{ id }}">{{ name }}</option>
-                    {% endfor %}
-                </select>
-            </label>
+                {{ form.events.label_tag }}
+                {{ form.events }}
             </div>
-
         </div>
     </div>
 
@@ -77,12 +68,4 @@
     </div>
 </form>
 
-<script type="text/javascript">
-    $(function() {
-        $('.select-foo').selectize({
-            plugins: ['remove_button'],
-            items: {{ form.events.value }}
-        });
-    });
-</script>
 {% endblock %}
