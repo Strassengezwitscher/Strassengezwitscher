@@ -10,6 +10,7 @@ class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
         js = ('selectize/dist/js/standalone/selectize.min.js',)
 
     def render(self, name, value, attrs=None):
+        value = [] if not value else value
         html = super(SelectizeSelectMultiple, self).render(name, value, attrs)
         script = '<script type="text/javascript"> \
                 $(function() { \
@@ -18,5 +19,5 @@ class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
                         items: %s \
                     });\
                 });\
-            </script>' % (attrs['id'], '[%s]' % ''.join(map(str, value)))
+            </script>' % (attrs['id'], '[%s]' % ','.join(map(str, value)))
         return mark_safe(u''.join(html + script))
