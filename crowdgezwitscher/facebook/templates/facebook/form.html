@@ -1,14 +1,88 @@
 {% extends "admin.html" %}
 
+{% load static %}
+
+{% block header %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.3/css/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.3/js/standalone/selectize.min.js"></script>
+{% endblock%}
+
 {% block content %}
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-primary" type="submit" value="Speichern" />
-    {% if perms.facebook.view_facebookpage %}
-        <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
-    {% endif %}
+    {{ form.non_field_errors }}
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.name.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                <input id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" type="text" class="form-control" value="{{ form.name.value }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.active.errors }}
+            <label class="hidden-xs"></label>
+            <div class="checkbox">
+                <label>
+                    {{ form.active }}
+                    {{ form.active.label }}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.location_long.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.location_long.id_for_label }}">{{ form.location_long.label }}</label>
+                <input id="{{ form.location_long.id_for_label }}" name="{{ form.location_long.html_name }}" type="number" class="form-control" value="{{ form.location_long.value }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.location_lat.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.location_lat.id_for_label }}">{{ form.location_lat.label }}</label>
+                <input id="{{ form.location_lat.id_for_label }}" name="{{ form.location_lat.html_name }}" type="number" class="form-control" value="{{ form.location_lat.value }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.events.errors }}
+            <div class="form-group">
+            <label for="{{ form.events.id_for_label }}" style="width: 100%">
+                {{ form.events.label }}
+                <br>
+                <select class="select-foo form-control" id="{{ form.events.id_for_label }}" name="{{ form.events.html_name }}" multiple="multiple">
+                    {% for id, name in form.events.field.choices %}
+                        <option value="{{ id }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {% if perms.facebook.create_facebookpage %}
+                <input class="btn btn-primary" type="submit" value="Speichern" role="button">
+            {% endif %}
+            {% if perms.facebook.view_facebookpage %}
+                <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
+            {% endif %}
+        </div>
+    </div>
 </form>
 
+<script type="text/javascript">
+    $(function() {
+        $('.select-foo').selectize({
+            plugins: ['remove_button'],
+            items: {{ form.events.value }}
+        });
+    });
+</script>
 {% endblock %}
