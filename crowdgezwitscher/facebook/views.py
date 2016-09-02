@@ -7,10 +7,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from facebook.models import FacebookPage
-from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.widgets import SelectizeSelectMultiple
+from facebook.models import FacebookPage
+from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 
 
 class FacebookPageForm(ModelForm):
