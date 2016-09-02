@@ -13,6 +13,21 @@
     <li><b>Link:</b> {{ event.url }}</li>
     <li><b>Gegenveranstaltung:</b> {{ event.counter_event }}</li>
     <li><b>Berichterstattung:</b> {{ event.coverage }}</li>
+    <li><b>Facebook-Seiten:</b>
+        <ul>
+            {% for page in event.facebook_pages.all %}
+                <li>
+                {% if perms.facebook.view_facebookpage %}
+                    <a href="{% url 'facebook:detail' page.id %}">{{ page.name }}</a>
+                {% else %}
+                    {{ page.name }}
+                {% endif %}
+                </li>
+            {% empty %}
+                <li>Keine Facebook-Seiten verknüpft</li>
+            {% endfor %}
+        </ul>
+    </li>
 </ul>
 
 {% if perms.events.change_event %}
