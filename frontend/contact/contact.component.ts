@@ -3,8 +3,8 @@ import { Router } from "@angular/router";
 
 import { ContactService } from "./contact.service";
 import { Contact } from "./contact";
-import { CaptchaService } from "./captcha.service";
-import { Config } from "./config/config";
+import { CaptchaService } from "../captcha/captcha.service";
+import { Config } from "../config/config";
 
 @Component({
     moduleId: module.id,

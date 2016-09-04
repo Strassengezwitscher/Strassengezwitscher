@@ -1,6 +1,6 @@
 import { ContactComponent } from "./contact.component";
 import { ContactService } from "./contact.service";
-import { CaptchaService } from "./captcha.service";
+import { CaptchaService } from "../captcha/captcha.service";
 import { Contact } from "./contact";
 import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";

@@ -1,7 +1,7 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
-import { FacebookPageComponent } from "./facebookPage/facebookPage.component";
-import { EventComponent } from "./events/event.component";
+import { FacebookPageComponent } from "../facebookPage/facebookPage.component";
+import { EventComponent } from "../events/event.component";
 import { MapObject, MapObjectType } from "./mapObject";
 import { MapService } from "./map.service";
 
