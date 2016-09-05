@@ -7,9 +7,9 @@ import "../rxjs-operators";
 @Component({
     moduleId: module.id,
     selector: "cg-app",
-    templateUrl: "cg.component.html",
+    templateUrl: "app.component.html",
     directives: [
         ROUTER_DIRECTIVES,
     ],
 })
-export class CrowdgezwitscherComponent {}
+export class AppComponent {}
