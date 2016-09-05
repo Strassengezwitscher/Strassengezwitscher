@@ -7,11 +7,8 @@ import { AppComponent } from "./app.component";
 import { MaterialModule } from "../material.module";
 import { RoutingModule } from "./app.routing";
 
-import { MapComponent } from "../map/map.component";
-import { ContactComponent } from "../contact/contact.component";
-
-import { MapService } from "../map/map.service";
-import { ContactService } from "../contact/contact.service";
+import { MapComponent, MapService } from "../map/index";
+import { ContactComponent, ContactService } from "../contact/index";
 
 @NgModule({
     imports: [

@@ -2,9 +2,7 @@ import { provide } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
-import { FacebookPageComponent } from "./facebookPage.component";
-import { FacebookPageService } from "./facebookPage.service";
-import { FacebookPage } from "./facebookPage";
+import { FacebookPage, FacebookPageComponent, FacebookPageService } from "./index";
 
 class MockFacebookPageService {
     public getFacebookPage(id: number): Observable<FacebookPage> {

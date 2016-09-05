@@ -2,9 +2,7 @@ import { provide } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
-import { EventComponent } from "./event.component";
-import { EventService } from "./event.service";
-import { Event } from "./event";
+import { Event, EventComponent, EventService } from "./index";
 
 class MockEventService {
     public getEvent(id: number): Observable<Event> {

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { FacebookPage } from "./facebookPage";
+import { FacebookPage } from "./index";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
