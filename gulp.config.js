@@ -62,6 +62,7 @@ module.exports = function () {
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
                 path.npm + 'hammerjs/hammer.js',
+                path.npm + 'traceur/bin/traceur.js',
             ],
             name: 'dependencies.js',
         },

@@ -1,4 +1,3 @@
-import { provide } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
@@ -22,7 +21,10 @@ describe("FacebookPageComponent", () => {
         TestBed.configureTestingModule({
             providers: [
                 FacebookPageComponent,
-                provide(FacebookPageService, {useClass: MockFacebookPageService}),
+                {
+                    provide: FacebookPageService,
+                    useClass: MockFacebookPageService,
+                },
             ],
         });
     });
