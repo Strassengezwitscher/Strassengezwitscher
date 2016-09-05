@@ -1,8 +1,8 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
-import { FacebookPageComponent } from "../facebook/index";
-import { EventComponent } from "../events/index";
-import { MapObject, MapObjectType, MapService } from "./index";
+import { FacebookPageComponent } from "../facebook";
+import { EventComponent } from "../events";
+import { MapObject, MapObjectType, MapService } from "./";
 
 export class MapObjectSetting {
         constructor(public active: boolean = false, public iconPath: string, public name: string) {}

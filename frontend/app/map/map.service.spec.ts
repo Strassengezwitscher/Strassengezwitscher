@@ -3,7 +3,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { MapObjectType, MapService } from "./index";
+import { MapObjectType, MapService } from "./";
 
 describe("MapService", () => {
     beforeEach(() => {

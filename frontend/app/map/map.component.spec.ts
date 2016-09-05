@@ -2,7 +2,7 @@ import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 import { NgZone } from "@angular/core";
 
-import { MapComponent, MapService } from "./index";
+import { MapComponent, MapService } from "./";
 
 describe("MapComponent", () => {
 

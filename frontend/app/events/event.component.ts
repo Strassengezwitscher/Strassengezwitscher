@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
-import { Event, EventService } from "./index";
+import { Event, EventService } from "./";
 
 @Component({
     moduleId: module.id,

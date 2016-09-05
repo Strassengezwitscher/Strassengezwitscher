@@ -1,5 +1,5 @@
-import { Contact, ContactComponent, ContactService } from "./index";
-import { CaptchaService } from "../captcha/index";
+import { Contact, ContactComponent, ContactService } from "./";
+import { CaptchaService } from "../captcha";
 import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 import { NgZone } from "@angular/core";

@@ -9,6 +9,11 @@
     '@angular':                   'static/@angular',
     '@angular2-material':         'static/@angular2-material',
     'symbol-observable':          'static/symbol-observable',
+    'captcha':                    'static/frontend/app/captcha',
+    'contact':                    'static/frontend/app/contact',
+    'events':                     'static/frontend/app/events',
+    'facebook':                   'static/frontend/app/facebook',
+    'map':                        'static/frontend/app/map',
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
@@ -16,7 +21,12 @@
     'app':                        { main: 'frontend/main.js', defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
     'symbol-observable':          { main: 'index.js', defaultExtension: 'js' },
-    'ng2-bootstrap':               { defaultExtension: 'js' },
+    'ng2-bootstrap':              { defaultExtension: 'js' },
+    'captcha':                    { main: 'index.js', defaultExtension: 'js' },
+    'contact':                    { main: 'index.js', defaultExtension: 'js' },
+    'events':                     { main: 'index.js', defaultExtension: 'js' },
+    'facebook':                   { main: 'index.js', defaultExtension: 'js' },
+    'map':                        { main: 'index.js', defaultExtension: 'js' },
   };
 
   var ngPackageNames = [

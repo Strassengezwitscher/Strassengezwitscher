@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { Event } from "./index";
+import { Event } from "./";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()

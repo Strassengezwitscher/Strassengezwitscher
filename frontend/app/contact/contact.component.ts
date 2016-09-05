@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { Contact, ContactService } from "./index";
-import { CaptchaService } from "../captcha/index";
+import { Contact, ContactService } from "./";
+import { CaptchaService } from "../captcha";
 import { Config } from "../config/config";
 
 @Component({
