@@ -4,11 +4,11 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
 import { AppComponent } from "./app.component";
-import { MaterialModule } from "../material.module";
+import { MaterialModule } from "./shared/material.module";
 import { RoutingModule } from "./app.routing";
 
-import { MapComponent, MapService } from "../map/index";
-import { ContactComponent, ContactService } from "../contact/index";
+import { MapComponent, MapService } from "./map/index";
+import { ContactComponent, ContactService } from "./contact/index";
 
 @NgModule({
     imports: [

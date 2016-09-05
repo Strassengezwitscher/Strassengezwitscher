@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from "@angular/router";
 
-import { MapComponent } from "../map/index";
-import { ContactComponent } from "../contact/index";
+import { MapComponent } from "./map/index";
+import { ContactComponent } from "./contact/index";
 
 const appRoutes: Routes = [
     {

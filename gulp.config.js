@@ -10,7 +10,7 @@ module.exports = function () {
         partial: {
             frontend: 'frontend',
         },
-        frontend_config: 'frontend/config/',
+        frontend_config: 'frontend/app/config/',
     };
 
     var sass = {
