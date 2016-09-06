@@ -70,6 +70,7 @@ module.exports = function () {
 
     var systemjs_config = {
         map: {
+            'app': 'frontend/app',
             '@angular/common.js': '@angular/common',
             '@angular/compiler.js': '@angular/compiler',
             '@angular/core.js': '@angular/core',
@@ -93,6 +94,11 @@ module.exports = function () {
           '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
           '@angular/router': { main: 'index.js', defaultExtension: 'js' },
           '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' },
+          'app/captcha': { main: 'index.js' },
+          'app/contact': { main: 'index.js' },
+          'app/events': { main: 'index.js' },
+          'app/facebook': { main: 'index.js' },
+          'app/map': { main: 'index.js'},
       },
     };
     var systemjs = {

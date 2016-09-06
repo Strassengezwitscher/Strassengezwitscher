@@ -4,20 +4,31 @@
 
   // map tells the System loader where to look for things
   var map = {
-    'app':                        'app', // 'dist',
-    'rxjs':                       'static/rxjs',
-    '@angular':                   'static/@angular',
-    '@angular2-material':         'static/@angular2-material',
-    'symbol-observable':          'static/symbol-observable',
+    'app': global.ENV == 'testing' ? 'crowdgezwitscher/static/build/frontend/app' : 'static/frontend/app',
+    'rxjs': 'static/rxjs',
+    '@angular': 'static/@angular',
+    '@angular2-material': 'static/@angular2-material',
+    'symbol-observable': 'static/symbol-observable',
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
-    'app':                        { main: 'frontend/main.js', defaultExtension: 'js' },
-    'rxjs':                       { defaultExtension: 'js' },
-    'symbol-observable':          { main: 'index.js', defaultExtension: 'js' },
-    'ng2-bootstrap':               { defaultExtension: 'js' },
+    'app': { main: 'frontend/main.js', defaultExtension: 'js' },
+    'rxjs': { defaultExtension: 'js' },
+    'symbol-observable': { main: 'index.js', defaultExtension: 'js' }
   };
+
+  var appBarrels = [
+    'app/captcha',
+    'app/contact',
+    'app/events',
+    'app/facebook',
+    'app/map'
+  ];
+
+  appBarrels.forEach(function(barrelName) {
+    packages[barrelName] = { main: 'index.js' }
+  });
 
   var ngPackageNames = [
     'common',
