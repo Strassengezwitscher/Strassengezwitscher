@@ -7,32 +7,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 // we will call `__karma__.start()` later, once all the specs are loaded.
 __karma__.loaded = function() {};
 
-  var frontendPath = 'crowdgezwitscher/static/build/frontend/';
-  // map tells the System loader where to look for things
-  var map = {
-    'captcha':                    frontendPath + 'app/captcha',
-    'contact':                    frontendPath + 'app/contact',
-    'events':                     frontendPath + 'app/events',
-    'facebook':                   frontendPath + 'app/facebook',
-    'map':                        frontendPath + 'app/map',
-  };
-
-  // packages tells the System loader how to load when no filename and/or no extension
-  var packages = {
-    'captcha':                    { main: 'index.js', defaultExtension: 'js' },
-    'contact':                    { main: 'index.js', defaultExtension: 'js' },
-    'events':                     { main: 'index.js', defaultExtension: 'js' },
-    'facebook':                   { main: 'index.js', defaultExtension: 'js' },
-    'map':                        { main: 'index.js', defaultExtension: 'js' },
-  };
-
-  var config = {
-    map: map,
-    packages: packages
-  };
-
-  System.config(config);
-
 System.import('static/frontend/test-helpers/setup')
     .then(function() {
         return Promise.all(
