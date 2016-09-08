@@ -102,6 +102,22 @@ module.exports = function () {
           'app/map': { main: 'index.js'},
       },
     };
+
+    var materialPackages = [
+        'button',
+        'card',
+        'core',
+        'checkbox',
+        'icon',
+        'input',
+        'slide-toggle',
+        'toolbar',
+        'tooltip',
+    ];
+    materialPackages.forEach(function(pkgName) {
+        systemjs_config['packages']['@angular2-material/' + pkgName] = { format: 'cjs', main: pkgName + '.umd.js' };
+    });
+
     var systemjs = {
         files: [root + 'systemjs.config.js'],
         config: systemjs_config,
