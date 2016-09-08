@@ -21,7 +21,7 @@
 	<form *ngIf="!contactSuccessMessage" id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
 		<table style="width: 100%" cellspacing="0">
 			<tr>
-				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
+				<td><md-input id="contact-name" placeholder="Name" name="name" maxlength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
 				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
 			</tr>
 		</table>
