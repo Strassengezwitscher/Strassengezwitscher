@@ -2,7 +2,6 @@ import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
 import { MapObject, MapObjectType, MapService } from "./";
 
-
 export class MapObjectSetting {
         constructor(public active: boolean = false, public iconPath: string, public name: string) {}
 }
