@@ -55,8 +55,6 @@ module.exports = function () {
             path.npm + '@angular2-material/**/*',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
-            path.npm + 'zone.js/dist/proxy.js',
-            path.npm + 'zone.js/dist/sync-test.js',
         ],
         angular_dependencies: {
             files: [
