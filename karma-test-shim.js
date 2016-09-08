@@ -7,7 +7,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 // we will call `__karma__.start()` later, once all the specs are loaded.
 __karma__.loaded = function() {};
 
-System.import('static/frontend/test-helpers/setup')
+System.import('static/frontend/test-helpers/setup.js')
     .then(function() {
         return Promise.all(
             Object.keys(window.__karma__.files)
@@ -24,6 +24,7 @@ System.import('static/frontend/test-helpers/setup')
 
 // Filter spec files
 function onlySpecFiles(path) {
+    console.log(path, /\.spec\.js$/.test(path))
     return /\.spec\.js$/.test(path);
 }
 

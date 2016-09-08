@@ -1,16 +1,19 @@
 (function(global) {
   // ENV
   global.ENV = global.ENV || 'development';
+  console.log(global.ENV);
 
   // map tells the System loader where to look for things
   var map = {
     'app': global.ENV == 'testing' ? 'crowdgezwitscher/static/build/frontend/app' : 'static/frontend/app',
+    // 'app': 'crowdgezwitscher/static/build/frontend/app',
     'rxjs': 'static/rxjs',
     '@angular': 'static/@angular',
     '@angular2-material': 'static/@angular2-material',
     'symbol-observable': 'static/symbol-observable',
     'traceur': 'static/traceur/bin/traceur',
   };
+  console.log('dasfasdfasd', map['app']);
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -47,13 +50,17 @@
   // Individual files (~300 requests):
   function packIndex(pkgName) {
     packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+    packages['@angular/'+pkgName+'/testing'] = { main: 'index.js', defaultExtension: 'js' };
   }
   // Bundled (~40 requests):
   function packUmd(pkgName) {
     packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+    // packages['@angular/'+pkgName+'/testing'] = { main: 'index.js', defaultExtension: 'js' };
+    packages['@angular/'+pkgName+'/testing'] = { main: '../bundles/' + pkgName + '-testing.umd.js', defaultExtension: 'js' };
   }
   // Most environments should use UMD; some (Karma) need the individual index files
-  var setPackageConfig = System.packageWithIndex || global.ENV == 'testing' ? packIndex : packUmd;
+  // var setPackageConfig = System.packageWithIndex || global.ENV == 'testing' ? packIndex : packUmd;
+  var setPackageConfig = packUmd;
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
 
