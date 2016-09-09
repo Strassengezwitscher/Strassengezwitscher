@@ -1,7 +1,5 @@
-import { ContactComponent } from "./contact.component";
-import { ContactService } from "./contact.service";
-import { CaptchaService } from "./captcha.service";
-import { Contact } from "./contact";
+import { Contact, ContactComponent, ContactService } from "./";
+import { CaptchaService } from "../captcha";
 import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 import { NgZone } from "@angular/core";
@@ -49,12 +47,30 @@ describe("ContactComponent", () => {
             "Wir werden Ihre Anfrage schnellstmöglich bearbeiten!");
     });
 
-    it("check on success reset of message", function() {
-        this.cc.displaySuccess();
-        let tmpCC = this;
-        setTimeout(function(){
-            expect(tmpCC.cc.contactSuccessMessage).toEqual("");
-        }, 5000);
+    it("Should reset the contact parameter", function() {
+        this.cc.resetContact();
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+    });
+
+    it("Should reset contact form's success message", function() {
+        this.cc.contactSuccessMessage = "Test";
+        this.cc.appendCaptchaScript();
+        this.cc.resetContactForm();
+        expect(this.cc.contactSuccessMessage).toEqual("");
+    });
+
+    it("Should reset contact form's contact model", function() {
+        this.cc.contact = new Contact("test", "", "", "", null, null);
+        this.cc.appendCaptchaScript();
+        this.cc.resetContactForm();
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+    });
+
+    it("Should reset contact form's captcha verified flag", function() {
+        this.cc.captchaVerified = true;
+        this.cc.appendCaptchaScript();
+        this.cc.resetContactForm();
+        expect(this.cc.captchaVerified).toEqual(false);
     });
 
     it("check if script tag for recaptcha is available", function() {
@@ -65,7 +81,7 @@ describe("ContactComponent", () => {
 
     it("check that captcha is verified", function() {
         this.cc.verifiedCaptcha();
-        expect(this.cc.captchaVerfied).toEqual(true);
+        expect(this.cc.captchaVerified).toEqual(true);
     });
 
     it("check if script tag for recaptcha is correctly removed", function() {

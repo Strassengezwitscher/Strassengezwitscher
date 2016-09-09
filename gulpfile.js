@@ -13,9 +13,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
 var SystemBuilder = require('systemjs-builder');
-var typescript = require('gulp-typescript');
-var tsconfig = require('./tsconfig.json');
-var tsProject = typescript.createProject(tsconfig.compilerOptions);
+var ts = require('gulp-typescript');
 
 if (!argv.production) {
     var clean = require('gulp-clean');
@@ -68,9 +66,12 @@ gulp.task('compile:sass', function() {
 });
 
 gulp.task('compile:typescript', ['copy:config'], function() {
+    var tsProject = ts.createProject('./tsconfig.json', {
+        typescript: require('typescript')
+    });
     var tsResult = gulp.src(config.typescript.files)
         .pipe(sourcemaps.init())
-        .pipe(typescript(tsProject));
+        .pipe(ts(tsProject));
     return merge([
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js

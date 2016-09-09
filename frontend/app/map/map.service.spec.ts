@@ -1,10 +1,8 @@
-import { provide } from "@angular/core";
 import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { MapObjectType } from "./mapObject";
-import { MapService } from "./map.service";
+import { MapObjectType, MapService } from "./";
 
 describe("MapService", () => {
     beforeEach(() => {
@@ -13,10 +11,11 @@ describe("MapService", () => {
                 MapService,
                 MockBackend,
                 BaseRequestOptions,
-                provide(Http, {
+                {
+                    provide: Http,
                     useFactory: (backend, options) => new Http(backend, options),
                     deps: [MockBackend, BaseRequestOptions],
-                }),
+                },
             ],
         });
     });
@@ -65,7 +64,8 @@ describe("MapService", () => {
         });
     }));
 
-    it("Should return empty array if server answer is empty", inject([MockBackend, MapService], (mockBackend, service) => {
+    it("Should return empty array if server answer is empty",
+       inject([MockBackend, MapService], (mockBackend, service) => {
         let emptyResponse = [];
         mockBackend.connections.subscribe(connection => {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(emptyResponse)})));
@@ -75,7 +75,8 @@ describe("MapService", () => {
         });
     }));
 
-    it("Should return JSON Parse error if server responds malforemd", inject([MockBackend, MapService], (mockBackend, service) => {
+    it("Should return JSON Parse error if server responds malforemd",
+       inject([MockBackend, MapService], (mockBackend, service) => {
         let malformedResponse = "[{\"id\": 25, \"name\":}]";
 
         mockBackend.connections.subscribe(connection => {
@@ -88,7 +89,8 @@ describe("MapService", () => {
         }
     }));
 
-    it("Should return server error if Internal Server Error occurs", inject([MockBackend, MapService], (mockBackend, service) => {
+    it("Should return server error if Internal Server Error occurs",
+       inject([MockBackend, MapService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
             connection.mockError(new Error("Internal Server Error 500"));
         });

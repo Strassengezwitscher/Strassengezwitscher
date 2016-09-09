@@ -1,13 +1,14 @@
 import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
+import { NgZone } from "@angular/core";
 
-import { MapComponent } from "./map.component";
-import { MapService } from "./map.service";
+import { MapComponent, MapService } from "./";
 
 describe("MapComponent", () => {
 
     beforeEach(() => {
-        this.mapComponent = new MapComponent(new MapService(new Http(new MockBackend(), new BaseRequestOptions())));
+        this.mapComponent = new MapComponent(new MapService(new Http(new MockBackend(), new BaseRequestOptions())),
+                                             new NgZone(true));
     });
 
     it("Should have an initialized markerMap and mapObjectSettings after construction", done => {
