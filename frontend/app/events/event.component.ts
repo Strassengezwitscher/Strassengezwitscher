@@ -6,13 +6,14 @@ import { Event, EventService } from "./";
     moduleId: module.id,
     selector: "cg-event-detail",
     templateUrl: "event.component.html",
+    styleUrls: ["event.component.css"],
     providers: [EventService],
 })
 
 export class EventComponent implements OnChanges {
-    private activeEvent: Event;
-    @Input("id") private id: number;
-    @Output() private onError = new EventEmitter<string>();
+    public activeEvent: Event;
+    @Input("id") public id: number;
+    @Output() public onError = new EventEmitter<string>();
     constructor(private eventService: EventService) {
         this.activeEvent = new Event();
     }

@@ -87,3 +87,6 @@ typings/**
 
 # Sensitive data
 crowdgezwitscher/crowdgezwitscher/initial/
+
+# tmp directories for Angular compilation
+tmp/

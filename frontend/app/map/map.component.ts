@@ -16,7 +16,6 @@ export class MapObjectSetting {
 
 export class MapComponent implements AfterViewInit {
 
-
     public errorMessage: string;
     private errorMessageDisplayTime: number = 5000;
     private map: google.maps.Map;
@@ -27,7 +26,7 @@ export class MapComponent implements AfterViewInit {
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
     private currentlyActiveMapObject: MapObject = new MapObject();
-    private currentlyActiveMapObjectType: MapObjectType = null;
+    public currentlyActiveMapObjectType: MapObjectType = null;
 
     @ViewChild("mapCanvas") public mapCanvas;
 

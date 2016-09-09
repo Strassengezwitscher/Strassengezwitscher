@@ -7,16 +7,20 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "sourceRoot": "./frontend/",
+    "outDir": "./tmp/compiled/"
   },
-  "files": [
-    "tmp/main.ts"
-  ],
   "exclude": [
     "node_modules",
-    "typings/main",
-    "typings/main.d.ts",
+    "tmp",
     "crowdgezwitscher",
-    "e2e"
-  ]
+    "e2e",
+    "typings/main",
+    "typings/main.d.ts"
+  ],
+  "angularCompilerOptions": {
+    "genDir": ".",
+    "debug": true
+  }
 }

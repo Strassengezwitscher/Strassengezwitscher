@@ -4,7 +4,7 @@ import { Component, ViewEncapsulation } from "@angular/core";
     moduleId: module.id,
     selector: "cg-app",
     templateUrl: "app.component.html",
-    styleUrls: ["cg.component.css"],
+    styleUrls: ["app.component.css"],
     encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {}

@@ -11,6 +11,10 @@ module.exports = function () {
             frontend: 'frontend',
         },
         frontend_config: 'frontend/config/',
+        tmp: {
+            source: root + 'tmp/source/',
+            compiled: root + 'tmp/compiled/',
+        }
     };
 
     var sass = {
@@ -35,6 +39,7 @@ module.exports = function () {
     };
 
     var frontend = {
+        all: path.frontend + '**/*',
         imgFiles: path.frontend + 'img/*',
         htmlFiles: path.frontend + '**/*.html',
     };

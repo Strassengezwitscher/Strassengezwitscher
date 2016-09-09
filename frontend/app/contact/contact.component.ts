@@ -13,8 +13,8 @@ import { Config } from "../../config/config";
     providers: [ContactService, CaptchaService],
 })
 export class ContactComponent implements OnInit, OnDestroy {
-    private contactErrorMessage: string;
-    private contactSuccessMessage: string;
+    public contactErrorMessage: string;
+    public contactSuccessMessage: string;
     private contact: Contact;
     private config: Config;
     private uploads: FileList;

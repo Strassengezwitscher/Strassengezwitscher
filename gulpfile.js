@@ -23,9 +23,20 @@ if (!argv.production) {
     var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
 
+gulp.task('copy:frontend', ['copy:config'], function() {
+    return gulp.src(config.frontend.all, {base: config.path.root})
+        .pipe(gulp.dest(config.path.tmp.source));
+});
+
+gulp.task('copy:typings', function() {
+    return gulp.src('./typings/**/*', {base: config.path.root})
+        .pipe(gulp.dest(config.path.tmp.source));
+});
+
 gulp.task('copy:npmfiles', function() {
+    var dest = argv.production ? config.path.tmp.source : config.path.build;
     return gulp.src(config.npm.files, {base: config.path.npm})
-        .pipe(gulp.dest(config.path.build));
+        .pipe(gulp.dest(dest));
 });
 
 gulp.task('copy:sensitive_config', function() {
@@ -58,11 +69,12 @@ gulp.task('copy:html', function() {
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
 
 gulp.task('compile:sass', function() {
+    var dest = argv.production ? config.path.root : config.path.build;
     return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(config.path.build));
+        .pipe(gulp.dest(dest));
 });
 
 gulp.task('compile:typescript', ['copy:config'], function() {
@@ -80,10 +92,22 @@ gulp.task('compile:typescript', ['copy:config'], function() {
     ]);
 });
 
-gulp.task('bundle:typescript', function() {
-    var builder = new SystemBuilder("./compiled2", config.systemjs.config);
-    builder.loader.defaultJSExtensions = true;
-    return builder.buildStatic('main-ngc', config.typescript.bundle.path, config.typescript.bundle.config);
+gulp.task('bundle:typescript', ['copy:frontend', 'copy:typings', 'copy:npmfiles', 'compile:sass'], function(done) {
+    console.log('./node_modules/.bin/ngc --sourceRoot ' + config.path.tmp.source + 'frontend/' + ' --outDir ' + config.path.tmp.compiled);
+    var command = './node_modules/.bin/ngc --sourceRoot ' + config.path.tmp.source + 'frontend/' + ' --outDir ' + config.path.tmp.compiled ;
+    var ngc = exec(command, function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    });
+    ngc.on('close', function(exitcode) {
+        done(exitcode ? new Error('NGC tests failed') : 0);
+    });
+
+
+
+    // var builder = new SystemBuilder(".", config.systemjs.config);
+    // builder.loader.defaultJSExtensions = true;
+    // return builder.buildStatic('tmp/frontend/main', config.typescript.bundle.path, config.typescript.bundle.config);
 });
 
 gulp.task('bundle:dependencies', function() {
@@ -93,14 +117,14 @@ gulp.task('bundle:dependencies', function() {
         .pipe(gulp.dest(config.path.dist));
 });
 
-gulp.task('bundle:sass', ['compile:sass'], function() {
-    return gulp.src(config.sass.bundle.files)
-        .pipe(concat(config.sass.bundle.name))
-        .pipe(cssnano())
-        .pipe(gulp.dest(config.path.dist));
-});
+// gulp.task('bundle:sass', ['compile:sass'], function() {
+//     return gulp.src(config.sass.bundle.files)
+//         .pipe(concat(config.sass.bundle.name))
+//         .pipe(cssnano())
+//         .pipe(gulp.dest(config.path.dist));
+// });
 
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass']);
+gulp.task('dist', ['bundle:dependencies', 'bundle:typescript']);
 
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(config.sass.files, ['compile:sass']);
