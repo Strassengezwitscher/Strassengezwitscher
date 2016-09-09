@@ -62,6 +62,7 @@ module.exports = function () {
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
                 path.npm + 'hammerjs/hammer.js',
+                path.npm + 'traceur/bin/traceur.js',
             ],
             name: 'dependencies.js',
         },
@@ -101,6 +102,22 @@ module.exports = function () {
           'app/map': { main: 'index.js'},
       },
     };
+
+    var materialPackages = [
+        'button',
+        'card',
+        'core',
+        'checkbox',
+        'icon',
+        'input',
+        'slide-toggle',
+        'toolbar',
+        'tooltip',
+    ];
+    materialPackages.forEach(function(pkgName) {
+        systemjs_config['packages']['@angular2-material/' + pkgName] = { format: 'cjs', main: pkgName + '.umd.js' };
+    });
+
     var systemjs = {
         files: [root + 'systemjs.config.js'],
         config: systemjs_config,

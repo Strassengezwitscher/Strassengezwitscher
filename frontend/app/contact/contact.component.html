@@ -21,7 +21,7 @@
 	<form *ngIf="!contactSuccessMessage" id="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
 		<table style="width: 100%" cellspacing="0">
 			<tr>
-				<td><md-input id="contact-name" placeholder="Name" name="name" maxLength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
+				<td><md-input id="contact-name" placeholder="Name" name="name" maxlength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
 				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
 			</tr>
 		</table>
@@ -40,7 +40,7 @@
 					<br>
 					<md-checkbox id="contact-confidential" name="confidential" [(ngModel)]="contact.confidential">
 						Nachricht besonders vertraulich behandeln?
-						<md-icon style="font-size:16px;" md-tooltip="Durch das Setzen dieses Häkchens wird Ihre Nachricht nur an einen ausgewählten internen Kreis übermittelt." tooltip-position="after">info</md-icon>
+						<md-icon style="font-size:16px;" md-tooltip="Durch das Setzen dieses Häkchens wird Ihre Nachricht nur an einen ausgewählten internen Kreis übermittelt." tooltip-position="below">info</md-icon>
 					</md-checkbox>
 				</td>
 				<td style="width: 50%">

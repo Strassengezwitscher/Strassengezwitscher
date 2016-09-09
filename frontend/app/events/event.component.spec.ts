@@ -1,4 +1,3 @@
-import { provide } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
@@ -22,7 +21,10 @@ describe("EventComponent", () => {
         TestBed.configureTestingModule({
             providers: [
                 EventComponent,
-                provide(EventService, {useClass: MockEventService}),
+                {
+                    provide: EventService,
+                    useClass: MockEventService,
+                },
             ],
         });
     });
