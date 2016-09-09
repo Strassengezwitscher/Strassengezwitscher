@@ -19,6 +19,7 @@ import { MapComponent, MapService } from "./map";
 import { ContactComponent, ContactService } from "./contact";
 import { FacebookPageComponent } from "./facebook";
 import { EventComponent } from "./events";
+import { ImprintComponent } from "./imprint";
 
 @NgModule({
     imports: [
@@ -41,6 +42,7 @@ import { EventComponent } from "./events";
         ContactComponent,
         FacebookPageComponent,
         EventComponent,
+        ImprintComponent,
     ],
     providers: [
         MapService,

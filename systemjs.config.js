@@ -24,7 +24,8 @@
     'app/contact',
     'app/events',
     'app/facebook',
-    'app/map'
+    'app/map',
+    'app/imprint',
   ];
 
   appBarrels.forEach(function(barrelName) {

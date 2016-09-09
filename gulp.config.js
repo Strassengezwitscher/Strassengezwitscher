@@ -100,6 +100,7 @@ module.exports = function () {
           'app/events': { main: 'index.js' },
           'app/facebook': { main: 'index.js' },
           'app/map': { main: 'index.js'},
+          'app/imprint': { main: 'index.js'},
       },
     };
 
