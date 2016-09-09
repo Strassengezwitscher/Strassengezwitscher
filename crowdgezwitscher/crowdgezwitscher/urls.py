@@ -42,4 +42,5 @@ urlpatterns = [
     url(r'^$', views.landingpage, name='landingpage'),
     url(r'^map/$', views.index, name='index'),
     url(r'^map/(?:contact)?/?$', views.index, name='index'),
+    url(r'^imprint/$', views.index, name='index'),
 ]
