@@ -67,6 +67,7 @@
     'checkbox',
     'icon',
     'input',
+    'menu',
     'slide-toggle',
     'toolbar',
     'tooltip',

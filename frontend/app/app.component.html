@@ -5,16 +5,18 @@
     <span class="toolbar-spacer"></span>
     <span class="toolbar-menu">
         <span class="hide-on-med-and-up">
-            <button md-icon-button [routerLink]="['/map/contact']">
-                <md-icon>chat</md-icon>
+            <button md-icon-button [md-menu-trigger-for]="menu">
+                <md-icon>more_vert</md-icon>
             </button>
         </span>
         <span class="hide-on-small-only">
             <a md-button [routerLink]="['/map/contact']">Kontakt</a>
+            <a md-button [routerLink]="['/imprint']">Impressum</a>
         </span>
     </span>
-    <span class="toolbar-menu">
-        <a md-button [routerLink]="['/imprint']">Impressum</a>
-    </span>
 </md-toolbar>
+<md-menu x-position="before" #menu="mdMenu">
+    <button md-menu-item [routerLink]="['/map/contact']">Kontakt</button>
+    <button md-menu-item [routerLink]="['/imprint']">Impressum</button>
+</md-menu>
 <router-outlet></router-outlet>

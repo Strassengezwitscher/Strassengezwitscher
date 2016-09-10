@@ -9,6 +9,7 @@ import { MdSlideToggleModule } from "@angular2-material/slide-toggle";
 import { MdCardModule } from "@angular2-material/card";
 import { MdIconModule } from "@angular2-material/icon";
 import { MdInputModule } from "@angular2-material/input";
+import { MdMenuModule } from "@angular2-material/menu";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { MdTooltipModule } from "@angular2-material/tooltip";
 
@@ -30,6 +31,7 @@ import { ImprintComponent } from "./imprint";
         MdButtonModule.forRoot(),
         MdCardModule.forRoot(),
         MdCheckboxModule.forRoot(),
+        MdMenuModule.forRoot(),
         MdIconModule.forRoot(),
         MdInputModule.forRoot(),
         MdSlideToggleModule.forRoot(),
