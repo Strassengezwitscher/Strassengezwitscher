@@ -1,24 +1,24 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { Event } from "./event";
+import { FacebookPage } from "./";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
-export class EventService {
-    private eventPageUrl = "api/events/";
+export class FacebookPageService {
+    private facebookPageUrl = "api/facebook/";
 
     constructor(private http: Http) {}
 
-    public getEvent(id: number): Observable<Event> {
-        return this.http.get(this.eventPageUrl + id + "/")
+    public getFacebookPage(id: number): Observable<FacebookPage> {
+        return this.http.get(this.facebookPageUrl + id + "/")
                         .map(this.extractData)
                         .catch(this.handleError);
     }
 
-    private extractData(response: Response): Event {
+    private extractData(response: Response): FacebookPage {
         let data = response.json();
-        return <Event> data;
+        return <FacebookPage> data;
     }
 
     private handleError(error: any) {

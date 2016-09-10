@@ -1,10 +1,7 @@
-import { provide } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
-import { FacebookPageComponent } from "./facebookPage.component";
-import { FacebookPageService } from "./facebookPage.service";
-import { FacebookPage } from "./facebookPage";
+import { FacebookPage, FacebookPageComponent, FacebookPageService } from "./";
 
 class MockFacebookPageService {
     public getFacebookPage(id: number): Observable<FacebookPage> {
@@ -24,7 +21,10 @@ describe("FacebookPageComponent", () => {
         TestBed.configureTestingModule({
             providers: [
                 FacebookPageComponent,
-                provide(FacebookPageService, {useClass: MockFacebookPageService}),
+                {
+                    provide: FacebookPageService,
+                    useClass: MockFacebookPageService,
+                },
             ],
         });
     });

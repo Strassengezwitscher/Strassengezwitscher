@@ -1,9 +1,8 @@
-import { provide } from "@angular/core";
 import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { CaptchaService } from "./captcha.service";
+import { CaptchaService } from "./";
 
 describe("CaptchaService", () => {
     beforeEach(() => {
@@ -12,10 +11,11 @@ describe("CaptchaService", () => {
                 CaptchaService,
                 MockBackend,
                 BaseRequestOptions,
-                provide(Http, {
+                {
+                    provide: Http,
                     useFactory: (backend, options) => new Http(backend, options),
                     deps: [MockBackend, BaseRequestOptions],
-                }),
+                },
             ],
         });
     });

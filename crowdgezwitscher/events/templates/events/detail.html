@@ -15,6 +15,9 @@
     <li><b>Berichterstattung:</b> {{ event.coverage }}</li>
 </ul>
 
+{% if perms.events.change_event %}
+    <a class="btn btn-primary" href="{% url 'events:update' event.id %}">Bearbeiten</a>
+{% endif %}
 {% if perms.events.view_event %}
     <a class="btn btn-link" href="{% url 'events:list' %}">Zurück</a>
 {% endif %}

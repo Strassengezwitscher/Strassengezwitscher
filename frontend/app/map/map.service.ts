@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { MapObject, MapObjectType } from "./mapObject";
+import { MapObject, MapObjectType } from "./";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()

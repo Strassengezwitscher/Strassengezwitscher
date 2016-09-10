@@ -1,7 +1,8 @@
+import { ModuleWithProviders } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { MapComponent } from "./map.component";
-import { ContactComponent } from "./contact.component";
+import { MapComponent } from "./map";
+import { ContactComponent } from "./contact";
 
 const appRoutes: Routes = [
     {
@@ -14,4 +15,4 @@ const appRoutes: Routes = [
     },
 ];
 
-export const RoutingModule = RouterModule.forRoot(appRoutes);
+export const RoutingModule: ModuleWithProviders = RouterModule.forRoot(appRoutes);
