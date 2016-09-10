@@ -5,8 +5,14 @@ from django.contrib import auth
 
 
 class CrowdgezwitscherViewTests(TestCase):
-    def test_serves_angular_tag(self):
-        response = self.client.get(reverse('index'))
+    def test_serves_angular_tag_for_map_url(self):
+        response = self.client.get(reverse('map'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'<cg-app>', response.content)
+        self.assertIn(b'</cg-app>', response.content)
+
+    def test_serves_angular_tag_for_map_url(self):
+        response = self.client.get(reverse('contact'))
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'<cg-app>', response.content)
         self.assertIn(b'</cg-app>', response.content)
