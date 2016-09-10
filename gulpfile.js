@@ -92,7 +92,7 @@ gulp.task('compile:typescript', ['copy:config'], function() {
     ]);
 });
 
-gulp.task('bundle:typescript', ['copy:frontend', 'copy:typings', 'copy:npmfiles', 'compile:sass'], function(done) {
+gulp.task('bundle:typescript', ['copy:frontend', 'copy:typings', 'compile:sass'], function(done) {
     var command = './node_modules/.bin/ngc --sourceRoot ' + config.path.tmp.source + 'frontend/' + ' --outDir ' + config.path.tmp.compiled ;
     var ngc = exec(command, function (err, stdout, stderr) {
         console.log(stdout);

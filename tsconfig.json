@@ -11,12 +11,9 @@
     "sourceRoot": "./tmp/source/frontend/",
     "outDir": "./tmp/compiled/"
   },
-  "files": [
-      "./tmp/source/frontend/main"
-  ],
   "exclude": [
     "node_modules",
-    "tmp",
+    "frontend",
     "crowdgezwitscher",
     "e2e",
     "typings/main",
