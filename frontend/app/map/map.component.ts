@@ -26,9 +26,9 @@ export class MapComponent implements AfterViewInit {
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
 
-    private currentlyClickedMapObject: MapObject;
-    private currentlyClickedMapObjectType: MapObjectType;
-    private currentlyClickedMarker: google.maps.Marker;
+    private selectedMapObject: MapObject;
+    private selectedMapObjectType: MapObjectType;
+    private selectedMarker: google.maps.Marker;
 
     @ViewChild("mapCanvas") private mapCanvas;
 
@@ -58,7 +58,7 @@ export class MapComponent implements AfterViewInit {
             streetViewControl: false,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
-        this.map.addListener("click", () =>  this.updateCurrentlyClickedMapObjectInfo(null, null, null));
+        this.map.addListener("click", () =>  this.updateselectedMapObjectInfo(null, null, null));
     }
 
     private retrieveVisibleMapObjects() {
@@ -86,7 +86,7 @@ export class MapComponent implements AfterViewInit {
         });
 
         marker.addListener("click", (() => {
-            this.updateCurrentlyClickedMapObjectInfo(mapObject, mapObjectType, marker);
+            this.updateselectedMapObjectInfo(mapObject, mapObjectType, marker);
             if (this.willInfoBoxHideMarker(marker)) {
                 this.map.panTo(marker.getPosition());
             }
@@ -121,21 +121,21 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private updateCurrentlyClickedMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType,
+    private updateselectedMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType,
                                                 marker: google.maps.Marker) {
         this.zone.run(() => {
-            if (this.currentlyClickedMarker) {
-                this.currentlyClickedMarker.setIcon(this.mapObjectSettings
-                    [this.currentlyClickedMapObjectType].iconPath);
+            if (this.selectedMarker) {
+                this.selectedMarker.setIcon(this.mapObjectSettings
+                    [this.selectedMapObjectType].iconPath);
             }
 
             if (marker) {
                 marker.setIcon(this.mapObjectSettings[mapObjectType].iconClickedPath);
             }
 
-            this.currentlyClickedMapObject = mapObject;
-            this.currentlyClickedMapObjectType = mapObjectType;
-            this.currentlyClickedMarker = marker;
+            this.selectedMapObject = mapObject;
+            this.selectedMapObjectType = mapObjectType;
+            this.selectedMarker = marker;
         });
     }
 
