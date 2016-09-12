@@ -58,11 +58,11 @@ export class MapComponent implements AfterViewInit {
             streetViewControl: false,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
-        this.map.addListener("click", () =>  this.updateselectedMapObjectInfo(null, null, null));
+        this.map.addListener("click", () =>  this.updateSelectedMapObjectInfo(null, null, null));
     }
 
     private retrieveVisibleMapObjects() {
-        this.updateselectedMapObjectInfo(null, null, null);
+        this.updateSelectedMapObjectInfo(null, null, null);
         for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].visible) {
                 this.mapService.getMapObjects(mapObjectType)
@@ -87,7 +87,7 @@ export class MapComponent implements AfterViewInit {
         });
 
         marker.addListener("click", (() => {
-            this.updateselectedMapObjectInfo(mapObject, mapObjectType, marker);
+            this.updateSelectedMapObjectInfo(mapObject, mapObjectType, marker);
             if (this.willInfoBoxHideMarker(marker)) {
                 this.map.panTo(marker.getPosition());
             }
@@ -122,7 +122,7 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private updateselectedMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType,
+    private updateSelectedMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType,
                                         marker: google.maps.Marker) {
         this.zone.run(() => {
             if (this.selectedMarker) {
