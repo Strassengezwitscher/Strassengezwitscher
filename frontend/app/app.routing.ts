@@ -15,7 +15,7 @@ const appRoutes: Routes = [
         component: ContactComponent,
     },
     {
-        path: 'imprint',
+        path: "imprint",
         component: ImprintComponent,
     },
 ];
