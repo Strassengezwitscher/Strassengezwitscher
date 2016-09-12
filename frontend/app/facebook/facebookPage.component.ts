@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
-import { FacebookPage } from "./facebookPage";
-import { FacebookPageService } from "./facebookPage.service";
+import { FacebookPage, FacebookPageService } from "./";
 
 @Component({
     moduleId: module.id,

@@ -1,10 +1,7 @@
-import { provide } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
-import { EventComponent } from "./event.component";
-import { EventService } from "./event.service";
-import { Event } from "./event";
+import { Event, EventComponent, EventService } from "./";
 
 class MockEventService {
     public getEvent(id: number): Observable<Event> {
@@ -24,7 +21,10 @@ describe("EventComponent", () => {
         TestBed.configureTestingModule({
             providers: [
                 EventComponent,
-                provide(EventService, {useClass: MockEventService}),
+                {
+                    provide: EventService,
+                    useClass: MockEventService,
+                },
             ],
         });
     });

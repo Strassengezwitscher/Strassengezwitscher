@@ -40,6 +40,6 @@ urlpatterns = [
 
     # User area URLs
     url(r'^$', views.landingpage, name='landingpage'),
-    url(r'^map/$', views.index, name='index'),
-    url(r'^map/(?:contact)?/?$', views.index, name='index'),
+    url(r'^map/$', views.index, name='map'),
+    url(r'^contact/$', views.index, name='contact'),
 ]
