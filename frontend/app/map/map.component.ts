@@ -62,6 +62,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     private retrieveVisibleMapObjects() {
+        this.updateselectedMapObjectInfo(null, null, null);
         for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].visible) {
                 this.mapService.getMapObjects(mapObjectType)
@@ -122,7 +123,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     private updateselectedMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType,
-                                                marker: google.maps.Marker) {
+                                        marker: google.maps.Marker) {
         this.zone.run(() => {
             if (this.selectedMarker) {
                 this.selectedMarker.setIcon(this.mapObjectSettings
