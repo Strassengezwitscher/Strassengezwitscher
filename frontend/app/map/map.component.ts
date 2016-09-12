@@ -86,7 +86,7 @@ export class MapComponent implements AfterViewInit {
         }
 
         const now = new Date();
-        const today: string = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+        const today: string = `${now.getFullYear()}-0${now.getMonth() + 1}-${now.getDate()}`;
 
         if (today < mapObject.date) {
             return 1.0;
