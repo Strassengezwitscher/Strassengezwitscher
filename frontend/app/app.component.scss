@@ -22,10 +22,11 @@ a.brand-logo {
   width: 250px;
   background-size: 100% 70%;
   cursor: pointer;
+  color: transparent;
 }
 
 @media #{$medium-and-up} {
   .toolbar-menu {
-    flex-basis: 88px;
+    flex-basis: 200px;
   }
 }

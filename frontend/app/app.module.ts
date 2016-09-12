@@ -9,6 +9,7 @@ import { MdSlideToggleModule } from "@angular2-material/slide-toggle";
 import { MdCardModule } from "@angular2-material/card";
 import { MdIconModule } from "@angular2-material/icon";
 import { MdInputModule } from "@angular2-material/input";
+import { MdMenuModule } from "@angular2-material/menu";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { MdTooltipModule } from "@angular2-material/tooltip";
 
@@ -19,6 +20,7 @@ import { MapComponent, MapService } from "./map";
 import { ContactComponent, ContactService } from "./contact";
 import { FacebookPageComponent } from "./facebook";
 import { EventComponent } from "./events";
+import { ImprintComponent } from "./imprint";
 
 @NgModule({
     imports: [
@@ -29,6 +31,7 @@ import { EventComponent } from "./events";
         MdButtonModule.forRoot(),
         MdCardModule.forRoot(),
         MdCheckboxModule.forRoot(),
+        MdMenuModule.forRoot(),
         MdIconModule.forRoot(),
         MdInputModule.forRoot(),
         MdSlideToggleModule.forRoot(),
@@ -41,6 +44,7 @@ import { EventComponent } from "./events";
         ContactComponent,
         FacebookPageComponent,
         EventComponent,
+        ImprintComponent,
     ],
     providers: [
         MapService,
