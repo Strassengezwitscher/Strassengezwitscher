@@ -2,8 +2,9 @@ import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 
 import { MapObject, MapObjectType, MapService } from "./";
 
-export class MapObjectSetting {
-        constructor(public active: boolean = false, public iconPath: string, public name: string) {}
+class MapObjectSetting {
+        constructor(public visible: boolean = false, public iconPath: string,
+                    public iconClickedPath: string, public name: string) {}
 }
 
 @Component({
@@ -24,8 +25,10 @@ export class MapComponent implements AfterViewInit {
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
-    private currentlyActiveMapObject: MapObject = new MapObject();
-    private currentlyActiveMapObjectType: MapObjectType = null;
+
+    private selectedMapObject: MapObject;
+    private selectedMapObjectType: MapObjectType;
+    private selectedMarker: google.maps.Marker;
 
     @ViewChild("mapCanvas") private mapCanvas;
 
@@ -55,12 +58,13 @@ export class MapComponent implements AfterViewInit {
             streetViewControl: false,
         };
         this.map = new google.maps.Map(this.mapCanvas.nativeElement, mapOptions);
-        this.map.addListener("click", () =>  this.updateCurrentlyActiveMapObjectInfo(null, null));
+        this.map.addListener("click", () =>  this.updateSelectedMapObjectInfo(null, null, null));
     }
 
     private retrieveVisibleMapObjects() {
+        this.updateSelectedMapObjectInfo(null, null, null);
         for (let mapObjectType of this.mapObjectTypes) {
-            if (this.mapObjectSettings[mapObjectType].active) {
+            if (this.mapObjectSettings[mapObjectType].visible) {
                 this.mapService.getMapObjects(mapObjectType)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
@@ -83,7 +87,7 @@ export class MapComponent implements AfterViewInit {
         });
 
         marker.addListener("click", (() => {
-            this.updateCurrentlyActiveMapObjectInfo(mapObject, mapObjectType);
+            this.updateSelectedMapObjectInfo(mapObject, mapObjectType, marker);
             if (this.willInfoBoxHideMarker(marker)) {
                 this.map.panTo(marker.getPosition());
             }
@@ -94,9 +98,11 @@ export class MapComponent implements AfterViewInit {
 
     private initializeMapObjectSettings() {
         this.mapObjectSettings[MapObjectType.EVENTS] =
-            new MapObjectSetting(true, "static/img/schild_schwarz.png", "Veranstaltungen");
+            new MapObjectSetting(true, "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png",
+                "Veranstaltungen");
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
-            new MapObjectSetting(false, "static/img/schild_blau.png", "Facebook-Seiten");
+            new MapObjectSetting(false, "static/img/schild_blau.png", "static/img/schild_aktiv_blau.png",
+                "Facebook-Seiten");
     }
 
     private initializeMarkerMap() {
@@ -107,7 +113,7 @@ export class MapComponent implements AfterViewInit {
 
     private deleteNotVisibleMapObjects() {
         for (let mapObjectType of this.mapObjectTypes) {
-            if (!this.mapObjectSettings[mapObjectType].active && this.markers.get(mapObjectType).length > 0) {
+            if (!this.mapObjectSettings[mapObjectType].visible && this.markers.get(mapObjectType).length > 0) {
                 for (let marker of this.markers.get(mapObjectType)) {
                     marker.setMap(null);
                 }
@@ -116,10 +122,21 @@ export class MapComponent implements AfterViewInit {
         }
     }
 
-    private updateCurrentlyActiveMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType) {
+    private updateSelectedMapObjectInfo(mapObject: MapObject, mapObjectType: MapObjectType,
+                                        marker: google.maps.Marker) {
         this.zone.run(() => {
-            this.currentlyActiveMapObject = mapObject;
-            this.currentlyActiveMapObjectType = mapObjectType;
+            if (this.selectedMarker) {
+                this.selectedMarker.setIcon(this.mapObjectSettings
+                    [this.selectedMapObjectType].iconPath);
+            }
+
+            if (marker) {
+                marker.setIcon(this.mapObjectSettings[mapObjectType].iconClickedPath);
+            }
+
+            this.selectedMapObject = mapObject;
+            this.selectedMapObjectType = mapObjectType;
+            this.selectedMarker = marker;
         });
     }
 
