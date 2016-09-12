@@ -11,7 +11,7 @@ const appRoutes: Routes = [
         component: MapComponent,
     },
     {
-        path: "map/contact",
+        path: "contact",
         component: ContactComponent,
     },
     {
