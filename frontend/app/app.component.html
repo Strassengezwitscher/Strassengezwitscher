@@ -12,11 +12,13 @@
         <span class="hide-on-small-only">
             <a md-button [routerLink]="['/contact']">Kontakt</a>
             <a md-button [routerLink]="['/imprint']">Impressum</a>
+            <a md-button [routerLink]="['/about']">Über uns</a>
         </span>
     </span>
 </md-toolbar>
 <md-menu x-position="before" #menu="mdMenu">
     <button md-menu-item [routerLink]="['/contact']">Kontakt</button>
     <button md-menu-item [routerLink]="['/imprint']">Impressum</button>
+    <button md-menu-item [routerLink]="['/about']">Über uns</button>
 </md-menu>
 <router-outlet></router-outlet>

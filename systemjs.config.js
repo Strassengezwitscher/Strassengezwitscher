@@ -26,6 +26,7 @@
     'app/facebook',
     'app/map',
     'app/imprint',
+    'app/about',
   ];
 
   appBarrels.forEach(function(barrelName) {
