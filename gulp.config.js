@@ -101,6 +101,7 @@ module.exports = function () {
           'app/facebook': { main: 'index.js' },
           'app/map': { main: 'index.js'},
           'app/imprint': { main: 'index.js'},
+          'app/about': { main: 'index.js'},
       },
     };
 

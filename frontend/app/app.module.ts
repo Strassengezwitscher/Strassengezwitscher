@@ -21,6 +21,7 @@ import { ContactComponent, ContactService } from "./contact";
 import { FacebookPageComponent } from "./facebook";
 import { EventComponent } from "./events";
 import { ImprintComponent } from "./imprint";
+import { AboutComponent } from "./about";
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import { ImprintComponent } from "./imprint";
         FacebookPageComponent,
         EventComponent,
         ImprintComponent,
+        AboutComponent,
     ],
     providers: [
         MapService,
