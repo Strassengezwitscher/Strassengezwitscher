@@ -25,6 +25,10 @@ a.brand-logo {
   color: transparent;
 }
 
+a.unfocusable.md-button-focus::after {
+  background-color: transparent;
+}
+
 @media only screen and (min-width: 740px) {
   .toolbar-menu {
     flex-basis: 230px;
