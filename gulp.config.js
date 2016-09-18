@@ -113,6 +113,7 @@ module.exports = function () {
         'icon',
         'input',
         'menu',
+        'radio',
         'slide-toggle',
         'toolbar',
         'tooltip',

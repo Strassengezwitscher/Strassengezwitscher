@@ -28,6 +28,7 @@
     "@angular2-material/icon": "2.0.0-alpha.8-1",
     "@angular2-material/input": "2.0.0-alpha.8-1",
     "@angular2-material/menu": "2.0.0-alpha.8-1",
+    "@angular2-material/radio": "2.0.0-alpha.8-1",
     "@angular2-material/slide-toggle": "2.0.0-alpha.8-1",
     "@angular2-material/toolbar": "2.0.0-alpha.8-1",
     "@angular2-material/tooltip": "2.0.0-alpha.8-1",
