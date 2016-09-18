@@ -78,10 +78,6 @@ frontend/config/config.ts
 # npm
 node_modules/
 
-# typings
-typings/**
-!typings/typings.d.ts
-
 # pyenv
 .python-version
 

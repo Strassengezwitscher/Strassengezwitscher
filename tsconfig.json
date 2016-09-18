@@ -9,7 +9,8 @@
     "removeComments": false,
     "noImplicitAny": false,
     "sourceRoot": "./tmp/source/frontend/",
-    "outDir": "./tmp/compiled/"
+    "outDir": "./tmp/compiled/",
+    "types": ["core-js", "hammerjs", "googlemaps", "node", "jasmine"]
   },
   "files": [
     "tmp/source/frontend/main",
@@ -21,9 +22,7 @@
     "tmp/compiled",
     "tmp/source/typings",
     "crowdgezwitscher",
-    "e2e",
-    "typings/main",
-    "typings/main.d.ts"
+    "e2e"
   ],
   "angularCompilerOptions": {
     "genDir": ".",

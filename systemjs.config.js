@@ -24,7 +24,9 @@
     'app/contact',
     'app/events',
     'app/facebook',
-    'app/map'
+    'app/map',
+    'app/imprint',
+    'app/about',
   ];
 
   appBarrels.forEach(function(barrelName) {
@@ -66,6 +68,7 @@
     'checkbox',
     'icon',
     'input',
+    'menu',
     'slide-toggle',
     'toolbar',
     'tooltip',
