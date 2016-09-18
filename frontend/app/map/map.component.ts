@@ -78,30 +78,12 @@ export class MapComponent implements AfterViewInit {
         mapObjects.map((mapObject) => this.drawMapObject(mapObject, mapObjectType));
     }
 
-    // This should theoretically be adapted to different client timezones
-    private calcMapObjectOpacity(mapObject) {
-        // If MapObject does not have a date (is a facebook page at the current project state)
-        if (!mapObject.date) {
-            return 1.0;
-        }
-
-        const now = new Date();
-        const today: string = `${now.getFullYear()}-0${now.getMonth() + 1}-${now.getDate()}`;
-
-        if (today < mapObject.date) {
-            return 1.0;
-        } else {
-            return 0.2;
-        }
-    }
-
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
             icon: this.mapObjectSettings[mapObjectType].iconPath,
-            opacity: this.calcMapObjectOpacity(mapObject),
         });
 
         marker.addListener("click", (() => {
