@@ -97,7 +97,7 @@ export class MapComponent implements AfterViewInit {
         this.updateSelectedMapObjectInfo(null, null, null);
         for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].visible) {
-                this.mapService.getMapObjects(mapObjectType)
+                this.mapService.getMapObjects(mapObjectType, this.mapObjectSettings[mapObjectType].mapFilter.filter)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
                                 error => this.setErrorMessage(<any> error)

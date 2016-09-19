@@ -1,19 +1,20 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { MapObject, MapObjectType } from "./";
+import { DateFilter, MapObject, MapObjectType } from "./";
+import { Helper } from "../helper";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class MapService {
-    private urlMap: Map<MapObjectType, string> = new Map<MapObjectType, string>();
+    private urlMap: Map<MapObjectType, Map<DateFilter, string>> = new Map<MapObjectType, Map<DateFilter, string>>();
 
     constructor(private http: Http) {
         this.initializeUrlMap();
     }
 
-    public getMapObjects(type: MapObjectType): Observable<MapObject[]> {
-        let requestUrl = this.urlMap.get(type);
+    public getMapObjects(type: MapObjectType, dateFilter: DateFilter): Observable<MapObject[]> {
+        let requestUrl = this.urlMap.get(type).get(dateFilter);
         return this.http.get(requestUrl)
                         .map(this.extractData)
                         .catch(this.handleError);
@@ -35,8 +36,37 @@ export class MapService {
         return Observable.throw(errorMessage);
     }
 
+    private subtract30Days(date: Date) {
+        const secondsOfADay = 86400;
+        const msOfADay = secondsOfADay * 1000;
+
+        return new Date(date.getTime() - 30 * msOfADay);
+    }
+
+    private getEventUrlMap(): Map<DateFilter, string> {
+        const eventUrlMap = new Map<DateFilter, string>();
+        eventUrlMap.set(DateFilter.year2015, "api/events.json?from=2015-01-01&to=2015-12-31");
+
+        const today = new Date();
+        eventUrlMap.set(DateFilter.year2016, `api/events.json?from=2016-01-01&to=${Helper.dateToYMD(today)}`);
+
+        const aMonthBefore = this.subtract30Days(today);
+        eventUrlMap.set(DateFilter.upcoming, `api/events.json?from=${Helper.dateToYMD(aMonthBefore)}`);
+
+        eventUrlMap.set(DateFilter.all, "api/events.json");
+
+        return eventUrlMap;
+    }
+
+    private getFBPagesUrlMap(): Map<DateFilter, string> {
+        const fpPagesUrlMap = new Map<DateFilter, string>();
+        fpPagesUrlMap.set(DateFilter.all, "api/facebook.json");
+
+        return fpPagesUrlMap;
+    }
+
     private initializeUrlMap() {
-        this.urlMap.set(MapObjectType.EVENTS, "api/events.json");
-        this.urlMap.set(MapObjectType.FACEBOOK_PAGES, "api/facebook.json");
+        this.urlMap.set(MapObjectType.EVENTS, this.getEventUrlMap());
+        this.urlMap.set(MapObjectType.FACEBOOK_PAGES, this.getFBPagesUrlMap());
     }
 }
