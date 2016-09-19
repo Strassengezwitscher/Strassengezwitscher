@@ -9,8 +9,10 @@ from events.models import Event
 def index(request):
     return render(request, 'frontend.html')
 
+
 def event(request, id):
     return render(request, 'frontend.html')
+
 
 def landingpage(request):
     return render(request, 'landingpage.html')
