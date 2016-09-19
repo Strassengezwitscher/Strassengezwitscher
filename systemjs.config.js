@@ -69,6 +69,7 @@
     'icon',
     'input',
     'menu',
+    'radio',
     'slide-toggle',
     'toolbar',
     'tooltip',
