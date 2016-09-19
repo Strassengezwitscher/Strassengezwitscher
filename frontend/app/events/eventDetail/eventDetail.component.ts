@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 
-import { Event, EventService } from "./";
+import { Event, EventService } from "./../";
 
 @Component({
     moduleId: module.id,
