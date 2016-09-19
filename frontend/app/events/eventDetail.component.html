@@ -33,4 +33,10 @@
             </p>
         </md-card-content>
     </md-card>
+    <md-card class="error-message" *ngIf="errorMessage">
+        <span>{{contactErrorMessage}}</span>
+        <button md-icon-button (click)="clearError()">
+            <md-icon>clear</md-icon>
+        </button>
+    </md-card>
 </div>

@@ -2,3 +2,29 @@
   overflow: scroll;
   width: 100%;
 }
+
+.error-message {
+  background-color: #f2dede;
+  white-space: pre-line;
+
+  .md-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button {
+      height: 18px;
+      width: 18px;
+
+      span.md-button-wrapper {
+        position: absolute;
+        top: 0;
+        right: -3px;
+
+        md-icon {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
