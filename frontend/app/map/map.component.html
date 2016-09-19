@@ -6,7 +6,7 @@
                 {{mapObjectSetting.name}}
             </md-slide-toggle>
             <div class="map-sub-settings" *ngIf="mapObjectSetting.visible" [@slideInOut]="mapObjectSetting.visible">
-                <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter">
+                <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter" (ngModelChange)="onRadioChange()">
                     <md-radio-button class="map-sub-setting" *ngFor="let option of mapObjectSetting.mapFilterOptions" [value]="option">{{ option.name }}</md-radio-button>
                 </md-radio-group>
             </div>
