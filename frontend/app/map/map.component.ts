@@ -3,7 +3,7 @@ import { trigger, state, style, transition, animate } from "@angular/core"; // a
 
 import { MapObject, MapObjectType, MapService } from "./";
 
-enum DateFilter {
+export enum DateFilter {
     all = 0,
     upcoming,
     year2016,
@@ -11,7 +11,7 @@ enum DateFilter {
 }
 
 class MapFilter {
-    constructor(public name: string, filter: DateFilter) {}
+    constructor(public name: string, public filter: DateFilter) {}
 }
 
 class MapObjectSetting {
