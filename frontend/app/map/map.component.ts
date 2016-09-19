@@ -71,6 +71,14 @@ export class MapComponent implements AfterViewInit {
         this.deleteNotVisibleMapObjects();
     }
 
+    public onRadioChange() {
+        for (let marker of this.markers.get(MapObjectType.EVENTS)) {
+            marker.setMap(null);
+        }
+        this.markers.set(MapObjectType.EVENTS, new Array<google.maps.Marker>());
+        this.retrieveVisibleMapObjects();
+    }
+
     private initMap() {
         const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
