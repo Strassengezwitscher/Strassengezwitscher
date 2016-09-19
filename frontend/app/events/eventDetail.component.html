@@ -1,4 +1,4 @@
-<md-card class="event-card">
+<div class="container">
     <md-card-title>{{activeEvent.name}}</md-card-title>
     <md-card-subtitle>{{activeEvent.location}}</md-card-subtitle>
     <md-card-content>
@@ -30,9 +30,5 @@
             <strong>Berichterstattung:</strong><br>
             {{activeEvent.coverage}} (Twitter-Feed)
         </p>
-        <p>
-        <strong>Details:</strong><br>
-            <a md-button (click)="gotoDetail()">Mehr Informationen</a>
-        </p>
     </md-card-content>
-</md-card>
+</div>

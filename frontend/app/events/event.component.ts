@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
+import { Router } from '@angular/router';
 
 import { Event, EventService } from "./";
 
@@ -13,7 +14,7 @@ export class EventComponent implements OnChanges {
     private activeEvent: Event;
     @Input("id") private id: number;
     @Output() private onError = new EventEmitter<string>();
-    constructor(private eventService: EventService) {
+    constructor(private eventService: EventService, private router: Router) {
         this.activeEvent = new Event();
     }
 
@@ -33,5 +34,8 @@ export class EventComponent implements OnChanges {
 
     private setActiveEvent(event: Event) {
         this.activeEvent = event;
+    }
+    private gotoDetail(): void {
+        this.router.navigate(['/event', this.activeEvent.id]);
     }
 }

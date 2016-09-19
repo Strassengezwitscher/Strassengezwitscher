@@ -19,7 +19,7 @@ import { RoutingModule } from "./app.routing";
 import { MapComponent, MapService } from "./map";
 import { ContactComponent, ContactService } from "./contact";
 import { FacebookPageComponent } from "./facebook";
-import { EventComponent } from "./events";
+import { EventComponent, EventDetailComponent } from "./events";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
 
@@ -45,6 +45,7 @@ import { AboutComponent } from "./about";
         ContactComponent,
         FacebookPageComponent,
         EventComponent,
+        EventDetailComponent,
         ImprintComponent,
         AboutComponent,
     ],
