@@ -101,7 +101,7 @@ export class MapComponent implements AfterViewInit {
             new MapObjectSetting(true, "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png",
                 "Veranstaltungen");
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
-            new MapObjectSetting(false, "static/img/schild_blau.png", "static/img/schild_aktiv_blau.png",
+            new MapObjectSetting(false, "static/img/facebook.png", "static/img/facebook.png",
                 "Facebook-Seiten");
     }
 
