@@ -3,6 +3,7 @@ import { Http, Response } from "@angular/http";
 
 import { Event } from "./";
 import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/throw";
 
 @Injectable()
 export class EventService {

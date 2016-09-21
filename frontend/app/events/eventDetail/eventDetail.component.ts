@@ -32,7 +32,7 @@ export class EventDetailComponent implements OnInit {
         this.eventService.getEvent(id)
                         .subscribe(
                             event => this.setActiveEvent(event),
-                            error => this.setErrorMessage(error),
+                            error => this.setErrorMessage(<any> error),
                         );
     }
 
