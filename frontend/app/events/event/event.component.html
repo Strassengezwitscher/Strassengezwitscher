@@ -32,7 +32,7 @@
         </p>
         <p>
         <strong>Details:</strong><br>
-            <a md-button (click)="gotoDetail()">Mehr Informationen</a>
+            <a [routerLink] = "['/events', activeEvent.id]"> Mehr Infos</a>
         </p>
     </md-card-content>
 </md-card>
