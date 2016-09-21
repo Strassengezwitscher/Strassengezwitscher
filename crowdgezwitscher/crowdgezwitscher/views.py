@@ -6,11 +6,7 @@ from facebook.models import FacebookPage
 from events.models import Event
 
 
-def index(request):
-    return render(request, 'frontend.html')
-
-
-def event(request, id):
+def index(request, *opt):
     return render(request, 'frontend.html')
 
 
