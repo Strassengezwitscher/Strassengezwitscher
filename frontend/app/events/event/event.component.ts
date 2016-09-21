@@ -36,6 +36,6 @@ export class EventComponent implements OnChanges {
         this.activeEvent = event;
     }
     private gotoDetail(): void {
-        this.router.navigate(["/event", this.activeEvent.id]);
+        this.router.navigate(["/events", this.activeEvent.id]);
     }
 }

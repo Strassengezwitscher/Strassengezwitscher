@@ -30,7 +30,7 @@ class CrowdgezwitscherViewTests(TestCase):
         self.assertIn(b'</cg-app>', response.content)
 
     def test_serves_angular_tag_for_event_detail_url(self):
-        response = self.client.get(reverse('eventDetail', args=[1]))
+        response = self.client.get(reverse('eventDetail'))
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'<cg-app>', response.content)
         self.assertIn(b'</cg-app>', response.content)

@@ -25,7 +25,7 @@ const appRoutes: Routes = [
         component: AboutComponent,
     },
     {
-        path: "event/:id",
+        path: "events/:id",
         component: EventDetailComponent,
     },
 ];
