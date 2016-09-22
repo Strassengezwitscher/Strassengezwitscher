@@ -9,12 +9,10 @@ import { Event, EventService } from "./../";
 })
 
 export class EventComponent implements OnChanges {
-    private event: Event;
+    private event: Event = null;
     @Input("id") private id: number;
     @Output() private onError = new EventEmitter<string>();
-    constructor(private eventService: EventService) {
-        this.event = null;
-    }
+    constructor(private eventService: EventService) {}
 
     public ngOnChanges(changes) {
         if (changes.id !== undefined) {
@@ -32,6 +30,5 @@ export class EventComponent implements OnChanges {
 
     private setActiveEvent(ev: Event) {
         this.event = ev;
-        this.eventService.setActiveEvent(ev);
     }
 }

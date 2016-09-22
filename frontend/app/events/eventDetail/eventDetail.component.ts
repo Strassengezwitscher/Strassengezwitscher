@@ -10,16 +10,14 @@ import { Event, EventService } from "./../";
 })
 
 export class EventDetailComponent implements OnInit {
-    private event: Event;
+    private event: Event = null;
     private errorMessage: string;
-    constructor(private eventService: EventService, private route: ActivatedRoute) {
-        this.event = null;
-    }
+    constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
     public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-          let id = + params["id"];
-          this.getEvent(id);
+            let id = + params["id"];
+            this.getEvent(id);
         });
     }
 
@@ -41,6 +39,5 @@ export class EventDetailComponent implements OnInit {
 
     private setActiveEvent(ev: Event) {
         this.event = ev;
-        this.eventService.setActiveEvent(ev);
     }
 }

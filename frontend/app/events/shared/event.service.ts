@@ -13,20 +13,12 @@ export class EventService {
     constructor(private http: Http) {}
 
     public getEvent(id: number): Observable<Event> {
-        if (this.lastEvent != null && this.lastEvent.id === id) {
-            return new Observable<Event>(observer => {
-                observer.next(this.lastEvent);
-                observer.complete();
-            });
-        } else {
-            return this.http.get(this.eventPageUrl + id + "/")
+        return (this.lastEvent != null && this.lastEvent.id === id) ?
+                Observable.of(this.lastEvent) :
+                this.http.get(this.eventPageUrl + id + "/")
                             .map(this.extractData)
+                            .do(event => this.lastEvent = event)
                             .catch(this.handleError);
-        }
-    }
-
-    public setActiveEvent(event: Event) {
-        this.lastEvent = event;
     }
 
     private extractData(response: Response): Event {

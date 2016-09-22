@@ -18,7 +18,6 @@ class MockEventService {
             return Observable.throw("Error wrong ID");
         }
     }
-    public setActiveEvent(event: Event) {}
 }
 
 describe("EventDetailComponent", () => {
@@ -38,19 +37,13 @@ describe("EventDetailComponent", () => {
         });
     });
 
-    it("Should set the active Event", inject([EventDetailComponent], (evDComponent)  => {
-        let ev = new Event();
-        evDComponent.setActiveEvent(ev);
-        expect(evDComponent.activeEvent).toBe(ev);
-    }));
-
     it("Should set a new active Event", inject([EventDetailComponent], (evDComponent) =>  {
-        evDComponent.getEventDetails(1);
-        expect(evDComponent.activeEvent.id).toBe(1);
+        evDComponent.getEvent(1);
+        expect(evDComponent.event.id).toBe(1);
     }));
 
     it("Should set the error message on error from service", inject([EventDetailComponent], (evDComponent) =>  {
-        evDComponent.getEventDetails(-100);
+        evDComponent.getEvent(-100);
         expect(evDComponent.errorMessage).toBe("Error wrong ID");
     }));
 

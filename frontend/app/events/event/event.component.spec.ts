@@ -13,7 +13,6 @@ class MockEventService {
             observer.complete();
         });
     }
-    public setActiveEvent(event: Event) {}
 }
 
 describe("EventComponent", () => {
@@ -30,20 +29,14 @@ describe("EventComponent", () => {
         });
     });
 
-    it("Should set the active Event", inject([EventComponent], (evComponent)  => {
-        let ev = new Event();
-        evComponent.setActiveEvent(ev);
-        expect(evComponent.activeEvent).toBe(ev);
-    }));
-
     it("Should set a new active Event", inject([EventComponent], (evComponent) =>  {
-        evComponent.getEventDetails(1);
-        expect(evComponent.activeEvent.id).toBe(1);
+        evComponent.getEvent(1);
+        expect(evComponent.event.id).toBe(1);
     }));
 
     it("Should set a new active Event on ngChange", inject([EventComponent], (evComponent) =>  {
         evComponent.ngOnChanges({"id": 125});
-        expect(evComponent.activeEvent.name).toBe("Test");
+        expect(evComponent.event.name).toBe("Test");
     }));
 
 });
