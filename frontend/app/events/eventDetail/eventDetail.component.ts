@@ -13,7 +13,7 @@ export class EventDetailComponent implements OnInit {
     private event: Event;
     private errorMessage: string;
     constructor(private eventService: EventService, private route: ActivatedRoute) {
-        this.event = null;
+        this.event = new Event();
     }
 
     public ngOnInit(): void {
