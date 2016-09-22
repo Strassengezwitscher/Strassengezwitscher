@@ -1,14 +1,49 @@
 from rest_framework import generics
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.forms import ModelForm, ModelMultipleChoiceField
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from crowdgezwitscher.models import MapObjectFilter
+from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
-from crowdgezwitscher.models import MapObjectFilter
+from facebook.models import FacebookPage
+
+
+class EventForm(ModelForm):
+    facebook_pages = ModelMultipleChoiceField(
+        queryset=FacebookPage.objects.all(),
+        required=False,
+        widget=SelectizeSelectMultiple()
+    )
+
+    class Meta:
+        model = Event
+        fields = (
+            'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
+            'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
+            'coverage_start', 'coverage_end',
+        )
+        widgets = {
+            'twitter_account_names': SelectizeCSVInput(),
+            'twitter_hashtags': SelectizeCSVInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
+
+    def save(self, *args, **kwargs):
+        instance = super(EventForm, self).save(*args, **kwargs)
+        if instance.pk:
+            instance.facebook_pages.clear()
+            instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
+        return instance
 
 
 class EventListView(PermissionRequiredMixin, ListView):
@@ -29,22 +64,14 @@ class EventCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'events.add_event'
     model = Event
     template_name = 'events/form.html'
-    fields = [
-        'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
-        'type', 'url', 'counter_event', 'coverage', 'twitter_account_names', 'twitter_hashtags',
-        'coverage_start', 'coverage_end'
-    ]
+    form_class = EventForm
 
 
 class EventUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'events.change_event'
     model = Event
     template_name = 'events/form.html'
-    fields = [
-        'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
-        'type', 'url', 'counter_event', 'coverage', 'twitter_account_names', 'twitter_hashtags',
-        'coverage_start', 'coverage_end'
-    ]
+    form_class = EventForm
 
 
 class EventDelete(PermissionRequiredMixin, DeleteView):

@@ -10,7 +10,7 @@ from events.models import Event
 
 @python_2_unicode_compatible
 class FacebookPage(MapObject):
-    events = models.ManyToManyField(Event, blank=True)
+    events = models.ManyToManyField(Event, blank=True, related_name="facebook_pages")
     notes = models.TextField(blank=True)
     facebook_id = models.CharField(max_length=50)
 

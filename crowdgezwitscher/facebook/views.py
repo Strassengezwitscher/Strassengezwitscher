@@ -1,14 +1,25 @@
 from rest_framework import generics
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.forms import ModelForm
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from crowdgezwitscher.models import MapObjectFilter
+from crowdgezwitscher.widgets import SelectizeSelectMultiple
 from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
-from crowdgezwitscher.models import MapObjectFilter
+
+
+class FacebookPageForm(ModelForm):
+    class Meta:
+        model = FacebookPage
+        fields = ('name', 'active', 'location_long', 'location_lat', 'events')
+        widgets = {
+            'events': SelectizeSelectMultiple()
+        }
 
 
 class FacebookPageListView(PermissionRequiredMixin, ListView):
@@ -29,14 +40,14 @@ class FacebookPageCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'facebook.add_facebookpage'
     model = FacebookPage
     template_name = 'facebook/form.html'
-    fields = ['name', 'active', 'location_long', 'location_lat']
+    form_class = FacebookPageForm
 
 
 class FacebookPageUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'facebook.change_facebookpage'
     model = FacebookPage
     template_name = 'facebook/form.html'
-    fields = ['name', 'active', 'location_long', 'location_lat']
+    form_class = FacebookPageForm
 
 
 class FacebookPageDelete(PermissionRequiredMixin, DeleteView):
