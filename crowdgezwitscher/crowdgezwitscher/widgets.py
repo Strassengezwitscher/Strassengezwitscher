@@ -20,4 +20,4 @@ class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
                     });\
                 });\
             </script>' % (attrs['id'], '[%s]' % ','.join(map(str, value)))
-        return mark_safe(u''.join(html + script))
+        return mark_safe(''.join(html + script))
