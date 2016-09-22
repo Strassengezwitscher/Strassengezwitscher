@@ -14,6 +14,7 @@ class MockEventService {
             observer.complete();
         });
     }
+    public setActiveEvent(event: Event) {}
 }
 
 class FakeRouter {

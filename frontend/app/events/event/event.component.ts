@@ -7,7 +7,6 @@ import { Event, EventService } from "./../";
     moduleId: module.id,
     selector: "cg-event-detail",
     templateUrl: "event.component.html",
-    providers: [EventService],
 })
 
 export class EventComponent implements OnChanges {
@@ -34,5 +33,6 @@ export class EventComponent implements OnChanges {
 
     private setActiveEvent(event: Event) {
         this.activeEvent = event;
+        this.eventService.setActiveEvent(event);
     }
 }

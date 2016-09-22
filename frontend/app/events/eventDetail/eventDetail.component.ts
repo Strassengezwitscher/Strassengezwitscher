@@ -7,7 +7,6 @@ import { Event, EventService } from "./../";
     moduleId: module.id,
     selector: "cg-event-detail-page",
     templateUrl: "eventDetail.component.html",
-    providers: [EventService],
 })
 
 export class EventDetailComponent implements OnInit {
@@ -42,5 +41,6 @@ export class EventDetailComponent implements OnInit {
 
     private setActiveEvent(event: Event) {
         this.activeEvent = event;
+        this.eventService.setActiveEvent(event);
     }
 }

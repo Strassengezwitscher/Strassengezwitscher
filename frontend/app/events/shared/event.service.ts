@@ -8,13 +8,25 @@ import "rxjs/add/observable/throw";
 @Injectable()
 export class EventService {
     private eventPageUrl = "api/events/";
+    private currentlyActiveEvent: Event = new Event();
 
     constructor(private http: Http) {}
 
     public getEvent(id: number): Observable<Event> {
-        return this.http.get(this.eventPageUrl + id + "/")
-                        .map(this.extractData)
-                        .catch(this.handleError);
+        if (this.currentlyActiveEvent.id === id) {
+            return new Observable<Event>(observer => {
+                observer.next(this.currentlyActiveEvent);
+                observer.complete();
+            });
+        } else {
+            return this.http.get(this.eventPageUrl + id + "/")
+                            .map(this.extractData)
+                            .catch(this.handleError);
+        }
+    }
+
+    public setActiveEvent(event: Event) {
+        this.currentlyActiveEvent = event;
     }
 
     private extractData(response: Response): Event {
