@@ -1,0 +1,37 @@
+<md-card class="event-card" *ngIf="event">
+    <md-card-title>{{event.name}}</md-card-title>
+    <md-card-subtitle>{{event.location}}</md-card-subtitle>
+    <md-card-content>
+        <p *ngIf="event.date">
+            <strong>Datum:</strong><br>
+            {{event.date}}
+        </p>
+        <p *ngIf="event.repetitionCycle">
+            <strong>Wiederholungszyklus:</strong><br>
+            {{event.repetitionCycle}}
+        </p>
+        <p *ngIf="event.organizer">
+            <strong>Organisator:</strong><br>
+            {{event.organizer}}
+        </p>
+        <p *ngIf="event.participants">
+            <strong>Teilnehmer:</strong><br>
+            {{event.participants}}
+        </p>
+        <p *ngIf="event.type">
+            <strong>Art:</strong><br>
+            {{event.type}}
+        </p>
+        <p *ngIf="event.counterEvent">
+            <strong>Gegenveranstaltung:</strong><br>
+            {{event.counterEvent}}
+        </p>
+        <p *ngIf="event.coverage">
+            <strong>Berichterstattung:</strong><br>
+            {{event.coverage}} (Twitter-Feed)
+        </p>
+    </md-card-content>
+    <md-card-actions>
+        <a md-button [routerLink] = "['/events', event.id]">Mehr Infos</a>
+    </md-card-actions>
+</md-card>
