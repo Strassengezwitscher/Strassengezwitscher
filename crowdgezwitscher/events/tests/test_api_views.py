@@ -43,7 +43,7 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         events = response.data
-        for attr in ('id', 'name', 'locationLong', 'locationLat'):
+        for attr in ('id', 'name', 'locationLong', 'locationLat', 'date'):
             self.assertTrue(all(attr in obj for obj in events))
         self.assertEqual(len(events), 2)
         self.assertTrue(len(events) < Event.objects.count())
