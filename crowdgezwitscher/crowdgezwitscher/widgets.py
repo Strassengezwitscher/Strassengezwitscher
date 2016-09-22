@@ -11,7 +11,7 @@ class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
 
     def render(self, name, value, attrs=None):
         html = super(SelectizeSelectMultiple, self).render(name, value, attrs)
-        value = [] if not value else value
+        value = value or []
         script = '<script type="text/javascript"> \
                 $(function() { \
                     $("#%s").selectize({ \
@@ -32,7 +32,7 @@ class SelectizeCSVInput(forms.widgets.TextInput):
 
     def render(self, name, value, attrs=None):
         html = super(SelectizeCSVInput, self).render(name, value, attrs)
-        value = '' if not value else value
+        value = value or ''
         script = '<script type="text/javascript"> \
                 $(function() { \
                     $("#%s").selectize({ \
