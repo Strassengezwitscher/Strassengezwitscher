@@ -1,6 +1,5 @@
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
-import { Router } from "@angular/router";
 
 import { Event, EventComponent, EventService } from "./../";
 
@@ -17,20 +16,12 @@ class MockEventService {
     public setActiveEvent(event: Event) {}
 }
 
-class FakeRouter {
-    public navigateByUrl(url: string) { return url;  }
-}
-
 describe("EventComponent", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 EventComponent,
-                {
-                    provide: Router,
-                    useClass: FakeRouter,
-                },
                 {
                     provide: EventService,
                     useClass: MockEventService,
