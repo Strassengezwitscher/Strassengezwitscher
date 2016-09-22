@@ -30,9 +30,8 @@
             <strong>Berichterstattung:</strong><br>
             {{event.coverage}} (Twitter-Feed)
         </p>
-        <md-card-actions>
-        <strong>Details:</strong><br>
-            <a md-button [routerLink] = "['/events', event.id]"> Mehr Infos</a>
-        </md-card-actions>
     </md-card-content>
+    <md-card-actions>
+        <a md-button [routerLink] = "['/events', event.id]">Mehr Infos</a>
+    </md-card-actions>
 </md-card>
