@@ -8,12 +8,12 @@ import "rxjs/add/observable/throw";
 @Injectable()
 export class EventService {
     private eventPageUrl = "api/events/";
-    private lastEvent: Event = new Event();
+    private lastEvent: Event = null;
 
     constructor(private http: Http) {}
 
     public getEvent(id: number): Observable<Event> {
-        if (this.lastEvent.id === id) {
+        if (this.lastEvent != null && this.lastEvent.id === id) {
             return new Observable<Event>(observer => {
                 observer.next(this.lastEvent);
                 observer.complete();

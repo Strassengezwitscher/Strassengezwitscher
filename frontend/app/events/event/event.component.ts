@@ -13,7 +13,7 @@ export class EventComponent implements OnChanges {
     @Input("id") private id: number;
     @Output() private onError = new EventEmitter<string>();
     constructor(private eventService: EventService) {
-        this.event = new Event();
+        this.event = null;
     }
 
     public ngOnChanges(changes) {

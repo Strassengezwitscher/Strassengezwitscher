@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="event">
     <h1>{{event.name}}</h1>
     <h3>{{event.location}}</h3>
     <p *ngIf="event.date">
