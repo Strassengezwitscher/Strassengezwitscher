@@ -107,15 +107,15 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.twitter_account_names.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.twitter_account_names.id_for_label }}">{{ form.twitter_account_names.label }}</label>
-                <input id="{{ form.twitter_account_names.id_for_label }}" name="{{ form.twitter_account_names.html_name }}" type="text" class="form-control" value="{{ form.twitter_account_names.value }}">
+                {{ form.twitter_account_names.label_tag }}
+                {{ form.twitter_account_names }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.twitter_hashtags.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.twitter_hashtags.id_for_label }}">{{ form.twitter_hashtags.label }}</label>
-                <input id="{{ form.twitter_hashtags.id_for_label }}" name="{{ form.twitter_hashtags.html_name }}" type="text" class="form-control" value="{{ form.twitter_hashtags.value }}">
+                {{ form.twitter_hashtags.label_tag }}
+                {{ form.twitter_hashtags }}
             </div>
         </div>
     </div>

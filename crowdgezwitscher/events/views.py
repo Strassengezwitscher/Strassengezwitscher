@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from crowdgezwitscher.models import MapObjectFilter
-from crowdgezwitscher.widgets import SelectizeSelectMultiple
+from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
@@ -28,6 +28,10 @@ class EventForm(ModelForm):
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
             'coverage_start', 'coverage_end',
         )
+        widgets = {
+            'twitter_account_names': SelectizeCSVInput(),
+            'twitter_hashtags': SelectizeCSVInput(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
