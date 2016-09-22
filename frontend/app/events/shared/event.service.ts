@@ -8,14 +8,14 @@ import "rxjs/add/observable/throw";
 @Injectable()
 export class EventService {
     private eventPageUrl = "api/events/";
-    private currentlyActiveEvent: Event = new Event();
+    private lastEvent: Event = new Event();
 
     constructor(private http: Http) {}
 
     public getEvent(id: number): Observable<Event> {
-        if (this.currentlyActiveEvent.id === id) {
+        if (this.lastEvent.id === id) {
             return new Observable<Event>(observer => {
-                observer.next(this.currentlyActiveEvent);
+                observer.next(this.lastEvent);
                 observer.complete();
             });
         } else {
@@ -26,7 +26,7 @@ export class EventService {
     }
 
     public setActiveEvent(event: Event) {
-        this.currentlyActiveEvent = event;
+        this.lastEvent = event;
     }
 
     private extractData(response: Response): Event {
