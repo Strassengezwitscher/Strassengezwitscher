@@ -9,20 +9,20 @@ import { Event, EventService } from "./../";
 })
 
 export class EventComponent implements OnChanges {
-    private activeEvent: Event;
+    private event: Event;
     @Input("id") private id: number;
     @Output() private onError = new EventEmitter<string>();
     constructor(private eventService: EventService) {
-        this.activeEvent = new Event();
+        this.event = null;
     }
 
     public ngOnChanges(changes) {
         if (changes.id !== undefined) {
-            this.getEventDetails(this.id);
+            this.getEvent(this.id);
         }
     }
 
-    private getEventDetails(id: number) {
+    private getEvent(id: number) {
         this.eventService.getEvent(id)
                         .subscribe(
                             event => this.setActiveEvent(event),
@@ -30,8 +30,8 @@ export class EventComponent implements OnChanges {
                         );
     }
 
-    private setActiveEvent(event: Event) {
-        this.activeEvent = event;
-        this.eventService.setActiveEvent(event);
+    private setActiveEvent(ev: Event) {
+        this.event = ev;
+        this.eventService.setActiveEvent(ev);
     }
 }

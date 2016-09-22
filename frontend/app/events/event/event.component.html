@@ -1,38 +1,38 @@
 <md-card class="event-card">
-    <md-card-title>{{activeEvent.name}}</md-card-title>
-    <md-card-subtitle>{{activeEvent.location}}</md-card-subtitle>
+    <md-card-title>{{event.name}}</md-card-title>
+    <md-card-subtitle>{{event.location}}</md-card-subtitle>
     <md-card-content>
-        <p *ngIf="activeEvent.date">
+        <p *ngIf="event.date">
             <strong>Datum:</strong><br>
-            {{activeEvent.date}}
+            {{event.date}}
         </p>
-        <p *ngIf="activeEvent.repetitionCycle">
+        <p *ngIf="event.repetitionCycle">
             <strong>Wiederholungszyklus:</strong><br>
-            {{activeEvent.repetitionCycle}}
+            {{event.repetitionCycle}}
         </p>
-        <p *ngIf="activeEvent.organizer">
+        <p *ngIf="event.organizer">
             <strong>Organisator:</strong><br>
-            {{activeEvent.organizer}}
+            {{event.organizer}}
         </p>
-        <p *ngIf="activeEvent.participants">
+        <p *ngIf="event.participants">
             <strong>Teilnehmer:</strong><br>
-            {{activeEvent.participants}}
+            {{event.participants}}
         </p>
-        <p *ngIf="activeEvent.type">
+        <p *ngIf="event.type">
             <strong>Art:</strong><br>
-            {{activeEvent.type}}
+            {{event.type}}
         </p>
-        <p *ngIf="activeEvent.counterEvent">
+        <p *ngIf="event.counterEvent">
             <strong>Gegenveranstaltung:</strong><br>
-            {{activeEvent.counterEvent}}
+            {{event.counterEvent}}
         </p>
-        <p *ngIf="activeEvent.coverage">
+        <p *ngIf="event.coverage">
             <strong>Berichterstattung:</strong><br>
-            {{activeEvent.coverage}} (Twitter-Feed)
+            {{event.coverage}} (Twitter-Feed)
         </p>
         <p>
         <strong>Details:</strong><br>
-            <a [routerLink] = "['/events', activeEvent.id]"> Mehr Infos</a>
+            <a [routerLink] = "['/events', event.id]"> Mehr Infos</a>
         </p>
     </md-card-content>
 </md-card>

@@ -1,33 +1,33 @@
 <div class="container">
-    <h1>{{activeEvent.name}}</h1>
-    <h3>{{activeEvent.location}}</h3>
-    <p *ngIf="activeEvent.date">
+    <h1>{{event.name}}</h1>
+    <h3>{{event.location}}</h3>
+    <p *ngIf="event.date">
         <strong>Datum:</strong><br>
-        {{activeEvent.date}}
+        {{event.date}}
     </p>
-    <p *ngIf="activeEvent.repetitionCycle">
+    <p *ngIf="event.repetitionCycle">
         <strong>Wiederholungszyklus:</strong><br>
-        {{activeEvent.repetitionCycle}}
+        {{event.repetitionCycle}}
     </p>
-    <p *ngIf="activeEvent.organizer">
+    <p *ngIf="event.organizer">
         <strong>Organisator:</strong><br>
-        {{activeEvent.organizer}}
+        {{event.organizer}}
     </p>
-    <p *ngIf="activeEvent.participants">
+    <p *ngIf="event.participants">
         <strong>Teilnehmer:</strong><br>
-        {{activeEvent.participants}}
+        {{event.participants}}
     </p>
-    <p *ngIf="activeEvent.type">
+    <p *ngIf="event.type">
         <strong>Art:</strong><br>
-        {{activeEvent.type}}
+        {{event.type}}
     </p>
-    <p *ngIf="activeEvent.counterEvent">
+    <p *ngIf="event.counterEvent">
         <strong>Gegenveranstaltung:</strong><br>
-        {{activeEvent.counterEvent}}
+        {{event.counterEvent}}
     </p>
-    <p *ngIf="activeEvent.coverage">
+    <p *ngIf="event.coverage">
         <strong>Berichterstattung:</strong><br>
-        {{activeEvent.coverage}} (Twitter-Feed)
+        {{event.coverage}} (Twitter-Feed)
     </p>
     <md-card class="error-message" *ngIf="errorMessage">
         <span>{{errorMessage}}</span>

@@ -10,16 +10,16 @@ import { Event, EventService } from "./../";
 })
 
 export class EventDetailComponent implements OnInit {
-    private activeEvent: Event;
+    private event: Event;
     private errorMessage: string;
     constructor(private eventService: EventService, private route: ActivatedRoute) {
-        this.activeEvent = new Event();
+        this.event = null;
     }
 
     public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
           let id = + params["id"];
-          this.getEventDetails(id);
+          this.getEvent(id);
         });
     }
 
@@ -27,7 +27,7 @@ export class EventDetailComponent implements OnInit {
         this.errorMessage = "";
     }
 
-    private getEventDetails(id: number) {
+    private getEvent(id: number) {
         this.eventService.getEvent(id)
                         .subscribe(
                             event => this.setActiveEvent(event),
@@ -39,8 +39,8 @@ export class EventDetailComponent implements OnInit {
         this.errorMessage = errorMessage;
     }
 
-    private setActiveEvent(event: Event) {
-        this.activeEvent = event;
-        this.eventService.setActiveEvent(event);
+    private setActiveEvent(ev: Event) {
+        this.event = ev;
+        this.eventService.setActiveEvent(ev);
     }
 }
