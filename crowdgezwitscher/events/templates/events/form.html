@@ -89,6 +89,9 @@
                 </label>
             </div>
         </div>
+    </div>
+
+    <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.coverage.errors }}
             <div class="checkbox">
@@ -96,6 +99,40 @@
                     {{ form.coverage }}
                     {{ form.coverage.label }}
                 </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.twitter_account_names.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.twitter_account_names.id_for_label }}">{{ form.twitter_account_names.label }}</label>
+                <input id="{{ form.twitter_account_names.id_for_label }}" name="{{ form.twitter_account_names.html_name }}" type="text" class="form-control" value="{{ form.twitter_account_names.value }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.twitter_hashtags.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.twitter_hashtags.id_for_label }}">{{ form.twitter_hashtags.label }}</label>
+                <input id="{{ form.twitter_hashtags.id_for_label }}" name="{{ form.twitter_hashtags.html_name }}" type="text" class="form-control" value="{{ form.twitter_hashtags.value }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.coverage_start.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.coverage_start.id_for_label }}">{{ form.coverage_start.label }}</label>
+                <input id="{{ form.coverage_start.id_for_label }}" name="{{ form.coverage_start.html_name }}" type="text" class="form-control" value="{{ form.coverage_start.value|date:"Y-m-d" }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.coverage_end.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.coverage_end.id_for_label }}">{{ form.coverage_end.label }}</label>
+                <input id="{{ form.coverage_end.id_for_label }}" name="{{ form.coverage_end.html_name }}" type="text" class="form-control" value="{{ form.coverage_end.value|date:"Y-m-d" }}">
             </div>
         </div>
     </div>

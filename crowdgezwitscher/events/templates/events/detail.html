@@ -12,7 +12,18 @@
     <li><b>Typ:</b> {{ event.type }}</li>
     <li><b>Link:</b> {{ event.url }}</li>
     <li><b>Gegenveranstaltung:</b> {{ event.counter_event }}</li>
-    <li><b>Berichterstattung:</b> {{ event.coverage }}</li>
+    <li><b>Berichterstattung:</b> {{ event.coverage }}
+        <ul>
+            <li>Twitter:
+                <ul>
+                    <li>Accountname: {{ event.twitter_account_names }}</li>
+                    <li>Hashtags: {{ event.twitter_hashtags }}</li>
+                </ul>
+            </li>
+            <li>Start: {{ event.coverage_start }}</li>
+            <li>End: {{ event.coverage_end }}</li>
+        </ul>
+    </li>
     <li><b>Facebook-Seiten:</b>
         <ul>
             {% for page in event.facebook_pages.all %}

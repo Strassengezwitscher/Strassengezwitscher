@@ -25,7 +25,8 @@ class EventForm(ModelForm):
         model = Event
         fields = (
             'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
-            'type', 'url', 'counter_event', 'coverage', 'facebook_pages'
+            'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
+            'coverage_start', 'coverage_end',
         )
 
     def __init__(self, *args, **kwargs):

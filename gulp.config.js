@@ -102,6 +102,8 @@ module.exports = function () {
           'app/events': { main: 'index.js' },
           'app/facebook': { main: 'index.js' },
           'app/map': { main: 'index.js'},
+          'app/imprint': { main: 'index.js'},
+          'app/about': { main: 'index.js'},
       },
     };
 
@@ -112,6 +114,7 @@ module.exports = function () {
         'checkbox',
         'icon',
         'input',
+        'menu',
         'slide-toggle',
         'toolbar',
         'tooltip',
