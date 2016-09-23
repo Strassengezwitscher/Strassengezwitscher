@@ -8,7 +8,7 @@ class DateFilterBackend(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         date_format = '%Y-%m-%d'
         date_start = request.query_params.get('from', None)
-        date_end =  request.query_params.get('to', None)
+        date_end = request.query_params.get('to', None)
 
         if date_start:
             try:
