@@ -1,14 +1,71 @@
 {% extends "admin.html" %}
 
+{% load static %}
+
+{% block header %}
+{{ form.media }}
+{% endblock%}
+
 {% block content %}
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-primary" type="submit" value="Speichern" />
-    {% if perms.facebook.view_facebookpage %}
-        <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
-    {% endif %}
+    {{ form.non_field_errors }}
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.name.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                <input id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" type="text" class="form-control" value="{{ form.name.value }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.active.errors }}
+            <label class="hidden-xs"></label>
+            <div class="checkbox">
+                <label>
+                    {{ form.active }}
+                    {{ form.active.label }}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.location_long.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.location_long.id_for_label }}">{{ form.location_long.label }}</label>
+                <input id="{{ form.location_long.id_for_label }}" name="{{ form.location_long.html_name }}" type="number" class="form-control" value="{{ form.location_long.value }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.location_lat.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.location_lat.id_for_label }}">{{ form.location_lat.label }}</label>
+                <input id="{{ form.location_lat.id_for_label }}" name="{{ form.location_lat.html_name }}" type="number" class="form-control" value="{{ form.location_lat.value }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.events.errors }}
+            <div class="form-group">
+                {{ form.events.label_tag }}
+                {{ form.events }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {% if perms.facebook.add_facebookpage %}
+                <input class="btn btn-primary" type="submit" value="Speichern" role="button">
+            {% endif %}
+            {% if perms.facebook.view_facebookpage %}
+                <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
+            {% endif %}
+        </div>
+    </div>
 </form>
 
 {% endblock %}

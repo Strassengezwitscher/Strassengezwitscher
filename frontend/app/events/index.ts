@@ -1,3 +1,3 @@
-export { Event } from "./event"
-export { EventService } from "./event.service"
-export { EventComponent } from "./event.component"
+export * from "./shared"
+export * from "./event"
+export * from "./eventDetail"
