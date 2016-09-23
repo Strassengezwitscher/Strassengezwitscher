@@ -36,13 +36,6 @@ export class MapService {
         return Observable.throw(errorMessage);
     }
 
-    private subtract30Days(date: Date) {
-        const secondsOfADay = 86400;
-        const msOfADay = secondsOfADay * 1000;
-
-        return new Date(date.getTime() - 30 * msOfADay);
-    }
-
     private getEventUrlMap(): Map<DateFilter, string> {
         const eventUrlMap = new Map<DateFilter, string>();
         eventUrlMap.set(DateFilter.year2015, "api/events.json?from=2015-01-01&to=2015-12-31");
@@ -50,7 +43,7 @@ export class MapService {
         const today = new Date();
         eventUrlMap.set(DateFilter.year2016, `api/events.json?from=2016-01-01&to=${Helper.dateToYMD(today)}`);
 
-        const aMonthBefore = this.subtract30Days(today);
+        const aMonthBefore = Helper.subtract30Days(today);
         eventUrlMap.set(DateFilter.upcoming, `api/events.json?from=${Helper.dateToYMD(aMonthBefore)}`);
 
         eventUrlMap.set(DateFilter.all, "api/events.json");
