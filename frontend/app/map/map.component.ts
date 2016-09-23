@@ -12,7 +12,7 @@ export enum DateFilter {
 
 class MapFilter {
     constructor(public name: string, public filter: DateFilter, public iconPath: string,
-                public iconClickedPath: string) {}
+                public iconClickedPath: string, public opacityBasedOnDate: boolean) {}
 }
 
 class MapObjectSetting {
@@ -110,12 +110,27 @@ export class MapComponent implements AfterViewInit {
         mapObjects.map((mapObject) => this.drawMapObject(mapObject, mapObjectType));
     }
 
+    private calcMapObjectOpacity(mapObject: MapObject, mapObjectType: MapObjectType) {
+        // If MapObject does not have a date (is a facebook page at the current project state)
+        if (!this.mapObjectSettings[mapObjectType].mapFilter.opacityBasedOnDate) {
+            return 1.0;
+        }
+
+        const today = new Date();
+        if (today <= new Date(mapObject.date)) {
+            return 1.0;
+        } else {
+            return 0.2;
+        }
+    }
+
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
             icon: this.mapObjectSettings[mapObjectType].mapFilter.iconPath,
+            opacity: this.calcMapObjectOpacity(mapObject, mapObjectType),
         });
 
         marker.addListener("click", (() => {
@@ -131,17 +146,17 @@ export class MapComponent implements AfterViewInit {
     private initializeMapObjectSettings() {
         let mapEventFilterOptions = [
             new MapFilter("aktuell", DateFilter.upcoming, "static/img/schild_magenta.png",
-                            "static/img/schild_aktiv_magenta.png"),
+                            "static/img/schild_aktiv_magenta.png", true),
             new MapFilter("2016", DateFilter.year2016, "static/img/schild_schwarz.png",
-                            "static/img/schild_aktiv_schwarz.png"),
+                            "static/img/schild_aktiv_schwarz.png", false),
             new MapFilter("2015", DateFilter.year2015, "static/img/schild_schwarz.png",
-                            "static/img/schild_aktiv_schwarz.png"),
+                            "static/img/schild_aktiv_schwarz.png", false),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
             new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0], mapEventFilterOptions);
 
         let mapFacebookPagesFilterOptions = new MapFilter("alle", DateFilter.all, "static/img/schild_blau.png",
-                                                            "static/img/schild_aktiv_blau.png");
+                                                            "static/img/schild_aktiv_blau.png", false);
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
             new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions, []);
     }
