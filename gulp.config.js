@@ -65,6 +65,7 @@ module.exports = function () {
                 path.npm + 'reflect-metadata/Reflect.js',
                 path.npm + 'hammerjs/hammer.js',
                 path.npm + 'traceur/bin/traceur.js',
+                path.npm + 'web-animations-js/web-animations.min.js',
             ],
             name: 'dependencies.js',
         },
