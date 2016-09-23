@@ -3,17 +3,22 @@ import { Http, Response } from "@angular/http";
 
 import { Event } from "./";
 import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/throw";
 
 @Injectable()
 export class EventService {
     private eventPageUrl = "api/events/";
+    private lastEvent: Event = null;
 
     constructor(private http: Http) {}
 
     public getEvent(id: number): Observable<Event> {
-        return this.http.get(this.eventPageUrl + id + "/")
-                        .map(this.extractData)
-                        .catch(this.handleError);
+        return (this.lastEvent != null && this.lastEvent.id === id) ?
+                Observable.of(this.lastEvent) :
+                this.http.get(this.eventPageUrl + id + "/")
+                            .map(this.extractData)
+                            .do(event => this.lastEvent = event)
+                            .catch(this.handleError);
     }
 
     private extractData(response: Response): Event {

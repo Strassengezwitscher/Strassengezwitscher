@@ -15,7 +15,11 @@
         "url": "",
         "counter_event": false,
         "coverage": false,
-        "participants": ""
+        "participants": "",
+        "twitter_account_names": "",
+        "twitter_hashtags": "",
+        "coverage_start": null,
+        "coverage_end": null
     }
 },
 {
@@ -34,7 +38,11 @@
         "url": "",
         "counter_event": false,
         "coverage": false,
-        "participants": ""
+        "participants": "",
+        "twitter_account_names": "",
+        "twitter_hashtags": "",
+        "coverage_start": null,
+        "coverage_end": null
     }
 },
 {
@@ -53,7 +61,11 @@
         "url": "",
         "counter_event": false,
         "coverage": false,
-        "participants": ""
+        "participants": "",
+        "twitter_account_names": "",
+        "twitter_hashtags": "",
+        "coverage_start": null,
+        "coverage_end": null
     }
 }
 ]
