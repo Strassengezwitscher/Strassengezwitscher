@@ -62,6 +62,7 @@ module.exports = function () {
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
                 path.npm + 'hammerjs/hammer.js',
+                path.npm + 'traceur/bin/traceur.js',
             ],
             name: 'dependencies.js',
         },
@@ -70,6 +71,7 @@ module.exports = function () {
 
     var systemjs_config = {
         map: {
+            'app': 'frontend/app',
             '@angular/common.js': '@angular/common',
             '@angular/compiler.js': '@angular/compiler',
             '@angular/core.js': '@angular/core',
@@ -93,8 +95,32 @@ module.exports = function () {
           '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
           '@angular/router': { main: 'index.js', defaultExtension: 'js' },
           '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' },
+          'app/captcha': { main: 'index.js' },
+          'app/contact': { main: 'index.js' },
+          'app/events': { main: 'index.js' },
+          'app/facebook': { main: 'index.js' },
+          'app/map': { main: 'index.js'},
+          'app/imprint': { main: 'index.js'},
+          'app/about': { main: 'index.js'},
       },
     };
+
+    var materialPackages = [
+        'button',
+        'card',
+        'core',
+        'checkbox',
+        'icon',
+        'input',
+        'menu',
+        'slide-toggle',
+        'toolbar',
+        'tooltip',
+    ];
+    materialPackages.forEach(function(pkgName) {
+        systemjs_config['packages']['@angular2-material/' + pkgName] = { format: 'cjs', main: pkgName + '.umd.js' };
+    });
+
     var systemjs = {
         files: [root + 'systemjs.config.js'],
         config: systemjs_config,

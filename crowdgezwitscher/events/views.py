@@ -31,7 +31,8 @@ class EventCreate(PermissionRequiredMixin, CreateView):
     template_name = 'events/form.html'
     fields = [
         'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
-        'type', 'url', 'counter_event', 'coverage'
+        'type', 'url', 'counter_event', 'coverage', 'twitter_account_names', 'twitter_hashtags',
+        'coverage_start', 'coverage_end'
     ]
 
 
@@ -41,7 +42,8 @@ class EventUpdate(PermissionRequiredMixin, UpdateView):
     template_name = 'events/form.html'
     fields = [
         'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
-        'type', 'url', 'counter_event', 'coverage'
+        'type', 'url', 'counter_event', 'coverage', 'twitter_account_names', 'twitter_hashtags',
+        'coverage_start', 'coverage_end'
     ]
 
 

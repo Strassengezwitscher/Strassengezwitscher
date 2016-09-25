@@ -36,9 +36,15 @@ urlpatterns = [
     url(r'^intern/$', views.intern_index, name='intern'),
     url(r'^intern/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^intern/logout/$', auth_views.logout_then_login, name='logout'),
+    url(r'^intern/mattermost/$', views.intern_mattermost, name='mattermost'),
 
     # User area URLs
     url(r'^$', views.landingpage, name='landingpage'),
-    url(r'^map/$', views.index, name='index'),
-    url(r'^map/(?:contact)?/?$', views.index, name='index'),
+    url(r'^map/$', views.index, name='map'),
+    url(r'^contact/$', views.index, name='contact'),
+    url(r'^imprint/$', views.index, name='imprint'),
+    url(r'^about/$', views.index, name='about'),
+
+    url(r'^weblog/', include('zinnia.urls')),
+    url(r'^comments/', include('django_comments.urls')),
 ]

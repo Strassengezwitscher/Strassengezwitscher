@@ -1,0 +1,67 @@
+@import 'base';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.toolbar-menu {
+  flex-basis: 40px;
+}
+
+.toolbar-spacer {
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  flex: 1 1 auto;
+}
+
+a.brand-logo {
+  background: url(img/cg-logo.svg) no-repeat center;
+  height: 100%;
+  width: 250px;
+  background-size: 100% 70%;
+  cursor: pointer;
+  color: transparent;
+}
+
+a.unfocusable.md-button-focus::after {
+  background-color: transparent;
+}
+
+@media only screen and (min-width: 740px) {
+  .toolbar-menu {
+    flex-basis: 230px;
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  .toolbar-menu {
+    flex-basis: 390px;
+  }
+}
+
+
+.hide-on-small-only-custom {
+  @media only screen and (max-width: 739px) {
+    display: none !important;
+  }
+}
+
+.hide-on-med-and-down-custom {
+  @media only screen and (max-width: 1099px) {
+    display: none !important;
+  }
+}
+
+.hide-on-med-and-up-custom {
+  @media only screen and (min-width: 740px) {
+    display: none !important;
+  }
+}
+
+.hide-on-large-only-custom {
+  @media only screen and (min-width: 1100px) {
+    display: none !important;
+  }
+}
