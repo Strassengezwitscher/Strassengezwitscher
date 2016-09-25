@@ -34,12 +34,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'users.apps.UsersConfig',
     'facebook.apps.FacebookConfig',
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
     'captcha.apps.CaptchaConfig',
     'rest_framework',
+    'django_comments',
+    'mptt',
+    'tagging',
+    'zinnia',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'zinnia.context_processors.version',  # Optional
             ],
         },
     },
@@ -110,6 +118,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/css"),
     os.path.join(BASE_DIR, "static/img"),
 ]
+
+SITE_ID = 1
 
 
 # Set absolute URLs
