@@ -3,6 +3,7 @@ export class MapObject {
     public name: string;
     public locationLong: number;
     public locationLat: number;
+    public date: Date;
 }
 
 export enum MapObjectType {

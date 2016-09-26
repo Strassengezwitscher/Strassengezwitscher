@@ -11,12 +11,12 @@ export enum DateFilter {
 }
 
 class MapFilter {
-    constructor(public name: string, public filter: DateFilter) {}
+    constructor(public name: string, public filter: DateFilter, public iconPath: string,
+                public iconClickedPath: string, public opacityBasedOnDate: boolean) {}
 }
 
 class MapObjectSetting {
-        constructor(public visible: boolean = false, public iconPath: string,
-                    public iconClickedPath: string, public name: string,
+        constructor(public visible: boolean = false, public name: string,
                     public mapFilter: MapFilter, public mapFilterOptions: MapFilter[]) {}
 }
 
@@ -97,7 +97,7 @@ export class MapComponent implements AfterViewInit {
         this.updateSelectedMapObjectInfo(null, null, null);
         for (let mapObjectType of this.mapObjectTypes) {
             if (this.mapObjectSettings[mapObjectType].visible) {
-                this.mapService.getMapObjects(mapObjectType)
+                this.mapService.getMapObjects(mapObjectType, this.mapObjectSettings[mapObjectType].mapFilter.filter)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
                                 error => this.setErrorMessage(<any> error)
@@ -110,12 +110,27 @@ export class MapComponent implements AfterViewInit {
         mapObjects.map((mapObject) => this.drawMapObject(mapObject, mapObjectType));
     }
 
+    private calcMapObjectOpacity(mapObject: MapObject, mapObjectType: MapObjectType) {
+        // If MapObject does not have a date (is a facebook page at the current project state)
+        if (!this.mapObjectSettings[mapObjectType].mapFilter.opacityBasedOnDate) {
+            return 1.0;
+        }
+
+        const today = new Date();
+        if (today <= new Date(mapObject.date)) {
+            return 1.0;
+        } else {
+            return 0.2;
+        }
+    }
+
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
-            icon: this.mapObjectSettings[mapObjectType].iconPath,
+            icon: this.mapObjectSettings[mapObjectType].mapFilter.iconPath,
+            opacity: this.calcMapObjectOpacity(mapObject, mapObjectType),
         });
 
         marker.addListener("click", (() => {
@@ -129,17 +144,21 @@ export class MapComponent implements AfterViewInit {
     }
 
     private initializeMapObjectSettings() {
-        let mapFilterOptions = [
-            new MapFilter("aktuell", DateFilter.upcoming),
-            new MapFilter("2016", DateFilter.year2016),
-            new MapFilter("2015", DateFilter.year2015),
+        let mapEventFilterOptions = [
+            new MapFilter("aktuell", DateFilter.upcoming, "static/img/schild_magenta.png",
+                            "static/img/schild_aktiv_magenta.png", true),
+            new MapFilter("2016", DateFilter.year2016, "static/img/schild_schwarz.png",
+                            "static/img/schild_aktiv_schwarz.png", false),
+            new MapFilter("2015", DateFilter.year2015, "static/img/schild_schwarz.png",
+                            "static/img/schild_aktiv_schwarz.png", false),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
-            new MapObjectSetting(true, "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png",
-                "Veranstaltungen", mapFilterOptions[0], mapFilterOptions);
+            new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0], mapEventFilterOptions);
+
+        let mapFacebookPagesFilterOptions = new MapFilter("alle", DateFilter.all, "static/img/facebook.png",
+                                                            "static/img/facebook_aktiv.png", false);
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
-            new MapObjectSetting(false, "static/img/facebook.png", "static/img/facebook_aktiv.png",
-                "Facebook-Seiten", new MapFilter("alle", DateFilter.all), []);
+            new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions, []);
     }
 
     private initializeMarkerMap() {
@@ -164,11 +183,11 @@ export class MapComponent implements AfterViewInit {
         this.zone.run(() => {
             if (this.selectedMarker) {
                 this.selectedMarker.setIcon(this.mapObjectSettings
-                    [this.selectedMapObjectType].iconPath);
+                    [this.selectedMapObjectType].mapFilter.iconPath);
             }
 
             if (marker) {
-                marker.setIcon(this.mapObjectSettings[mapObjectType].iconClickedPath);
+                marker.setIcon(this.mapObjectSettings[mapObjectType].mapFilter.iconClickedPath);
             }
 
             this.selectedMapObject = mapObject;
