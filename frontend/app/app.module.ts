@@ -19,9 +19,10 @@ import { RoutingModule } from "./app.routing";
 import { MapComponent, MapService } from "./map";
 import { ContactComponent, ContactService } from "./contact";
 import { FacebookPageComponent } from "./facebook";
-import { EventComponent, EventDetailComponent, EventService, TweetComponent } from "./events";
+import { EventComponent, EventDetailComponent, EventService } from "./events";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
+import { TweetComponent } from "./twitter";
 
 @NgModule({
     imports: [
