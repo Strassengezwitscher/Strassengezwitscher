@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 
 from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
+from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
@@ -86,7 +87,7 @@ class EventDelete(PermissionRequiredMixin, DeleteView):
 class EventAPIList(generics.ListAPIView):
     queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializerShortened
-    filter_backends = (MapObjectFilter,)
+    filter_backends = (MapObjectFilter, DateFilterBackend)
 
 
 class EventAPIDetail(generics.RetrieveAPIView):

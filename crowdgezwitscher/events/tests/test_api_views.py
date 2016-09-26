@@ -8,8 +8,7 @@ from events.models import Event
 from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
-class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
-
+class EventAPIViewTests(APITestCase):
     fixtures = ['events_views_testdata.json']
     model = Event
 
@@ -43,7 +42,7 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         events = response.data
-        for attr in ('id', 'name', 'locationLong', 'locationLat'):
+        for attr in ('id', 'name', 'locationLong', 'locationLat', 'date'):
             self.assertTrue(all(attr in obj for obj in events))
         self.assertEqual(len(events), 2)
         self.assertTrue(len(events) < Event.objects.count())
@@ -57,7 +56,7 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             u'id': 1,
             u'name': u'Test Event',
             u'location': u'Here',
-            u'date': u'2016-07-24',
+            u'date': u'2016-07-20',
             u'repetitionCycle': u'unbekannter Rhythmus',
             u'type': u'',
             u'url': u'',
@@ -157,25 +156,30 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+
+class EventFilterAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
+    fixtures = ['events_views_testdata.json']
+    model = Event
+
     #
-    # Test backend filters
+    # Position filter tests
     #
 
     def test_empty_filter(self):
         url = reverse('events_api:list')
-        super(EventAPIViewTests, self).test_empty_filter(url)
+        super(EventFilterAPIViewTests, self).test_empty_filter(url)
 
     def test_partial_filter(self):
         url = reverse('events_api:list')
-        super(EventAPIViewTests, self).test_partial_filter(url)
+        super(EventFilterAPIViewTests, self).test_partial_filter(url)
 
     def test_no_numbers_filter(self):
         url = reverse('events_api:list')
-        super(EventAPIViewTests, self).test_no_numbers_filter(url)
+        super(EventFilterAPIViewTests, self).test_no_numbers_filter(url)
 
     def test_invalid_numbers_filter(self):
         url = reverse('events_api:list')
-        super(EventAPIViewTests, self).test_invalid_numbers_filter(url)
+        super(EventFilterAPIViewTests, self).test_invalid_numbers_filter(url)
 
     def test_correct_filter(self):
         url = reverse('events_api:list')
@@ -185,4 +189,39 @@ class EventAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             'max_lat': 51.267301,
             'max_long': 99.713402
         }
-        super(EventAPIViewTests, self).test_correct_filter(url, rect_params)
+        super(EventFilterAPIViewTests, self).test_correct_filter(url, rect_params)
+
+    #
+    # Date filter tests
+    #
+
+    def test_from_filter(self):
+        url = '%s?from=2016-07-13' % reverse('events_api:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        events = response.data
+        self.assertEqual(len(events), 2)
+
+    def test_to_filter(self):
+        url = '%s?o=2016-07-17' % reverse('events_api:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        events = response.data
+        self.assertEqual(len(events), 2)
+
+    def test_from_and_to_filter(self):
+        url = '%s?from=2016-07-13&to=2016-07-17' % reverse('events_api:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        events = response.data
+        self.assertEqual(len(events), 1)
+
+    def test_from_filter_invalid_format(self):
+        url = '%s?from=2016_07_13' % reverse('events_api:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_to_filter_invalid_format(self):
+        url = '%s?to=2016_07_17' % reverse('events_api:list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
