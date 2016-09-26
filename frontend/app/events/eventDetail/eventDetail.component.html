@@ -1,38 +1,29 @@
-<div class="container">
+<div class="container event-container">
     <div *ngIf="event">
-        <h1>{{event.name}}</h1>
-        <h3>{{event.location}}</h3>
-        <p *ngIf="event.date">
-            <strong>Datum:</strong><br>
-            {{event.date}}
-        </p>
+        <h1>{{ event.name }}
+            <span class="small">
+                <span *ngIf="event.date">{{ event.date | date: 'dd.MM.yyyy' }},</span>
+                <span>{{ event.location }}</span>
+            </span>
+        </h1>
         <p *ngIf="event.repetitionCycle">
-            <strong>Wiederholungszyklus:</strong><br>
-            {{event.repetitionCycle}}
+            <strong>Wiederholungszyklus:</strong> {{event.repetitionCycle}}
         </p>
         <p *ngIf="event.organizer">
-            <strong>Organisator:</strong><br>
-            {{event.organizer}}
+            <strong>Organisator:</strong> {{event.organizer}}
         </p>
         <p *ngIf="event.participants">
-            <strong>Teilnehmer:</strong><br>
-            {{event.participants}}
+            <strong>Teilnehmer:</strong> {{event.participants}}
         </p>
         <p *ngIf="event.type">
-            <strong>Art:</strong><br>
-            {{event.type}}
+            <strong>Art:</strong> {{event.type}}
         </p>
         <p *ngIf="event.counterEvent">
-            <strong>Gegenveranstaltung:</strong><br>
-            {{event.counterEvent}}
+            <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
         </p>
-        <p *ngIf="event.coverage">
-            <strong>Berichterstattung:</strong><br>
-            {{event.coverage}} (Twitter-Feed)
-        </p>
-    </div>
-    <div>
-        <cg-tweet *ngFor="let tweetId of tweetIds | async" [id]="tweetId"></cg-tweet>
+        <div>
+            <cg-tweet *ngFor="let tweetId of tweetIds | async" [id]="tweetId"></cg-tweet>
+        </div>
     </div>
 </div>
 <md-card class="error-message" *ngIf="errorMessage">
