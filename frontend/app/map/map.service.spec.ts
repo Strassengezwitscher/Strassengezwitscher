@@ -123,10 +123,12 @@ describe("MapService", () => {
             toBe("api/events.json?from=2015-01-01&to=2015-12-31");
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2016)).
             toContain("api/events.json?from=2016-01-01&");
+
+        // Folling two specs based on mocked date
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2016)).
             toContain("to=2016-5-31");
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.upcoming)).
-            toContain("api/events.json?from=2016-5-1");
+            toBe("api/events.json?from=2016-5-1");
     }));
 
 });
