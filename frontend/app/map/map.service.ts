@@ -36,6 +36,7 @@ export class MapService {
         return Observable.throw(errorMessage);
     }
 
+    // TODO(anyone): Use URLSearchParams
     private getEventUrlMap(): Map<DateFilter, string> {
         const eventUrlMap = new Map<DateFilter, string>();
         eventUrlMap.set(DateFilter.year2015, "api/events.json?from=2015-01-01&to=2015-12-31");
@@ -51,6 +52,7 @@ export class MapService {
         return eventUrlMap;
     }
 
+    // TODO(anyone): Use URLSearchParams
     private getFBPagesUrlMap(): Map<DateFilter, string> {
         const fpPagesUrlMap = new Map<DateFilter, string>();
         fpPagesUrlMap.set(DateFilter.all, "api/facebook.json");
