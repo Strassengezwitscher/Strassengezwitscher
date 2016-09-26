@@ -1,10 +1,23 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
+import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
 
 import { MapObject, MapObjectType, MapService } from "./";
 
+export enum DateFilter {
+    all = 0,
+    upcoming,
+    year2016,
+    year2015,
+}
+
+class MapFilter {
+    constructor(public name: string, public filter: DateFilter) {}
+}
+
 class MapObjectSetting {
         constructor(public visible: boolean = false, public iconPath: string,
-                    public iconClickedPath: string, public name: string) {}
+                    public iconClickedPath: string, public name: string,
+                    public mapFilter: MapFilter, public mapFilterOptions: MapFilter[]) {}
 }
 
 @Component({
@@ -12,8 +25,19 @@ class MapObjectSetting {
     selector: "cg-map",
     templateUrl: "map.component.html",
     providers: [MapService],
+    animations: [
+        trigger("slideInOut", [
+            state("in", style({height: "*"})),
+            transition("* => void", [
+                animate("250ms ease-out", style({height: 0})),
+            ]),
+            transition("void => *", [
+                style({height: 0}),
+                animate("250ms ease-out", style({height: "*"})),
+            ]),
+        ]),
+    ],
 })
-
 export class MapComponent implements AfterViewInit {
 
     private errorMessage: string;
@@ -45,6 +69,14 @@ export class MapComponent implements AfterViewInit {
     public onCheckboxChange() {
         this.retrieveVisibleMapObjects();
         this.deleteNotVisibleMapObjects();
+    }
+
+    public onRadioChange() {
+        for (let marker of this.markers.get(MapObjectType.EVENTS)) {
+            marker.setMap(null);
+        }
+        this.markers.set(MapObjectType.EVENTS, new Array<google.maps.Marker>());
+        this.retrieveVisibleMapObjects();
     }
 
     private initMap() {
@@ -97,12 +129,17 @@ export class MapComponent implements AfterViewInit {
     }
 
     private initializeMapObjectSettings() {
+        let mapFilterOptions = [
+            new MapFilter("aktuell", DateFilter.upcoming),
+            new MapFilter("2016", DateFilter.year2016),
+            new MapFilter("2015", DateFilter.year2015),
+        ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
             new MapObjectSetting(true, "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png",
-                "Veranstaltungen");
+                "Veranstaltungen", mapFilterOptions[0], mapFilterOptions);
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
             new MapObjectSetting(false, "static/img/facebook.png", "static/img/facebook_aktiv.png",
-                "Facebook-Seiten");
+                "Facebook-Seiten", new MapFilter("alle", DateFilter.all), []);
     }
 
     private initializeMarkerMap() {

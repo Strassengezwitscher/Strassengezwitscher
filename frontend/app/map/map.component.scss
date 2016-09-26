@@ -12,10 +12,28 @@ $card-padding: 10px;
 
 .map-settings {
   margin: 0;
+  padding: 8px 24px;
   position: absolute;
   right: $card-padding;
   top: #{$height-navbar + $card-padding};
   z-index: 99;
+
+  .map-setting md-slide-toggle {
+    margin: 8px 0;
+  }
+
+  .map-sub-settings {
+    overflow: hidden;
+    padding-left: 16px;
+
+    .map-sub-setting {
+      display: block;
+    }
+
+    .md-radio-focused .md-ink-ripple {
+      opacity: 0;
+    }
+  }
 }
 
 .map-infos {
