@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
+import { HttpModule, JsonpModule } from "@angular/http";
 
 import { MdButtonModule } from "@angular2-material/button";
 import { MdCheckboxModule } from "@angular2-material/checkbox";
@@ -19,7 +19,7 @@ import { RoutingModule } from "./app.routing";
 import { MapComponent, MapService } from "./map";
 import { ContactComponent, ContactService } from "./contact";
 import { FacebookPageComponent } from "./facebook";
-import { EventComponent, EventDetailComponent, EventService } from "./events";
+import { EventComponent, EventDetailComponent, EventService, TweetComponent } from "./events";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
 
@@ -28,6 +28,7 @@ import { AboutComponent } from "./about";
         BrowserModule,
         FormsModule,
         HttpModule,
+        JsonpModule,
         RoutingModule,
         MdButtonModule.forRoot(),
         MdCardModule.forRoot(),
@@ -40,14 +41,15 @@ import { AboutComponent } from "./about";
         MdTooltipModule.forRoot(),
     ],
     declarations: [
+        AboutComponent,
         AppComponent,
-        MapComponent,
         ContactComponent,
-        FacebookPageComponent,
         EventComponent,
         EventDetailComponent,
+        FacebookPageComponent,
         ImprintComponent,
-        AboutComponent,
+        MapComponent,
+        TweetComponent,
     ],
     providers: [
         MapService,
