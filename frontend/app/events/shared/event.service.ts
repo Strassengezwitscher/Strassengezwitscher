@@ -7,6 +7,7 @@ import "rxjs/add/observable/throw";
 
 @Injectable()
 export class EventService {
+    private twitterOembedUrl = "https://api.twitter.com/1.1/statuses/oembed.json";
     private eventPageUrl = "api/events/";
     private lastEvent: Event = null;
 
@@ -34,8 +35,9 @@ export class EventService {
         params.set("id", tweetId);
         params.set("callback", "JSONP_CALLBACK");
         params.set("omit_script", "true");
-        return this.jsonp.request("https://api.twitter.com/1.1/statuses/oembed.json", {search: params})
-            .map((response) => <string> response.json()["html"]);
+        return this.jsonp.request(this.twitterOembedUrl, {search: params})
+            .map((response) => <string> response.json()["html"])
+            .catch(error => Observable.of(""));  // suppress error
     }
 
     private extractData(response: Response): Event {
