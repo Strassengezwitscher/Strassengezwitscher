@@ -44,4 +44,5 @@ urlpatterns = [
     url(r'^contact/$', views.index, name='contact'),
     url(r'^imprint/$', views.index, name='imprint'),
     url(r'^about/$', views.index, name='about'),
+    url(r'^events/[0-9]+/$', views.index, name='eventDetail'),
 ]
