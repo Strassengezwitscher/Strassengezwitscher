@@ -22,7 +22,7 @@ import { FacebookPageComponent } from "./facebook";
 import { EventComponent, EventDetailComponent, EventService } from "./events";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
-import { TweetComponent } from "./twitter";
+import { TweetComponent, TwitterService } from "./twitter";
 
 @NgModule({
     imports: [
@@ -53,9 +53,10 @@ import { TweetComponent } from "./twitter";
         TweetComponent,
     ],
     providers: [
-        MapService,
         ContactService,
         EventService,
+        MapService,
+        TwitterService,
     ],
     bootstrap: [ AppComponent ],
 })

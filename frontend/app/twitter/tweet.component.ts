@@ -1,7 +1,7 @@
 import { Component, ViewChild, AfterViewInit, Input } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 
-import {  EventService } from "../events";
+import { TwitterService } from "./twitter.service";
 
 declare var twttr: {widgets: {load: Function}};
 
@@ -17,7 +17,7 @@ export class TweetComponent implements AfterViewInit {
     private inner: Observable<string>;
     private hidden: boolean = true;
 
-    constructor(private eventService: EventService) {}
+    constructor(private twitterService: TwitterService) {}
 
     public ngAfterViewInit() {
         let tweetWrapper = this.tweetWrapper;
@@ -27,7 +27,7 @@ export class TweetComponent implements AfterViewInit {
         let config = { attributes: true };
         observer.observe(this.tweetWrapper.nativeElement, config);
 
-        this.inner = this.eventService.getTweet(this.id);
+        this.inner = this.twitterService.getTweet(this.id);
     }
 
     public displayStyle() {
