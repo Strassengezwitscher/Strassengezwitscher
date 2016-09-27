@@ -1,5 +1,14 @@
 <md-toolbar>
-    <span class="toolbar-menu"></span>
+    <span class="toolbar-menu">
+        <span class="hide-on-small-only-custom">
+            <a md-button [routerLink]="['/blog']">Blog</a>
+        </span>
+        <span class="hide-on-med-and-up-custom">
+            <button md-icon-button [routerLink]="['/blog']">
+                <md-icon>view_quilt</md-icon>
+            </button>
+        </span>
+    </span>
     <span class="toolbar-spacer"></span>
     <a [routerLink]="['/map']" class="brand-logo">CrowdgezwitscherMap</a>
     <span class="toolbar-spacer"></span>

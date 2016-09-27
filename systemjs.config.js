@@ -20,6 +20,7 @@
   };
 
   var appBarrels = [
+    'app/blog',
     'app/captcha',
     'app/contact',
     'app/events',
