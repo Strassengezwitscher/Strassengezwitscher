@@ -139,6 +139,7 @@ class EventAPIViewTests(APITestCase):
         return [{'foo': 'bar'}, {'id_str': '456'}]
 
     # GET /api/events/1/tweets
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
     @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
     def test_get_tweets(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1})
@@ -157,6 +158,7 @@ class EventAPIViewTests(APITestCase):
         self.assertEqual(response.data['status'], 'error')
         self.assertTrue('improperly configured' in response.data['errors'])
 
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
     @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_missing_field)
     def test_twitter_unexpected_answer(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1})
