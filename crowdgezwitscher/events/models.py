@@ -39,7 +39,7 @@ class Event(MapObject):
 
     def _is_ready_for_twitter(self):
         """Checks that all fields required for getting tweets have some value."""
-        return self.twitter_account_names and self.twitter_hashtags and self.coverage_start and self.coverage_end
+        return all([self.twitter_account_names, self.twitter_hashtags, self.coverage_start, self.coverage_end])
 
     def build_twitter_search_query(self):
         """Returns search query for Twitter from hashtags and account names."""
