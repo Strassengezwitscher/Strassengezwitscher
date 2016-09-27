@@ -1,7 +1,16 @@
-from rest_framework import generics
+from datetime import timedelta
 
+from TwitterAPI import TwitterAPI
+
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
+
+from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import ModelForm, ModelMultipleChoiceField
+from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -9,6 +18,7 @@ from django.urls import reverse_lazy
 
 from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
+from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
@@ -93,3 +103,36 @@ class EventAPIList(generics.ListAPIView):
 class EventAPIDetail(generics.RetrieveAPIView):
     queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializer
+
+
+@api_view(['GET'])
+def get_tweets(request, pk):
+    """Get tweets for Event with primary key pk.
+
+    Searches for tweets matching the Event's registered hashtags, accounts and dates. The dates form an open interval.
+    Modify TWITTER_TWEET_COUNT to change the maximum number of returned tweet IDs.
+    """
+    event = get_object_or_404(Event, pk=pk)
+    query = event.build_twitter_search_query()
+    if not query:
+        return Response({'status': 'error', 'errors': 'Twitter not or improperly configured for this event.'},
+                        status=status.HTTP_404_NOT_FOUND)
+    twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
+                         settings.TWITTER_CONSUMER_SECRET,
+                         settings.TWITTER_ACCESS_TOKEN,
+                         settings.TWITTER_ACCESS_SECRET,)
+    since = event.coverage_start.strftime('%Y-%m-%d')
+    until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
+    tweets = twitter.request('search/tweets', {'q': query,
+                                               'count': settings.TWITTER_TWEET_COUNT,
+                                               'since': since,
+                                               'until': until,})
+    res = []
+    for tweet in tweets:
+        try:
+            res.append(tweet['id_str'])
+        except KeyError:
+            logger.warning("Got Tweet without expected fields.")
+            continue
+
+    return Response(res)

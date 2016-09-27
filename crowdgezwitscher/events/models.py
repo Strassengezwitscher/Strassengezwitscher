@@ -36,3 +36,21 @@ class Event(MapObject):
 
     def get_absolute_url(self):
         return reverse('events:detail', kwargs={'pk': self.pk})
+
+    def _is_ready_for_twitter(self):
+        """Checks that all fields required for getting tweets have some value."""
+        return self.twitter_account_names and self.twitter_hashtags and self.coverage_start and self.coverage_end
+
+    def build_twitter_search_query(self):
+        """Returns search query for Twitter from hashtags and account names."""
+        if not self._is_ready_for_twitter():
+            return
+        accounts = [account.strip() for account in self.twitter_account_names.split(',')]
+        accounts = [account[1:] if account[0] == '@' else account for account in accounts]  # remove leading '@''
+        hashtags = [hashtag.strip() for hashtag in self.twitter_hashtags.split(',')]
+        hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags] # require leading '#'
+        query = ' OR '.join(hashtags)
+        if query and accounts:
+            query += ' '
+        query += ' OR '.join(map(lambda acc: 'from:' + acc, accounts))
+        return query
