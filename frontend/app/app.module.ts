@@ -23,6 +23,7 @@ import { FacebookPageComponent } from "./facebook";
 import { EventComponent, EventDetailComponent, EventService } from "./events";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
+import { BlogComponent } from "./blog";
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import { AboutComponent } from "./about";
     ],
     declarations: [
         AppComponent,
+        BlogComponent,
         MapComponent,
         ContactComponent,
         FacebookPageComponent,
