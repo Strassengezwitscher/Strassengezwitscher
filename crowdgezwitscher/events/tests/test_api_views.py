@@ -4,6 +4,7 @@ import mock
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+from TwitterAPI import TwitterResponse, TwitterConnectionError
 
 from events.models import Event
 from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
@@ -138,6 +139,19 @@ class EventAPIViewTests(APITestCase):
     def mock_twitter_rest_api_search_tweets_missing_field(*args, **kwargs):
         return [{'foo': 'bar'}, {'id_str': '456'}]
 
+    def mock_twitter_rest_api_search_tweets_connection_error(*args, **kwargs):
+        raise TwitterConnectionError("wow, much error, such bad")
+
+    def mock_twitter_rest_api_search_tweets_rate_limit_exhausted(*args, **kwargs):
+        m = mock.Mock()
+        m.status_code = 429  # Twitter uses 429 for exhausted rate limits
+        return TwitterResponse(m, None)
+
+    def mock_twitter_rest_api_search_tweets_some_error(*args, **kwargs):
+        m = mock.Mock()
+        m.status_code = 500  # just some error we do not handle specifically
+        return TwitterResponse(m, None)
+
     # GET /api/events/1/tweets
     @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
     @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
@@ -165,6 +179,30 @@ class EventAPIViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, ['456'])
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_connection_error)
+    def test_twitter_connection_error(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_rate_limit_exhausted)
+    def test_twitter_rate_limit_exceeded(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_some_error)
+    def test_twitter_some_error(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
 
     # Test correct json urls
     # GET /events.json

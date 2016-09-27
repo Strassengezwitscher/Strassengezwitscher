@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from TwitterAPI import TwitterAPI
+from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterRequestError
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -117,22 +117,32 @@ def get_tweets(request, pk):
     if not query:
         return Response({'status': 'error', 'errors': 'Twitter not or improperly configured for this event.'},
                         status=status.HTTP_404_NOT_FOUND)
+    since = event.coverage_start.strftime('%Y-%m-%d')
+    until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
     twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
                          settings.TWITTER_CONSUMER_SECRET,
                          settings.TWITTER_ACCESS_TOKEN,
                          settings.TWITTER_ACCESS_SECRET,)
-    since = event.coverage_start.strftime('%Y-%m-%d')
-    until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
-    tweets = twitter.request('search/tweets', {'q': query,
-                                               'count': settings.TWITTER_TWEET_COUNT,
-                                               'since': since,
-                                               'until': until})
     res = []
-    for tweet in tweets:
-        try:
-            res.append(tweet['id_str'])
-        except KeyError:
-            logger.warning("Got Tweet without expected fields.")
-            continue
+    try:
+        tweets = twitter.request('search/tweets', {'q': query,
+                                                   'count': settings.TWITTER_TWEET_COUNT,
+                                                   'since': since,
+                                                   'until': until})
+    except TwitterConnectionError:
+        logger.warning("Could not connect to Twitter.")
+        return Response(res)
+    try:
+        for tweet in tweets:
+            try:
+                res.append(tweet['id_str'])
+            except KeyError:
+                logger.warning("Got Tweet without expected fields.")
+                continue
+    except TwitterRequestError as e:
+        if e.status_code == 429:
+            logger.warning("Twitter rate limit exhausted")
+        else:
+            logger.warning("TwitterRequestError, Status Code: %d", e.status_code)
 
     return Response(res)
