@@ -48,7 +48,7 @@ class Event(MapObject):
         accounts = [account.strip() for account in self.twitter_account_names.split(',')]
         accounts = [account[1:] if account[0] == '@' else account for account in accounts]  # remove leading '@''
         hashtags = [hashtag.strip() for hashtag in self.twitter_hashtags.split(',')]
-        hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags] # require leading '#'
+        hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags]  # require leading '#'
         query = ' OR '.join(hashtags)
         if query and accounts:
             query += ' '

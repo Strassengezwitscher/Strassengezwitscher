@@ -130,7 +130,7 @@ class EventAPIViewTests(APITestCase):
     def test_delete_detail_events(self):
         url = reverse('events_api:detail', kwargs={'pk': 1})
         response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)    
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def mock_twitter_rest_api_search_tweets(*args, **kwargs):
         return [{'id_str': '123'}, {'id_str': '456'}]
@@ -149,7 +149,8 @@ class EventAPIViewTests(APITestCase):
     @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
     def test_no_tweets_for_misconfigured_event(self):
         pk = 2
-        event = Event.objects.get(pk=pk)  # make sure object exists
+        event = Event.objects.get(pk=pk)
+        self.assertEqual(type(event), Event)  # just make sure object exists despite returned 404 below
         url = reverse('events_api:tweets', kwargs={'pk': pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

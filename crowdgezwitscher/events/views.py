@@ -126,7 +126,7 @@ def get_tweets(request, pk):
     tweets = twitter.request('search/tweets', {'q': query,
                                                'count': settings.TWITTER_TWEET_COUNT,
                                                'since': since,
-                                               'until': until,})
+                                               'until': until})
     res = []
     for tweet in tweets:
         try:

@@ -135,9 +135,9 @@ RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
 TWITTER_TWEET_COUNT = 50
 
 # replace or override with sane values
-TWITTER_CONSUMER_KEY = ''     # noqa
+TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''  # noqa
-TWITTER_ACCESS_TOKEN = ''     # noqa
+TWITTER_ACCESS_TOKEN = ''
 TWITTER_ACCESS_SECRET = ''    # noqa
 ######################################################################################################
 
