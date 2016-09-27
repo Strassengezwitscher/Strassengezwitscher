@@ -11,13 +11,17 @@ export enum DateFilter {
 }
 
 class MapFilter {
-    constructor(public name: string, public filter: DateFilter, public iconPath: string,
-                public iconClickedPath: string, public opacityBasedOnDate: boolean) {}
+    constructor(
+        public name: string, public infoText: string, public filter: DateFilter,
+        public iconPath: string, public iconClickedPath: string, public opacityBasedOnDate: boolean,
+    ) {}
 }
 
 class MapObjectSetting {
-        constructor(public visible: boolean = false, public name: string,
-                    public mapFilter: MapFilter, public mapFilterOptions: MapFilter[]) {}
+        constructor(
+            public visible: boolean = false, public name: string,
+            public mapFilter: MapFilter, public mapFilterOptions: MapFilter[],
+        ) {}
 }
 
 @Component({
@@ -145,18 +149,26 @@ export class MapComponent implements AfterViewInit {
 
     private initializeMapObjectSettings() {
         let mapEventFilterOptions = [
-            new MapFilter("aktuell", DateFilter.upcoming, "static/img/schild_magenta.png",
-                            "static/img/schild_aktiv_magenta.png", true),
-            new MapFilter("2016", DateFilter.year2016, "static/img/schild_schwarz.png",
-                            "static/img/schild_aktiv_schwarz.png", false),
-            new MapFilter("2015", DateFilter.year2015, "static/img/schild_schwarz.png",
-                            "static/img/schild_aktiv_schwarz.png", false),
+            new MapFilter(
+                "aktuell", "kommende & vergangene Veranst. (30 Tage)",
+                DateFilter.upcoming, "static/img/schild_magenta.png", "static/img/schild_aktiv_magenta.png", true,
+            ),
+            new MapFilter(
+                "2016", null, DateFilter.year2016,
+                "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false,
+            ),
+            new MapFilter(
+                "2015", null, DateFilter.year2015,
+                "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false
+            ),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
             new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0], mapEventFilterOptions);
 
-        let mapFacebookPagesFilterOptions = new MapFilter("alle", DateFilter.all, "static/img/facebook.png",
-                                                            "static/img/facebook_aktiv.png", false);
+        let mapFacebookPagesFilterOptions = new MapFilter(
+            "alle", null, DateFilter.all,
+            "static/img/facebook.png", "static/img/facebook_aktiv.png", false
+        );
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
             new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions, []);
     }
