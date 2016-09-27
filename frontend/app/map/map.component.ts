@@ -100,7 +100,8 @@ export class MapComponent implements AfterViewInit {
     private retrieveVisibleMapObjects() {
         this.updateSelectedMapObjectInfo(null, null, null);
         for (let mapObjectType of this.mapObjectTypes) {
-            if (this.mapObjectSettings[mapObjectType].visible) {
+            // Retrieve MapObjects only if currently visible and markers do not yet exist
+            if (this.mapObjectSettings[mapObjectType].visible && this.markers.get(mapObjectType).length < 1) {
                 this.mapService.getMapObjects(mapObjectType, this.mapObjectSettings[mapObjectType].mapFilter.filter)
                             .subscribe(
                                 mapObjects => this.drawMapObjects(mapObjects, mapObjectType),
