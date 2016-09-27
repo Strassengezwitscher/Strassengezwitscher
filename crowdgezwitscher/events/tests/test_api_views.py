@@ -1,10 +1,11 @@
 import json
 
+import mock
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from events.models import Event
 
+from events.models import Event
 from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
@@ -129,7 +130,38 @@ class EventAPIViewTests(APITestCase):
     def test_delete_detail_events(self):
         url = reverse('events_api:detail', kwargs={'pk': 1})
         response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)    
+
+    def mock_twitter_rest_api_search_tweets(*args, **kwargs):
+        return [{'id_str': '123'}, {'id_str': '456'}]
+
+    def mock_twitter_rest_api_search_tweets_missing_field(*args, **kwargs):
+        return [{'foo': 'bar'}, {'id_str': '456'}]
+
+    # GET /api/events/1/tweets
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, ['123', '456'])
+
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
+    def test_no_tweets_for_misconfigured_event(self):
+        pk = 2
+        event = Event.objects.get(pk=pk)  # make sure object exists
+        url = reverse('events_api:tweets', kwargs={'pk': pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['status'], 'error')
+        self.assertTrue('improperly configured' in response.data['errors'])
+
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_missing_field)
+    def test_twitter_unexpected_answer(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, ['456'])
 
     # Test correct json urls
     # GET /events.json
