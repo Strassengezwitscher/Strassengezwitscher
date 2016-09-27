@@ -5,35 +5,13 @@ from django.contrib import auth
 
 
 class CrowdgezwitscherViewTests(TestCase):
-    def test_serves_angular_tag_for_map_url(self):
-        response = self.client.get(reverse('map'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<cg-app>', response.content)
-        self.assertIn(b'</cg-app>', response.content)
-
-    def test_serves_angular_tag_for_contact_url(self):
-        response = self.client.get(reverse('contact'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<cg-app>', response.content)
-        self.assertIn(b'</cg-app>', response.content)
-
-    def test_serves_angular_tag_for_imprint_url(self):
-        response = self.client.get(reverse('imprint'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<cg-app>', response.content)
-        self.assertIn(b'</cg-app>', response.content)
-
-    def test_serves_angular_tag_for_about_url(self):
-        response = self.client.get(reverse('about'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<cg-app>', response.content)
-        self.assertIn(b'</cg-app>', response.content)
-
-    def test_serves_angular_tag_for_event_detail_url(self):
-        response = self.client.get(reverse('eventDetail'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<cg-app>', response.content)
-        self.assertIn(b'</cg-app>', response.content)
+    def test_serves_angular_tag(self):
+        url_names = ['map', 'contact', 'imprint', 'about', 'eventDetail', 'blog']
+        for url_name in url_names:
+            response = self.client.get(reverse(url_name))
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'<cg-app>', response.content)
+            self.assertIn(b'</cg-app>', response.content)
 
     def login(self):
         self.user = User.objects.create_user('user', 'user@host.org', 'password')
