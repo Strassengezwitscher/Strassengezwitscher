@@ -63,7 +63,7 @@ class BlogAPIViewTests(APITestCase):
         self.assertEqual(response_json['content'], blog_entry.content)
 
     # GET /api/blogs/1000/
-    def test_read_detail_not_existant_mapobject(self):
+    def test_read_detail_not_existant_blogentry(self):
         url = reverse('blogs_api:detail', kwargs={'pk': 1000})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -146,8 +146,14 @@ class BlogAPIViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # GET /mapobjects1.json
+    # GET /blogs1.json
     def test_json_detail_blogs_incorrect(self):
         url = '/api/blogs1.json'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /blogs/2
+    def test_json_detail_blogs_draft_not_found(self):
+        url = '/api/blogs/2.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
