@@ -30,36 +30,6 @@
 </div>
 
 
-{% if perms.facebook.view_facebookpage %}
-<div class="row">
-    <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <label class="control-label" > Facebook Seiten </label>
-        <ul>
-            {% for page in blog.facebook_pages.all %}
-                <li><a href="{% url 'facebook:detail' page.id %}">{{ page.name }}</a></li>
-            {% empty %}
-                <li>Keine Facebook-Seiten verknüpft</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endif %}
-
-{% if perms.events.view_event %}
-<div class="row">
-    <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <label class="control-label" > Veranstaltungen </label>
-        <ul>
-            {% for event in blog.events.all %}
-                <li><a href="{% url 'events:detail' event.id %}">{{ event.name }}</a></li>
-            {% empty %}
-                <li>Keine Veranstaltungen verknüpft</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endif %}
-
 {% if perms.blogs.change_blogentry %}
     <a class="btn btn-primary" href="{% url 'blogs:update' blog.id %}">Bearbeiten</a>
 {% endif %}

@@ -31,8 +31,6 @@ class BlogEntry(models.Model):
 
     created_on = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(User, unique=False)
-    events = models.ManyToManyField(Event, blank=True, related_name="blog_entries")
-    facebook_pages = models.ManyToManyField(FacebookPage, blank=True, related_name="blog_entries")
 
     def get_absolute_url(self):
         return reverse('blogs:detail', kwargs={'pk': self.pk})

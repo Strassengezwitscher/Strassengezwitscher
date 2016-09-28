@@ -7,13 +7,7 @@
         "content": "<p><strong>awesome content 1</strong></p>",
         "status": "PUBLISHED",
         "created_on": "2016-09-27T13:54:07.443Z",
-        "created_by": 1,
-        "events": [
-            1
-        ],
-        "facebook_pages": [
-            1
-        ]
+        "created_by": 1
     }
 },
 {
@@ -24,13 +18,7 @@
         "content": "<p>wohooooooooo!!!!!</p>\r\n\r\n<p><strong>asdfsad<img alt=\"\" src=\"https://strassengezwitscher.de/static/cg.jpg\" style=\"height:114px; width:300px\" /></strong></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu neque, iaculis id sodales non, bibendum nec lectus. Curabitur fermentum placerat gravida. Nam hendrerit neque consequat, convallis magna non, efficitur lorem. Donec tincidunt interdum vestibulum. Sed dictum massa eget turpis fringilla, non facilisis lorem semper. Phasellus tincidunt gravida tellus. Ut semper eu ipsum in sollicitudin. Maecenas at nisi imperdiet, imperdiet lacus in, malesuada est. Ut mattis massa pretium tincidunt vestibulum. Etiam at nisi ornare, posuere risus vitae, rutrum orci. Donec convallis vulputate ullamcorper. Nulla metus libero, lobortis id viverra quis, molestie quis ipsum. Duis porta venenatis massa, non vestibulum nisi interdum nec. Quisque ornare nibh ut orci suscipit posuere sed vel dolor.</p>\r\n\r\n<p>Suspendisse mauris massa, vehicula quis turpis a, aliquam dapibus diam. Nullam nisl lorem, volutpat eget luctus in, vehicula id augue. Ut malesuada metus eu nunc sagittis convallis. Integer ac massa convallis, hendrerit sem quis, dignissim justo. Morbi consectetur eu lorem et lobortis. Quisque mattis et massa sed imperdiet. Quisque pharetra velit at sapien condimentum tincidunt. Vestibulum hendrerit viverra quam. Maecenas quis velit accumsan nibh congue sagittis ut aliquam felis. Sed felis odio, gravida sit amet lectus sed, finibus faucibus mi. Donec vel nunc ac nisl porta suscipit. Aliquam ac pretium justo. Proin a maximus massa.</p>",
         "status": "DRAFT",
         "created_on": "2016-09-27T13:54:31.147Z",
-        "created_by": 1,
-        "events": [
-            3
-        ],
-        "facebook_pages": [
-            1
-        ]
+        "created_by": 1
     }
 }
 ]

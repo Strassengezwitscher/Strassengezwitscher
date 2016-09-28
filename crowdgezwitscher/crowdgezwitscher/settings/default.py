@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'blogs.apps.BlogsConfig',
     'rest_framework',
     'ckeditor',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
