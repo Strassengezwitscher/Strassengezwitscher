@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # API URLs
+    url(r'^api/', include('blogs.urls_api', namespace='blogs_api')),
     url(r'^api/', include('facebook.urls_api', namespace='facebook_api')),
     url(r'^api/', include('events.urls_api', namespace='events_api')),
     url(r'^api/', include('contact.urls')),

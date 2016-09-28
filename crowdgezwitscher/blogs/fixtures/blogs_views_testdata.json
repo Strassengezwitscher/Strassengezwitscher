@@ -5,7 +5,7 @@
     "fields": {
         "title": "Funny Day Today",
         "content": "<p><strong>awesome content 1</strong></p>",
-        "status": "DRAFT",
+        "status": "PUBLISHED",
         "created_on": "2016-09-27T13:54:07.443Z",
         "created_by": 1,
         "events": [
@@ -28,7 +28,9 @@
         "events": [
             3
         ],
-        "facebook_pages": []
+        "facebook_pages": [
+            1
+        ]
     }
 }
 ]

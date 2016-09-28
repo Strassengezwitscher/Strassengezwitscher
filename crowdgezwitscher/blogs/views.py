@@ -16,7 +16,7 @@ from events.models import Event
 from facebook.models import FacebookPage
 from ckeditor.widgets import CKEditorWidget
 from crowdgezwitscher.widgets import SelectizeSelectMultiple
-# from blogs.serializers import BlogSerializer, BlogSerializerShortened
+from blogs.serializers import BlogSerializer
 
 
 class BlogForm(ModelForm):
@@ -78,13 +78,12 @@ class BlogDelete(PermissionRequiredMixin, DeleteView):
     context_object_name = 'blog'
 
 
-# # API Views
-# class BlogAPIList(generics.ListAPIView):
-#     queryset = Blog.objects.filter(active=True)
-#     serializer_class = BlogSerializerShortened
-#     filter_backends = (MapObjectFilter,)
+# API Views
+class BlogAPIList(generics.ListAPIView):
+    queryset = BlogEntry.objects.filter(status=BlogEntry.PUBLISHED)
+    serializer_class = BlogSerializer
 
 
-# class BlogAPIDetail(generics.RetrieveAPIView):
-#     queryset = Blog.objects.filter(active=True)
-#     serializer_class = BlogSerializer
+class BlogAPIDetail(generics.RetrieveAPIView):
+    queryset = BlogEntry.objects.filter(status=BlogEntry.PUBLISHED)
+    serializer_class = BlogSerializer
