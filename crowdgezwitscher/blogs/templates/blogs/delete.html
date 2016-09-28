@@ -1,0 +1,13 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+    <p>Wollen Sie wirklich den Blog "{{ blog.title }}" löschen?</p>
+    <input class="btn btn-primary" type="submit" value="Bestätigen" />
+    {% if perms.blogs.view_blogentry %}
+        <a class="btn btn-link" href="{% url 'blogs:list'%}">Abbrechen</a>
+    {% endif %}
+</form>
+
+{% endblock %}
