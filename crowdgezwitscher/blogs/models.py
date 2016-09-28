@@ -4,8 +4,6 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils import timezone
-from events.models import Event
-from facebook.models import FacebookPage
 from ckeditor.fields import RichTextField
 
 from django.utils.encoding import python_2_unicode_compatible

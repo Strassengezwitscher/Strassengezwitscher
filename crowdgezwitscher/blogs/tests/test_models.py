@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-
 from blogs.models import BlogEntry
-
 from datetime import datetime
 
 
@@ -22,7 +20,7 @@ class BlogModelTests(TestCase):
             status=status,
             created_on=created_on,
             created_by=created_by,
-            )
+        )
         representation = "<BlogEntry title='{}' created_by='{}' status='{}' >".format(title, created_by, status)
 
         self.assertEqual(str(blog_entry), representation)

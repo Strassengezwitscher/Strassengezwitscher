@@ -7,8 +7,8 @@ from blogs.models import BlogEntry
 
 
 class BlogAPIViewTests(APITestCase):
-
-    fixtures = ['blogs_views_testdata.json', 'users_views_testdata', 'events_views_testdata.json', 'facebook_views_testdata.json']
+    fixtures = ['blogs_views_testdata.json', 'users_views_testdata', 'events_views_testdata.json',
+                'facebook_views_testdata.json']
     model = BlogEntry
 
     # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)

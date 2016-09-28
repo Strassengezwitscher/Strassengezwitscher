@@ -1,22 +1,19 @@
-from rest_framework import generics
-
+from ckeditor.widgets import CKEditorWidget
+from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import User
 from django.forms import ModelForm, ModelMultipleChoiceField
-from django.views.generic.list import ListView
+from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse, reverse_lazy
-from django import forms
-from django.contrib.auth.models import User
-from django.utils import timezone
-from django.http import HttpResponseRedirect
+from django.views.generic.list import ListView
+from rest_framework import generics
 
 from blogs.models import BlogEntry
+from blogs.serializers import BlogSerializer
+from crowdgezwitscher.widgets import SelectizeSelectMultiple
 from events.models import Event
 from facebook.models import FacebookPage
-from ckeditor.widgets import CKEditorWidget
-from crowdgezwitscher.widgets import SelectizeSelectMultiple
-from blogs.serializers import BlogSerializer
 
 
 class BlogForm(ModelForm):
@@ -34,7 +31,7 @@ class BlogForm(ModelForm):
 
     class Meta:
         model = BlogEntry
-        exclude= ['created_on', 'created_by']
+        exclude = ['created_on', 'created_by']
 
 
 class BlogListView(PermissionRequiredMixin, ListView):
@@ -62,6 +59,7 @@ class BlogCreate(PermissionRequiredMixin, CreateView):
         blog.created_by = User.objects.get(pk=self.request.user.id)
         blog.save()
         return super(BlogCreate, self).form_valid(form)
+
 
 class BlogUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'blogs.change_blogentry'
