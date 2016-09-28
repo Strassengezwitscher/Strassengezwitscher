@@ -28,11 +28,6 @@ gulp.task('copy:frontend', ['copy:config'], function() {
         .pipe(gulp.dest(config.path.tmp.source));
 });
 
-gulp.task('copy:typings', function() {
-    return gulp.src('./typings/**/*', {base: config.path.root})
-        .pipe(gulp.dest(config.path.tmp.source));
-});
-
 gulp.task('copy:npmfiles', function() {
     var dest = argv.production ? config.path.tmp.source : config.path.build;
     return gulp.src(config.npm.files, {base: config.path.npm})
@@ -92,8 +87,9 @@ gulp.task('compile:typescript', ['copy:config'], function() {
     ]);
 });
 
-gulp.task('bundle:typescript', ['copy:frontend', 'copy:typings', 'compile:sass'], function(done) {
+gulp.task('bundle:typescript', ['copy:frontend', 'compile:sass'], function(done) {
     var command = './node_modules/.bin/ngc --sourceRoot ' + config.path.tmp.source + 'frontend/' + ' --outDir ' + config.path.tmp.compiled ;
+    console.log(command);
     var ngc = exec(command, function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
