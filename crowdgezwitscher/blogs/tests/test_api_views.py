@@ -46,7 +46,7 @@ class BlogAPIViewTests(APITestCase):
         for blog in blogs:
             self.assertTrue(all(blog.get(att) for att in attributes))
 
-        self.assertEqual(len(blogs), 1)
+        self.assertEqual(len(blogs), BlogEntry.objects.filter(status=BlogEntry.PUBLISHED).count())
         self.assertTrue(len(blogs) < BlogEntry.objects.count())
 
     # GET /api/blogs/1/

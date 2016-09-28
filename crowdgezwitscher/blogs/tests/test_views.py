@@ -51,7 +51,7 @@ class BlogEntryViewLoggedInTests(TestCase):
             'status': BlogEntry.DRAFT,
         }
         response = self.client.post(reverse('blogs:create'), data, follow=True)
-        self.assertRedirects(response, reverse('blogs:detail', kwargs={'pk': 3}))
+        self.assertRedirects(response, reverse('blogs:detail', kwargs={'pk': BlogEntry.objects.count()}))
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('blogs:create'))
