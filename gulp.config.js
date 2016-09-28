@@ -29,7 +29,7 @@ module.exports = function () {
         },
     };
     var typescript = {
-        files: root + 'frontend/**/*.ts',
+        files: [root + 'frontend/**/*.ts', '!' + root + 'frontend/main-ngc.ts'],
         bundle: {
             path: path.dist + 'bundle-ngc.js',
             config: {
@@ -59,7 +59,6 @@ module.exports = function () {
             path.npm + 'selectize/dist/css/selectize.bootstrap3.css',
             path.npm + 'rxjs/**/*',
             path.npm + '@angular/**/*.+(js|js.map)',
-            path.npm + '@angular2-material/**/*',
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
         ],
@@ -99,6 +98,7 @@ module.exports = function () {
           '@angular/core': { main: 'index.js', defaultExtension: 'js' },
           '@angular/forms': { main: 'index.js', defaultExtension: 'js' },
           '@angular/http': { main: 'index.js', defaultExtension: 'js' },
+          '@angular/material': { main: 'index.js', defaultExtension: 'js' },
           '@angular/platform-browser': { main: 'index.js', defaultExtension: 'js' },
           '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
           '@angular/router': { main: 'index.js', defaultExtension: 'js' },
@@ -116,23 +116,6 @@ module.exports = function () {
           'app/about': { main: 'index.js'},
       },
     };
-
-    var materialPackages = [
-        'button',
-        'card',
-        'core',
-        'checkbox',
-        'icon',
-        'input',
-        'menu',
-        'radio',
-        'slide-toggle',
-        'toolbar',
-        'tooltip',
-    ];
-    materialPackages.forEach(function(pkgName) {
-        systemjs_config['packages']['@angular2-material/' + pkgName] = { format: 'cjs', main: pkgName + '.umd.js' };
-    });
 
     var systemjs = {
         files: [root + 'systemjs.config.js'],

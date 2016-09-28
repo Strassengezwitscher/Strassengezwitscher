@@ -64,28 +64,8 @@
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
 
-
-  var materialPackages = [
-    'button',
-    'card',
-    'core',
-    'checkbox',
-    'icon',
-    'input',
-    'menu',
-    'radio',
-    'slide-toggle',
-    'toolbar',
-    'tooltip',
-  ];
-
-  materialPackages.forEach(function(pkgName) {
-    packages['@angular2-material/' + pkgName] = {
-      format: 'cjs',
-      main: pkgName + '.umd.js'
-    };
-  });
-
+  // Angular Material
+  packages['@angular/material'] = { main: 'material.umd.js', defaultExtension: 'js' };
 
   var config = {
     map: map,

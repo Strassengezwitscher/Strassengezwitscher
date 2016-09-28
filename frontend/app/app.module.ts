@@ -3,16 +3,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
-import { MdButtonModule } from "@angular2-material/button";
-import { MdCheckboxModule } from "@angular2-material/checkbox";
-import { MdCardModule } from "@angular2-material/card";
-import { MdIconModule } from "@angular2-material/icon";
-import { MdInputModule } from "@angular2-material/input";
-import { MdMenuModule } from "@angular2-material/menu";
-import { MdRadioModule } from "@angular2-material/radio";
-import { MdSlideToggleModule } from "@angular2-material/slide-toggle";
-import { MdToolbarModule } from "@angular2-material/toolbar";
-import { MdTooltipModule } from "@angular2-material/tooltip";
+import { MaterialModule } from "@angular/material";
 
 import { AppComponent } from "./app.component";
 import { RoutingModule } from "./app.routing";
@@ -31,16 +22,7 @@ import { BlogComponent } from "./blog";
         FormsModule,
         HttpModule,
         RoutingModule,
-        MdButtonModule.forRoot(),
-        MdCardModule.forRoot(),
-        MdCheckboxModule.forRoot(),
-        MdMenuModule.forRoot(),
-        MdIconModule.forRoot(),
-        MdInputModule.forRoot(),
-        MdRadioModule.forRoot(),
-        MdSlideToggleModule.forRoot(),
-        MdToolbarModule.forRoot(),
-        MdTooltipModule.forRoot(),
+        MaterialModule.forRoot(),
     ],
     declarations: [
         AppComponent,

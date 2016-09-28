@@ -78,7 +78,7 @@ gulp.task('compile:sass', function() {
 });
 
 gulp.task('compile:typescript', ['copy:config'], function() {
-    var tsProject = ts.createProject('./tsconfig.json', {
+    var tsProject = ts.createProject('./tsconfig-dev.json', {
         typescript: require('typescript')
     });
     var tsResult = gulp.src(config.typescript.files)
