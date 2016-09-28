@@ -2,7 +2,7 @@ from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.forms import ModelForm, ModelMultipleChoiceField
+from django.forms import ModelForm
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -11,22 +11,9 @@ from rest_framework import generics
 
 from blogs.models import BlogEntry
 from blogs.serializers import BlogSerializer
-from crowdgezwitscher.widgets import SelectizeSelectMultiple
-from events.models import Event
-from facebook.models import FacebookPage
 
 
 class BlogForm(ModelForm):
-    events = ModelMultipleChoiceField(
-        queryset=Event.objects.all(),
-        required=False,
-        widget=SelectizeSelectMultiple()
-    )
-    facebook_pages = ModelMultipleChoiceField(
-        queryset=FacebookPage.objects.all(),
-        required=False,
-        widget=SelectizeSelectMultiple()
-    )
     content = forms.CharField(widget=CKEditorWidget())
 
     class Meta:
