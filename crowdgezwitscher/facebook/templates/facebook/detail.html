@@ -7,7 +7,21 @@
     <li><b>Aktiv:</b> {{ page.active }}</li>
     <li><b>Position:</b> {{ page.location_lat }} {{ page.location_long }}</li>
     <li><b>Link:</b> {{ page.url }}</li>
-    <li><b>Veranstaltungen:</b> {{ page.events.count }}</li>
+    <li><b>Veranstaltungen:</b>
+        <ul>
+            {% for event in page.events.all %}
+            <li>
+                {% if perms.events.view_event %}
+                    <a href="{% url 'events:detail' event.id %}">{{ event }}</a>
+                {% else %}
+                    {{ event }}
+                {% endif %}
+            </li>
+            {% empty %}
+            <li>Keine Veranstaltungen verknüpft</li>
+            {% endfor %}
+        </ul>
+    </li>
 </ul>
 
 {% if perms.facebook.change_facebookpage %}

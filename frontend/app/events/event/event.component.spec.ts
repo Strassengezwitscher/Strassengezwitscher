@@ -1,7 +1,7 @@
 import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 
-import { Event, EventComponent, EventService } from "./";
+import { Event, EventComponent, EventService } from "./../";
 
 class MockEventService {
     public getEvent(id: number): Observable<Event> {
@@ -29,20 +29,14 @@ describe("EventComponent", () => {
         });
     });
 
-    it("Should set the active Event", inject([EventComponent], (evComponent)  => {
-        let ev = new Event();
-        evComponent.setActiveEvent(ev);
-        expect(evComponent.activeEvent).toBe(ev);
-    }));
-
     it("Should set a new active Event", inject([EventComponent], (evComponent) =>  {
-        evComponent.getEventDetails(1);
-        expect(evComponent.activeEvent.id).toBe(1);
+        evComponent.getEvent(1);
+        expect(evComponent.event.id).toBe(1);
     }));
 
     it("Should set a new active Event on ngChange", inject([EventComponent], (evComponent) =>  {
         evComponent.ngOnChanges({"id": 125});
-        expect(evComponent.activeEvent.name).toBe("Test");
+        expect(evComponent.event.name).toBe("Test");
     }));
 
 });

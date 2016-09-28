@@ -1,30 +1,28 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
-import { Event, EventService } from "./";
+import { Event, EventService } from "./../";
 
 @Component({
     moduleId: module.id,
     selector: "cg-event-detail",
     templateUrl: "event.component.html",
     styleUrls: ["event.component.css"],
-    providers: [EventService],
 })
 
 export class EventComponent implements OnChanges {
-    public activeEvent: Event;
+    public event: Event = null;
     @Input("id") public id: number;
     @Output() public onError = new EventEmitter<string>();
-    constructor(private eventService: EventService) {
-        this.activeEvent = new Event();
-    }
+
+    constructor(private eventService: EventService) {}
 
     public ngOnChanges(changes) {
         if (changes.id !== undefined) {
-            this.getEventDetails(this.id);
+            this.getEvent(this.id);
         }
     }
 
-    private getEventDetails(id: number) {
+    private getEvent(id: number) {
         this.eventService.getEvent(id)
                         .subscribe(
                             event => this.setActiveEvent(event),
@@ -32,7 +30,7 @@ export class EventComponent implements OnChanges {
                         );
     }
 
-    private setActiveEvent(event: Event) {
-        this.activeEvent = event;
+    private setActiveEvent(ev: Event) {
+        this.event = ev;
     }
 }

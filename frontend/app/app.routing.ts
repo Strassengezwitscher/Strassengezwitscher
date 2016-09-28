@@ -5,6 +5,8 @@ import { MapComponent } from "./map";
 import { ContactComponent } from "./contact";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
+import { EventDetailComponent } from "./events";
+import { BlogComponent } from "./blog";
 
 const appRoutes: Routes = [
     {
@@ -22,6 +24,14 @@ const appRoutes: Routes = [
     {
         path: "about",
         component: AboutComponent,
+    },
+    {
+        path: "events/:id",
+        component: EventDetailComponent,
+    },
+    {
+        path: "blog",
+        component: BlogComponent,
     },
 ];
 

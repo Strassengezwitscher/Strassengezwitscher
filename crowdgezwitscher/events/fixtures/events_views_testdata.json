@@ -8,14 +8,18 @@
         "location": "Here",
         "location_lat": "87.654000",
         "location_long": "45.678000",
-        "date": "2016-07-24",
+        "date": "2016-07-20",
         "repetition_cycle": "unbekannter Rhythmus",
         "organizer": "",
         "type": "",
         "url": "",
         "counter_event": false,
         "coverage": false,
-        "participants": ""
+        "participants": "",
+        "twitter_account_names": "",
+        "twitter_hashtags": "",
+        "coverage_start": null,
+        "coverage_end": null
     }
 },
 {
@@ -27,14 +31,18 @@
         "location": "There",
         "location_lat": "45.678000",
         "location_long": "87.654000",
-        "date": "2016-07-23",
+        "date": "2016-07-15",
         "repetition_cycle": "unbekannter Rhythmus",
         "organizer": "",
         "type": "",
         "url": "",
         "counter_event": false,
         "coverage": false,
-        "participants": ""
+        "participants": "",
+        "twitter_account_names": "",
+        "twitter_hashtags": "",
+        "coverage_start": null,
+        "coverage_end": null
     }
 },
 {
@@ -46,14 +54,18 @@
         "location": "Wow, much water",
         "location_lat": "0.0",
         "location_long": "0.0",
-        "date": "2016-07-23",
+        "date": "2016-07-10",
         "repetition_cycle": "unbekannter Rhythmus",
         "organizer": "",
         "type": "",
         "url": "",
         "counter_event": false,
         "coverage": false,
-        "participants": ""
+        "participants": "",
+        "twitter_account_names": "",
+        "twitter_hashtags": "",
+        "coverage_start": null,
+        "coverage_end": null
     }
 }
 ]

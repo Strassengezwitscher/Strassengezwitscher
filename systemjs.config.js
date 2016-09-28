@@ -20,9 +20,13 @@
   };
 
   var appBarrels = [
+    'app/blog',
     'app/captcha',
     'app/contact',
     'app/events',
+    'app/events/shared',
+    'app/events/eventDetail',
+    'app/events/event',
     'app/facebook',
     'app/map',
     'app/imprint',
@@ -69,6 +73,7 @@
     'icon',
     'input',
     'menu',
+    'radio',
     'slide-toggle',
     'toolbar',
     'tooltip',
