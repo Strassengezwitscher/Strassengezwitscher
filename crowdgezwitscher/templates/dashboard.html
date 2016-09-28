@@ -2,6 +2,24 @@
 
 {% block content %}
 
+{% if perms.blogs.view_blogentry %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a href="{% url 'blogs:list' %}">Blogeinträge</a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        Es gibt insgesamt {{ blogentry_count }}
+        {% if blogentry_count == 1 %}
+            Blogeintrag.
+        {% else %}
+            Blogeinträge.
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
 {% if perms.facebook.view_facebookpage %}
 <div class="panel panel-default">
     <div class="panel-heading">
