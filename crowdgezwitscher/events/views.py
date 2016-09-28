@@ -138,11 +138,11 @@ def get_tweets(request, pk):
             try:
                 res.append(tweet['id_str'])
             except KeyError:
-                logger.warning("Got Tweet without expected fields.")
+                logger.warning("Got tweet without expected fields.")
                 continue
     except TwitterRequestError as e:
         if e.status_code == 429:
             logger.warning("Twitter rate limit exhausted")
         else:
-            logger.warning("TwitterRequestError, Status Code: %d", e.status_code)
+            logger.warning("TwitterRequestError, status code: %d", e.status_code)
     return Response(res)
