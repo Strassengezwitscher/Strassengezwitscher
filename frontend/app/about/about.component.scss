@@ -1,0 +1,68 @@
+@import '../base';
+
+$cardPadding: 16px;
+$mdCardPadding: 24px;
+
+.about-container {
+    p {
+        text-align: justify;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+
+    .logo {
+        display: block;
+        text-align: center;
+
+        img {
+            width: 50%;
+            height: 100px;
+            object-fit: contain;
+
+            &.small {
+                height: 50px;
+                width: 75%;
+            }
+        }
+    }
+
+    .logo-left {
+        float: left;
+        width: 200px;
+
+        img {
+            object-fit: contain;
+            width: 175px;
+            height: 60px;
+        }
+    }
+
+    .row {
+        display: inline-flex;
+        margin: 16px 0;
+
+        .col2 {
+            display: inline-block;
+            margin: 0;
+            vertical-align: top;
+            width: 100%;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            @media #{$medium-and-up} {
+                margin: 0 8px;
+                width: calc(50% - #{$cardPadding});
+            }
+        }
+    }
+}
