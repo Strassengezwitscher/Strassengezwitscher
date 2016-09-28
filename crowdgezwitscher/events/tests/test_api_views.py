@@ -63,7 +63,7 @@ class EventAPIViewTests(APITestCase):
             u'type': u'',
             u'url': u'',
             u'counterEvent': False,
-            u'coverage': False,
+            u'coverage': True,
             u'participants': u'',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
@@ -161,6 +161,12 @@ class EventAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, ['123', '456'])
 
+    def test_get_tweets_coverage_disabled(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 3})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
     @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
     def test_no_tweets_for_misconfigured_event(self):
         pk = 2
@@ -168,7 +174,7 @@ class EventAPIViewTests(APITestCase):
         self.assertEqual(type(event), Event)  # just make sure object exists despite returned 404 below
         url = reverse('events_api:tweets', kwargs={'pk': pk})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)
         self.assertEqual(response.data['status'], 'error')
         self.assertTrue('improperly configured' in response.data['errors'])
 

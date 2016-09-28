@@ -113,16 +113,17 @@ def get_tweets(request, pk):
     Modify TWITTER_TWEET_COUNT to change the maximum number of returned tweet IDs.
     """
     event = get_object_or_404(Event, pk=pk)
+    if not event.coverage:
+        return Response([])
     query = event.build_twitter_search_query()
     if not query:
         return Response({'status': 'error', 'errors': 'Twitter not or improperly configured for this event.'},
-                        status=status.HTTP_404_NOT_FOUND)
+                        status=status.HTTP_503_SERVICE_UNAVAILABLE)
     since = event.coverage_start.strftime('%Y-%m-%d')
     until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
     twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
                          settings.TWITTER_CONSUMER_SECRET,
                          auth_type='oAuth2')
-    res = []
     try:
         tweets = twitter.request('search/tweets', {'q': query,
                                                    'count': settings.TWITTER_TWEET_COUNT,
@@ -130,7 +131,8 @@ def get_tweets(request, pk):
                                                    'until': until})
     except TwitterConnectionError:
         logger.warning("Could not connect to Twitter.")
-        return Response(res)
+        return Response([])
+    res = []
     try:
         for tweet in tweets:
             try:
@@ -143,5 +145,4 @@ def get_tweets(request, pk):
             logger.warning("Twitter rate limit exhausted")
         else:
             logger.warning("TwitterRequestError, Status Code: %d", e.status_code)
-
     return Response(res)
