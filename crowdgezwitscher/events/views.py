@@ -121,8 +121,7 @@ def get_tweets(request, pk):
     until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
     twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
                          settings.TWITTER_CONSUMER_SECRET,
-                         settings.TWITTER_ACCESS_TOKEN,
-                         settings.TWITTER_ACCESS_SECRET,)
+                         auth_type='oAuth2')
     res = []
     try:
         tweets = twitter.request('search/tweets', {'q': query,
