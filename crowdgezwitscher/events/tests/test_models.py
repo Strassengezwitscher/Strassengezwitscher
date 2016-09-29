@@ -39,17 +39,19 @@ class EventModelTests(TestCase):
         self.assertEqual(str(event), 'unbenannt at 2012-12-21 by Organizer')
 
     def test__is_ready_for_twitter(self):
-        event = Event(twitter_account_names='foo,bar', twitter_hashtags='baz,quux', coverage_start=date(2016, 9, 27))
+        event = Event(twitter_account_names='foo,bar', coverage_start=date(2016, 9, 27))
         self.assertFalse(event._is_ready_for_twitter())
         event.coverage_end = date(2016, 9, 28)
         self.assertTrue(event._is_ready_for_twitter())
 
     def test_build_twitter_search_query(self):
-        event = Event(twitter_account_names='foo', coverage_start=date(2016, 9, 27), coverage_end=date(2016, 9, 28))
+        event = Event(twitter_hashtags='baz', coverage_start=date(2016, 9, 27), coverage_end=date(2016, 9, 28))
         self.assertIsNone(event.build_twitter_search_query())
-        event.twitter_hashtags = 'baz'
+        event.twitter_account_names='foo'
         self.assertEqual(event.build_twitter_search_query(), '#baz from:foo')
         event.twitter_account_names = 'foo, @bar,@foobar'
         event.twitter_hashtags = 'baz,#quux , #bazquux'
         self.assertEqual(event.build_twitter_search_query(),
                          '#baz OR #quux OR #bazquux from:foo OR from:bar OR from:foobar')
+        event.twitter_hashtags = ''
+        self.assertEqual(event.build_twitter_search_query(), 'from:foo OR from:bar OR from:foobar')

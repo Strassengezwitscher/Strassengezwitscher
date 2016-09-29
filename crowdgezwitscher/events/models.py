@@ -39,18 +39,19 @@ class Event(MapObject):
 
     def _is_ready_for_twitter(self):
         """Checks that all fields required for getting tweets have some value."""
-        return all([self.twitter_account_names, self.twitter_hashtags, self.coverage_start, self.coverage_end])
+        return all([self.twitter_account_names, self.coverage_start, self.coverage_end])
 
     def build_twitter_search_query(self):
         """Returns search query for Twitter from hashtags and account names."""
         if not self._is_ready_for_twitter():
             return
+        query = ''
         accounts = [account.strip() for account in self.twitter_account_names.split(',')]
-        accounts = [account[1:] if account[0] == '@' else account for account in accounts]  # remove leading '@''
-        hashtags = [hashtag.strip() for hashtag in self.twitter_hashtags.split(',')]
-        hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags]  # require leading '#'
-        query = ' OR '.join(hashtags)
-        if query and accounts:
-            query += ' '
+        accounts = [account[1:] if account[0] == '@' else account for account in accounts]  # remove leading '@'
+        if self.twitter_hashtags:
+            hashtags = [hashtag.strip() for hashtag in self.twitter_hashtags.split(',')]
+            hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags]  # require leading '#'
+            query = ' OR '.join(hashtags)
+            query += ' '            
         query += ' OR '.join(map(lambda acc: 'from:' + acc, accounts))
         return query
