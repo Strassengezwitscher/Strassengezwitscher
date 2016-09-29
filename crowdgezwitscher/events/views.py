@@ -106,7 +106,7 @@ class EventAPIDetail(generics.RetrieveAPIView):
 
 
 @api_view(['GET'])
-def get_tweets(request, pk):
+def get_tweets(request, pk, format=None):
     """Get tweets for Event with primary key pk.
 
     Searches for tweets matching the Event's registered hashtags, accounts and dates. The dates form an open interval.
