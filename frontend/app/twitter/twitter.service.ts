@@ -15,7 +15,7 @@ export class TwitterService {
         params.set("callback", "JSONP_CALLBACK");
         params.set("omit_script", "true");
         return this.jsonp.request(this.twitterOembedUrl, {search: params})
-            .map((response) => <string> response.json()["html"])
+            .map((response) => <string> response.json().html)
             .catch(error => Observable.of(""));  // suppress error
     }
 }
