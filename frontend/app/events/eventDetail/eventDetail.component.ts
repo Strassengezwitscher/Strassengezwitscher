@@ -10,7 +10,7 @@ import { Event, EventService } from "./../";
 })
 
 export class EventDetailComponent implements OnInit {
-    private event: Event = null;
+    public event: Event = null;
     private errorMessage: string;
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
