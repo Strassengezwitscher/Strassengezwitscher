@@ -25,11 +25,11 @@ if (!argv.production) {
 
 gulp.task('copy:frontend', ['copy:config'], function() {
     return gulp.src(config.frontend.all, {base: config.path.root})
-        .pipe(gulp.dest(config.path.tmp.source));
+        .pipe(gulp.dest(config.path.aot));
 });
 
 gulp.task('copy:npmfiles', function() {
-    var dest = argv.production ? config.path.tmp.source : config.path.build;
+    var dest = argv.production ? config.path.aot : config.path.build;
     return gulp.src(config.npm.files, {base: config.path.npm})
         .pipe(gulp.dest(dest));
 });
@@ -64,7 +64,7 @@ gulp.task('copy:html', function() {
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
 
 gulp.task('compile:sass', function() {
-    var dest = argv.production ? config.path.tmp.source : config.path.build;
+    var dest = argv.production ? config.path.aot : config.path.build;
     return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))

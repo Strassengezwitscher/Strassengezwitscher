@@ -11,10 +11,7 @@ module.exports = function () {
             frontend: 'frontend',
         },
         frontend_config: 'frontend/config/',
-        tmp: {
-            source: root + 'tmp/source/',
-            compiled: root + 'tmp/compiled/',
-        }
+        aot: root + 'aot/',
     };
 
     var sass = {

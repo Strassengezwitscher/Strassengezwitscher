@@ -11,15 +11,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="{% static '@angular2-material/core/overlay/overlay.css' %}" rel="stylesheet">
 
         <link href="{% static 'css/frontend.css' %}" rel="stylesheet">
-
-        {% if debug %}
-        <link href="{% static 'bundle.dev.css' %}" rel="stylesheet">
-        {% else %}
-        <link href="{% static 'bundle.css' %}" rel="stylesheet">
-        {% endif %}
     </head>
     <body>
         <cg-app>

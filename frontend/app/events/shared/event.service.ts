@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { Event } from "./";
+import { Event } from "./event.model";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/throw";
 

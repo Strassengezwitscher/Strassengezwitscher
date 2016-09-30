@@ -2,7 +2,9 @@ import { Observable } from "rxjs/Rx";
 import { TestBed, inject } from "@angular/core/testing";
 import { ActivatedRoute } from "@angular/router";
 
-import { Event, EventDetailComponent, EventService } from "./../";
+import { EventDetailComponent } from "./eventDetail.component";
+import { Event } from "../shared/event.model";
+import { EventService } from "../shared/event.service";
 
 class MockEventService {
     public getEvent(id: number): Observable<Event> {

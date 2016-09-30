@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
-import { FacebookPage, FacebookPageService } from "./";
+import { FacebookPage } from "./facebookPage.model";
+import { FacebookPageService } from "./facebookPage.service";
 
 @Component({
     moduleId: module.id,
     selector: "cg-fb-detail",
     templateUrl: "facebookPage.component.html",
     styleUrls: ["facebookPage.component.css"],
-    providers: [FacebookPageService],
 })
 
 export class FacebookPageComponent implements OnChanges {

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
-import { Event, EventService } from "./../";
+import { Event } from "../shared/event.model";
+import { EventService } from "../shared/event.service";
 
 @Component({
     moduleId: module.id,

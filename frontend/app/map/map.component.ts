@@ -1,7 +1,8 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
 
-import { MapObject, MapObjectType, MapService } from "./";
+import { MapObject, MapObjectType } from "./mapObject.model";
+import { MapService } from "./map.service";
 
 export enum DateFilter {
     all = 0,

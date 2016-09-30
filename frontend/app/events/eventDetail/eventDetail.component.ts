@@ -1,12 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 
-import { Event, EventService } from "./../";
+import { Event } from "../shared/event.model";
+import { EventService } from "../shared/event.service";
 
 @Component({
     moduleId: module.id,
     selector: "cg-event-detail-page",
     templateUrl: "eventDetail.component.html",
+    styleUrls: ["eventDetail.component.css"],
 })
 
 export class EventDetailComponent implements OnInit {

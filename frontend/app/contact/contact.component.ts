@@ -1,8 +1,9 @@
 import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { Contact, ContactService } from "./";
-import { CaptchaService } from "../captcha";
+import { Contact } from "./contact.model";
+import { ContactService } from "./contact.service";
+import { CaptchaService } from "../captcha/captcha.service";
 import { Config } from "../../config/config";
 
 @Component({
@@ -10,7 +11,6 @@ import { Config } from "../../config/config";
     selector: "cg-contact",
     templateUrl: "contact.component.html",
     styleUrls: ["contact.component.css"],
-    providers: [ContactService, CaptchaService],
 })
 export class ContactComponent implements OnInit, OnDestroy {
     public contactErrorMessage: string;

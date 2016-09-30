@@ -4,8 +4,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify'
 
 export default {
-  entry: 'tmp/compiled/tmp/source/frontend/main-ngc.js',
-  dest: 'tmp/bundle.es2015.js', // output a single application bundle
+  entry: 'aot-compiled/aot/frontend/main-ngc.js',
+  dest: 'aot-compiled/bundle.es2015.js', // output a single application bundle
   sourceMap: false,
   format: 'iife',
   plugins: [

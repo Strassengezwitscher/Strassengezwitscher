@@ -1,16 +1,16 @@
 <md-toolbar>
     <span class="toolbar-menu">
         <span class="hide-on-small-only-custom">
-            <a md-button [routerLink]="['/blog']">Blog</a>
+            <a md-button routerLink="/blog" routerLinkActive="active">Blog</a>
         </span>
         <span class="hide-on-med-and-up-custom">
-            <button md-icon-button [routerLink]="['/blog']">
+            <button md-icon-button routerLink="/blog" routerLinkActive="active">
                 <md-icon>view_agenda</md-icon>
             </button>
         </span>
     </span>
     <span class="toolbar-spacer"></span>
-    <a [routerLink]="['/map']" class="brand-logo">CrowdgezwitscherMap</a>
+    <a routerLink="/map" routerLinkActive="active" class="brand-logo">CrowdgezwitscherMap</a>
     <span class="toolbar-spacer"></span>
     <span class="toolbar-menu">
         <span class="hide-on-med-and-up-custom">
@@ -19,28 +19,28 @@
             </button>
         </span>
         <span class="hide-on-small-only-custom hide-on-large-only-custom">
-            <a md-button [routerLink]="['/contact']">Kontakt</a>
+            <a md-button routerLink="/contact" routerLinkActive="active">Kontakt</a>
             <a md-button target="_blank" class="unfocusable" href="https://www.paypal.me/strassengezwitscher">Spenden</a>
             <button id="toolbar-menu-button-medium" md-icon-button [md-menu-trigger-for]="menuMedium">
                 <md-icon>more_vert</md-icon>
             </button>
         </span>
         <span class="hide-on-med-and-down-custom">
-            <a md-button [routerLink]="['/contact']">Kontakt</a>
+            <a md-button routerLink="/contact" routerLinkActive="active">Kontakt</a>
             <a md-button target="_blank" class="unfocusable" href="https://www.paypal.me/strassengezwitscher">Spenden</a>
-            <a md-button [routerLink]="['/about']">Über uns</a>
-            <a md-button [routerLink]="['/imprint']">Impressum</a>
+            <a md-button routerLink="/about" routerLinkActive="active">Über uns</a>
+            <a md-button routerLink="/imprint" routerLinkActive="active">Impressum</a>
         </span>
     </span>
 </md-toolbar>
 <md-menu x-position="before" #menuSmall="mdMenu">
-    <a md-menu-item [routerLink]="['/contact']">Kontakt</a>
+    <a md-menu-item routerLink="/contact" routerLinkActive="active">Kontakt</a>
     <a md-menu-item target="_blank" href="https://www.paypal.me/strassengezwitscher">Spenden</a>
-    <a md-menu-item [routerLink]="['/about']">Über uns</a>
-    <a md-menu-item [routerLink]="['/imprint']">Impressum</a>
+    <a md-menu-item routerLink="/about" routerLinkActive="active">Über uns</a>
+    <a md-menu-item routerLink="/imprint" routerLinkActive="active">Impressum</a>
 </md-menu>
 <md-menu x-position="before" #menuMedium="mdMenu">
-    <a md-menu-item [routerLink]="['/about']">Über uns</a>
-    <a md-menu-item [routerLink]="['/imprint']">Impressum</a>
+    <a md-menu-item routerLink="/about" routerLinkActive="active">Über uns</a>
+    <a md-menu-item routerLink="/imprint" routerLinkActive="active">Impressum</a>
 </md-menu>
 <router-outlet></router-outlet>

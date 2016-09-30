@@ -19,24 +19,6 @@
     'symbol-observable': { main: 'index.js', defaultExtension: 'js' },
   };
 
-  var appBarrels = [
-    'app/blog',
-    'app/captcha',
-    'app/contact',
-    'app/events',
-    'app/events/shared',
-    'app/events/eventDetail',
-    'app/events/event',
-    'app/facebook',
-    'app/map',
-    'app/imprint',
-    'app/about',
-  ];
-
-  appBarrels.forEach(function(barrelName) {
-    packages[barrelName] = { main: 'index.js' }
-  });
-
   var ngPackageNames = [
     'common',
     'compiler',
