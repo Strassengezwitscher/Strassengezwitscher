@@ -28,3 +28,10 @@ EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
 STATICFILES_DIRS += [  # noqa
     os.path.join(BASE_DIR, "static/build"),  # noqa
 ]
+
+# Create a sensitive_settings.py to override settings with sensible values
+# that shall not be checked in to the repository
+try:
+    from .sensitive_settings import *  # noqa
+except ImportError:
+    pass

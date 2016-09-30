@@ -12,10 +12,13 @@ casper.test.begin('Testing Crowdgezwitscher App (User Frontend)', 1, function(te
     })
 });
 
-casper.test.begin('Testing correct display for toolbar on small screens', 6, function(test) {
+casper.test.begin('Testing correct display for toolbar on small screens', 7, function(test) {
     casper.start(settings.frontendUrl);
     casper.viewport(600, 1024);
     casper.waitUntilVisible('cg-app', function then(){
+        this.clickLabel('Blog');
+        test.assertUrlMatch(/.*\/blog/,'now on page: blog');
+
         this.click('#toolbar-menu-button-small');
         this.clickLabel('Impressum');
         test.assertUrlMatch(/.*\/imprint/,'now on page imprint');
@@ -50,10 +53,13 @@ casper.test.begin('Testing correct display for toolbar on small screens', 6, fun
 });
 
 
-casper.test.begin('Testing correct display for toolbar on medium screens', 6, function(test) {
+casper.test.begin('Testing correct display for toolbar on medium screens', 7, function(test) {
     casper.start(settings.frontendUrl);
     casper.viewport(900, 1024);
     casper.waitUntilVisible('cg-app', function then(){
+        this.clickLabel('Blog');
+        test.assertUrlMatch(/.*\/blog/,'now on page: blog');
+
         this.clickLabel('Impressum');
         test.assertUrlMatch(/.*\/imprint/,'now on page: imprint');
 
@@ -85,10 +91,13 @@ casper.test.begin('Testing correct display for toolbar on medium screens', 6, fu
     })
 });
 
-casper.test.begin('Testing correct display for toolbar on larger screens ', 6, function(test) {
+casper.test.begin('Testing correct display for toolbar on larger screens ', 7, function(test) {
     casper.start(settings.frontendUrl);
     casper.viewport(1200, 1024);
     casper.waitUntilVisible('cg-app', function then(){
+        this.clickLabel('Blog');
+        test.assertUrlMatch(/.*\/blog/,'now on page: blog');
+
         this.clickLabel('Impressum');
         test.assertUrlMatch(/.*\/imprint/,'now on page: imprint');
 

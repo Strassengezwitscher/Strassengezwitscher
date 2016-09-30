@@ -21,6 +21,7 @@
 
   var appBarrels = [
     'app/about',
+    'app/blog',
     'app/captcha',
     'app/contact',
     'app/events',
@@ -73,6 +74,7 @@
     'icon',
     'input',
     'menu',
+    'radio',
     'slide-toggle',
     'toolbar',
     'tooltip',

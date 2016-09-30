@@ -125,7 +125,18 @@ ABSOLUTE_URL_OVERRIDES = {
 
 # This is the default key, for which all verification requests will pass.
 RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
+######################################################################################################
 
+
+######################################################################################################
+#                                           Twitter settings
+######################################################################################################
+# number of tweets to request from Twitter's REST API
+TWITTER_TWEET_COUNT = 50
+
+# override Twitter settings with sane values in sensitive_settings.py
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''  # noqa
 ######################################################################################################
 
 LOGIN_URL = 'login'
