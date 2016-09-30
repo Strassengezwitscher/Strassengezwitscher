@@ -48,10 +48,10 @@ class EventModelTests(TestCase):
         event = Event(twitter_hashtags='baz', coverage_start=date(2016, 9, 27), coverage_end=date(2016, 9, 28))
         self.assertIsNone(event.build_twitter_search_query())
         event.twitter_account_names='foo'
-        self.assertEqual(event.build_twitter_search_query(), '#baz from:foo')
+        self.assertEqual(event.build_twitter_search_query(), 'from:foo #baz')
         event.twitter_account_names = 'foo, @bar,@foobar'
         event.twitter_hashtags = 'baz,#quux , #bazquux'
         self.assertEqual(event.build_twitter_search_query(),
-                         '#baz OR #quux OR #bazquux from:foo OR from:bar OR from:foobar')
+                         'from:foo OR from:bar OR from:foobar #baz OR #quux OR #bazquux')
         event.twitter_hashtags = ''
         self.assertEqual(event.build_twitter_search_query(), 'from:foo OR from:bar OR from:foobar')
