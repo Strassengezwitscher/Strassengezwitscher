@@ -73,52 +73,6 @@ module.exports = function () {
     };
     npm['files'] = npm.static.concat(npm.angular_dependencies.files);
 
-    var systemjs_config = {
-        map: {
-            'app': 'frontend/app',
-            '@angular/common.js': '@angular/common',
-            '@angular/compiler.js': '@angular/compiler',
-            '@angular/core.js': '@angular/core',
-            '@angular/forms.js': '@angular/forms',
-            '@angular/http.js': '@angular/http',
-            '@angular/platform-browser.js': '@angular/platform-browser',
-            '@angular/platform-browser-dynamic.js': '@angular/platform-browser-dynamic',
-            '@angular/router.js': '@angular/router',
-            '@angular/router-deprecated.js': '@angular/router-deprecated',
-            '@angular/upgrade.js': '@angular/upgrade',
-        },
-        packages: {
-          'rxjs': { defaultExtension: 'js' },
-          'symbol-observable': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/common': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/compiler': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/core': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/forms': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/http': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/material': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/platform-browser': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/router': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' },
-          'app/blog': { main: 'index.js'},
-          'app/captcha': { main: 'index.js' },
-          'app/contact': { main: 'index.js' },
-          'app/events': { main: 'index.js' },
-          'app/events/shared': { main: 'index.js' },
-          'app/events/eventDetail': { main: 'index.js' },
-          'app/events/event': { main: 'index.js' },
-          'app/facebook': { main: 'index.js' },
-          'app/map': { main: 'index.js'},
-          'app/imprint': { main: 'index.js'},
-          'app/about': { main: 'index.js'},
-      },
-    };
-
-    var systemjs = {
-        files: [root + 'systemjs.config.js'],
-        config: systemjs_config,
-    }
-
     var report = {
         path: path.report + 'report-json/coverage-final.json',
         karma: {
@@ -138,7 +92,6 @@ module.exports = function () {
         typescript: typescript,
         e2e: e2e,
         npm: npm,
-        systemjs: systemjs,
         frontend: frontend,
         report: report,
     };

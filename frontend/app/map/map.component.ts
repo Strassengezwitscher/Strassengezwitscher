@@ -26,7 +26,6 @@ class MapObjectSetting {
 }
 
 @Component({
-    moduleId: module.id,
     selector: "cg-map",
     templateUrl: "map.component.html",
     styleUrls: ["map.component.css"],
@@ -45,22 +44,19 @@ class MapObjectSetting {
     ],
 })
 export class MapComponent implements AfterViewInit {
-
     public errorMessage: string;
-    private errorMessageDisplayTime: number = 5000;
-    private map: google.maps.Map;
     // Utilized for holding status and name of different types of MapObjects
     public mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
+    public selectedMapObjectType: MapObjectType;
+    @ViewChild("mapCanvas") public mapCanvas;
+    private errorMessageDisplayTime: number = 5000;
+    private map: google.maps.Map;
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
-
     private selectedMapObject: MapObject;
-    public selectedMapObjectType: MapObjectType;
     private selectedMarker: google.maps.Marker;
-
-    @ViewChild("mapCanvas") public mapCanvas;
 
     constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();

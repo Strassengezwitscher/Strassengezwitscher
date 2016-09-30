@@ -4,7 +4,6 @@ import { FacebookPage } from "./facebookPage.model";
 import { FacebookPageService } from "./facebookPage.service";
 
 @Component({
-    moduleId: module.id,
     selector: "cg-fb-detail",
     templateUrl: "facebookPage.component.html",
     styleUrls: ["facebookPage.component.css"],
