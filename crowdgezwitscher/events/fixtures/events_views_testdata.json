@@ -14,12 +14,12 @@
         "type": "",
         "url": "",
         "counter_event": false,
-        "coverage": false,
+        "coverage": true,
         "participants": "",
-        "twitter_account_names": "",
-        "twitter_hashtags": "",
-        "coverage_start": null,
-        "coverage_end": null
+        "twitter_account_names": "foo,bar",
+        "twitter_hashtags": "baz,quux",
+        "coverage_start": "2016-07-24",
+        "coverage_end": "2016-07-25"
     }
 },
 {
@@ -37,7 +37,7 @@
         "type": "",
         "url": "",
         "counter_event": false,
-        "coverage": false,
+        "coverage": true,
         "participants": "",
         "twitter_account_names": "",
         "twitter_hashtags": "",
