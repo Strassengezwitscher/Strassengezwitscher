@@ -4,6 +4,7 @@ import { Observable } from "rxjs/Observable";
 import { TwitterService } from "./twitter.service";
 
 declare var twttr: {widgets: {load: Function}};
+declare var window: any;
 
 @Component({
     moduleId: module.id,
@@ -12,22 +13,18 @@ declare var twttr: {widgets: {load: Function}};
 })
 export class TweetComponent implements AfterViewInit {
     @Input() public id: string;
-    @ViewChild("tweetWrapper") public tweetWrapper;
 
     public inner: Observable<string>;
-    private hidden: boolean = true;
+    public hidden: boolean = true;
 
     constructor(private twitterService: TwitterService) {}
 
     public ngAfterViewInit() {
-        let tweetWrapper = this.tweetWrapper;
-        let observer = new MutationObserver(() => {
-            twttr.widgets.load(tweetWrapper.nativeElement).then(() => this.hidden = false);
-        });
-        let config = { attributes: true };
-        observer.observe(this.tweetWrapper.nativeElement, config);
-
         this.inner = this.twitterService.getTweet(this.id);
+    }
+
+    public update(event) {
+        twttr.widgets.load(event.target).then(() => this.hidden = false);
     }
 
     public displayStyle() {
