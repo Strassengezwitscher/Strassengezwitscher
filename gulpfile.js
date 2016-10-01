@@ -29,6 +29,12 @@ gulp.task('copy:frontend', ['copy:config'], function() {
         .pipe(gulp.dest(config.path.aot));
 });
 
+gulp.task('copy:traceur', function() {
+    var dest = productionMode ? config.path.dist : config.path.build;
+    return gulp.src(config.path.npm + 'traceur/bin/traceur.js', {base: config.path.npm})
+        .pipe(gulp.dest(dest));
+});
+
 gulp.task('copy:npmfiles', function() {
     var dest = productionMode ? config.path.aot : config.path.build;
     return gulp.src(config.npm.files, {base: config.path.npm})
@@ -136,7 +142,7 @@ gulp.task('watch:html', ['copy:html'], function() {
 gulp.task('watch', ['copy:staticfiles', 'watch:sass', 'watch:typescript', 'watch:html']);
 
 var build_args = productionMode ?
-    ['bundle:dependencies', 'bundle:typescript'] :
+    ['copy:traceur', 'bundle:dependencies', 'bundle:typescript'] :
     ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass'];
 gulp.task('build', build_args);
 

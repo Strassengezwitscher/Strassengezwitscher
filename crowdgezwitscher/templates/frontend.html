@@ -20,6 +20,10 @@
         </cg-app>
     </body>
 
+    {% if insecure %}
+    <script src="{% static 'traceur/bin/traceur.js' %}"></script>
+    {% endif %}
+
     {% if debug %}
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->

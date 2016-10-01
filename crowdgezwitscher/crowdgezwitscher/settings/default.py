@@ -177,3 +177,5 @@ TESTING = 'test' in sys.argv
 if TESTING:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}  # use sqlite
     logging.disable(logging.CRITICAL)
+
+INSECURE = '--insecure' in sys.argv

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -7,7 +8,9 @@ from events.models import Event
 
 
 def index(request):
-    return render(request, 'frontend.html')
+    return render(request, 'frontend.html', {
+        'insecure': settings.INSECURE,
+    })
 
 
 def landingpage(request):
