@@ -13,6 +13,7 @@ import { EventModule } from "./events/event.module";
 import { FacebookPageModule } from "./facebook/facebookPage.module";
 import { ImprintModule } from "./imprint/imprint.module";
 import { MapModule } from "./map/map.module";
+import { TwitterModule } from "./twitter/twitter.module";
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import { MapModule } from "./map/map.module";
         FacebookPageModule,
         ImprintModule,
         MapModule,
+        TwitterModule,
     ],
     declarations: [AppComponent],
     entryComponents: [AppComponent],

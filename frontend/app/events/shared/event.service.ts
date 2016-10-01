@@ -7,23 +7,43 @@ import "rxjs/add/observable/throw";
 
 @Injectable()
 export class EventService {
-    private eventPageUrl = "api/events/";
+    private eventBaseUrl = "api/events/";
     private lastEvent: Event = null;
 
     constructor(private http: Http) {}
 
     public getEvent(id: number): Observable<Event> {
-        return (this.lastEvent != null && this.lastEvent.id === id) ?
-                Observable.of(this.lastEvent) :
-                this.http.get(this.eventPageUrl + id + "/")
-                            .map(this.extractData)
-                            .do(event => this.lastEvent = event)
-                            .catch(this.handleError);
+        if (this.lastEvent != null && this.lastEvent.id === id) {
+            return Observable.of(this.lastEvent);
+        }
+        return this.http.get(this.eventUrl(id))
+            .map(this.extractEventData)
+            .do(event => this.lastEvent = event)
+            .catch(this.handleError);
     }
 
-    private extractData(response: Response): Event {
+    public getTweetIds(event: Event): Observable<string[]> {
+        return this.http.get(this.tweetsUrl(event.id))
+            .map(this.extractTweetData)
+            .catch(error => Observable.of([]));
+    }
+
+    private eventUrl(eventId: number): string {
+        return `${this.eventBaseUrl}${eventId}`;
+    }
+
+    private tweetsUrl(eventId: number): string {
+        return `${this.eventUrl(eventId)}/tweets.json`;
+    }
+
+    private extractEventData(response: Response): Event {
         let data = response.json();
         return <Event> data;
+    }
+
+    private extractTweetData(response: Response): string[] {
+        let data = response.json() || [];
+        return <string[]> data;
     }
 
     private handleError(error: any) {

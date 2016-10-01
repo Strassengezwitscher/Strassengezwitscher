@@ -20,6 +20,9 @@
         </cg-app>
     </body>
 
+    <script src="https://maps.googleapis.com/maps/api/js?extension=.js&output=embed"></script>
+    <script src="https://platform.twitter.com/widgets.js"></script>
+
     {% if insecure %}
     <script src="{% static 'traceur/bin/traceur.js' %}"></script>
     {% endif %}
@@ -43,6 +46,4 @@
     <script src="{% static 'dependencies.js' %}"></script>
     <script src="{% static 'bundle.js' %}" defer></script>
     {% endif %}
-
-    <script src="https://maps.googleapis.com/maps/api/js?extension=.js&output=embed"></script>
 </html>

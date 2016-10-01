@@ -26,9 +26,10 @@
             <strong>Gegenveranstaltung:</strong><br>
             {{event.counterEvent}}
         </p>
-        <p *ngIf="event.coverage">
+        <p >
             <strong>Berichterstattung:</strong><br>
-            {{event.coverage}} (Twitter-Feed)
+            <span *ngIf="event.coverage">Ja (Twitter-Feed)</span>
+            <span *ngIf="!event.coverage">Nein</span>
         </p>
     </md-card-content>
     <md-card-actions>

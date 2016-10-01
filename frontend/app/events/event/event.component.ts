@@ -24,14 +24,9 @@ export class EventComponent implements OnChanges {
     }
 
     private getEvent(id: number) {
-        this.eventService.getEvent(id)
-                        .subscribe(
-                            event => this.setActiveEvent(event),
-                            error => this.onError.emit(error)
-                        );
-    }
-
-    private setActiveEvent(ev: Event) {
-        this.event = ev;
+        this.eventService.getEvent(id).subscribe(
+            event => this.event = event,
+            error => this.onError.emit(error),
+        );
     }
 }

@@ -44,7 +44,7 @@ module.exports = function(config) {
             { pattern: gulpConfig.path.build + 'rxjs/**/*.js.map', included: false, watched: false },
 
             // Angular 2 itself and the testing library
-            {pattern: gulpConfig.path.build + '@angular/**/*.js', included: false, watched: false},
+            {pattern: gulpConfig.path.build + '@angular/**/!(*.spec)+(.js)', included: false, watched: false},
             {pattern: gulpConfig.path.build + '@angular/**/*.js.map', included: false, watched: false},
 
             { pattern: gulpConfig.path.root + 'systemjs.config.js', included: true },
