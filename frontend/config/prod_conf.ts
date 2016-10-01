@@ -1,5 +1,3 @@
-import { enableProdMode } from "@angular/core";
-
 import { SensitiveConfig } from "./sensitive_conf";
 
 export class Config {

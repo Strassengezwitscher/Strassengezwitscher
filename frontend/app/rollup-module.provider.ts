@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-variable */
 export function RollupModuleProvider(params: any) {
     return function (target: any) {
         // Setup the 'module' variable globally. The rollup javascript has its own module system, but there is still a

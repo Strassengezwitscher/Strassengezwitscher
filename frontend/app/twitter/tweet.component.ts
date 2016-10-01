@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, Input } from "@angular/core";
+import { Component, AfterViewInit, Input } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 
 import { TwitterService } from "./twitter.service";
