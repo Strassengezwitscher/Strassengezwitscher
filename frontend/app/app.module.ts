@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
+import { HttpModule, JsonpModule } from "@angular/http";
 
 import { MdButtonModule } from "@angular2-material/button";
 import { MdCheckboxModule } from "@angular2-material/checkbox";
@@ -17,19 +17,21 @@ import { MdTooltipModule } from "@angular2-material/tooltip";
 import { AppComponent } from "./app.component";
 import { RoutingModule } from "./app.routing";
 
-import { MapComponent, MapService } from "./map";
-import { ContactComponent, ContactService } from "./contact";
-import { FacebookPageComponent } from "./facebook";
-import { EventComponent, EventDetailComponent, EventService } from "./events";
-import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
 import { BlogComponent } from "./blog";
+import { ContactComponent, ContactService } from "./contact";
+import { EventComponent, EventDetailComponent, EventService } from "./events";
+import { FacebookPageComponent } from "./facebook";
+import { ImprintComponent } from "./imprint";
+import { MapComponent, MapService } from "./map";
+import { TweetComponent, TwitterService } from "./twitter";
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
+        JsonpModule,
         RoutingModule,
         MdButtonModule.forRoot(),
         MdCardModule.forRoot(),
@@ -43,20 +45,22 @@ import { BlogComponent } from "./blog";
         MdTooltipModule.forRoot(),
     ],
     declarations: [
+        AboutComponent,
         AppComponent,
         BlogComponent,
-        MapComponent,
         ContactComponent,
-        FacebookPageComponent,
         EventComponent,
         EventDetailComponent,
+        FacebookPageComponent,
         ImprintComponent,
-        AboutComponent,
+        MapComponent,
+        TweetComponent,
     ],
     providers: [
-        MapService,
         ContactService,
         EventService,
+        MapService,
+        TwitterService,
     ],
     bootstrap: [ AppComponent ],
 })

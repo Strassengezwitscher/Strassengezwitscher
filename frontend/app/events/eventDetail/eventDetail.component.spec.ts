@@ -18,6 +18,10 @@ class MockEventService {
             return Observable.throw("Error wrong ID");
         }
     }
+
+    public getTweetIds(event: Event): Observable<string[]> {
+        return Observable.of(["1"]);
+    }
 }
 
 describe("EventDetailComponent", () => {
