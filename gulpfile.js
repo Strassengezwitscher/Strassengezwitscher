@@ -76,7 +76,7 @@ gulp.task('compile:typescript', ['copy:config'], function() {
     var tsProject = ts.createProject('./tsconfig-dev.json', {
         typescript: require('typescript')
     });
-    var tsResult = gulp.src(config.typescript.files)
+    var tsResult = gulp.src([config.typescript.files, config.typescript.exclude_files])
         .pipe(sourcemaps.init())
         .pipe(ts(tsProject));
     return merge([
@@ -89,20 +89,27 @@ gulp.task('compile:typescript', ['copy:config'], function() {
 
 gulp.task('bundle:typescript', ['copy:frontend', 'compile:sass'], function(done) {
     var command = './node_modules/.bin/ngc';
-    console.log(command);
     var ngc = exec(command, function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
     });
     ngc.on('close', function(exitcode) {
-        done(exitcode ? new Error('NGC tests failed') : 0);
+        if (exitcode) {
+            done(new Error('ngc failed'));
+        }
+        run_rollup();
     });
 
-
-
-    // var builder = new SystemBuilder(".", config.systemjs.config);
-    // builder.loader.defaultJSExtensions = true;
-    // return builder.buildStatic('tmp/frontend/main', config.typescript.bundle.path, config.typescript.bundle.config);
+    function run_rollup() {
+        var command = './node_modules/.bin/rollup -c ' + config.typescript.bundle.config;
+        var rollup = exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+        rollup.on('close', function(exitcode) {
+            done(exitcode ? new Error('rollup failed') : 0);
+        });
+    }
 });
 
 gulp.task('bundle:dependencies', function() {
@@ -111,13 +118,6 @@ gulp.task('bundle:dependencies', function() {
         .pipe(uglify())
         .pipe(gulp.dest(config.path.dist));
 });
-
-// gulp.task('bundle:sass', ['compile:sass'], function() {
-//     return gulp.src(config.sass.bundle.files)
-//         .pipe(concat(config.sass.bundle.name))
-//         .pipe(cssnano())
-//         .pipe(gulp.dest(config.path.dist));
-// });
 
 gulp.task('dist', ['bundle:dependencies', 'bundle:typescript']);
 
@@ -135,30 +135,14 @@ gulp.task('watch:html', ['copy:html'], function() {
 
 gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:html']);
 
-gulp.task('build', ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass']);
+var build_args = argv.production ?
+    ['bundle:dependencies', 'bundle:typescript'] :
+    ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass'];
+gulp.task('build', build_args);
 
 gulp.task('default', function() {
   // place code for your default task here
 });
-
-// var rollup = require('rollup').rollup;
-// var commonjs = require('rollup-plugin-commonjs');
-// var nodeResolve = require('rollup-plugin-node-resolve');
-
-// gulp.task('rollup', function () {
-//   return rollup({
-//     entry: 'compiled2/main-ngc.js',
-//     plugins: [
-//       nodeResolve({ jsnext: true }),
-//       commonjs()
-//     ]
-//   }).then(function (bundle) {
-//     return bundle.write({
-//       format: 'iife',
-//       dest: 'compiled3/main.js'
-//     });
-//   });
-// });
 
 if (!argv.production) {
     gulp.task('lint:python', function(done) {
@@ -207,9 +191,14 @@ if (!argv.production) {
             .pipe(clean());
     });
 
-    gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report']);
+    gulp.task('clean:aot', function() {
+        return gulp.src([config.path.aot.slice(0, -1), config.path.aot_compiled.slice(0, -1)], {read: false})
+            .pipe(clean());
+    });
 
-    gulp.task('test:typescript', ['build'], function(done) {
+    gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report', 'clean:aot']);
+
+    gulp.task('test:typescript', function(done) {
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
@@ -247,7 +236,6 @@ if (!argv.production) {
         }, remapCoverage).start();
 
         function remapCoverage(exitcode) {
-            console.log('path', config.report.path);
             gulp.src(config.report.path)
                 .pipe(remapIstanbul({
                     reports: config.report.remap.reports,

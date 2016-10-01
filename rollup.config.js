@@ -1,11 +1,12 @@
 import rollup from 'rollup'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs';
-import uglify from 'rollup-plugin-uglify'
+import uglify from 'rollup-plugin-uglify';
+var config = require('./gulp.config.js')();
 
 export default {
-  entry: 'aot-compiled/aot/frontend/main-ngc.js',
-  dest: 'aot-compiled/bundle.es2015.js', // output a single application bundle
+  entry: config.typescript.bundle.entry,
+  dest: config.typescript.bundle.dest, // output a single application bundle
   sourceMap: false,
   format: 'iife',
   plugins: [

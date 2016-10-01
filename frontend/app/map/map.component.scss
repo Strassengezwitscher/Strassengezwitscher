@@ -16,7 +16,6 @@ $card-padding: 10px;
   position: absolute;
   right: $card-padding;
   top: #{$height-navbar + $card-padding};
-  z-index: 99;
 
   .map-setting md-slide-toggle {
     margin: 8px 0;

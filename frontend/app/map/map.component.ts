@@ -26,6 +26,7 @@ class MapObjectSetting {
 }
 
 @Component({
+    moduleId: module.id,
     selector: "cg-map",
     templateUrl: "map.component.html",
     styleUrls: ["map.component.css"],

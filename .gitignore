@@ -85,4 +85,5 @@ node_modules/
 crowdgezwitscher/crowdgezwitscher/initial/
 
 # tmp directories for Angular compilation
-tmp/
+aot/
+aot-compiled/

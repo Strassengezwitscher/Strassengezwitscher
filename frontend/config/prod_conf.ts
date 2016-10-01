@@ -9,10 +9,6 @@ export class Config {
         this.initFromSensitiveConfig(new SensitiveConfig());
     }
 
-    public configure() {
-        enableProdMode();
-    }
-
     private initFromSensitiveConfig(sConf: SensitiveConfig) {
         for (let key in sConf) {
             if (sConf.hasOwnProperty(key)) {
