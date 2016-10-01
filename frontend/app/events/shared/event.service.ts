@@ -29,11 +29,11 @@ export class EventService {
     }
 
     private eventUrl(eventId: number): string {
-        return `${this.eventBaseUrl}${eventId}/`;
+        return `${this.eventBaseUrl}${eventId}`;
     }
 
     private tweetsUrl(eventId: number): string {
-        return `${this.eventUrl(eventId)}tweets.json`;
+        return `${this.eventUrl(eventId)}/tweets.json`;
     }
 
     private extractEventData(response: Response): Event {
