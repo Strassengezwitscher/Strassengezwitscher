@@ -12,10 +12,11 @@ var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
-var SystemBuilder = require('systemjs-builder');
 var ts = require('gulp-typescript');
 
-if (!argv.production) {
+var productionMode = (argv.production || argv.prod)
+
+if (!productionMode) {
     var clean = require('gulp-clean');
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
@@ -29,7 +30,7 @@ gulp.task('copy:frontend', ['copy:config'], function() {
 });
 
 gulp.task('copy:npmfiles', function() {
-    var dest = argv.production ? config.path.aot : config.path.build;
+    var dest = productionMode ? config.path.aot : config.path.build;
     return gulp.src(config.npm.files, {base: config.path.npm})
         .pipe(gulp.dest(dest));
 });
@@ -45,7 +46,7 @@ gulp.task('copy:sensitive_config', function() {
 });
 
 gulp.task('copy:config', ['copy:sensitive_config'] , function() {
-    var config_path = config.path.frontend_config + ((argv.production) ? 'prod_conf.ts': 'dev_conf.ts');
+    var config_path = config.path.frontend_config + ((productionMode) ? 'prod_conf.ts': 'dev_conf.ts');
     return gulp.src(config_path)
         .pipe(rename('config.ts'))
         .pipe(gulp.dest(config.path.frontend_config));
@@ -64,7 +65,7 @@ gulp.task('copy:html', function() {
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
 
 gulp.task('compile:sass', function() {
-    var dest = argv.production ? config.path.aot : config.path.build;
+    var dest = productionMode ? config.path.aot : config.path.build;
     return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
@@ -96,8 +97,9 @@ gulp.task('bundle:typescript', ['copy:frontend', 'compile:sass'], function(done)
     ngc.on('close', function(exitcode) {
         if (exitcode) {
             done(new Error('ngc failed'));
+        } else {
+            run_rollup();
         }
-        run_rollup();
     });
 
     function run_rollup() {
@@ -119,8 +121,6 @@ gulp.task('bundle:dependencies', function() {
         .pipe(gulp.dest(config.path.dist));
 });
 
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript']);
-
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(config.sass.files, ['compile:sass']);
 });
@@ -133,9 +133,9 @@ gulp.task('watch:html', ['copy:html'], function() {
     return gulp.watch(config.frontend.htmlFiles, {cwd: config.root}, ['copy:html']);
 });
 
-gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:html']);
+gulp.task('watch', ['copy:staticfiles', 'watch:sass', 'watch:typescript', 'watch:html']);
 
-var build_args = argv.production ?
+var build_args = productionMode ?
     ['bundle:dependencies', 'bundle:typescript'] :
     ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass'];
 gulp.task('build', build_args);
@@ -144,7 +144,7 @@ gulp.task('default', function() {
   // place code for your default task here
 });
 
-if (!argv.production) {
+if (!productionMode) {
     gulp.task('lint:python', function(done) {
         var command = 'prospector crowdgezwitscher --profile ../.landscape.yml';
         var lint = exec(command, function (err, stdout, stderr) {

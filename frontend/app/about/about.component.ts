@@ -5,5 +5,4 @@ import { Component } from "@angular/core";
     selector: "cg-about",
     templateUrl: "about.component.html",
 })
-
 export class AboutComponent {}
