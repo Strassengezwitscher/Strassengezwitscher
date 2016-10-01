@@ -15,6 +15,7 @@ install:
   - pip install coveralls
   - npm install
 before_script:
+  - gulp build
   - gulp build --production
   - DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py migrate
   - DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure &
