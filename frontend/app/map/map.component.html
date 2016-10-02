@@ -2,7 +2,7 @@
 <md-card class="map-settings">
     <md-card-content>
         <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
-            <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange()">
+            <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange(mapObjectSetting)">
                 {{mapObjectSetting.name}}
             </md-slide-toggle>
             <div class="map-sub-settings" *ngIf="mapObjectSetting.visible && mapObjectSetting.mapFilterOptions.length > 1" [@slideInOut]="mapObjectSetting.visible">

@@ -67,11 +67,12 @@ export class MapComponent implements AfterViewInit {
 
     public ngAfterViewInit() {
         this.initMap();
-        this.retrieveVisibleMapObjects();
     }
 
-    public onCheckboxChange() {
-        this.retrieveVisibleMapObjects();
+    public onCheckboxChange(mapObjectSetting: MapObjectSetting) {
+        if (mapObjectSetting.mapFilterOptions.length === 1) {
+            this.retrieveVisibleMapObjects();
+        }
         this.deleteNotVisibleMapObjects();
     }
 
