@@ -2,7 +2,7 @@ export class Event {
     public id: number;
     public name: string;
     public location: string;
-    public date: Date;
+    public date: string;
     public repetitionCycle: string;
     public organizer: string;
     public type: string;
