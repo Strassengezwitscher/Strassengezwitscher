@@ -164,14 +164,18 @@ export class MapComponent implements AfterViewInit {
             ),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
-            new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0], mapEventFilterOptions);
+            new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0],
+                                mapEventFilterOptions);
 
-        let mapFacebookPagesFilterOptions = new MapFilter(
-            "alle", null, DateFilter.all,
-            "static/img/facebook.png", "static/img/facebook_aktiv.png", false
-        );
+        let mapFacebookPagesFilterOptions = [
+            new MapFilter(
+                "alle", null, DateFilter.all,
+                "static/img/facebook.png", "static/img/facebook_aktiv.png", false
+            )
+        ];
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
-            new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions, []);
+            new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions[0],
+                                mapFacebookPagesFilterOptions);
     }
 
     private initializeMarkerMap() {
