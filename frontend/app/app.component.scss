@@ -24,6 +24,10 @@ $theme: md-light-theme($primary, $accent, $warn);
 // that you are using.
 @include angular-material-theme($theme);
 
+// FIX: hide focus for radio buttons
+.md-radio-focused .md-ink-ripple {
+  background-color: transparent;
+}
 
 body {
   margin: 0;
