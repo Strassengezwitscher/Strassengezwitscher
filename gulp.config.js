@@ -4,6 +4,7 @@ module.exports = function () {
         root: root,
         build: root + 'crowdgezwitscher/static/build/',
         dist: root + 'crowdgezwitscher/static/dist/',
+        shared: root + 'crowdgezwitscher/static/shared/',
         npm: root + 'node_modules/',
         frontend: 'frontend/',
         report: root + '.report/',
@@ -49,6 +50,13 @@ module.exports = function () {
     var npm = {
         static: [
             path.npm + 'core-js/client/shim.min.js',
+            path.npm + 'rxjs/**/*',
+            path.npm + '@angular/**/*.+(js|js.map)',
+            path.npm + 'systemjs/dist/system.src.js',
+            path.npm + 'symbol-observable/**/*',
+            path.npm + 'traceur/bin/traceur.js',
+        ],
+        shared_files: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
             path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
             path.npm + 'bootstrap/dist/js/bootstrap.min.js',
@@ -56,11 +64,6 @@ module.exports = function () {
             path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'selectize/dist/js/standalone/selectize.min.js',
             path.npm + 'selectize/dist/css/selectize.bootstrap3.css',
-            path.npm + 'rxjs/**/*',
-            path.npm + '@angular/**/*.+(js|js.map)',
-            path.npm + 'systemjs/dist/system.src.js',
-            path.npm + 'symbol-observable/**/*',
-            path.npm + 'traceur/bin/traceur.js',
         ],
         angular_dependencies: {
             files: [

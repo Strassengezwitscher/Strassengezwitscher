@@ -41,6 +41,11 @@ gulp.task('copy:npmfiles', function() {
         .pipe(gulp.dest(dest));
 });
 
+gulp.task('copy:sharednpmfiles', function() {
+    return gulp.src(config.npm.shared_files, {base: config.path.npm})
+        .pipe(gulp.dest(config.path.shared));
+});
+
 gulp.task('copy:sensitive_config', function() {
     fs.stat(config.path.frontend_config + 'sensitive_conf.ts', function(err, stat) {
         if(err != null) {
@@ -68,7 +73,7 @@ gulp.task('copy:html', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig']);
+gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:sharednpmfiles', 'copy:systemjsconfig']);
 
 gulp.task('compile:sass', function() {
     var dest = productionMode ? config.path.aot : config.path.build;
@@ -142,7 +147,7 @@ gulp.task('watch:html', ['copy:html'], function() {
 gulp.task('watch', ['copy:staticfiles', 'watch:sass', 'watch:typescript', 'watch:html']);
 
 var build_args = productionMode ?
-    ['copy:traceur', 'bundle:dependencies', 'bundle:typescript'] :
+    ['copy:traceur', 'copy:sharednpmfiles', 'bundle:dependencies', 'bundle:typescript'] :
     ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass'];
 gulp.task('build', build_args);
 
