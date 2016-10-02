@@ -6,12 +6,16 @@
 {% if events %}
 <table class="table table-striped">
     <tr>
+        <th>ID</th>
         <th>Name</th>
+        <th>Ort</th>
+        <th style="width: 120px;">Datum</th>
         <th style="width: 130px;">Status</th>
         <th style="width: 170px;"></th>
     </tr>
     {% for event in events %}
     <tr>
+        <td>{{ event.id }}</td>
         <td>
             {% if perms.events.view_event %}
                 <a href="{% url 'events:detail' event.id %}">{{ event.name }}</a>
@@ -19,6 +23,8 @@
                 {{ event.name }}
             {% endif %}
         </td>
+        <td>{{ event.location }}</td>
+        <td>{{ event.date }}</td>
         <td>{% if event.active %} aktiviert {% else %} deaktiviert {% endif %}</td>
         <td>
             {% if perms.events.change_event %}

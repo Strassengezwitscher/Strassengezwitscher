@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core
 
 import { Event } from "../shared/event.model";
 import { EventService } from "../shared/event.service";
+import { Helper } from "../../helper";
 
 @Component({
     moduleId: module.id,
@@ -23,10 +24,16 @@ export class EventComponent implements OnChanges {
         }
     }
 
+    public dateFormat(dateAsString: string) {
+        const date: Date = new Date(dateAsString);
+        return Helper.regionalDateFormat(date);
+    }
+
     private getEvent(id: number) {
         this.eventService.getEvent(id).subscribe(
             event => this.event = event,
             error => this.onError.emit(error),
         );
     }
+
 }

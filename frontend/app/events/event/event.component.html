@@ -4,7 +4,7 @@
     <md-card-content>
         <p *ngIf="event.date">
             <strong>Datum:</strong><br>
-            {{event.date}}
+            {{dateFormat(event.date)}}
         </p>
         <p *ngIf="event.repetitionCycle">
             <strong>Wiederholungszyklus:</strong><br>
