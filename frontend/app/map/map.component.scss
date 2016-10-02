@@ -29,8 +29,9 @@ $card-padding: 10px;
       display: block;
     }
 
+    // FIX: hide focus for radio buttons
     .md-radio-focused .md-ink-ripple {
-      opacity: 0 !important;
+      background-color: transparent;
     }
   }
 }
