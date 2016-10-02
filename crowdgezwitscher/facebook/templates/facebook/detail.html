@@ -22,6 +22,7 @@
             {% endfor %}
         </ul>
     </li>
+    <li><b>Notizen:</b> {{ page.notes | linebreaks }}</li>
 </ul>
 
 {% if perms.facebook.change_facebookpage %}
