@@ -2,7 +2,7 @@ import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 import { NgZone } from "@angular/core";
 
-import { MapComponent, MapService } from "./";
+import { MapComponent, MapObjectType, MapService } from "./";
 
 describe("MapComponent", () => {
 
@@ -27,10 +27,17 @@ describe("MapComponent", () => {
         spyOn(this.mapComponent, "deleteNotVisibleMapObjects");
         spyOn(this.mapComponent, "retrieveVisibleMapObjects");
 
-        this.mapComponent.onCheckboxChange();
+        // The point is that deleteNotVisibleMapObjects gets called each time when onCheckboxChange is triggered,
+        // but retrieveVisibleMapObjects will only be called if there is only one filter option (FACEBOOK_PAGES) 
 
+        this.mapComponent.onCheckboxChange(this.mapComponent.mapObjectSettings[MapObjectType.FACEBOOK_PAGES]);
         expect(this.mapComponent.deleteNotVisibleMapObjects).toHaveBeenCalledTimes(1);
         expect(this.mapComponent.retrieveVisibleMapObjects).toHaveBeenCalledTimes(1);
+
+        this.mapComponent.onCheckboxChange(this.mapComponent.mapObjectSettings[MapObjectType.EVENTS]);
+        expect(this.mapComponent.deleteNotVisibleMapObjects).toHaveBeenCalledTimes(2);
+        expect(this.mapComponent.retrieveVisibleMapObjects).toHaveBeenCalledTimes(1);
+
         done();
     });
 
