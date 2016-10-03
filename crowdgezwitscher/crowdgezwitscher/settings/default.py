@@ -119,6 +119,8 @@ ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: '/intern/users/%s/' % u.id,
 }
 
+GMAPS_API_KEY = 'AIzaSyBtW6fS3wUIW5onDDkOmnLtHaYZFdRjLfA'
+
 ######################################################################################################
 #                                           Recaptcha settings
 ######################################################################################################
@@ -189,3 +191,5 @@ TESTING = 'test' in sys.argv
 if TESTING:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}  # use sqlite
     logging.disable(logging.CRITICAL)
+
+INSECURE = '--insecure' in sys.argv
