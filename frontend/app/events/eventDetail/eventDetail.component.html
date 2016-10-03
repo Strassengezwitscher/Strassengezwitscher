@@ -21,10 +21,8 @@
         <p *ngIf="event.counterEvent">
             <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
         </p>
-        <p>
-            <a md-raised-button (click)="onRefresh()">Refresh Twitter-Feed</a>
-        </p>
         <div *ngIf="event.coverage">
+            <a md-raised-button (click)="onRefresh()">Refresh Twitter-Feed</a>
             <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
             <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
         </div>
