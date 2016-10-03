@@ -16,7 +16,7 @@ from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerS
 class FacebookPageForm(ModelForm):
     class Meta:
         model = FacebookPage
-        fields = ('name', 'active', 'location_long', 'location_lat', 'events')
+        fields = ('name', 'active', 'location_long', 'location_lat', 'notes', 'events')
         widgets = {
             'events': SelectizeSelectMultiple()
         }

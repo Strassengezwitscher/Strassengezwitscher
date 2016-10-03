@@ -118,6 +118,8 @@ ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: '/intern/users/%s/' % u.id,
 }
 
+GMAPS_API_KEY = 'AIzaSyBtW6fS3wUIW5onDDkOmnLtHaYZFdRjLfA'
+
 ######################################################################################################
 #                                           Recaptcha settings
 ######################################################################################################

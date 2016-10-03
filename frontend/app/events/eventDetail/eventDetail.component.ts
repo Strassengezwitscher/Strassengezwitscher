@@ -13,7 +13,7 @@ import { EventService } from "../shared/event.service";
 })
 export class EventDetailComponent implements OnInit {
     public event: Event;
-    public tweetIds: Observable<string[]> = Observable.of([]);
+    public tweetIds: string[] = null;
     public errorMessage: string;
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
@@ -27,6 +27,12 @@ export class EventDetailComponent implements OnInit {
 
     public clearError() {
         this.errorMessage = "";
+    }
+
+    public onRefresh() {
+        this.eventService.getTweetIds(this.event).subscribe(
+            tweetIds => this.tweetIds = tweetIds
+        );
     }
 
     private getEvent(id: number) {
@@ -43,7 +49,9 @@ export class EventDetailComponent implements OnInit {
     private setEvent(event: Event) {
         this.event = event;
         if (this.event && this.event.coverage) {
-            this.tweetIds = this.eventService.getTweetIds(this.event);
+            this.eventService.getTweetIds(this.event).subscribe(
+                tweetIds => this.tweetIds = tweetIds
+            );
         }
     }
 }
