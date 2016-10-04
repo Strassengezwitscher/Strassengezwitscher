@@ -37,7 +37,7 @@ class BlogEntry(models.Model):
         return self.__str__()
 
     def __str__(self):
-        return "<BlogEntry title='{}' created_by='{}' status='{}' >".format(self.title, self.created_by, self.status)
+        return "< BlogEntry title='{}' created_by='{}' status='{}' >".format(self.title, self.created_by, self.status)
 
     class Meta:
         default_permissions = ('add', 'change', 'delete', 'view')

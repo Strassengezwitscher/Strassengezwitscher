@@ -21,7 +21,7 @@ class BlogModelTests(TestCase):
             created_on=created_on,
             created_by=created_by,
         )
-        representation = "<BlogEntry title='{}' created_by='{}' status='{}' >".format(title, created_by, status)
+        representation = "< BlogEntry title='{}' created_by='{}' status='{}' >".format(title, created_by, status)
 
         self.assertEqual(str(blog_entry), representation)
         self.assertEqual(repr(blog_entry), representation)
