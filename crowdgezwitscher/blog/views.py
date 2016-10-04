@@ -9,8 +9,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from rest_framework import generics
 
-from blogs.models import BlogEntry
-from blogs.serializers import BlogSerializer
+from blog.models import BlogEntry
+from blog.serializers import BlogSerializer
 
 
 class BlogForm(ModelForm):
@@ -22,23 +22,23 @@ class BlogForm(ModelForm):
 
 
 class BlogListView(PermissionRequiredMixin, ListView):
-    permission_required = 'blogs.view_blogentry'
+    permission_required = 'blog.view_blogentry'
     model = BlogEntry
-    template_name = 'blogs/list.html'
-    context_object_name = 'blogs'
+    template_name = 'blog/list.html'
+    context_object_name = 'blog'
 
 
 class BlogDetail(PermissionRequiredMixin, DetailView):
-    permission_required = 'blogs.view_blogentry'
+    permission_required = 'blog.view_blogentry'
     model = BlogEntry
-    template_name = 'blogs/detail.html'
+    template_name = 'blog/detail.html'
     context_object_name = 'blog'
 
 
 class BlogCreate(PermissionRequiredMixin, CreateView):
-    permission_required = 'blogs.add_blogentry'
+    permission_required = 'blog.add_blogentry'
     model = BlogEntry
-    template_name = 'blogs/form.html'
+    template_name = 'blog/form.html'
     form_class = BlogForm
 
     def form_valid(self, form):
@@ -49,17 +49,17 @@ class BlogCreate(PermissionRequiredMixin, CreateView):
 
 
 class BlogUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = 'blogs.change_blogentry'
+    permission_required = 'blog.change_blogentry'
     model = BlogEntry
-    template_name = 'blogs/form.html'
+    template_name = 'blog/form.html'
     form_class = BlogForm
 
 
 class BlogDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = 'blogs.delete_blogentry'
+    permission_required = 'blog.delete_blogentry'
     model = BlogEntry
-    template_name = 'blogs/delete.html'
-    success_url = reverse_lazy('blogs:list')
+    template_name = 'blog/delete.html'
+    success_url = reverse_lazy('blog:list')
     context_object_name = 'blog'
 
 

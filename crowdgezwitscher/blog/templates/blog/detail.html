@@ -30,12 +30,12 @@
 </div>
 
 
-{% if perms.blogs.change_blogentry %}
-    <a class="btn btn-primary" href="{% url 'blogs:update' blog.id %}">Bearbeiten</a>
+{% if perms.blog.change_blogentry %}
+    <a class="btn btn-primary" href="{% url 'blog:update' blog.id %}">Bearbeiten</a>
 {% endif %}
 
-{% if perms.blogs.view_blogentry %}
-    <a class="btn btn-link" href="{% url 'blogs:list' %}">Zurück</a>
+{% if perms.blog.view_blogentry %}
+    <a class="btn btn-link" href="{% url 'blog:list' %}">Zurück</a>
 {% endif %}
 
 {% endblock %}

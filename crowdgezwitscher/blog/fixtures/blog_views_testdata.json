@@ -1,6 +1,6 @@
 [
 {
-    "model": "blogs.blogentry",
+    "model": "blog.blogentry",
     "pk": 1,
     "fields": {
         "title": "Funny Day Today",
@@ -11,7 +11,7 @@
     }
 },
 {
-    "model": "blogs.blogentry",
+    "model": "blog.blogentry",
     "pk": 2,
     "fields": {
         "title": "Another great article",
@@ -22,7 +22,7 @@
     }
 },
 {
-    "model": "blogs.blogentry",
+    "model": "blog.blogentry",
     "pk": 3,
     "fields": {
         "title": "Blog Entry 3",

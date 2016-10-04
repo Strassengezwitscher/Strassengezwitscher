@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from . import views
 
-app_name = 'blogs'
+app_name = 'blog'
 urlpatterns = [
     url(r'^$', views.BlogListView.as_view(), name='list'),
     url(r'^new/$', views.BlogCreate.as_view(), name='create'),

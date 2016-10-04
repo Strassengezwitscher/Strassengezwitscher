@@ -31,7 +31,7 @@ class BlogEntry(models.Model):
     created_by = models.ForeignKey(User, unique=False)
 
     def get_absolute_url(self):
-        return reverse('blogs:detail', kwargs={'pk': self.pk})
+        return reverse('blog:detail', kwargs={'pk': self.pk})
 
     def __repr__(self):
         return self.__str__()

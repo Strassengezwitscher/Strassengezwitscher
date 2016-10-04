@@ -32,8 +32,8 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        {% if perms.blogs.view_blogentry %}
-                            <li><a href="{% url 'blogs:list' %}">Blog</a></li>
+                        {% if perms.blog.view_blogentry %}
+                            <li><a href="{% url 'blog:list' %}">Blog</a></li>
                         {% endif %}
                         {% if perms.facebook.view_facebookpage %}
                             <li><a href="{% url 'facebook:list' %}">Facebook-Seiten</a></li>

@@ -24,14 +24,14 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # API URLs
-    url(r'^api/', include('blogs.urls_api', namespace='blogs_api')),
+    url(r'^api/', include('blog.urls_api', namespace='blog_api')),
     url(r'^api/', include('facebook.urls_api', namespace='facebook_api')),
     url(r'^api/', include('events.urls_api', namespace='events_api')),
     url(r'^api/', include('contact.urls')),
     url(r'^api/', include('captcha.urls')),
 
     # Admin area URLs
-    url(r'^intern/blogs/', include('blogs.urls', namespace='blogs')),
+    url(r'^intern/blog/', include('blog.urls', namespace='blog')),
     url(r'^intern/facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^intern/events/', include('events.urls', namespace='events')),
     url(r'^intern/users/', include('users.urls', namespace='users')),

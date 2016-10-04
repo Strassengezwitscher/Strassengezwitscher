@@ -10,7 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 def add_group_permissions(apps, schema_editor):
     admins = Group.objects.get(name="Administratoren")
     mods = Group.objects.get(name="Moderatoren")
-    cts = ContentType.objects.filter(app_label='blogs')
+    cts = ContentType.objects.filter(app_label='blog')
     perms = Permission.objects.filter(content_type__in=cts)
     admins.permissions.add(*perms)
     mods.permissions.add(*perms)

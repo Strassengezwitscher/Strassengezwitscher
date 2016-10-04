@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from facebook.models import FacebookPage
 from events.models import Event
-from blogs.models import BlogEntry
+from blog.models import BlogEntry
 
 
 def index(request):

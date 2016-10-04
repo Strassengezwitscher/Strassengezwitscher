@@ -38,11 +38,11 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {% if perms.blogs.add_blogentry %}
+            {% if perms.blog.add_blogentry %}
                 <input class="btn btn-primary" type="submit" value="Speichern" role="button">
             {% endif %}
-            {% if perms.blogs.view_blogentry %}
-                <a class="btn btn-link" href="{% url 'blogs:list' %}">Zurück</a>
+            {% if perms.blog.view_blogentry %}
+                <a class="btn btn-link" href="{% url 'blog:list' %}">Zurück</a>
             {% endif %}
         </div>
     </div>

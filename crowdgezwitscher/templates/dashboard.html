@@ -2,11 +2,11 @@
 
 {% block content %}
 
-{% if perms.blogs.view_blogentry %}
+{% if perms.blog.view_blogentry %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <a href="{% url 'blogs:list' %}">Blogeinträge</a>
+            <a href="{% url 'blog:list' %}">Blogeinträge</a>
         </h3>
     </div>
     <div class="panel-body">
