@@ -27,8 +27,8 @@ class BlogEntryViewLoggedInTests(TestCase):
     def test_get_detail_view(self):
         response = self.client.get(reverse('blog:detail', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('blog', response.context)
-        self.assertEqual(response.context['blog'], BlogEntry.objects.get(pk=1))
+        self.assertIn('blogentry', response.context)
+        self.assertEqual(response.context['blogentry'], BlogEntry.objects.get(pk=1))
 
     def test_get_detail_view_not_existant(self):
         response = self.client.get(reverse('blog:detail', kwargs={'pk': 1000}))
@@ -114,8 +114,8 @@ class BlogEntryViewLoggedInTests(TestCase):
     def test_get_delete_view(self):
         response = self.client.get(reverse('blog:delete', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('blog', response.context)
-        self.assertEqual(response.context['blog'], BlogEntry.objects.get(pk=1))
+        self.assertIn('blogentry', response.context)
+        self.assertEqual(response.context['blogentry'], BlogEntry.objects.get(pk=1))
 
     def test_get_delete_view_not_existant(self):
         response = self.client.get(reverse('blog:delete', kwargs={'pk': 1000}))

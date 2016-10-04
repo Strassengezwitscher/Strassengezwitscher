@@ -15,7 +15,7 @@ class BlogAPIViewTests(APITestCase):
     # on list ("/api/blog/") and detail (e.g."/api/blog/1/")
 
     # POST /api/blog/
-    def test_create_blog_entry_in_list(self):
+    def test_create_blogentry_in_list(self):
         url = reverse('blog_api:list')
         data = {
             'id': '1',
@@ -25,7 +25,7 @@ class BlogAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # POST /api/blog/1/
-    def test_create_blog_entry(self):
+    def test_create_blogentry(self):
         url = reverse('blog_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',
@@ -49,7 +49,7 @@ class BlogAPIViewTests(APITestCase):
         self.assertTrue(len(blogentries) < BlogEntry.objects.count())
 
     # GET /api/blog/1/
-    def test_read_blog_entry(self):
+    def test_read_blogentry(self):
         blog_id = 1
         blogentry = BlogEntry.objects.get(pk=blog_id)
         url = reverse('blog_api:detail', kwargs={'pk': 1})
@@ -62,13 +62,13 @@ class BlogAPIViewTests(APITestCase):
         self.assertEqual(response_json['content'], blogentry.content)
 
     # GET /api/blog/1000/
-    def test_read_not_existant_blog_entry(self):
+    def test_read_not_existant_blogentry(self):
         url = reverse('blog_api:detail', kwargs={'pk': 1000})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     # GET /api/blog/2/
-    def test_read_blog_entry_draft(self):
+    def test_read_blogentry_draft(self):
         self.assertTrue(BlogEntry.objects.get(pk=2).status == BlogEntry.DRAFT)
         url = reverse('blog_api:detail', kwargs={'pk': 2})
         response = self.client.get(url)
@@ -85,7 +85,7 @@ class BlogAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # PATCH /api/blog/1/
-    def test_modify_blog_entry(self):
+    def test_modify_blogentry(self):
         url = reverse('blog_api:detail', kwargs={'pk': 1})
         data = {
             'id': '1',

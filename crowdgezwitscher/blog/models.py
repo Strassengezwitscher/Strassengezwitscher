@@ -14,7 +14,7 @@ class BlogEntry(models.Model):
     HIDDEN = 'HIDDEN'
     DRAFT = 'DRAFT'
     PUBLISHED = 'PUBLISHED'
-    BLOG_ENTRY_CHOICES = (
+    BLOGENTRY_CHOICES = (
         (DRAFT, 'draft'),
         (PUBLISHED, 'published'),
         (HIDDEN, 'hidden'),
@@ -24,7 +24,7 @@ class BlogEntry(models.Model):
     content = RichTextField()
     status = models.CharField(
         max_length=15,
-        choices=BLOG_ENTRY_CHOICES,
+        choices=BLOGENTRY_CHOICES,
         default=DRAFT)
 
     created_on = models.DateTimeField(default=timezone.now)

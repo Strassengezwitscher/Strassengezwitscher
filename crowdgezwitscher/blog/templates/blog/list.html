@@ -9,21 +9,21 @@
         <th>Titel</th>
         <th style="width: 170px;"></th>
     </tr>
-    {% for blog in blog %}
+    {% for blogentry in blog %}
     <tr>
         <td>
             {% if perms.blog.view_blogentry %}
-                <a href="{% url 'blog:detail' blog.id %}">{{ blog.title }}</a>
+                <a href="{% url 'blog:detail' blogentry.id %}">{{ blogentry.title }}</a>
             {% else %}
-                {{ blog.title }}
+                {{ blogentry.title }}
             {% endif %}
         </td>
         <td>
             {% if perms.blog.change_blogentry %}
-                <a class="btn btn-default btn-sm" href="{% url 'blog:update' blog.id %}">Bearbeiten</a>
+                <a class="btn btn-default btn-sm" href="{% url 'blog:update' blogentry.id %}">Bearbeiten</a>
             {% endif %}
             {% if perms.blog.delete_blogentry %}
-                <a class="btn btn-default btn-sm" href="{% url 'blog:delete' blog.id %}">Löschen</a>
+                <a class="btn btn-default btn-sm" href="{% url 'blog:delete' blogentry.id %}">Löschen</a>
             {% endif %}
         </td>
     </tr>

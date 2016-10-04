@@ -32,7 +32,7 @@ class BlogDetail(PermissionRequiredMixin, DetailView):
     permission_required = 'blog.view_blogentry'
     model = BlogEntry
     template_name = 'blog/detail.html'
-    context_object_name = 'blog'
+    context_object_name = 'blogentry'
 
 
 class BlogCreate(PermissionRequiredMixin, CreateView):
@@ -60,7 +60,7 @@ class BlogDelete(PermissionRequiredMixin, DeleteView):
     model = BlogEntry
     template_name = 'blog/delete.html'
     success_url = reverse_lazy('blog:list')
-    context_object_name = 'blog'
+    context_object_name = 'blogentry'
 
 
 # API Views

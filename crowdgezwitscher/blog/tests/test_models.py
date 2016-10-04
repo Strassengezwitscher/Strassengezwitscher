@@ -14,7 +14,7 @@ class BlogModelTests(TestCase):
         created_on = datetime.now
         created_by = User.objects.get(pk=1)
         status = BlogEntry.DRAFT
-        blog_entry = BlogEntry(
+        blogentry = BlogEntry(
             title=title,
             content=content,
             status=status,
@@ -23,5 +23,5 @@ class BlogModelTests(TestCase):
         )
         representation = "< BlogEntry title='{}' created_by='{}' status='{}' >".format(title, created_by, status)
 
-        self.assertEqual(str(blog_entry), representation)
-        self.assertEqual(repr(blog_entry), representation)
+        self.assertEqual(str(blogentry), representation)
+        self.assertEqual(repr(blogentry), representation)

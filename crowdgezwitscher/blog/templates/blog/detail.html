@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<h1>{{ blog.title }}</h1>
+<h1>{{ blogentry.title }}</h1>
 
 <div class="row">
     <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <label class="control-label" > Inhalt </label>
         <div style="border-style:solid;padding:5px;">
-            {{blog.content|safe}}
+            {{blogentry.content|safe}}
         </div>
     </div>
 </div>
@@ -17,21 +17,21 @@
 <div class="row">
     <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <label class="control-label" > Status </label>
-        {{ blog.get_status_display}}
+        {{ blogentry.get_status_display}}
     </div>
     <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <label class="control-label" > Erstellungsdatum </label>
-        {{ blog.created_on}}
+        {{ blogentry.created_on}}
     </div>
     <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
         <label class="control-label" > Autor </label>
-        {{ blog.created_by}}
+        {{ blogentry.created_by}}
     </div>
 </div>
 
 
 {% if perms.blog.change_blogentry %}
-    <a class="btn btn-primary" href="{% url 'blog:update' blog.id %}">Bearbeiten</a>
+    <a class="btn btn-primary" href="{% url 'blog:update' blogentry.id %}">Bearbeiten</a>
 {% endif %}
 
 {% if perms.blog.view_blogentry %}
