@@ -2,3 +2,17 @@
     background-color: white;
     margin: 32px auto;
 }
+
+#blogPost {
+    p {
+        text-align: justify;
+    }
+}
+
+#blogPost {
+     a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+}
