@@ -73,3 +73,19 @@ class CrowdgezwitscherViewTests(TestCase):
         url = reverse('intern')
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    def test_mattermost_url_logged_in(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
+        url = reverse('mattermost')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_mattermost_url_logged_out(self):
+        url = reverse('mattermost')
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    def test_landingpage_url(self):
+        response = self.client.get(reverse('landingpage'))
+        self.assertEqual(response.status_code, 200)
