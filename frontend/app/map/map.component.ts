@@ -160,7 +160,7 @@ export class MapComponent implements AfterViewInit {
                 "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false,
             ),
             new MapFilter(
-                "2015", null, DateFilter.year2015,
+                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
                 "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false
             ),
         ];
