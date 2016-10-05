@@ -27,6 +27,9 @@
         </cg-app>
     </body>
 
+    <script src="https://maps.googleapis.com/maps/api/js?extension=.js&output=embed{{ key_param }}"></script>
+    <script src="https://platform.twitter.com/widgets.js"></script>
+
     {% if debug %}
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->
@@ -34,6 +37,7 @@
     <script src="{% static 'zone.js/dist/zone.js' %}"></script>
     <script src="{% static 'reflect-metadata/Reflect.js' %}"></script>
     <script src="{% static 'hammerjs/hammer.js' %}"></script>
+    <script src="{% static 'web-animations-js/web-animations.min.js' %}"></script>
     <script src="{% static 'systemjs/dist/system.src.js' %}"></script>
 
     <!-- 2. Configure SystemJS -->
@@ -45,6 +49,4 @@
     <script src="{% static 'dependencies.js' %}"></script>
     <script src="{% static 'bundle.js' %}" defer></script>
     {% endif %}
-
-    <script src="https://maps.googleapis.com/maps/api/js?extension=.js&output=embed"></script>
 </html>

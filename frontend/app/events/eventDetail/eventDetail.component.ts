@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
+import { Observable } from "rxjs/Observable";
 
 import { Event, EventService } from "./../";
 
@@ -8,13 +9,14 @@ import { Event, EventService } from "./../";
     selector: "cg-event-detail-page",
     templateUrl: "eventDetail.component.html",
 })
-
 export class EventDetailComponent implements OnInit {
-    private event: Event = null;
+    public tweetIds: string[] = null;
+    private event: Event;
     private errorMessage: string;
+
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
-    public ngOnInit(): void {
+    public ngOnInit() {
         this.route.params.forEach((params: Params) => {
             let id = + params["id"];
             this.getEvent(id);
@@ -25,19 +27,29 @@ export class EventDetailComponent implements OnInit {
         this.errorMessage = "";
     }
 
+    public onRefresh() {
+        this.eventService.getTweetIds(this.event).subscribe(
+            tweetIds => this.tweetIds = tweetIds
+        );
+    }
+
     private getEvent(id: number) {
-        this.eventService.getEvent(id)
-                        .subscribe(
-                            event => this.setActiveEvent(event),
-                            error => this.setErrorMessage(<any> error),
-                        );
+        this.eventService.getEvent(id).subscribe(
+            event => this.setEvent(event),
+            error => this.setErrorMessage(<any> error),
+        );
     }
 
     private setErrorMessage(errorMessage: string) {
         this.errorMessage = errorMessage;
     }
 
-    private setActiveEvent(ev: Event) {
-        this.event = ev;
+    private setEvent(event: Event) {
+        this.event = event;
+        if (this.event && this.event.coverage) {
+            this.eventService.getTweetIds(this.event).subscribe(
+                tweetIds => this.tweetIds = tweetIds
+            );
+        }
     }
 }

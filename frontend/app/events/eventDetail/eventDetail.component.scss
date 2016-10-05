@@ -23,3 +23,17 @@
     }
   }
 }
+
+.event-container {
+  text-align: center;
+
+  h1 {
+    font-size: 3em;
+
+    .small {
+      font-size: 0.6em;
+      font-weight: 500;
+      color: #888888;
+    }
+  }
+}

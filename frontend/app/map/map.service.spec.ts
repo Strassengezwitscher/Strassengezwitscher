@@ -2,10 +2,14 @@ import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { MapObjectType, MapService } from "./";
+import { DateFilter, MapObjectType, MapService } from "./";
 
 describe("MapService", () => {
     beforeEach(() => {
+        // Set mockdate to 31st of May 2016
+        let mockDate = new Date(2016, 4, 31);
+        jasmine.clock().mockDate(mockDate);
+
         TestBed.configureTestingModule({
             providers: [
                 MapService,
@@ -43,7 +47,7 @@ describe("MapService", () => {
         mockBackend.connections.subscribe(connection => {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(response)})));
         });
-        service.getMapObjects().subscribe(mapObjects => {
+        service.getMapObjects(MapObjectType.EVENTS, DateFilter.all).subscribe(mapObjects => {
             expect(mapObjects).toContain({
                 "id": 13,
                 "name": "Wurstverein Boltenhagen",
@@ -70,7 +74,7 @@ describe("MapService", () => {
         mockBackend.connections.subscribe(connection => {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(emptyResponse)})));
         });
-        service.getMapObjects().subscribe(mapObjects => {
+        service.getMapObjects(MapObjectType.EVENTS, DateFilter.all).subscribe(mapObjects => {
             expect(mapObjects.length).toBe(0);
         });
     }));
@@ -83,7 +87,7 @@ describe("MapService", () => {
             connection.mockRespond(new Response(new ResponseOptions({body: malformedResponse, status: 500})));
         });
         try {
-            service.getMapObjects().subscribe();
+            service.getMapObjects(MapObjectType.EVENTS, DateFilter.all).subscribe();
         } catch (error) {
             expect(error).toBe("JSON Parse error: Unexpected token '}'");
         }
@@ -95,7 +99,7 @@ describe("MapService", () => {
             connection.mockError(new Error("Internal Server Error 500"));
         });
         try {
-            service.getMapObjects().subscribe();
+            service.getMapObjects(MapObjectType.EVENTS, DateFilter.all).subscribe();
         } catch (error) {
             expect(error).toBe("Internal Server Error 500");
         }
@@ -110,8 +114,21 @@ describe("MapService", () => {
 
     it("Should have an initialized urlMap after construction", inject([MapService], (service) => {
         expect(service.urlMap.size).toBe(2);
-        expect(service.urlMap.get(MapObjectType.EVENTS)).toBe("api/events.json");
-        expect(service.urlMap.get(MapObjectType.FACEBOOK_PAGES)).toBe("api/facebook.json");
+        expect(service.urlMap.get(MapObjectType.EVENTS).size).toBe(4);
+        expect(service.urlMap.get(MapObjectType.FACEBOOK_PAGES).size).toBe(1);
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.all)).toBe("api/events.json");
+        expect(service.urlMap.get(MapObjectType.FACEBOOK_PAGES).get(DateFilter.all)).toBe("api/facebook.json");
+
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2015)).
+            toBe("api/events.json?from=2015-01-01&to=2015-12-31");
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2016)).
+            toContain("api/events.json?from=2016-01-01&");
+
+        // Folling two specs based on mocked date
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2016)).
+            toContain("to=2016-5-31");
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.upcoming)).
+            toBe("api/events.json?from=2016-5-1");
     }));
 
 });

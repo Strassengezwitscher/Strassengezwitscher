@@ -20,16 +20,18 @@
   };
 
   var appBarrels = [
+    'app/about',
+    'app/blog',
     'app/captcha',
     'app/contact',
     'app/events',
-    'app/events/shared',
-    'app/events/eventDetail',
     'app/events/event',
+    'app/events/eventDetail',
+    'app/events/shared',
     'app/facebook',
-    'app/map',
     'app/imprint',
-    'app/about',
+    'app/map',
+    'app/twitter',
   ];
 
   appBarrels.forEach(function(barrelName) {
@@ -72,6 +74,7 @@
     'icon',
     'input',
     'menu',
+    'radio',
     'slide-toggle',
     'toolbar',
     'tooltip',

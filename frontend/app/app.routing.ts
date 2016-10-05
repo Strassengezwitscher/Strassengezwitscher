@@ -6,6 +6,7 @@ import { ContactComponent } from "./contact";
 import { ImprintComponent } from "./imprint";
 import { AboutComponent } from "./about";
 import { EventDetailComponent } from "./events";
+import { BlogComponent } from "./blog";
 
 const appRoutes: Routes = [
     {
@@ -27,6 +28,10 @@ const appRoutes: Routes = [
     {
         path: "events/:id",
         component: EventDetailComponent,
+    },
+    {
+        path: "blog",
+        component: BlogComponent,
     },
 ];
 

@@ -1,38 +1,39 @@
-<div class="container" *ngIf="event">
-    <h1>{{event.name}}</h1>
-    <h3>{{event.location}}</h3>
-    <p *ngIf="event.date">
-        <strong>Datum:</strong><br>
-        {{event.date}}
-    </p>
-    <p *ngIf="event.repetitionCycle">
-        <strong>Wiederholungszyklus:</strong><br>
-        {{event.repetitionCycle}}
-    </p>
-    <p *ngIf="event.organizer">
-        <strong>Organisator:</strong><br>
-        {{event.organizer}}
-    </p>
-    <p *ngIf="event.participants">
-        <strong>Teilnehmer:</strong><br>
-        {{event.participants}}
-    </p>
-    <p *ngIf="event.type">
-        <strong>Art:</strong><br>
-        {{event.type}}
-    </p>
-    <p *ngIf="event.counterEvent">
-        <strong>Gegenveranstaltung:</strong><br>
-        {{event.counterEvent}}
-    </p>
-    <p *ngIf="event.coverage">
-        <strong>Berichterstattung:</strong><br>
-        {{event.coverage}} (Twitter-Feed)
-    </p>
-    <md-card class="error-message" *ngIf="errorMessage">
-        <span>{{errorMessage}}</span>
-        <button md-icon-button (click)="clearError()">
-            <md-icon>clear</md-icon>
-        </button>
-    </md-card>
+<div class="container event-container">
+    <div *ngIf="event">
+        <h1>{{ event.name }}
+            <span class="small">
+                <span *ngIf="event.date">{{ event.date | date: 'dd.MM.yyyy' }},</span>
+                <span>{{ event.location }}</span>
+            </span>
+        </h1>
+        <p *ngIf="event.repetitionCycle">
+            <strong>Wiederholungszyklus:</strong> {{event.repetitionCycle}}
+        </p>
+        <p *ngIf="event.organizer">
+            <strong>Organisator:</strong> {{event.organizer}}
+        </p>
+        <p *ngIf="event.participants">
+            <strong>Teilnehmer:</strong> {{event.participants}}
+        </p>
+        <p *ngIf="event.type">
+            <strong>Art:</strong> {{event.type}}
+        </p>
+        <p *ngIf="event.counterEvent">
+            <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
+        </p>
+        <div *ngIf="event.coverage">
+            <a md-raised-button (click)="onRefresh()">Refresh Twitter-Feed</a>
+            <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
+            <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
+        </div>
+        <md-card *ngIf="!event.coverage">
+            Keine Berichterstattung geplant.
+        </md-card>
+    </div>
 </div>
+<md-card class="error-message" *ngIf="errorMessage">
+    <span>{{errorMessage}}</span>
+    <button md-icon-button (click)="clearError()">
+        <md-icon>clear</md-icon>
+    </button>
+</md-card>
