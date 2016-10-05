@@ -149,10 +149,10 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {% if perms.event.add_event %}
+            {% if perms.events.add_event %}
                 <input class="btn btn-primary" type="submit" value="Speichern" role="button">
             {% endif %}
-            {% if perms.event.view_event %}
+            {% if perms.events.view_event %}
                 <a class="btn btn-link" href="{% url 'events:list' %}">Zurück</a>
             {% endif %}
         </div>
