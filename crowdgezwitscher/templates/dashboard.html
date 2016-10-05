@@ -80,7 +80,7 @@
 </div>
 {% endif %}
 
-{% if not perms.facebook.view_facebookpage and not perms.events.view_event and not perms.auth.view_user%}
+{% if not perms.facebook.view_facebookpage and not perms.events.view_event and not perms.auth.view_user and not perms.blog.view_blogentry %}
     Du brauchst mehr Berechtigungen.
 {% endif %}
 
