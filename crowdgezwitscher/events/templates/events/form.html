@@ -33,14 +33,14 @@
             {{ form.location_long.errors }}
             <div class="form-group">
                 <label class="control-label" for="{{ form.location_long.id_for_label }}">{{ form.location_long.label }}</label>
-                <input id="{{ form.location_long.id_for_label }}" name="{{ form.location_long.html_name }}" type="number" class="form-control" value="{{ form.location_long.value }}">
+                <input id="{{ form.location_long.id_for_label }}" name="{{ form.location_long.html_name }}" type="number" step="any" class="form-control" value="{{ form.location_long.value }}">
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.location_lat.errors }}
             <div class="form-group">
                 <label class="control-label" for="{{ form.location_lat.id_for_label }}">{{ form.location_lat.label }}</label>
-                <input id="{{ form.location_lat.id_for_label }}" name="{{ form.location_lat.html_name }}" type="number" class="form-control" value="{{ form.location_lat.value }}">
+                <input id="{{ form.location_lat.id_for_label }}" name="{{ form.location_lat.html_name }}" type="number" step="any" class="form-control" value="{{ form.location_lat.value }}">
             </div>
         </div>
     </div>
