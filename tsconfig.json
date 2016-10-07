@@ -11,7 +11,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "sourceRoot": "aot/",
     "outDir": "aot-compiled/",
-    "types": ["core-js", "hammerjs", "googlemaps", "node", "jasmine"]
+    "types": ["core-js", "hammerjs", "googlemaps", "node"]
   },
   "files": [
     "aot/frontend/app/app.module.ts",
