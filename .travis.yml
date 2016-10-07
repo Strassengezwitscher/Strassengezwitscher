@@ -13,24 +13,24 @@ before_install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - npm install -g npm@latest
 install:
-  - if [ "$COVERAGE" == 1 ]; then sudo apt-get install -y lcov; fi
-  - if [ "$COVERAGE" == 1 ]; then gem install coveralls-lcov; fi
+  - if [ "$COVERAGE" == 1 ]; then sudo apt-get install -y lcov fi
+  - if [ "$COVERAGE" == 1 ]; then gem install coveralls-lcov fi
   - pip install -r requirements.txt
-  - if [ "$COVERAGE" == 1 ]; then pip install coveralls; fi
-  - if [ "$COVERAGE" == 1 ]; then npm install; fi
-  - if [ "$E2E" == 1 ]; then npm install --production; fi
+  - if [ "$COVERAGE" == 1 ]; then pip install coveralls fi
+  - if [ "$COVERAGE" == 1 ]; then npm install fi
+  - if [ "$E2E" == 1 ]; then npm install --production fi
 before_script:
-  - if [ "$COVERAGE" == 1 ]; then gulp build; fi
-  - if [ "$E2E" == 1 ]; then gulp build --production; fi
-  - if [ "$E2E" == 1 ]; then DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py migrate; fi
-  - if [ "$E2E" == 1 ]; then DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure &; fi
+  - if [ "$COVERAGE" == 1 ]; then gulp build fi
+  - if [ "$E2E" == 1 ]; then gulp build --production fi
+  - if [ "$E2E" == 1 ]; then DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py migrate fi
+  - if [ "$E2E" == 1 ]; then DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure & fi
 script:
-  - if [ "$COVERAGE" == 1 ]; then gulp coverage:python; fi
-  - if [ "$COVERAGE" == 1 ]; then gulp coverage:typescript; fi
-  - if [ "$E2E" == 1 ]; then gulp test:e2e; fi
+  - if [ "$COVERAGE" == 1 ]; then gulp coverage:python fi
+  - if [ "$COVERAGE" == 1 ]; then gulp coverage:typescript fi
+  - if [ "$E2E" == 1 ]; then gulp test:e2e fi
 after_success:
-  - if [ "$COVERAGE" == 1 ]; then coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json; fi
-  - if [ "$COVERAGE" == 1 ]; coveralls --merge=./.report/coverage.json; fi
+  - if [ "$COVERAGE" == 1 ]; then coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json fi
+  - if [ "$COVERAGE" == 1 ]; coveralls --merge=./.report/coverage.json fi
   - cd .travis
   - ./deploy.sh
 
