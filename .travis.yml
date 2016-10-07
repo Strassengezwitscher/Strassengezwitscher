@@ -23,7 +23,7 @@ before_script:
   - if [ "$COVERAGE" == 1 ]; then gulp build; fi
   - if [ "$E2E" == 1 ]; then gulp build --production; fi
   - if [ "$E2E" == 1 ]; then DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py migrate; fi
-  - if [ "$E2E" == 1 ]; then DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure & fi
+  - if [ "$E2E" == 1 ]; then (DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production python crowdgezwitscher/manage.py runserver --insecure &); fi
 script:
   - if [ "$COVERAGE" == 1 ]; then gulp coverage:python; fi
   - if [ "$COVERAGE" == 1 ]; then gulp coverage:typescript; fi
