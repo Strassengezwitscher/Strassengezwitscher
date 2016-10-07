@@ -5,7 +5,7 @@
 <h1>{{ page.name }}</h1>
 <ul>
     <li><b>Aktiv:</b> {{ page.active }}</li>
-    <li><b>Position:</b> {{ page.location_lat }} {{ page.location_long }}</li>
+    <li><b>Position:</b> {{ page.location_lat }} {{ page.location_long }} {% if page.location %}({{ page.location }}){% endif %}</li>
     <li><b>Link:</b> {{ page.url }}</li>
     <li><b>Veranstaltungen:</b>
         <ul>

@@ -5,7 +5,7 @@
 <h1>{{ event.name }}</h1>
 <ul>
     <li><b>Aktiv:</b> {{ event.active }}</li>
-    <li><b>Position:</b> {{ event.location_lat }} {{ event.location_long }}</li>
+    <li><b>Position:</b> {{ event.location_lat }} {{ event.location_long }} {% if event.location %}({{ event.location }}){% endif %}</li>
     <li><b>Tag:</b> {{ event.date }}</li>
     <li><b>Zyklus:</b> {{ event.repetition_cycle }}</li>
     <li><b>Organizator:</b> {{ event.organizer }}</li>
