@@ -1,9 +1,6 @@
-import { Component, AfterViewInit, Input } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { Component, AfterViewInit, Input, ViewChild } from "@angular/core";
 
-import { TwitterService } from "./twitter.service";
-
-declare var twttr: {widgets: {load: Function}};
+declare var twttr: {widgets: any};
 declare var window: any;
 
 @Component({
@@ -13,21 +10,11 @@ declare var window: any;
 })
 export class TweetComponent implements AfterViewInit {
     @Input() public id: string;
-
-    public inner: Observable<string>;
-    public hidden: boolean = true;
-
-    constructor(private twitterService: TwitterService) {}
+    @ViewChild("tweetWrapper") public tweetWrapper;
 
     public ngAfterViewInit() {
-        this.inner = this.twitterService.getTweet(this.id);
-    }
-
-    public update(event) {
-        twttr.widgets.load(event.target).then(() => this.hidden = false);
-    }
-
-    public displayStyle() {
-        return this.hidden ? "none" : "block";
+        twttr.widgets.createTweet(this.id, this.tweetWrapper.nativeElement, {
+            align: "center",
+        });
     }
 }
