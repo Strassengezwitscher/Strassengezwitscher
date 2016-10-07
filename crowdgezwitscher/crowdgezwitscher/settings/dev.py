@@ -25,8 +25,8 @@ EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS += [  # noqa
-    os.path.join(BASE_DIR, "static/build"),  # noqa
+STATICFILES_DIRS = STATICFILES_DIRS_DEFAULT + [  # noqa
+    os.path.join(BASE_DIR, "static/build"),      # noqa
 ]
 
 # Create a sensitive_settings.py to override settings with sensible values
