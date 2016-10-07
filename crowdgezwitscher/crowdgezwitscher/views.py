@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -10,7 +11,10 @@ from events.models import Event
 
 def index(request):
     key_param = '&key=%s' % settings.GMAPS_API_KEY if not settings.DEBUG and not settings.INSECURE else ''
-    return render(request, 'frontend.html', {'key_param': mark_safe(key_param)})
+    return render(request, 'frontend.html', {
+        'key_param': mark_safe(key_param),
+        'insecure': settings.INSECURE,
+    })
 
 
 def landingpage(request):

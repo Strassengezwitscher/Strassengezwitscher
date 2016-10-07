@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.generic.base import RedirectView
 
 from . import views
 
@@ -47,3 +49,9 @@ urlpatterns = [
     url(r'^events/[0-9]+/$', views.index, name='eventDetail'),
     url(r'^blog/$', views.index, name='blog'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'app.component.html', RedirectView.as_view(url=settings.STATIC_URL + 'frontend/app/app.component.html')),
+        url(r'app.component.css', RedirectView.as_view(url=settings.STATIC_URL + 'frontend/app/app.component.css')),
+    ]

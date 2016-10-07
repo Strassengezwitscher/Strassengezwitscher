@@ -1,5 +1,3 @@
-import { enableProdMode } from "@angular/core";
-
 import { SensitiveConfig } from "./sensitive_conf";
 
 export class Config {
@@ -7,10 +5,6 @@ export class Config {
 
     constructor() {
         this.initFromSensitiveConfig(new SensitiveConfig());
-    }
-
-    public configure() {
-        enableProdMode();
     }
 
     private initFromSensitiveConfig(sConf: SensitiveConfig) {

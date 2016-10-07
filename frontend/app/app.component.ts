@@ -1,8 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
+import { RollupModuleProvider } from "./rollup-module.provider";
 
+@RollupModuleProvider({})
 @Component({
-    moduleId: module.id,
     selector: "cg-app",
     templateUrl: "app.component.html",
+    styleUrls: ["app.component.css"],
+    encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {}

@@ -1,8 +1,11 @@
-import { Contact, ContactComponent, ContactService } from "./";
-import { CaptchaService } from "../captcha";
 import { BaseRequestOptions, Http } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 import { NgZone } from "@angular/core";
+
+import { Contact } from "./contact.model";
+import { ContactComponent } from "./contact.component";
+import { ContactService } from "./contact.service";
+import { CaptchaService } from "../captcha/captcha.service";
 
 describe("ContactComponent", () => {
 

@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { DateFilter, MapObject, MapObjectType } from "./";
+import { DateFilter } from "./map.component";
+import { MapObject, MapObjectType } from "./mapObject.model";
+
 import { Helper } from "../helper";
 import { Observable } from "rxjs/Observable";
 

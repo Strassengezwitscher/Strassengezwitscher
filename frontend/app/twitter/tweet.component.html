@@ -1,1 +1,1 @@
-<div [style.display]="displayStyle()" [innerHtml]="inner | async" #tweetWrapper></div>
+<div [style.display]="displayStyle()" [innerHtml]="inner | async" (DOMNodeInserted)="update($event)"></div>

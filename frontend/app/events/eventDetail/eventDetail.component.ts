@@ -2,17 +2,19 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 
-import { Event, EventService } from "./../";
+import { Event } from "../shared/event.model";
+import { EventService } from "../shared/event.service";
 
 @Component({
     moduleId: module.id,
     selector: "cg-event-detail-page",
     templateUrl: "eventDetail.component.html",
+    styleUrls: ["eventDetail.component.css"],
 })
 export class EventDetailComponent implements OnInit {
+    public event: Event;
     public tweetIds: string[] = null;
-    private event: Event;
-    private errorMessage: string;
+    public errorMessage: string;
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 

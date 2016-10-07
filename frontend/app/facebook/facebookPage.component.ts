@@ -1,18 +1,19 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
-import { FacebookPage, FacebookPageService } from "./";
+import { FacebookPage } from "./facebookPage.model";
+import { FacebookPageService } from "./facebookPage.service";
 
 @Component({
     moduleId: module.id,
     selector: "cg-fb-detail",
     templateUrl: "facebookPage.component.html",
-    providers: [FacebookPageService],
+    styleUrls: ["facebookPage.component.css"],
 })
 
 export class FacebookPageComponent implements OnChanges {
-    private activePage: FacebookPage;
-    @Input("id") private id: number;
-    @Output() private onError = new EventEmitter<string>();
+    public activePage: FacebookPage;
+    @Input("id") public id: number;
+    @Output() public onError = new EventEmitter<string>();
     constructor(private fbPageService: FacebookPageService) {
         this.activePage = new FacebookPage();
     }

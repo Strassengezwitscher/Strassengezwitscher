@@ -16,7 +16,6 @@ $card-padding: 10px;
   position: absolute;
   right: $card-padding;
   top: #{$height-navbar + $card-padding};
-  z-index: 99;
 
   .map-setting md-slide-toggle {
     margin: 8px 0;
@@ -28,10 +27,6 @@ $card-padding: 10px;
 
     .map-sub-setting {
       display: block;
-    }
-
-    .md-radio-focused .md-ink-ripple {
-      opacity: 0;
     }
   }
 }

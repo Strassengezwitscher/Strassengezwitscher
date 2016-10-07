@@ -1,19 +1,20 @@
 import { Component, OnInit, NgZone, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { Contact, ContactService } from "./";
-import { CaptchaService } from "../captcha";
+import { Contact } from "./contact.model";
+import { ContactService } from "./contact.service";
+import { CaptchaService } from "../captcha/captcha.service";
 import { Config } from "../../config/config";
 
 @Component({
     moduleId: module.id,
     selector: "cg-contact",
     templateUrl: "contact.component.html",
-    providers: [ContactService, CaptchaService],
+    styleUrls: ["contact.component.css"],
 })
 export class ContactComponent implements OnInit, OnDestroy {
-    private contactErrorMessage: string;
-    private contactSuccessMessage: string;
+    public contactErrorMessage: string;
+    public contactSuccessMessage: string;
     private contact: Contact;
     private config: Config;
     private uploads: FileList;

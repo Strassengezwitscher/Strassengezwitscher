@@ -2,7 +2,9 @@ import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { DateFilter, MapObjectType, MapService } from "./";
+import { DateFilter } from "./map.component";
+import { MapObjectType } from "./mapObject.model";
+import { MapService } from "./map.service";
 
 describe("MapService", () => {
     beforeEach(() => {
