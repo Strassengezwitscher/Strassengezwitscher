@@ -3,6 +3,7 @@
 var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
+var clean = require('gulp-clean');
 var rename = require('gulp-rename');
 var fs = require('fs');
 var exec = require('child_process').exec;
@@ -17,12 +18,33 @@ var ts = require('gulp-typescript');
 var productionMode = (argv.production || argv.prod)
 
 if (!productionMode) {
-    var clean = require('gulp-clean');
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
     var Server = require('karma').Server;
     var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
+
+gulp.task('clean:build', function() {
+    return gulp.src(config.path.build, {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:dist', function() {
+    return gulp.src(config.path.dist, {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:report', function() {
+    return gulp.src(config.path.report, {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:aot', function() {
+    return gulp.src([config.path.aot.slice(0, -1), config.path.aot_compiled.slice(0, -1)], {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report', 'clean:aot']);
 
 gulp.task('copy:frontend', ['copy:config'], function() {
     return gulp.src(config.frontend.all, {base: config.path.root})
@@ -186,28 +208,6 @@ if (!productionMode) {
     });
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
-
-    gulp.task('clean:build', function() {
-        return gulp.src(config.path.build, {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean:dist', function() {
-        return gulp.src(config.path.dist, {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean:report', function() {
-        return gulp.src(config.path.report, {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean:aot', function() {
-        return gulp.src([config.path.aot.slice(0, -1), config.path.aot_compiled.slice(0, -1)], {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report', 'clean:aot']);
 
     gulp.task('test:typescript', function(done) {
         new Server({
