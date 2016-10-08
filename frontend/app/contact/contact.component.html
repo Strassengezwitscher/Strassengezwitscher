@@ -13,7 +13,7 @@
 
 	<md-card class="contact-card contact-card-error" *ngIf="contactErrorMessage">
 		<span>{{contactErrorMessage}}</span>
-		<button md-icon-button (click)="clearError()">
+		<button md-icon-button class="clear-button" (click)="clearError()">
 			<md-icon>clear</md-icon>
 		</button>
 	</md-card>
