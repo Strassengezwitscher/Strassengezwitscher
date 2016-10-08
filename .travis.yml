@@ -27,7 +27,7 @@ before_script:
 script:
   - if [ "$COVERAGE" == 1 ]; then gulp coverage:python; fi
   - if [ "$COVERAGE" == 1 ]; then gulp coverage:typescript; fi
-  - if [ "$E2E" == 1 ]; then gulp test:e2e; fi
+  - if [ "$E2E" == 1 ]; then gulp test:e2e --production; fi
 after_success:
   - if [ "$COVERAGE" == 1 ]; then coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json; fi
   - if [ "$COVERAGE" == 1 ]; coveralls --merge=./.report/coverage.json; fi
