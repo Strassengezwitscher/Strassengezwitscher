@@ -31,6 +31,7 @@
     "@types/hammerjs": "2.0.33",
     "@types/node": "6.0.41",
     "bootstrap": "3.3.7",
+    "casperjs": "1.1.3",
     "core-js": "2.4.1",
     "gulp": "3.9.1",
     "gulp-clean": "0.3.2",
@@ -44,6 +45,7 @@
     "hammerjs": "2.0.8",
     "jquery": "3.1.0",
     "merge2": "1.0.2",
+    "phantomjs-prebuilt": "2.1.13",
     "reflect-metadata": "0.1.8",
     "rollup": "0.36.1",
     "rollup-plugin-commonjs": "5.0.4",
@@ -60,7 +62,6 @@
   },
   "devDependencies": {
     "@types/jasmine": "2.2.34",
-    "casperjs": "1.1.3",
     "codelyzer": "0.0.26",
     "gulp-sass-lint": "1.2.0",
     "gulp-tslint": "6.0.2",
