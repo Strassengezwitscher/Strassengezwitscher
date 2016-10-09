@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
     'captcha.apps.CaptchaConfig',
+    'twitter.apps.TwitterConfig',
     'rest_framework',
 ]
 

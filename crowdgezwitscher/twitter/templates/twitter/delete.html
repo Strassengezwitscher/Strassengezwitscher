@@ -1,0 +1,13 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+    <p>Wollen Sie wirklich den Twitter-Account "{{ account.name }}" löschen?</p>
+    <input class="btn btn-primary" type="submit" value="Bestätigen" />
+    {% if perms.twitter.view_twitteraccount %}
+        <a class="btn btn-link" href="{% url 'twitter:list'%}">Abbrechen</a>
+    {% endif %}
+</form>
+
+{% endblock %}

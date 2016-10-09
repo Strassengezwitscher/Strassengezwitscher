@@ -1,0 +1,17 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>{{ account.name }}</h1>
+<ul>
+    <li><b>Twitter-Account-ID:</b> {{ account.account_id }}</li>
+</ul>
+
+{% if perms.twitter.change_twitteraccount %}
+    <a class="btn btn-primary" href="{% url 'twitter:update' account.id %}">Bearbeiten</a>
+{% endif %}
+{% if perms.twitter.view_twitteraccount %}
+    <a class="btn btn-link" href="{% url 'twitter:list' %}">Zurück</a>
+{% endif %}
+
+{% endblock %}

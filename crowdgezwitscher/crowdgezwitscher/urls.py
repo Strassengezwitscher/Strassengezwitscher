@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^intern/facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^intern/events/', include('events.urls', namespace='events')),
     url(r'^intern/users/', include('users.urls', namespace='users')),
+    url(r'^intern/twitter/', include('twitter.urls', namespace='twitter')),
     url(r'^intern/$', views.intern_index, name='intern'),
     url(r'^intern/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^intern/logout/$', auth_views.logout_then_login, name='logout'),

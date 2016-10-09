@@ -41,6 +41,9 @@
                         {% if perms.auth.view_user %}
                             <li><a href="{% url 'users:list' %}">Nutzer</a></li>
                         {% endif %}
+                        {% if perms.auth.view_twitter %}
+                            <li><a href="{% url 'twitter:list' %}">Twitter-Accounts</a></li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{% url 'map' %}">Nutzerbereich</a></li>
