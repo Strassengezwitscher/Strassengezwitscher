@@ -11,9 +11,6 @@
   "bugs": {
     "url": "https://github.com/Strassengezwitscher/Strassengezwitscher/issues"
   },
-  "scripts": {
-    "postinstall": "rm -f node_modules/@angular/material/core/overlay/overlay.css"
-  },
   "dependencies": {
     "@angular/common": "2.0.1",
     "@angular/compiler": "2.0.1",

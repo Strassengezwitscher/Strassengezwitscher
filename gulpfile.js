@@ -44,6 +44,12 @@ gulp.task('clean:aot', function() {
         .pipe(clean());
 });
 
+// to be deleted once https://github.com/angular/material2/issues/1348 is closed
+gulp.task('clean:angular_material', function () {
+    return gulp.src('node_modules/@angular/material/core/overlay/overlay.css', {read: false})
+        .pipe(clean({force: true}));
+});
+
 gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report', 'clean:aot']);
 
 gulp.task('copy:frontend', ['copy:config'], function() {
@@ -97,7 +103,7 @@ gulp.task('copy:html', function() {
 
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:sharednpmfiles', 'copy:systemjsconfig']);
 
-gulp.task('compile:sass', function() {
+gulp.task('compile:sass', ['clean:angular_material'], function() {
     var dest = productionMode ? config.path.aot : config.path.build;
     return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
