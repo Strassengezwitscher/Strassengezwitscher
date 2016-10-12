@@ -1,3 +1,5 @@
+@import '../colors';
+
 $height-navbar: 64px;
 $card-padding: 10px;
 
@@ -6,7 +8,7 @@ $card-padding: 10px;
 }
 
 .map-canvas {
-  height: calc(100% - #{$height-navbar});;
+  height: calc(100% - #{$height-navbar});
   width: 100vw;
 }
 
@@ -17,8 +19,10 @@ $card-padding: 10px;
   right: $card-padding;
   top: #{$height-navbar + $card-padding};
 
-  .map-setting md-slide-toggle {
-    margin: 8px 0;
+  .map-setting {
+    md-slide-toggle {
+      margin: 8px 0;
+    }
   }
 
   .map-sub-settings {
@@ -36,17 +40,17 @@ $card-padding: 10px;
   margin: 0;
   position: absolute;
   top: #{$height-navbar + $card-padding};
-  z-index: 99;
   width: 300px;
+  z-index: 99;
 
-  & > * {
+  > * {
     display: flex;
-    max-height: calc(100vh - #{$height-navbar + 2*$card-padding});
+    max-height: calc(100vh - #{$height-navbar + 2 * $card-padding});
   }
 }
 
 .error-message {
-  background-color: #f2dede;
+  background-color: map-get($message, error);
   bottom: $card-padding;
   left: 50vw;
   min-width: 200px;

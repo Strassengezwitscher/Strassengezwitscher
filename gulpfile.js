@@ -19,7 +19,7 @@ var productionMode = (argv.production || argv.prod)
 
 if (!productionMode) {
     var tslint = require('gulp-tslint');
-    var sassLint = require('gulp-sass-lint');
+    var scsslint = require('gulp-scss-lint');
     var Server = require('karma').Server;
     var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
@@ -203,8 +203,7 @@ if (!productionMode) {
 
     gulp.task('lint:sass', function() {
         return gulp.src(config.sass.files)
-            .pipe(sassLint())
-            .pipe(sassLint.format());
+            .pipe(scsslint())
     });
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);

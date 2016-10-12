@@ -1,5 +1,5 @@
-<div class="container event-container">
-    <div *ngIf="event">
+<div class="container">
+    <div class="event-container" *ngIf="event">
         <h1>{{ event.name }}
             <span class="small">
                 <span *ngIf="event.date">{{ event.date | date: 'dd.MM.yyyy' }},</span>
@@ -22,7 +22,7 @@
             <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
         </p>
         <div *ngIf="event.coverage">
-            <a md-raised-button class="refreshButton" (click)="onRefresh()">Refresh Twitter-Feed</a>
+            <a md-raised-button class="refresh-button" (click)="onRefresh()">Refresh Twitter-Feed</a>
             <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
             <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
         </div>
@@ -30,10 +30,7 @@
             Keine Berichterstattung geplant.
         </md-card>
     </div>
+    <md-card class="error-message" *ngIf="errorMessage">
+        <md-content>{{errorMessage}}</md-content>
+    </md-card>
 </div>
-<md-card class="error-message" *ngIf="errorMessage">
-    <span>{{errorMessage}}</span>
-    <button md-icon-button (click)="clearError()">
-        <md-icon>clear</md-icon>
-    </button>
-</md-card>
