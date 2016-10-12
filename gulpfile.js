@@ -17,13 +17,6 @@ var ts = require('gulp-typescript');
 
 var productionMode = (argv.production || argv.prod)
 
-if (!productionMode) {
-    var tslint = require('gulp-tslint');
-    var sassLint = require('gulp-sass-lint');
-    var Server = require('karma').Server;
-    var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
-}
-
 gulp.task('clean:build', function() {
     return gulp.src(config.path.build, {read: false})
         .pipe(clean());
@@ -183,6 +176,17 @@ gulp.task('default', function() {
   // place code for your default task here
 });
 
+gulp.task('test:e2e', function(done) {
+    var command = 'PHANTOMJS_EXECUTABLE=./node_modules/phantomjs-prebuilt/bin/phantomjs ./node_modules/casperjs/bin/casperjs test ' + config.e2e.files;
+    var casper = exec(command, function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    });
+    casper.on('close', function(exitcode) {
+        done(exitcode ? new Error('E2E tests failed') : 0);
+    });
+});
+
 if (!productionMode) {
     gulp.task('lint:python', function(done) {
         var command = 'prospector crowdgezwitscher --profile ../.landscape.yml';
@@ -196,6 +200,7 @@ if (!productionMode) {
     });
 
     gulp.task('lint:typescript', function() {
+        var tslint = require('gulp-tslint');
         return gulp.src(config.typescript.files)
             .pipe(tslint({
                 configuration: 'tslint.json',
@@ -208,6 +213,7 @@ if (!productionMode) {
     });
 
     gulp.task('lint:sass', function() {
+        var sassLint = require('gulp-sass-lint');
         return gulp.src(config.sass.files)
             .pipe(sassLint())
             .pipe(sassLint.format());
@@ -216,23 +222,13 @@ if (!productionMode) {
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
 
     gulp.task('test:typescript', function(done) {
+        var Server = require('karma').Server;
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
         }, function(exitcode) {
             done(exitcode ? new Error('Typescript tests failed') : 0);
         }).start();
-    });
-
-    gulp.task('test:e2e', function(done) {
-        var command = 'PHANTOMJS_EXECUTABLE=./node_modules/phantomjs-prebuilt/bin/phantomjs ./node_modules/casperjs/bin/casperjs test ' + config.e2e.files;
-        var casper = exec(command, function (err, stdout, stderr) {
-            console.log(stdout);
-            console.log(stderr);
-        });
-        casper.on('close', function(exitcode) {
-            done(exitcode ? new Error('E2E tests failed') : 0);
-        });
     });
 
     gulp.task('test:python', function(done) {
@@ -247,6 +243,8 @@ if (!productionMode) {
     });
 
     gulp.task('coverage:typescript', function(done) {
+        var Server = require('karma').Server;
+        var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
