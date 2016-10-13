@@ -92,6 +92,7 @@ $border-color: #9e9e9e;
     transition: .2s ease-out;
 
     &.active {
+      // scss-lint:disable VendorPrefix
       font-size: .8rem;
       -webkit-transform: translateY(-140%);
       transform: translateY(-140%);
