@@ -29,7 +29,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
                  private router: Router, private zone: NgZone) {
         this.config = new Config();
-        this.contact = new Contact("", "", "", "", null, null);
+        this.contact = new Contact("", "", "", "", false, false);
         this.filesValid = true;
         this.captchaVerified = false;
         window["verifyCallback"] = this.verifyCallback.bind(this);
@@ -99,7 +99,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     }
 
     private resetContact() {
-        this.contact = new Contact("", "", "", "", null, null);
+        this.contact = new Contact("", "", "", "", false, false);
     }
 
     private displaySuccess() {

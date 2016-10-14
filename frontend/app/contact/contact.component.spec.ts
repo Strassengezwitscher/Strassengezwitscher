@@ -40,7 +40,7 @@ describe("ContactComponent", () => {
     });
 
     it("check initilization", function() {
-        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", false, false));
         expect(this.cc.filesValid).toEqual(true);
     });
 
@@ -52,7 +52,7 @@ describe("ContactComponent", () => {
 
     it("Should reset the contact parameter", function() {
         this.cc.resetContact();
-        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", false, false));
     });
 
     it("Should reset contact form's success message", function() {
@@ -63,10 +63,10 @@ describe("ContactComponent", () => {
     });
 
     it("Should reset contact form's contact model", function() {
-        this.cc.contact = new Contact("test", "", "", "", null, null);
+        this.cc.contact = new Contact("test", "", "", "", false, false);
         this.cc.appendCaptchaScript();
         this.cc.resetContactForm();
-        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", false, false));
     });
 
     it("Should reset contact form's captcha verified flag", function() {
