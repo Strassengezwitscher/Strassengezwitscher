@@ -62,6 +62,7 @@ class EventListView(PermissionRequiredMixin, ListView):
     model = Event
     template_name = 'events/list.html'
     context_object_name = 'events'
+    ordering = '-date'
 
 
 class EventDetail(PermissionRequiredMixin, DetailView):
