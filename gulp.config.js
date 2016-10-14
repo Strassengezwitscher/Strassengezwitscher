@@ -64,6 +64,9 @@ module.exports = function () {
             path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'selectize/dist/js/standalone/selectize.min.js',
             path.npm + 'selectize/dist/css/selectize.bootstrap3.css',
+            path.npm + 'bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+            path.npm + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+            path.npm + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css.map',
         ],
         angular_dependencies: {
             files: [
