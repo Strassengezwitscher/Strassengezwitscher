@@ -39,8 +39,23 @@ describe("ContactComponent", () => {
         expect(this.cc.uploads).toEqual([{"name": "1234567890.txt"}]);
     });
 
+    it("check on file change correct inputfileNames", function () {
+        this.cc.onFileChange({"srcElement": {"files": [{"name": "foo.txt"}, {"name": "bar.txt"}]}});
+        expect(this.cc.fileInputNames).toEqual("foo.txt, bar.txt");
+        expect(this.cc.uploads).toEqual([{"name": "foo.txt"}, {"name": "bar.txt"}]);
+    });
+
+    it("Should reset the uploads and fileInputNames parameter", function () {
+        this.cc.onFileChange({"srcElement": {"files": [{"name": "1234567890.txt"}]}});
+        expect(this.cc.fileInputNames).toEqual("1234567890.txt");
+        expect(this.cc.uploads).toEqual([{"name": "1234567890.txt"}]);
+        this.cc.clearFileUpload();
+        expect(this.cc.fileInputNames).toEqual("");
+        expect(this.cc.uploads).toEqual(null);
+    });
+
     it("check initilization", function() {
-        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", false, false));
         expect(this.cc.filesValid).toEqual(true);
     });
 
@@ -52,7 +67,7 @@ describe("ContactComponent", () => {
 
     it("Should reset the contact parameter", function() {
         this.cc.resetContact();
-        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", false, false));
     });
 
     it("Should reset contact form's success message", function() {
@@ -63,10 +78,10 @@ describe("ContactComponent", () => {
     });
 
     it("Should reset contact form's contact model", function() {
-        this.cc.contact = new Contact("test", "", "", "", null, null);
+        this.cc.contact = new Contact("test", "", "", "", false, false);
         this.cc.appendCaptchaScript();
         this.cc.resetContactForm();
-        expect(this.cc.contact).toEqual(new Contact("", "", "", "", null, null));
+        expect(this.cc.contact).toEqual(new Contact("", "", "", "", false, false));
     });
 
     it("Should reset contact form's captcha verified flag", function() {

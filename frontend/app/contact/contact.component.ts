@@ -20,7 +20,7 @@ export class ContactComponent implements OnInit, OnDestroy {
     private uploads: FileList;
     private maxFileNameLength = 50;
     private filesValid;
-    private fileInputNames = "";
+    private fileInputNames;
     private captchaVerified;
     private script;
 
@@ -29,9 +29,10 @@ export class ContactComponent implements OnInit, OnDestroy {
     constructor( private contactService: ContactService, private captchaService: CaptchaService,
                  private router: Router, private zone: NgZone) {
         this.config = new Config();
-        this.contact = new Contact("", "", "", "", null, null);
+        this.contact = new Contact("", "", "", "", false, false);
         this.filesValid = true;
         this.captchaVerified = false;
+        this.fileInputNames = "";
         window["verifyCallback"] = this.verifyCallback.bind(this);
     }
 
@@ -92,17 +93,25 @@ export class ContactComponent implements OnInit, OnDestroy {
 
     public resetContactForm() {
         this.resetContact();
+        this.clearError();
         this.contactSuccessMessage = "";
+        this.clearFileUpload();
         this.captchaVerified = false;
         this.removeCaptchaScript();
         this.appendCaptchaScript();
     }
 
+    private clearFileUpload() {
+        this.fileInputNames = "";
+        this.uploads = null;
+    }
+
     private resetContact() {
-        this.contact = new Contact("", "", "", "", null, null);
+        this.contact = new Contact("", "", "", "", false, false);
     }
 
     private displaySuccess() {
+        this.clearError();
         this.contactSuccessMessage = "Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten!";
     }
 
