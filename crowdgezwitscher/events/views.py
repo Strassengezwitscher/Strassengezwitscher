@@ -7,9 +7,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
+from django import forms
 from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
-import django.forms as forms
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -52,8 +52,8 @@ class EventForm(forms.ModelForm):
             'repetition_cycle': forms.TextInput(attrs={'class':'form-control'}),
             'twitter_account_names': SelectizeCSVInput(),
             'twitter_hashtags': SelectizeCSVInput(),
-            'type': forms.URLInput(attrs={'class':'form-control'}),
-            'url': forms.TextInput(attrs={'class':'form-control'}),
+            'type': forms.TextInput(attrs={'class':'form-control'}),
+            'url': forms.URLInput(attrs={'class':'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):

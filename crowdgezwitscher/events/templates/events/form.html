@@ -70,21 +70,28 @@
     </div>
 
     <div class="row">
-        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.organizer.errors }}
             <div class="form-group">
                 {{ form.organizer.label_tag }}
                 {{ form.organizer }}
             </div>
         </div>
-        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.type.errors }}
             <div class="form-group">
                 {{ form.type.label_tag }}
                 {{ form.type }}
             </div>
         </div>
-        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.url.errors }}
+            <div class="form-group">
+                {{ form.url.label_tag }}
+                {{ form.url }}
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.participants.errors }}
             <div class="form-group">
                 {{ form.participants.label_tag }}

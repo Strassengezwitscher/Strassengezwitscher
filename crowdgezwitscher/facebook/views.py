@@ -1,7 +1,7 @@
 from rest_framework import generics
 
+from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
-import django.forms as forms
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
