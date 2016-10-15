@@ -26,7 +26,7 @@
     "model": "events.event",
     "pk": 2,
     "fields": {
-        "name": "Test Event 2",
+        "name": "Inactive Test Event",
         "active": false,
         "location": "There",
         "location_lat": "45.678000",
@@ -49,7 +49,7 @@
     "model": "events.event",
     "pk": 3,
     "fields": {
-        "name": "Inactive Test Event",
+        "name": "Test Event 3",
         "active": true,
         "location": "Wow, much water",
         "location_lat": "0.0",
