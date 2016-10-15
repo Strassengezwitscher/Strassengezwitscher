@@ -13,8 +13,8 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.name.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-                <input id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" type="text" class="form-control" value="{{ form.name.value }}">
+                {{ form.name.label_tag }}
+                {{ form.name }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -32,22 +32,22 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{ form.location_long.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.location_long.id_for_label }}">{{ form.location_long.label }}</label>
-                <input id="{{ form.location_long.id_for_label }}" name="{{ form.location_long.html_name }}" type="number" step="any" class="form-control" value="{{ form.location_long.value }}">
+                {{ form.location_long.label_tag }}
+                {{ form.location_long }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{ form.location_lat.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.location_lat.id_for_label }}">{{ form.location_lat.label }}</label>
-                <input id="{{ form.location_lat.id_for_label }}" name="{{ form.location_lat.html_name }}" type="number" step="any" class="form-control" value="{{ form.location_lat.value }}">
+                {{ form.location_lat.label_tag }}
+                {{ form.location_lat }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-4 col-lg-4">
             {{ form.location.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
-                <input id="{{ form.location.id_for_label }}" name="{{ form.location.html_name }}" type="text" class="form-control" value="{{ form.location.value }}">
+                {{ form.location.label_tag }}
+                {{ form.location }}
             </div>
         </div>
     </div>
@@ -63,8 +63,8 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.repetition_cycle.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.repetition_cycle.id_for_label }}">{{ form.repetition_cycle.label }}</label>
-                <input id="{{ form.repetition_cycle.id_for_label }}" name="{{ form.repetition_cycle.html_name }}" type="text" class="form-control" value="{{ form.repetition_cycle.value }}">
+                {{ form.repetition_cycle.label_tag }}
+                {{ form.repetition_cycle }}
             </div>
         </div>
     </div>
@@ -73,15 +73,29 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.organizer.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.organizer.id_for_label }}">{{ form.organizer.label }}</label>
-                <input id="{{ form.organizer.id_for_label }}" name="{{ form.organizer.html_name }}" type="text" class="form-control" value="{{ form.organizer.value }}">
+                {{ form.organizer.label_tag }}
+                {{ form.organizer }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.type.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.type.id_for_label }}">{{ form.type.label }}</label>
-                <input id="{{ form.type.id_for_label }}" name="{{ form.type.html_name }}" type="text" class="form-control" value="{{ form.type.value }}">
+                {{ form.type.label_tag }}
+                {{ form.type }}
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.url.errors }}
+            <div class="form-group">
+                {{ form.url.label_tag }}
+                {{ form.url }}
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.participants.errors }}
+            <div class="form-group">
+                {{ form.participants.label_tag }}
+                {{ form.participants }}
             </div>
         </div>
     </div>
@@ -145,7 +159,7 @@
     </div>
 
     <div class="row">
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{ form.facebook_pages.errors }}
             <div class="form-group">
                 {{ form.facebook_pages.label_tag }}
