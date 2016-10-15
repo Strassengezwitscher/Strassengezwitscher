@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 
 from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.forms import ModelForm, ModelMultipleChoiceField
+import django.forms as forms
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -25,8 +25,8 @@ from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
 
 
-class EventForm(ModelForm):
-    facebook_pages = ModelMultipleChoiceField(
+class EventForm(forms.ModelForm):
+    facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
         required=False,
         widget=SelectizeSelectMultiple()
@@ -37,11 +37,20 @@ class EventForm(ModelForm):
         fields = (
             'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end',
+            'coverage_start', 'coverage_end', 'participants',
         )
         widgets = {
+            'location_long': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
+            'location_lat': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
+            'location': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'participants': forms.TextInput(attrs={'class':'form-control'}),
+            'organizer': forms.TextInput(attrs={'class':'form-control'}),
+            'repetition_cycle': forms.TextInput(attrs={'class':'form-control'}),
             'twitter_account_names': SelectizeCSVInput(),
             'twitter_hashtags': SelectizeCSVInput(),
+            'type': forms.URLInput(attrs={'class':'form-control'}),
+            'url': forms.TextInput(attrs={'class':'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
