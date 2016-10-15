@@ -17,7 +17,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from crowdgezwitscher.models import MapObjectFilter
-from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
+from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatepicker
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event
@@ -40,6 +40,9 @@ class EventForm(forms.ModelForm):
             'coverage_start', 'coverage_end', 'participants',
         )
         widgets = {
+            'coverage_start': BootstrapDatepicker(),
+            'coverage_end': BootstrapDatepicker(),
+            'date': BootstrapDatepicker(),
             'location_long': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
             'location_lat': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
             'location': forms.TextInput(attrs={'class':'form-control'}),
