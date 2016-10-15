@@ -74,10 +74,10 @@ class EventAPIViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
-    # GET /api/events/3/
+    # GET /api/events/2/
     def test_read_detail_inactive_mapobject(self):
-        self.assertFalse(Event.objects.get(pk=3).active)
-        url = reverse('events_api:detail', kwargs={'pk': 3})
+        self.assertFalse(Event.objects.get(pk=2).active)
+        url = reverse('events_api:detail', kwargs={'pk': 2})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
