@@ -48,8 +48,9 @@ export class ContactComponent implements OnInit, OnDestroy {
     public onFileChange(event) {
         let errorMessage = "";
         let fileNames: String[] = [];
+        let target = event.target || event.srcElement;
 
-        for (let file of event.srcElement.files) {
+        for (let file of target.files) {
             fileNames.push(file.name);
             if (file.name.length > this.maxFileNameLength) {
                 errorMessage += "Name des Anhangs '" + file.name +
@@ -61,7 +62,7 @@ export class ContactComponent implements OnInit, OnDestroy {
             this.contactErrorMessage = errorMessage;
         } else {
             this.filesValid = true;
-            this.uploads = event.srcElement.files;
+            this.uploads = target.files;
             this.fileInputNames = fileNames.join(", ");
         }
     }

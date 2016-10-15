@@ -14,7 +14,7 @@ casper.test.begin('Testing Contact (User Frontend fields available)', 12, functi
         test.assertExists('#contact-journalist input[type=checkbox]','Input Checkbox for journalist');
         test.assertExists('#contact-confidential input[type=checkbox]','Input Checkbox for confidential');
         test.assertExists('input#contact-file[type=file]','File Input for files');
-        test.assertExists('button#contact-submit-button[type=submit]:disabled','Disabled submit button exists')
+        test.assertExists('button#contact-submit-button:disabled','Disabled submit button exists')
         test.assertExists('#contact-recaptcha','Google recaptcha div exists')
 
     }, function timeout() {
