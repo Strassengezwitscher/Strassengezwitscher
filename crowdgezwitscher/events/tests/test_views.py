@@ -18,7 +18,8 @@ class EventViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('events', response.context)
         events = list(response.context['events'])
-        self.assertEqual(events, list(Event.objects.all()))
+        all_events = Event.objects.all()
+        self.assertTrue(all([event in all_events for event in events]))
         # Events are sorted by date in descending order
         self.assertEqual(events, sorted(events, key=lambda event: event.date, reverse=True))
 
