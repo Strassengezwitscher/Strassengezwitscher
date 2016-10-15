@@ -56,8 +56,8 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.date.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.date.id_for_label }}">{{ form.date.label }} (YYYY-MM-DD)</label>
-                <input id="{{ form.date.id_for_label }}" name="{{ form.date.html_name }}" type="text" class="form-control" value="{{ form.date.value|date:"Y-m-d" }}">
+                {{ form.date.label_tag }}
+                {{ form.date }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -131,15 +131,15 @@
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.coverage_start.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.coverage_start.id_for_label }}">{{ form.coverage_start.label }} (YYYY-MM-DD)</label>
-                <input id="{{ form.coverage_start.id_for_label }}" name="{{ form.coverage_start.html_name }}" type="text" class="form-control" value="{{ form.coverage_start.value|date:"Y-m-d" }}">
+                {{ form.coverage_start.label_tag }}
+                {{ form.coverage_start }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {{ form.coverage_end.errors }}
             <div class="form-group">
-                <label class="control-label" for="{{ form.coverage_end.id_for_label }}">{{ form.coverage_end.label }} (YYYY-MM-DD)</label>
-                <input id="{{ form.coverage_end.id_for_label }}" name="{{ form.coverage_end.html_name }}" type="text" class="form-control" value="{{ form.coverage_end.value|date:"Y-m-d" }}">
+                {{ form.coverage_end.label_tag }}
+                {{ form.coverage_end }}
             </div>
         </div>
     </div>
