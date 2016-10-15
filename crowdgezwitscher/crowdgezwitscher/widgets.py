@@ -59,10 +59,13 @@ class BootstrapDatepicker(forms.widgets.DateInput):
         js = ('bootstrap-datepicker/dist/js/bootstrap-datepicker.js',)
 
     def render(self, name, value, attrs=None):
+        attrs = {} if attrs is None else attrs
+        attrs.update({'class': 'form-control'})
+        html = super(BootstrapDatepicker, self).render(name, value, attrs)
         html = '<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd"> \
-                <input id="%s" name="%s" type="text" class="form-control" value="%s"> \
+                %s \
                 <div class="input-group-addon"> \
                     <span class="glyphicon glyphicon-th"></span> \
                 </div> \
-            </div>' % (attrs['id'], name, date(value, "Y-m-d"))
+            </div>' % html
         return mark_safe(html)
