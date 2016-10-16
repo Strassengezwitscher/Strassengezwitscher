@@ -34,18 +34,15 @@ export class EventDetailComponent implements OnInit {
         );
     }
 
-    public setErrorMessage(errorMessage: string) {
-        if (this.errorMessage !== errorMessage) {
-            console.log("set error msg");
-            this.errorMessage = errorMessage;
-        }
-    }
-
     private getEvent(id: number) {
         this.eventService.getEvent(id).subscribe(
             event => this.setEvent(event),
             error => this.setErrorMessage(<any> error),
         );
+    }
+
+    private setErrorMessage(errorMessage: string) {
+        this.errorMessage = errorMessage;
     }
 
     private setEvent(event: Event) {
