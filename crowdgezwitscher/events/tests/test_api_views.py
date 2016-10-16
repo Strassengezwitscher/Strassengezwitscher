@@ -65,6 +65,7 @@ class EventAPIViewTests(APITestCase):
             u'counterEvent': False,
             u'coverage': True,
             u'participants': u'',
+            u'organizer': u'Person P',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
