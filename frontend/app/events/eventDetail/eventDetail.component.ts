@@ -5,6 +5,8 @@ import { Observable } from "rxjs/Observable";
 import { Event } from "../shared/event.model";
 import { EventService } from "../shared/event.service";
 
+declare var twttr: any;
+
 @Component({
     moduleId: module.id,
     selector: "cg-event-detail-page",
@@ -15,6 +17,7 @@ export class EventDetailComponent implements OnInit {
     public event: Event;
     public tweetIds: string[] = null;
     public errorMessage: string;
+    public twttrIsBlocked: boolean = (typeof twttr === "undefined");
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
@@ -25,14 +28,17 @@ export class EventDetailComponent implements OnInit {
         });
     }
 
-    public clearError() {
-        this.errorMessage = "";
-    }
-
     public onRefresh() {
         this.eventService.getTweetIds(this.event).subscribe(
             tweetIds => this.tweetIds = tweetIds
         );
+    }
+
+    public setErrorMessage(errorMessage: string) {
+        if (this.errorMessage !== errorMessage) {
+            console.log("set error msg");
+            this.errorMessage = errorMessage;
+        }
     }
 
     private getEvent(id: number) {
@@ -40,10 +46,6 @@ export class EventDetailComponent implements OnInit {
             event => this.setEvent(event),
             error => this.setErrorMessage(<any> error),
         );
-    }
-
-    private setErrorMessage(errorMessage: string) {
-        this.errorMessage = errorMessage;
     }
 
     private setEvent(event: Event) {
