@@ -151,7 +151,7 @@ export class MapComponent implements AfterViewInit {
         }
 
         const today = new Date();
-        if (today <= new Date(mapObject.date)) {
+        if (today < new Date(mapObject.date)) {
             return 1.0;
         } else {
             return 0.3;
