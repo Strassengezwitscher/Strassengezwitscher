@@ -13,8 +13,7 @@ export enum DateFilter {
 
 class MapFilter {
     constructor(
-        public name: string, public infoText: string, public filter: DateFilter,
-        public iconPath: string, public iconClickedPath: string, public opacityBasedOnDate: boolean,
+        public name: string, public infoText: string, public filter: DateFilter, public opacityBasedOnDate: boolean,
     ) {}
 }
 
@@ -115,7 +114,37 @@ export class MapComponent implements AfterViewInit {
         mapObjects.map((mapObject) => this.drawMapObject(mapObject, mapObjectType));
     }
 
-    private calcMapObjectOpacity(mapObject: MapObject, mapObjectType: MapObjectType) {
+    // TODO: should be part of the mapObject refactoring
+    private setReturnIcons(mapObject: MapObject, iconPath: string, iconSelectedPath: string) {
+        mapObject.iconPath = iconPath;
+        mapObject.iconSelectedPath = iconSelectedPath;
+        return iconPath;
+    }
+
+    // TODO: should be part of the mapObject refactoring
+    private calcMapObjectIcon(mapObject: MapObject, mapObjectType: MapObjectType): string {
+        if (mapObjectType === MapObjectType.FACEBOOK_PAGES) {
+            return this.setReturnIcons(mapObject, "static/img/facebook.png",
+                                        "static/img/facebook_aktiv.png");
+        } else {
+            if (this.mapObjectSettings[mapObjectType].mapFilter.name === "2015" ||
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2016") {
+                return this.setReturnIcons(mapObject, "static/img/schild_schwarz.png",
+                                        "static/img/schild_aktiv_schwarz.png");
+            } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
+                const today = new Date();
+                if (today <= new Date(mapObject.date)) {
+                    return this.setReturnIcons(mapObject, "static/img/schild_magenta.png",
+                                        "static/img/schild_aktiv_magenta.png");
+                } else {
+                    return this.setReturnIcons(mapObject, "static/img/schild_schwarz.png",
+                                        "static/img/schild_aktiv_schwarz.png");
+                }
+            }
+        }
+    }
+
+    private calcMapObjectOpacity(mapObject: MapObject, mapObjectType: MapObjectType): number {
         // If MapObject does not have a date (is a facebook page at the current project state)
         if (!this.mapObjectSettings[mapObjectType].mapFilter.opacityBasedOnDate) {
             return 1.0;
@@ -125,7 +154,7 @@ export class MapComponent implements AfterViewInit {
         if (today <= new Date(mapObject.date)) {
             return 1.0;
         } else {
-            return 0.2;
+            return 0.3;
         }
     }
 
@@ -134,7 +163,7 @@ export class MapComponent implements AfterViewInit {
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
-            icon: this.mapObjectSettings[mapObjectType].mapFilter.iconPath,
+            icon: this.calcMapObjectIcon(mapObject, mapObjectType),
             opacity: this.calcMapObjectOpacity(mapObject, mapObjectType),
         });
 
@@ -151,16 +180,13 @@ export class MapComponent implements AfterViewInit {
     private initializeMapObjectSettings() {
         let mapEventFilterOptions = [
             new MapFilter(
-                "aktuell", "kommende & vergangene Veranst. (30 Tage)",
-                DateFilter.upcoming, "static/img/schild_magenta.png", "static/img/schild_aktiv_magenta.png", true,
+                "aktuell", "kommende & vergangene Veranst. (30 Tage)", DateFilter.upcoming, true,
             ),
             new MapFilter(
-                "2016", null, DateFilter.year2016,
-                "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false,
+                "2016", null, DateFilter.year2016, false,
             ),
             new MapFilter(
-                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
-                "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false
+                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015, false,
             ),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
@@ -169,8 +195,7 @@ export class MapComponent implements AfterViewInit {
 
         let mapFacebookPagesFilterOptions = [
             new MapFilter(
-                "alle", null, DateFilter.all,
-                "static/img/facebook.png", "static/img/facebook_aktiv.png", false
+                "alle", null, DateFilter.all, false,
             )
         ];
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
@@ -199,12 +224,11 @@ export class MapComponent implements AfterViewInit {
                                         marker: google.maps.Marker) {
         this.zone.run(() => {
             if (this.selectedMarker) {
-                this.selectedMarker.setIcon(this.mapObjectSettings
-                    [this.selectedMapObjectType].mapFilter.iconPath);
+                this.selectedMarker.setIcon(mapObject.iconPath);
             }
 
             if (marker) {
-                marker.setIcon(this.mapObjectSettings[mapObjectType].mapFilter.iconClickedPath);
+                marker.setIcon(mapObject.iconSelectedPath);
             }
 
             this.selectedMapObject = mapObject;
