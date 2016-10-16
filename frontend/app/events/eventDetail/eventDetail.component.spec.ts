@@ -57,12 +57,4 @@ describe("EventDetailComponent", () => {
         evDComponent.setErrorMessage("ErrorMessage");
         expect(evDComponent.errorMessage).toBe("ErrorMessage");
     }));
-
-    it("Should clear the error Message again", inject([EventDetailComponent], (evDComponent) =>  {
-        evDComponent.setErrorMessage("ErrorMessage");
-        expect(evDComponent.errorMessage).toBe("ErrorMessage");
-        evDComponent.clearError();
-        expect(evDComponent.errorMessage).toBe("");
-    }));
-
 });
