@@ -28,7 +28,10 @@
                 <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
             </div>
             <md-card class="error-message" *ngIf="twttrIsBlocked">
-                <md-content>Leider wird unser Twitter-Feed blockiert.</md-content>
+                <md-content>
+                    <p>Leider wird unser Twitter-Feed blockiert.</p>
+                    <p>(zum Beispiel durch ein Browser-AddOn wie AdBlocker)</p>
+                </md-content>
             </md-card>
         </div>
         <md-card *ngIf="!event.coverage">
