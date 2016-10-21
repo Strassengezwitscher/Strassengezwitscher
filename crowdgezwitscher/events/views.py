@@ -7,9 +7,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
+from django import forms
 from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.forms import ModelForm, ModelMultipleChoiceField
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -17,7 +17,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from crowdgezwitscher.models import MapObjectFilter
-from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
+from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatepicker
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event
@@ -25,8 +25,8 @@ from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
 
 
-class EventForm(ModelForm):
-    facebook_pages = ModelMultipleChoiceField(
+class EventForm(forms.ModelForm):
+    facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
         required=False,
         widget=SelectizeSelectMultiple()
@@ -35,13 +35,25 @@ class EventForm(ModelForm):
     class Meta:
         model = Event
         fields = (
-            'name', 'active', 'location_long', 'location_lat', 'date', 'repetition_cycle', 'organizer',
+            'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end',
+            'coverage_start', 'coverage_end', 'participants',
         )
         widgets = {
+            'coverage_start': BootstrapDatepicker(),
+            'coverage_end': BootstrapDatepicker(),
+            'date': BootstrapDatepicker(),
+            'location_long': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
+            'location_lat': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
+            'location': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'participants': forms.TextInput(attrs={'class':'form-control'}),
+            'organizer': forms.TextInput(attrs={'class':'form-control'}),
+            'repetition_cycle': forms.TextInput(attrs={'class':'form-control'}),
             'twitter_account_names': SelectizeCSVInput(),
             'twitter_hashtags': SelectizeCSVInput(),
+            'type': forms.TextInput(attrs={'class':'form-control'}),
+            'url': forms.URLInput(attrs={'class':'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -62,6 +74,7 @@ class EventListView(PermissionRequiredMixin, ListView):
     model = Event
     template_name = 'events/list.html'
     context_object_name = 'events'
+    ordering = '-date'
 
 
 class EventDetail(PermissionRequiredMixin, DetailView):

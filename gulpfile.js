@@ -3,6 +3,7 @@
 var config = require('./gulp.config.js')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
+var clean = require('gulp-clean');
 var rename = require('gulp-rename');
 var fs = require('fs');
 var exec = require('child_process').exec;
@@ -12,21 +13,65 @@ var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
-var embedTemplates = require('gulp-angular-embed-templates');
-var SystemBuilder = require('systemjs-builder');
 var ts = require('gulp-typescript');
 
-if (!argv.production) {
-    var clean = require('gulp-clean');
+var productionMode = (argv.production || argv.prod)
+
+if (!productionMode) {
     var tslint = require('gulp-tslint');
     var sassLint = require('gulp-sass-lint');
     var Server = require('karma').Server;
     var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
 
+gulp.task('clean:build', function() {
+    return gulp.src(config.path.build, {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:dist', function() {
+    return gulp.src(config.path.dist, {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:report', function() {
+    return gulp.src(config.path.report, {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:aot', function() {
+    return gulp.src([config.path.aot.slice(0, -1), config.path.aot_compiled.slice(0, -1)], {read: false})
+        .pipe(clean());
+});
+
+// to be deleted once https://github.com/angular/material2/issues/1348 is closed
+gulp.task('clean:angular_material', function () {
+    return gulp.src('node_modules/@angular/material/core/overlay/overlay.css', {read: false})
+        .pipe(clean({force: true}));
+});
+
+gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report', 'clean:aot']);
+
+gulp.task('copy:frontend', ['copy:config'], function() {
+    return gulp.src(config.frontend.all, {base: config.path.root})
+        .pipe(gulp.dest(config.path.aot));
+});
+
+gulp.task('copy:traceur', function() {
+    var dest = productionMode ? config.path.dist : config.path.build;
+    return gulp.src(config.path.npm + 'traceur/bin/traceur.js', {base: config.path.npm})
+        .pipe(gulp.dest(dest));
+});
+
 gulp.task('copy:npmfiles', function() {
+    var dest = productionMode ? config.path.aot : config.path.build;
     return gulp.src(config.npm.files, {base: config.path.npm})
-        .pipe(gulp.dest(config.path.build));
+        .pipe(gulp.dest(dest));
+});
+
+gulp.task('copy:sharednpmfiles', function() {
+    return gulp.src(config.npm.shared_files, {base: config.path.npm})
+        .pipe(gulp.dest(config.path.shared));
 });
 
 gulp.task('copy:sensitive_config', function() {
@@ -40,7 +85,7 @@ gulp.task('copy:sensitive_config', function() {
 });
 
 gulp.task('copy:config', ['copy:sensitive_config'] , function() {
-    var config_path = config.path.frontend_config + ((argv.production) ? 'prod_conf.ts': 'dev_conf.ts');
+    var config_path = config.path.frontend_config + ((productionMode) ? 'prod_conf.ts': 'dev_conf.ts');
     return gulp.src(config_path)
         .pipe(rename('config.ts'))
         .pipe(gulp.dest(config.path.frontend_config));
@@ -51,42 +96,61 @@ gulp.task('copy:systemjsconfig', function() {
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:frontendImgFiles', function() {
-    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
+gulp.task('copy:html', function() {
+    return gulp.src(config.frontend.htmlFiles, {base: config.path.root})
         .pipe(gulp.dest(config.path.build));
 });
 
-gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:systemjsconfig', 'copy:frontendImgFiles']);
+gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:sharednpmfiles', 'copy:systemjsconfig']);
 
-gulp.task('compile:sass', function() {
-    return gulp.src(config.sass.files)
+gulp.task('compile:sass', ['clean:angular_material'], function() {
+    var dest = productionMode ? config.path.aot : config.path.build;
+    return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat(config.sass.bundle.dev_name))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(config.path.build));
+        .pipe(gulp.dest(dest));
 });
 
 gulp.task('compile:typescript', ['copy:config'], function() {
-    var tsProject = ts.createProject('./tsconfig.json', {
+    var tsProject = ts.createProject('./tsconfig-dev.json', {
         typescript: require('typescript')
     });
-    var tsResult = gulp.src(config.typescript.files)
+    var tsResult = gulp.src([config.typescript.files, config.typescript.exclude_files])
         .pipe(sourcemaps.init())
         .pipe(ts(tsProject));
     return merge([
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
-            .pipe(embedTemplates())
             .pipe(sourcemaps.write('./', {sourceRoot: config.path.partial.frontend}))
             .pipe(gulp.dest(config.path.build + config.path.partial.frontend))
     ]);
 });
 
-gulp.task('bundle:typescript', ['copy:staticfiles', 'compile:typescript'], function() {
-    var builder = new SystemBuilder(config.path.build, config.systemjs.config);
-    builder.loader.defaultJSExtensions = true;
-    return builder.buildStatic('frontend/main', config.typescript.bundle.path, config.typescript.bundle.config);
+gulp.task('bundle:typescript', ['copy:frontend', 'compile:sass'], function(done) {
+    var command = './node_modules/.bin/ngc';
+    var ngc = exec(command, function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    });
+    ngc.on('close', function(exitcode) {
+        if (exitcode) {
+            done(new Error('ngc failed'));
+        } else {
+            run_rollup();
+        }
+    });
+
+    function run_rollup() {
+        var command = './node_modules/.bin/rollup -c ' + config.typescript.bundle.config;
+        var rollup = exec(command, function (err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+        rollup.on('close', function(exitcode) {
+            done(exitcode ? new Error('rollup failed') : 0);
+        });
+    }
 });
 
 gulp.task('bundle:dependencies', function() {
@@ -96,20 +160,6 @@ gulp.task('bundle:dependencies', function() {
         .pipe(gulp.dest(config.path.dist));
 });
 
-gulp.task('bundle:sass', ['compile:sass'], function() {
-    return gulp.src(config.sass.bundle.files)
-        .pipe(concat(config.sass.bundle.name))
-        .pipe(cssnano())
-        .pipe(gulp.dest(config.path.dist));
-});
-
-gulp.task('optimize:frontendImgFiles', function() {
-    return gulp.src(config.frontend.imgFiles, {base: config.path.frontend})
-        .pipe(gulp.dest(config.path.dist));
-});
-
-gulp.task('dist', ['bundle:dependencies', 'bundle:typescript', 'bundle:sass', 'optimize:frontendImgFiles']);
-
 gulp.task('watch:sass', ['compile:sass'], function() {
     return gulp.watch(config.sass.files, ['compile:sass']);
 });
@@ -118,23 +168,22 @@ gulp.task('watch:typescript', ['compile:typescript'], function() {
     return gulp.watch(config.typescript.files, ['compile:typescript']);
 });
 
-gulp.task('watch:frontendImgFiles', ['copy:frontendImgFiles'], function() {
-    return gulp.watch(config.frontend.imgFiles, {cwd: config.root}, ['copy:frontendImgFiles']);
+gulp.task('watch:html', ['copy:html'], function() {
+    return gulp.watch(config.frontend.htmlFiles, {cwd: config.root}, ['copy:html']);
 });
 
-gulp.task('watch:html', ['compile:typescript'], function() {
-    return gulp.watch(config.frontend.htmlFiles, ['compile:typescript']);
-});
+gulp.task('watch', ['copy:staticfiles', 'watch:sass', 'watch:typescript', 'watch:html']);
 
-gulp.task('watch', ['watch:sass', 'watch:typescript', 'watch:frontendImgFiles', 'watch:html']);
-
-gulp.task('build', ['copy:staticfiles', 'compile:typescript', 'compile:sass']);
+var build_args = productionMode ?
+    ['copy:traceur', 'copy:sharednpmfiles', 'bundle:dependencies', 'bundle:typescript'] :
+    ['copy:staticfiles', 'copy:html', 'compile:typescript', 'compile:sass'];
+gulp.task('build', build_args);
 
 gulp.task('default', function() {
   // place code for your default task here
 });
 
-if (!argv.production) {
+if (!productionMode) {
     gulp.task('lint:python', function(done) {
         var command = 'prospector crowdgezwitscher --profile ../.landscape.yml';
         var lint = exec(command, function (err, stdout, stderr) {
@@ -166,24 +215,7 @@ if (!argv.production) {
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);
 
-    gulp.task('clean:build', function() {
-        return gulp.src(config.path.build, {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean:dist', function() {
-        return gulp.src(config.path.dist, {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean:report', function() {
-        return gulp.src(config.path.report, {read: false})
-            .pipe(clean());
-    });
-
-    gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report']);
-
-    gulp.task('test:typescript', ['build'], function(done) {
+    gulp.task('test:typescript', function(done) {
         new Server({
             configFile: config.report.karma.configFile,
             singleRun: true,
@@ -221,7 +253,6 @@ if (!argv.production) {
         }, remapCoverage).start();
 
         function remapCoverage(exitcode) {
-            console.log('path', config.report.path);
             gulp.src(config.report.path)
                 .pipe(remapIstanbul({
                     reports: config.report.remap.reports,

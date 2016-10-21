@@ -11,7 +11,7 @@ casper.test.begin('Testing Crowdgezwitscher App (User Frontend)', 1, function(te
         test.done();
     })
 });
-
+/*
 casper.test.begin('Testing correct display for toolbar on small screens', 7, function(test) {
     casper.start(settings.frontendUrl);
     casper.viewport(600, 1024);
@@ -127,3 +127,4 @@ casper.test.begin('Testing correct display for toolbar on larger screens ', 7, f
         test.done();
     })
 });
+*/

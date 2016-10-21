@@ -68,8 +68,8 @@ EMAIL_HOST_PASSWORD = 'password'  # noqa
 ######################################################################################################
 
 # set additonal directories for static files
-STATICFILES_DIRS += [  # noqa
-    os.path.join(BASE_DIR, "static/dist"),  # noqa
+STATICFILES_DIRS = STATICFILES_DIRS_DEFAULT + [  # noqa
+    os.path.join(BASE_DIR, "static/dist"),       # noqa
 ]
 
 # REST Framework

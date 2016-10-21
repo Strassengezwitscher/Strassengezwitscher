@@ -4,6 +4,7 @@ module.exports = function () {
         root: root,
         build: root + 'crowdgezwitscher/static/build/',
         dist: root + 'crowdgezwitscher/static/dist/',
+        shared: root + 'crowdgezwitscher/static/shared/',
         npm: root + 'node_modules/',
         frontend: 'frontend/',
         report: root + '.report/',
@@ -11,6 +12,8 @@ module.exports = function () {
             frontend: 'frontend',
         },
         frontend_config: 'frontend/config/',
+        aot: root + 'aot/',
+        aot_compiled: root + 'aot-compiled/',
     };
 
     var sass = {
@@ -26,15 +29,16 @@ module.exports = function () {
     };
     var typescript = {
         files: root + 'frontend/**/*.ts',
+        exclude_files: '!' + root + 'frontend/main-ngc.ts',
         bundle: {
-            path: path.dist + 'bundle.js',
-            config: {
-                minify: false,
-            },
+            config: root + 'rollup.config.js',
+            entry: root + 'aot-compiled/aot/frontend/main-ngc.js',
+            dest: path.dist + 'bundle.js',
         },
     };
 
     var frontend = {
+        all: path.frontend + '**/*',
         imgFiles: path.frontend + 'img/*',
         htmlFiles: path.frontend + '**/*.html',
     };
@@ -45,6 +49,14 @@ module.exports = function () {
 
     var npm = {
         static: [
+            path.npm + 'core-js/client/shim.min.js',
+            path.npm + 'rxjs/**/*',
+            path.npm + '@angular/**/*.+(js|js.map)',
+            path.npm + 'systemjs/dist/system.src.js',
+            path.npm + 'symbol-observable/**/*',
+            path.npm + 'traceur/bin/traceur.js',
+        ],
+        shared_files: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
             path.npm + 'bootstrap/dist/css/bootstrap.min.css.map',
             path.npm + 'bootstrap/dist/js/bootstrap.min.js',
@@ -52,19 +64,15 @@ module.exports = function () {
             path.npm + 'jquery/dist/jquery.min.js',
             path.npm + 'selectize/dist/js/standalone/selectize.min.js',
             path.npm + 'selectize/dist/css/selectize.bootstrap3.css',
-            path.npm + 'rxjs/**/*',
-            path.npm + '@angular/**/*.+(js|js.map)',
-            path.npm + '@angular2-material/**/*',
-            path.npm + 'systemjs/dist/system.src.js',
-            path.npm + 'symbol-observable/**/*',
+            path.npm + 'bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+            path.npm + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
+            path.npm + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css.map',
         ],
         angular_dependencies: {
             files: [
-                path.npm + 'core-js/client/shim.min.js',
                 path.npm + 'zone.js/dist/zone.js',
                 path.npm + 'reflect-metadata/Reflect.js',
                 path.npm + 'hammerjs/hammer.js',
-                path.npm + 'traceur/bin/traceur.js',
                 path.npm + 'web-animations-js/web-animations.min.js',
             ],
             name: 'dependencies.js',
@@ -72,67 +80,8 @@ module.exports = function () {
     };
     npm['files'] = npm.static.concat(npm.angular_dependencies.files);
 
-    var systemjs_config = {
-        map: {
-            'app': 'frontend/app',
-            '@angular/common.js': '@angular/common',
-            '@angular/compiler.js': '@angular/compiler',
-            '@angular/core.js': '@angular/core',
-            '@angular/forms.js': '@angular/forms',
-            '@angular/http.js': '@angular/http',
-            '@angular/platform-browser.js': '@angular/platform-browser',
-            '@angular/platform-browser-dynamic.js': '@angular/platform-browser-dynamic',
-            '@angular/router.js': '@angular/router',
-            '@angular/router-deprecated.js': '@angular/router-deprecated',
-            '@angular/upgrade.js': '@angular/upgrade',
-        },
-        packages: {
-          'rxjs': { defaultExtension: 'js' },
-          'symbol-observable': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/common': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/compiler': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/core': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/forms': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/http': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/platform-browser': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/router': { main: 'index.js', defaultExtension: 'js' },
-          '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' },
-          'app/about': { main: 'index.js'},
-          'app/blog': { main: 'index.js'},
-          'app/captcha': { main: 'index.js' },
-          'app/contact': { main: 'index.js' },
-          'app/events': { main: 'index.js' },
-          'app/events/event': { main: 'index.js' },
-          'app/events/eventDetail': { main: 'index.js' },
-          'app/events/shared': { main: 'index.js' },
-          'app/facebook': { main: 'index.js' },
-          'app/imprint': { main: 'index.js'},
-          'app/map': { main: 'index.js'},
-          'app/twitter': { main: 'index.js'},
-      },
-    };
-
-    var materialPackages = [
-        'button',
-        'card',
-        'core',
-        'checkbox',
-        'icon',
-        'input',
-        'menu',
-        'radio',
-        'slide-toggle',
-        'toolbar',
-        'tooltip',
-    ];
-    materialPackages.forEach(function(pkgName) {
-        systemjs_config['packages']['@angular2-material/' + pkgName] = { format: 'cjs', main: pkgName + '.umd.js' };
-    });
-
     var systemjs = {
-        files: [root + 'systemjs.config.js'],
-        config: systemjs_config,
+        files: 'systemjs.config.js',
     }
 
     var report = {

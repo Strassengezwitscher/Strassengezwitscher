@@ -19,25 +19,6 @@
     'symbol-observable': { main: 'index.js', defaultExtension: 'js' },
   };
 
-  var appBarrels = [
-    'app/about',
-    'app/blog',
-    'app/captcha',
-    'app/contact',
-    'app/events',
-    'app/events/event',
-    'app/events/eventDetail',
-    'app/events/shared',
-    'app/facebook',
-    'app/imprint',
-    'app/map',
-    'app/twitter',
-  ];
-
-  appBarrels.forEach(function(barrelName) {
-    packages[barrelName] = { main: 'index.js' }
-  });
-
   var ngPackageNames = [
     'common',
     'compiler',
@@ -65,28 +46,8 @@
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
 
-
-  var materialPackages = [
-    'button',
-    'card',
-    'core',
-    'checkbox',
-    'icon',
-    'input',
-    'menu',
-    'radio',
-    'slide-toggle',
-    'toolbar',
-    'tooltip',
-  ];
-
-  materialPackages.forEach(function(pkgName) {
-    packages['@angular2-material/' + pkgName] = {
-      format: 'cjs',
-      main: pkgName + '.umd.js'
-    };
-  });
-
+  // Angular Material
+  packages['@angular/material'] = { main: 'material.umd.js', defaultExtension: 'js' };
 
   var config = {
     map: map,

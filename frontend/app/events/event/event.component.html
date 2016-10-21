@@ -6,10 +6,6 @@
             <strong>Datum:</strong><br>
             {{dateFormat(event.date)}}
         </p>
-        <p *ngIf="event.repetitionCycle">
-            <strong>Wiederholungszyklus:</strong><br>
-            {{event.repetitionCycle}}
-        </p>
         <p *ngIf="event.organizer">
             <strong>Organisator:</strong><br>
             {{event.organizer}}
@@ -33,6 +29,6 @@
         </p>
     </md-card-content>
     <md-card-actions>
-        <a md-button [routerLink] = "['/events', event.id]">Mehr Infos</a>
+        <a md-button routerLink="/events/{{event.id}}">Mehr Infos</a>
     </md-card-actions>
 </md-card>

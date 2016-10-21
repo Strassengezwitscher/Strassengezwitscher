@@ -2,7 +2,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { CaptchaService } from "./";
+import { CaptchaService } from "./captcha.service";
 
 describe("CaptchaService", () => {
     beforeEach(() => {

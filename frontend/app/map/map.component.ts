@@ -1,7 +1,8 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
 
-import { MapObject, MapObjectType, MapService } from "./";
+import { MapObject, MapObjectType } from "./mapObject.model";
+import { MapService } from "./map.service";
 
 export enum DateFilter {
     all = 0,
@@ -28,6 +29,7 @@ class MapObjectSetting {
     moduleId: module.id,
     selector: "cg-map",
     templateUrl: "map.component.html",
+    styleUrls: ["map.component.css"],
     providers: [MapService],
     animations: [
         trigger("slideInOut", [
@@ -43,22 +45,19 @@ class MapObjectSetting {
     ],
 })
 export class MapComponent implements AfterViewInit {
-
-    private errorMessage: string;
+    public errorMessage: string;
+    // Utilized for holding status and name of different types of MapObjects
+    public mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
+    public selectedMapObjectType: MapObjectType;
+    @ViewChild("mapCanvas") public mapCanvas;
     private errorMessageDisplayTime: number = 5000;
     private map: google.maps.Map;
-    // Utilized for holding status and name of different types of MapObjects
-    private mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
         new Map<MapObjectType, Array<google.maps.Marker>>();
-
     private selectedMapObject: MapObject;
-    private selectedMapObjectType: MapObjectType;
     private selectedMarker: google.maps.Marker;
-
-    @ViewChild("mapCanvas") private mapCanvas;
 
     constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
@@ -160,7 +159,7 @@ export class MapComponent implements AfterViewInit {
                 "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false,
             ),
             new MapFilter(
-                "2015", null, DateFilter.year2015,
+                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
                 "static/img/schild_schwarz.png", "static/img/schild_aktiv_schwarz.png", false
             ),
         ];

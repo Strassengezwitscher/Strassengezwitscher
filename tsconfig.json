@@ -1,16 +1,30 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "types": ["core-js", "hammerjs", "googlemaps", "node", "jasmine"]
+    "suppressImplicitAnyIndexErrors": true,
+    "sourceRoot": "aot/",
+    "outDir": "aot-compiled/",
+    "types": ["core-js", "hammerjs", "googlemaps", "node"]
   },
+  "files": [
+    "aot/frontend/app/app.module.ts",
+    "aot/frontend/main-ngc.ts"
+  ],
   "exclude": [
-    "node_modules"
-  ]
+    "node_modules",
+    "frontend",
+    "crowdgezwitscher",
+    "e2e"
+  ],
+  "angularCompilerOptions": {
+    "genDir": ".",
+    "skipMetadataEmit" : true
+  }
 }

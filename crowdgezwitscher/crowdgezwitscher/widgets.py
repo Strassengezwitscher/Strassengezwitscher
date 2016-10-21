@@ -1,4 +1,5 @@
 from django import forms
+from django.template.defaultfilters import date
 from django.utils.safestring import mark_safe
 
 
@@ -48,3 +49,23 @@ class SelectizeCSVInput(forms.widgets.TextInput):
                 }); \
             </script>' % (attrs['id'], '["%s"]' % value.replace(',', '","'))
         return mark_safe(''.join(html + script))
+
+
+class BootstrapDatepicker(forms.widgets.DateInput):
+    class Media:
+        css = {
+            'all': ('bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',)
+        }
+        js = ('bootstrap-datepicker/dist/js/bootstrap-datepicker.js',)
+
+    def render(self, name, value, attrs=None):
+        attrs = {} if attrs is None else attrs
+        attrs.update({'class': 'form-control'})
+        html = super(BootstrapDatepicker, self).render(name, value, attrs)
+        html = '<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd"> \
+                %s \
+                <div class="input-group-addon"> \
+                    <span class="glyphicon glyphicon-th"></span> \
+                </div> \
+            </div>' % html
+        return mark_safe(html)

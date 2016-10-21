@@ -11,15 +11,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="{% static '@angular2-material/core/overlay/overlay.css' %}" rel="stylesheet">
 
-        <link href="{% static 'frontend.css' %}" rel="stylesheet">
-
-        {% if debug %}
-        <link href="{% static 'bundle.dev.css' %}" rel="stylesheet">
-        {% else %}
-        <link href="{% static 'bundle.css' %}" rel="stylesheet">
-        {% endif %}
+        <link href="{% static 'css/frontend.css' %}" rel="stylesheet">
     </head>
     <body>
         <cg-app>
@@ -29,6 +22,10 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?extension=.js&output=embed{{ key_param }}"></script>
     <script src="https://platform.twitter.com/widgets.js"></script>
+
+    {% if insecure %}
+    <script src="{% static 'traceur/bin/traceur.js' %}"></script>
+    {% endif %}
 
     {% if debug %}
     <!-- 1. Load libraries -->

@@ -78,8 +78,16 @@ frontend/config/config.ts
 # npm
 node_modules/
 
+# yarn
+yarn.lock
+.yarnclean
+
 # pyenv
 .python-version
 
 # Sensitive data
 crowdgezwitscher/crowdgezwitscher/initial/
+
+# tmp directories for Angular compilation
+aot/
+aot-compiled/
