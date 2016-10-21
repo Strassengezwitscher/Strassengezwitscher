@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
     'captcha.apps.CaptchaConfig',
+    'blog.apps.BlogConfig',
     'rest_framework',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,40 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Blogeinträge</h1>
+{% if blog %}
+<table class="table table-striped">
+    <tr>
+        <th>Titel</th>
+        <th style="width: 170px;"></th>
+    </tr>
+    {% for blogentry in blog %}
+    <tr>
+        <td>
+            {% if perms.blog.view_blogentry %}
+                <a href="{% url 'blog:detail' blogentry.id %}">{{ blogentry.title }}</a>
+            {% else %}
+                {{ blogentry.title }}
+            {% endif %}
+        </td>
+        <td>
+            {% if perms.blog.change_blogentry %}
+                <a class="btn btn-default btn-sm" href="{% url 'blog:update' blogentry.id %}">Bearbeiten</a>
+            {% endif %}
+            {% if perms.blog.delete_blogentry %}
+                <a class="btn btn-default btn-sm" href="{% url 'blog:delete' blogentry.id %}">Löschen</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Keine Blogeinträge verfügbar.</p>
+{% endif %}
+
+{% if perms.blog.add_blogentry %}
+    <a class="btn btn-primary" href="{% url 'blog:create' %}">Blogeintrag anlegen</a>
+{% endif %}
+
+{% endblock %}
