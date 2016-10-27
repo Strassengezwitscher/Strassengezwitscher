@@ -6,6 +6,7 @@ export class MapObject {
     public date: Date;
     public iconPath: string;
     public iconSelectedPath: string;
+    public opacity: number;
 }
 
 export enum MapObjectType {

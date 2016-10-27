@@ -1,6 +1,7 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
 
+import { Helper } from "../helper";
 import { MapObject, MapObjectType } from "./mapObject.model";
 import { MapService } from "./map.service";
 
@@ -13,7 +14,7 @@ export enum DateFilter {
 
 class MapFilter {
     constructor(
-        public name: string, public infoText: string, public filter: DateFilter, public opacityBasedOnDate: boolean,
+        public name: string, public infoText: string, public filter: DateFilter,
     ) {}
 }
 
@@ -115,56 +116,44 @@ export class MapComponent implements AfterViewInit {
     }
 
     // TODO: should be part of the mapObject refactoring
-    private setReturnIcons(mapObject: MapObject, iconPath: string, iconSelectedPath: string) {
+    // cannot currently not be in mapObject.model.ts because mapObject is not really of type MapObject
+    private setIconsAndOpacity(mapObject: MapObject, iconPath: string, iconSelectedPath: string, opacity: number) {
         mapObject.iconPath = iconPath;
         mapObject.iconSelectedPath = iconSelectedPath;
-        return iconPath;
+        mapObject.opacity = opacity;
     }
 
     // TODO: should be part of the mapObject refactoring
-    private calcMapObjectIcon(mapObject: MapObject, mapObjectType: MapObjectType): string {
+    private setMapObjectIconAndOpacity(mapObject: MapObject, mapObjectType: MapObjectType) {
         if (mapObjectType === MapObjectType.FACEBOOK_PAGES) {
-            return this.setReturnIcons(mapObject, "static/img/facebook.png",
-                                        "static/img/facebook_aktiv.png");
+            this.setIconsAndOpacity(mapObject, "static/img/facebook.png",
+                                        "static/img/facebook_aktiv.png", 1.0);
         } else {
             if (this.mapObjectSettings[mapObjectType].mapFilter.name === "2015" ||
                 this.mapObjectSettings[mapObjectType].mapFilter.name === "2016") {
-                return this.setReturnIcons(mapObject, "static/img/schild_schwarz.png",
-                                        "static/img/schild_aktiv_schwarz.png");
+                this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
+                                        "static/img/schild_aktiv_schwarz.png", 1.0);
             } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
                 const today = new Date();
-                if (today <= new Date(mapObject.date)) {
-                    return this.setReturnIcons(mapObject, "static/img/schild_magenta.png",
-                                        "static/img/schild_aktiv_magenta.png");
+                if (Helper.dateIncremented(mapObject.date) >= today) {
+                    this.setIconsAndOpacity(mapObject, "static/img/schild_magenta.png",
+                                        "static/img/schild_aktiv_magenta.png", 1.0);
                 } else {
-                    return this.setReturnIcons(mapObject, "static/img/schild_schwarz.png",
-                                        "static/img/schild_aktiv_schwarz.png");
+                    this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
+                                        "static/img/schild_aktiv_schwarz.png", 0.3);
                 }
             }
         }
     }
 
-    private calcMapObjectOpacity(mapObject: MapObject, mapObjectType: MapObjectType): number {
-        // If MapObject does not have a date (is a facebook page at the current project state)
-        if (!this.mapObjectSettings[mapObjectType].mapFilter.opacityBasedOnDate) {
-            return 1.0;
-        }
-
-        const today = new Date();
-        if (today < new Date(mapObject.date)) {
-            return 1.0;
-        } else {
-            return 0.3;
-        }
-    }
-
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
+        this.setMapObjectIconAndOpacity(mapObject, mapObjectType);
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
-            icon: this.calcMapObjectIcon(mapObject, mapObjectType),
-            opacity: this.calcMapObjectOpacity(mapObject, mapObjectType),
+            icon: mapObject.iconPath,
+            opacity: mapObject.opacity,
         });
 
         marker.addListener("click", (() => {
@@ -180,13 +169,13 @@ export class MapComponent implements AfterViewInit {
     private initializeMapObjectSettings() {
         let mapEventFilterOptions = [
             new MapFilter(
-                "aktuell", "kommende & vergangene Veranst. (30 Tage)", DateFilter.upcoming, true,
+                "aktuell", "kommende & vergangene Veranst. (30 Tage)", DateFilter.upcoming,
             ),
             new MapFilter(
-                "2016", null, DateFilter.year2016, false,
+                "2016", null, DateFilter.year2016,
             ),
             new MapFilter(
-                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015, false,
+                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
             ),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
@@ -195,7 +184,7 @@ export class MapComponent implements AfterViewInit {
 
         let mapFacebookPagesFilterOptions = [
             new MapFilter(
-                "alle", null, DateFilter.all, false,
+                "alle", null, DateFilter.all,
             )
         ];
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
@@ -224,7 +213,7 @@ export class MapComponent implements AfterViewInit {
                                         marker: google.maps.Marker) {
         this.zone.run(() => {
             if (this.selectedMarker) {
-                this.selectedMarker.setIcon(mapObject.iconPath);
+                this.selectedMarker.setIcon(this.selectedMapObject.iconPath);
             }
 
             if (marker) {

@@ -22,4 +22,11 @@ export class Helper {
     public static regionalDateFormat(date: Date) {
         return `${Helper.dayLeadingZero(date)}.${Helper.monthLeadingZero(date)}.${date.getFullYear()}`;
     }
+
+    public static dateIncremented(date: Date): Date {
+        let dateIncremented = new Date(date);
+        dateIncremented.setDate(dateIncremented.getDate() + 1);
+
+        return dateIncremented;
+    }
 }
