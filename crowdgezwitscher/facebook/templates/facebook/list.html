@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>Facebookseiten</h1>
-{% if perms.facebook.add_facebookpage %}
+{% if perms.facebook.add_facebookpage and pages|length > 5 %}
 <p>
     <a class="btn btn-primary" href="{% url 'facebook:create' %}">Facebook-Seite anlegen</a>
 </p>
