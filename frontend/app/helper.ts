@@ -23,10 +23,10 @@ export class Helper {
         return `${Helper.dayLeadingZero(date)}.${Helper.monthLeadingZero(date)}.${date.getFullYear()}`;
     }
 
-    public static dateIncremented(date: Date): Date {
-        let dateIncremented = new Date(date);
-        dateIncremented.setDate(dateIncremented.getDate() + 1);
+    public static nextDay(date: Date): Date {
+        let nextDay = new Date(date);
+        nextDay.setDate(nextDay.getDate() + 1);
 
-        return dateIncremented;
+        return nextDay;
     }
 }

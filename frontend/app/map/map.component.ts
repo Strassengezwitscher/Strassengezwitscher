@@ -124,7 +124,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     // TODO: should be part of the mapObject refactoring
-    private setMapObjectIconAndOpacity(mapObject: MapObject, mapObjectType: MapObjectType) {
+    private determineMapObjectAppearance(mapObject: MapObject, mapObjectType: MapObjectType) {
         if (mapObjectType === MapObjectType.FACEBOOK_PAGES) {
             this.setIconsAndOpacity(mapObject, "static/img/facebook.png",
                                         "static/img/facebook_aktiv.png", 1.0);
@@ -135,7 +135,7 @@ export class MapComponent implements AfterViewInit {
                                         "static/img/schild_aktiv_schwarz.png", 1.0);
             } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
                 const today = new Date();
-                if (Helper.dateIncremented(mapObject.date) >= today) {
+                if (Helper.nextDay(mapObject.date) >= today) {
                     this.setIconsAndOpacity(mapObject, "static/img/schild_magenta.png",
                                         "static/img/schild_aktiv_magenta.png", 1.0);
                 } else {
@@ -148,7 +148,7 @@ export class MapComponent implements AfterViewInit {
 
     private drawMapObject(mapObject: MapObject, mapObjectType: MapObjectType) {
         const latLng = new google.maps.LatLng(mapObject.locationLat, mapObject.locationLong);
-        this.setMapObjectIconAndOpacity(mapObject, mapObjectType);
+        this.determineMapObjectAppearance(mapObject, mapObjectType);
         const marker = new google.maps.Marker({
             position: latLng,
             title: mapObject.name,
