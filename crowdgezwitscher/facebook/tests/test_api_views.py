@@ -15,7 +15,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
 
     # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
     # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
-    # on mapobject list ("/api/facebook/") and detail(e.g."/api/facebook/1/")
+    # on list ("/api/facebook/") and detail(e.g."/api/facebook/1/")
 
     # POST /api/facebook/
     def test_create_list_facebook(self):
@@ -64,13 +64,13 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
     # GET /api/facebook/1000/
-    def test_read_detail_not_existant_mapobject(self):
+    def test_read_detail_not_existant_facebook_page(self):
         url = reverse('facebook_api:detail', kwargs={'pk': 1000})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     # GET /api/facebook/3/
-    def test_read_detail_inactive_mapobject(self):
+    def test_read_detail_inactive_facebook_page(self):
         self.assertFalse(FacebookPage.objects.get(pk=3).active)
         url = reverse('facebook_api:detail', kwargs={'pk': 3})
         response = self.client.get(url)
@@ -78,7 +78,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
 
     # PATCH /api/facebook/
     def test_modify_list_facebook(self):
-        url = reverse('facebook_api:detail', kwargs={'pk': 1})
+        url = reverse('facebook_api:list')
         data = {
             'id': '1',
             'name': 'Test page fix',
@@ -98,7 +98,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
 
     # PUT /api/facebook/
     def test_replace_list_facebook(self):
-        url = reverse('facebook_api:detail', kwargs={'pk': 1})
+        url = reverse('facebook_api:list')
         data = {
             'id': '1',
             'name': 'Test page fix',
@@ -147,7 +147,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # GET /facebook1.json
+    # GET /api/facebook1.json
     def test_json_detail_facebook_incorrect(self):
         url = '/api/facebook1.json'
         response = self.client.get(url)

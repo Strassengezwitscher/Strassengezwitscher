@@ -1,7 +1,7 @@
 from rest_framework import generics
 
+from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.forms import ModelForm
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -13,12 +13,17 @@ from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 
 
-class FacebookPageForm(ModelForm):
+class FacebookPageForm(forms.ModelForm):
     class Meta:
         model = FacebookPage
         fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'notes', 'events')
         widgets = {
-            'events': SelectizeSelectMultiple()
+            'events': SelectizeSelectMultiple(),
+            'location_long': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
+            'location_lat': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
+            'location': forms.TextInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         }
 
 

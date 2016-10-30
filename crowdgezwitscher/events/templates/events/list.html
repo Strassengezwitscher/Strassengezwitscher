@@ -3,6 +3,11 @@
 {% block content %}
 
 <h1>Veranstaltungen</h1>
+{% if perms.events.add_event and events|length > 5 %}
+<p>
+    <a class="btn btn-primary" href="{% url 'events:create' %}">Veranstaltung anlegen</a>
+</p>
+{% endif %}
 {% if events %}
 <table class="table table-striped">
     <tr>

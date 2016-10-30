@@ -17,7 +17,11 @@ class EventViewLoggedInTests(TestCase):
         response = self.client.get(reverse('events:list'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('events', response.context)
-        self.assertEqual(list(response.context['events']), list(Event.objects.all()))
+        events = list(response.context['events'])
+        all_events = Event.objects.all()
+        self.assertTrue(all([event in all_events for event in events]))
+        # Events are sorted by date in descending order
+        self.assertEqual(events, sorted(events, key=lambda event: event.date, reverse=True))
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('events:list'))

@@ -78,6 +78,10 @@ frontend/config/config.ts
 # npm
 node_modules/
 
+# yarn
+yarn.lock
+.yarnclean
+
 # pyenv
 .python-version
 

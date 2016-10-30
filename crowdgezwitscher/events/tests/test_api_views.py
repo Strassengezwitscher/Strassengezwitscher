@@ -16,7 +16,7 @@ class EventAPIViewTests(APITestCase):
 
     # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
     # via all possible HTTP methods (POST, GET, PATCH, PUT, DELETE)
-    # on mapobject list ("/api/events/") and detail(e.g."/api/events/1/")
+    # on list ("/api/events/") and detail (e.g."/api/events/1/")
 
     # POST /api/events/
     def test_create_list_events(self):
@@ -65,25 +65,26 @@ class EventAPIViewTests(APITestCase):
             u'counterEvent': False,
             u'coverage': True,
             u'participants': u'',
+            u'organizer': u'Person P',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
     # GET /api/events/1000/
-    def test_read_detail_not_existant_mapobject(self):
+    def test_read_detail_not_existant_event(self):
         url = reverse('events_api:detail', kwargs={'pk': 1000})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
-    # GET /api/events/3/
+    # GET /api/events/2/
     def test_read_detail_inactive_mapobject(self):
-        self.assertFalse(Event.objects.get(pk=3).active)
-        url = reverse('events_api:detail', kwargs={'pk': 3})
+        self.assertFalse(Event.objects.get(pk=2).active)
+        url = reverse('events_api:detail', kwargs={'pk': 2})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     # PATCH /api/events/
     def test_modify_list_events(self):
-        url = reverse('events_api:detail', kwargs={'pk': 1})
+        url = reverse('events_api:list')
         data = {
             'id': '1',
             'name': 'Test Event fix',
@@ -103,7 +104,7 @@ class EventAPIViewTests(APITestCase):
 
     # PUT /api/events/
     def test_replace_list_events(self):
-        url = reverse('events_api:detail', kwargs={'pk': 1})
+        url = reverse('events_api:list')
         data = {
             'id': '1',
             'name': 'Test Event fix',
@@ -211,9 +212,9 @@ class EventAPIViewTests(APITestCase):
         self.assertEqual(response.data, [])
 
     # Test correct json urls
-    # GET /events.json
+    # GET /api/events.json
     def test_json_list_events(self):
-        url = '/api/facebook.json'
+        url = '/api/events.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -229,9 +230,9 @@ class EventAPIViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # GET /mapobjects1.json
+    # GET /api/events1.json
     def test_json_detail_events_incorrect(self):
-        url = '/api/facebook1.json'
+        url = '/api/events1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

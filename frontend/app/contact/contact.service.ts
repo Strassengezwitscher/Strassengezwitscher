@@ -11,7 +11,7 @@ export class ContactService {
 
         // work around as long as angular2 http does not support multipart-form data
         return Observable.create(observer => {
-            let formData: FormData = new FormData(contactData);
+            let formData: FormData = new FormData();
             let xhr: XMLHttpRequest = new XMLHttpRequest();
 
             for (let key in contactData) {
@@ -41,6 +41,7 @@ export class ContactService {
             };
 
             xhr.open("POST", this.contactURL, true);
+            xhr.setRequestHeader("Accept", "application/json");
             xhr.send(formData);
         });
     }

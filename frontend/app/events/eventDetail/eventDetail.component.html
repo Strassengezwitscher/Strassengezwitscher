@@ -22,9 +22,17 @@
             <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
         </p>
         <div *ngIf="event.coverage">
-            <a md-raised-button class="refresh-button" (click)="onRefresh()">Refresh Twitter-Feed</a>
-            <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
-            <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
+            <div *ngIf="!twttrIsBlocked">
+                <a md-raised-button class="refresh-button" (click)="onRefresh()">Refresh Twitter-Feed</a>
+                <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
+                <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
+            </div>
+            <md-card class="error-message" *ngIf="twttrIsBlocked">
+                <md-content>
+                    <p>Leider wird unser Twitter-Feed blockiert.</p>
+                    <p>(zum Beispiel durch ein Browser-AddOn wie AdBlocker)</p>
+                </md-content>
+            </md-card>
         </div>
         <md-card *ngIf="!event.coverage">
             Keine Berichterstattung geplant.
