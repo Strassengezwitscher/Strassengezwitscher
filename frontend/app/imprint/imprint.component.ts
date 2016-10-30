@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
     moduleId: module.id,
     selector: "cg-imprint",
     templateUrl: "imprint.component.html",
+    styleUrls: ["imprint.component.css"],
 })
 
 export class ImprintComponent {}

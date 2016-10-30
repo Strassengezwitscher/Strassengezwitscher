@@ -1,21 +1,26 @@
+@import '../../colors';
+
+$foreground: map-get($theme, foreground);
+
 .error-message {
-  background-color: #f2dede;
+  background-color: map-get($message, error);
 }
 
 .event-container {
+  color: map-get($foreground, text);
   text-align: center;
 
   h1 {
     font-size: 3em;
 
     .small {
-      font-size: 0.6em;
+      color: map-get($foreground, secondary-text);
+      font-size: .6em;
       font-weight: 500;
-      color: #888888;
     }
   }
 
-  .refreshButton {
+  .refresh-button {
     margin-bottom: 16px;
   }
 }
