@@ -61,12 +61,8 @@ class TwitterAccount(models.Model):
                     tweetsCrawled += 1
                     tweetObj = Tweet.objects.create_tweet(tweet['id_str'], tweet['text'], self)
                     for hashtag in tweet['entities']['hashtags']:
-                        try:
-                            hashtag = Hashtag.objects.create_hashtag(hashtag['text'])
-                            tweetObj.hashtags.add(hashtag)
-                        except IntegrityError as e:
-                            # Hashtag already in database
-                            tweetObj.hashtags.add(Hashtag.objects.get(hashtag_text=hashtag['text']))
+                        hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag['text'])
+                        tweetObj.hashtags.add(hashtag)
                     tweetObj.save()
                 print "%i tweets crawled - now max_id=%s" % (tweetsCrawled, tweets[-1]['id_str'])
                 try:
