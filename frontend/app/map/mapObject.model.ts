@@ -4,6 +4,9 @@ export class MapObject {
     public locationLong: number;
     public locationLat: number;
     public date: Date;
+    public iconPath: string;
+    public iconSelectedPath: string;
+    public opacity: number;
 }
 
 export enum MapObjectType {
