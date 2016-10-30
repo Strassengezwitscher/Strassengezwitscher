@@ -38,9 +38,9 @@ class TwitterAccount(models.Model):
             except TwitterConnectionError:
                 logger.warning("Could not connect to Twitter.")
                 raise ValidationError("Could not connect to Twitter to retrieve user_id.")
-            try:
+            try :
                 self.account_id = user["id"]
-            except:
+            except KeyError:
                 logger.warning("Could not get user_id from Twitter response.")
                 raise ValidationError("Could not retrieve user_id from Twitter response.")
 
