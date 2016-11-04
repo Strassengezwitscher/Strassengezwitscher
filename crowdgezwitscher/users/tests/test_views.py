@@ -1,17 +1,12 @@
 from django.urls import reverse
 from django.test import Client, TestCase
 
-from django.contrib.auth import get_user
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 
 
-class UserViewLoggedInTests(TestCase):
+class UserViewCorrectPermissionMixin(object):
     """User testing the views is logged in and has all required permissions."""
-    fixtures = ['users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
-
-    def setUp(self):
-        self.client.login(username='adm', password='adm')
 
     # List
     def test_get_list_view(self):
@@ -127,17 +122,8 @@ class UserViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class UserViewNoPermissionTests(TestCase):
+class UserViewWrongPermissionMixin(object):
     """User testing the views is logged in as a Moderator but lacks the required permissons."""
-    fixtures = ['users_views_testdata']
-
-    def setUp(self):
-        self.client.login(username='john.doe', password='john.doe')
-
-    def test_logged_in_as_moderator(self):
-        user = get_user(self.client)
-        mod_group = Group.objects.get(name='Moderatoren')
-        self.assertEqual(list(user.groups.all()), [mod_group])
 
     # List
     def test_get_list_view(self):
@@ -196,3 +182,24 @@ class UserViewNoStaffUsersAccessibleTests(TestCase):
     def test_get_update_view(self):
         response = self.client.get(reverse('users:update', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 404)
+
+
+class UserViewAdministratorTests(TestCase, UserViewCorrectPermissionMixin):
+    """User testing the views is logged in as Administrator"""
+    fixtures = ['users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='adm', password='adm')
+
+
+class UserViewModeratorTests(TestCase, UserViewWrongPermissionMixin):
+    """User testing the views is logged in as Moderator"""
+    fixtures = ['users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='john.doe', password='john.doe')
+
+
+class UserViewNoPermissionTests(TestCase, UserViewWrongPermissionMixin):
+    """User testing the views is not logged in"""
+    fixtures = ['users_views_testdata']

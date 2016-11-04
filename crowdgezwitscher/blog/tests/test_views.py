@@ -4,13 +4,9 @@ from django.test import Client, TestCase
 from blog.models import BlogEntry
 
 
-class BlogEntryViewLoggedInTests(TestCase):
+class BlogEntryViewCorrectPermissionMixin(object):
     """User testing the views is logged in and has all required permissions."""
-    fixtures = ['blog_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
-
-    def setUp(self):
-        self.client.login(username='john.doe', password='john.doe')
 
     # List
     def test_get_list_view(self):
@@ -135,7 +131,7 @@ class BlogEntryViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class BlogEntryViewNoPermissionTests(TestCase):
+class BlogEntryViewWrongPermissionMixin(object):
     """User testing the views is not logged and therefore lacking the required permissions."""
     # List
     def test_get_list_view(self):
@@ -166,3 +162,24 @@ class BlogEntryViewNoPermissionTests(TestCase):
         url = reverse('blog:delete', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+
+class BlogEntryViewAdministratorTests(TestCase, BlogEntryViewCorrectPermissionMixin):
+    """User testing the views is logged in as Administrator"""
+    fixtures = ['blog_views_testdata', 'users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='adm', password='adm')
+
+
+class BlogEntryViewModeratorTests(TestCase, BlogEntryViewCorrectPermissionMixin):
+    """User testing the views is logged in as Moderator"""
+    fixtures = ['blog_views_testdata', 'users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='john.doe', password='john.doe')
+
+
+class BlogEntryViewNoPermissionTests(TestCase, BlogEntryViewWrongPermissionMixin):
+    """User testing the views is not logged in"""
+    fixtures = ['blog_views_testdata', 'users_views_testdata']

@@ -4,13 +4,9 @@ from django.test import Client, TestCase
 from events.models import Event
 
 
-class EventViewLoggedInTests(TestCase):
+class EventViewCorrectPermissionMixin(object):
     """User testing the views is logged in and has all required permissions."""
-    fixtures = ['events_views_testdata', 'users_views_testdata']
     csrf_client = Client(enforce_csrf_checks=True)
-
-    def setUp(self):
-        self.client.login(username='john.doe', password='john.doe')
 
     # List
     def test_get_list_view(self):
@@ -157,7 +153,7 @@ class EventViewLoggedInTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-class EventViewNoPermissionTests(TestCase):
+class EventViewWrongPermissionMixin(object):
     """User testing the views is not logged and therefore lacking the required permissions."""
     # List
     def test_get_list_view(self):
@@ -188,3 +184,24 @@ class EventViewNoPermissionTests(TestCase):
         url = reverse('events:delete', kwargs={'pk': 1})
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+
+class EventViewAdministratorTests(TestCase, EventViewCorrectPermissionMixin):
+    """User testing the views is logged in as Administrator"""
+    fixtures = ['events_views_testdata', 'users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='adm', password='adm')
+
+
+class EventViewModeratorTests(TestCase, EventViewCorrectPermissionMixin):
+    """User testing the views is logged in as Moderator"""
+    fixtures = ['events_views_testdata', 'users_views_testdata']
+
+    def setUp(self):
+        self.client.login(username='john.doe', password='john.doe')
+
+
+class EventViewNoPermissionTests(TestCase, EventViewWrongPermissionMixin):
+    """User testing the views is not logged in"""
+    fixtures = ['events_views_testdata', 'users_views_testdata']
