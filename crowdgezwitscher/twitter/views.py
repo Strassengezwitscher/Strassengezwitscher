@@ -1,5 +1,8 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import ModelForm
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -39,17 +42,17 @@ class TwitterAccountCreate(PermissionRequiredMixin, CreateView):
     # form_class = TwitterAccountForm
 
 
-class TwitterAccountUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = 'twitter.change_twitteraccount'
-    model = TwitterAccount
-    template_name = 'twitter/form.html'
-    fields = ['name']
-    # form_class = TwitterAccountForm
-
-
 class TwitterAccountDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'twitter.delete_twitteraccount'
     model = TwitterAccount
     template_name = 'twitter/delete.html'
     success_url = reverse_lazy('twitter:list')
     context_object_name = 'account'
+
+
+@require_POST
+def fetch_initial_tweets(request, pk):
+    twitter_account = get_object_or_404(TwitterAccount, pk=pk)
+    twitter_account.fetch_initial_tweets()
+
+    return HttpResponse()

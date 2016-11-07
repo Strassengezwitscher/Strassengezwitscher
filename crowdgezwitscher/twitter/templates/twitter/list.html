@@ -23,6 +23,9 @@
             {{ account.account_id }}
         </td>
         <td>
+            {% if perms.twitter.add_twitteraccount and account.tweet_set.count == 0 %}
+                <button class="btn btn-default btn-sm tweet_fetch_button" data-fetch-url="{% url 'twitter:fetch_initial_tweets' account.id %}">Tweets einlesen</button>
+            {% endif %}
             {% if perms.twitter.delete_twitteraccount %}
                 <a class="btn btn-default btn-sm" href="{% url 'twitter:delete' account.id %}">Löschen</a>
             {% endif %}
@@ -38,5 +41,18 @@
     <a class="btn btn-primary" href="{% url 'twitter:create' %}">Twitter-Account hinzufügen</a>
 {% endif %}
 
+<script type="text/javascript">
+    $(".tweet_fetch_button").click(function(event) {
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+        var button = $(event.target);
+        $.post(button.data("fetch-url"), function() {
+            button.remove();
+        });
+        button.text("Loading");
+        button.prop("disabled", true);
+    });
+</script>
 
 {% endblock %}

@@ -15,7 +15,7 @@ from TwitterAPI import TwitterAPI, TwitterConnectionError
 @python_2_unicode_compatible
 class TwitterAccount(models.Model):
     name = models.CharField(max_length=15, unique=True)
-    account_id = models.IntegerField(unique=True)
+    account_id = models.CharField(max_length=15, unique=True)
     last_known_tweet_id = models.CharField(max_length=20)
 
     def __repr__(self):
@@ -27,56 +27,64 @@ class TwitterAccount(models.Model):
     def get_absolute_url(self):
         return reverse('twitter:detail', kwargs={'pk': self.pk})
 
-    # Should this happen in the save method?
     def clean(self):
-        if self.account_id is None:
-            twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
-                         settings.TWITTER_CONSUMER_SECRET,
-                         auth_type='oAuth2')
-            try:
-                user = twitter.request('users/lookup', {'screen_name': self.name}).json()[0]
-            except TwitterConnectionError:
-                logger.warning("Could not connect to Twitter.")
-                raise ValidationError("Could not connect to Twitter to retrieve user_id.")
-            try :
-                self.account_id = user["id"]
-            except KeyError:
-                logger.warning("Could not get user_id from Twitter response.")
-                raise ValidationError("Could not retrieve user_id from Twitter response.")
-
-    def save(self, *args, **kwargs):
-        super(TwitterAccount, self).save(*args, **kwargs)
-        tweetsCrawled = 0
         twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
-                            settings.TWITTER_CONSUMER_SECRET,
-                            auth_type='oAuth2')
+                        settings.TWITTER_CONSUMER_SECRET,
+                        auth_type='oAuth2')
         try:
-            tweets = twitter.request('statuses/user_timeline', {'count': 200, 'user_id': self.account_id,
-                                    'trim_user': True, 'exclude_replies': True, 'contributor_details': False}).json()
-            if len(tweets) > 0:
-                self.last_known_tweet_id = tweets[0]['id_str']
-                super(TwitterAccount, self).save(*args, **kwargs)
-            while len(tweets) > 0:
-                for tweet in tweets:
-                    tweetsCrawled += 1
-                    tweetObj = Tweet.objects.create(tweet_id=tweet['id_str'], content=tweet['text'], account=self)
-                    for hashtag in tweet['entities']['hashtags']:
-                        hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag['text'])
-                        tweetObj.hashtags.add(hashtag)
-                print "%i tweets crawled - now max_id=%s" % (tweetsCrawled, tweets[-1]['id_str'])
-                try:
-                    tweets = twitter.request('statuses/user_timeline', {'count': 200, 'user_id': self.account_id,
-                                            'trim_user': True, 'exclude_replies': True, 'contributor_details': False,
-                                            'max_id': int(tweets[-1]['id_str']) - 1}).json()
-                except TwitterConnectionError:
-                    # complete rollback here
-                    logger.warning("Could not connect to Twitter.")
+            user = twitter.request('users/show', {'screen_name': self.name}).json()
         except TwitterConnectionError:
-            # complete rollback here
             logger.warning("Could not connect to Twitter.")
-    
-# @receiver(post_save, sender=TwitterAccount, dispatch_uid="get_tweets")
-# def get_tweets(sender, instance, **kwargs):
+            raise ValidationError("Could not connect to Twitter to retrieve user_id.")
+        if 'id_str' in user:
+            self.account_id = user['id_str']
+        else:
+            logger.warning("Could not find user with provided name.")
+            raise ValidationError("Could not find user with provided name.")
+
+    def _fetch_tweets_from_api(self, twitter, max_id=None):
+        request_parameters = {
+            'count': 200,
+            'user_id': self.account_id,
+            'trim_user': True,
+            'exclude_replies': True,
+            'contributor_details': False,
+        }
+
+        # max_id is optional and not known for first request
+        if max_id:
+            request_parameters['max_id'] = max_id
+
+        return twitter.request('statuses/user_timeline',request_parameters).json()
+
+    def fetch_initial_tweets(self):
+        new_tweets = []
+        tweet_hashtag_mappings = {}
+        twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
+                             settings.TWITTER_CONSUMER_SECRET,
+                             auth_type='oAuth2')
+
+        try:
+            tweets_from_api = self._fetch_tweets_from_api(twitter)
+            while tweets_from_api:
+                for tweet_from_api in tweets_from_api:
+                    tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], account=self)
+                    print tweet_from_api['']
+                    new_tweets.append(tweet)
+                    hashtags = []
+                    for hashtag_from_api in tweet_from_api['entities']['hashtags']:
+                        hashtag_text = hashtag_from_api['text']
+                        hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_text)
+                        hashtags.append(hashtag)
+                    tweet_hashtag_mappings[tweet.tweet_id] = hashtags
+                tweets_from_api = self._fetch_tweets_from_api(twitter, int(new_tweets[-1].tweet_id) - 1)
+        except TwitterConnectionError:
+            logger.warning("Could not connect to Twitter.")
+
+        Tweet.objects.bulk_create(new_tweets)
+        for tweet in self.tweet_set.all():
+            tweet.hashtags.add(*(tweet_hashtag_mappings.get(tweet.tweet_id, [])))
+            tweet.save()
 
 
 @python_2_unicode_compatible
