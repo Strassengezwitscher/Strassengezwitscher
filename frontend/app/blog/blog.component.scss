@@ -10,6 +10,10 @@ $foreground: map-get($theme, foreground);
       text-align: justify;
     }
 
+    li {
+      text-align: justify;
+    }
+
     a {
       color: map-get($foreground, text);
       font-weight: bold;
