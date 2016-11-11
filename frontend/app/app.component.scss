@@ -12,8 +12,8 @@
 @include angular-material-theme($theme);
 
 // FIX: hide focus for radio buttons
-.md-radio-focused .md-ink-ripple {
-  background-color: transparent;
+.md-radio-ripple {
+  display: none;
 }
 
 $background: map-get($theme, background);
