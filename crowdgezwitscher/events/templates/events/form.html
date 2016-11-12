@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     {{ form.non_field_errors }}
@@ -154,6 +154,16 @@
             <div class="form-group">
                 {{ form.coverage_end.label_tag }}
                 {{ form.coverage_end }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.attachments.errors }}
+            <div class="form-group">
+                {{ form.attachments.label_tag }}
+                {{ form.attachments }}
             </div>
         </div>
     </div>

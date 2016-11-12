@@ -20,12 +20,16 @@ from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatepicker
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
-from events.models import Event
+from events.models import Event, Attachment
 from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
 
 
 class EventForm(forms.ModelForm):
+    attachments = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={'multiple': True})
+    )
     facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
         required=False,
@@ -37,7 +41,7 @@ class EventForm(forms.ModelForm):
         fields = (
             'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end', 'participants',
+            'coverage_start', 'coverage_end', 'participants', 'attachments',
         )
         widgets = {
             'coverage_start': BootstrapDatepicker(),
@@ -66,6 +70,11 @@ class EventForm(forms.ModelForm):
         if instance.pk:
             instance.facebook_pages.clear()
             instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
+
+            if self.files:
+                for attachment in self.files.getlist('attachments'):
+                    Attachment(attachment=attachment, event=instance).save()
+
         return instance
 
 
