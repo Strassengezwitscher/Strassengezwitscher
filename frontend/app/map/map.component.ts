@@ -83,6 +83,10 @@ export class MapComponent implements AfterViewInit {
         this.retrieveVisibleMapObjects();
     }
 
+    public clearInfoBox() {
+        this.updateSelectedMapObjectInfo(null, null, null);
+    }
+
     private initMap() {
         const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
