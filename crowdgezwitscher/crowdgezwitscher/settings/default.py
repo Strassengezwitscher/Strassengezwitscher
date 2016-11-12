@@ -112,6 +112,8 @@ STATICFILES_DIRS_DEFAULT = [
     os.path.join(BASE_DIR, "static/shared"),
 ]
 
+MEDIA_URL = '/media/'
+
 
 # Set absolute URLs
 ABSOLUTE_URL_OVERRIDES = {

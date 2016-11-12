@@ -24,6 +24,8 @@ EMAIL_TO_CONTACT_NON_CONFIDENTIAL = ['user@provider']
 
 ######################################################################################################
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
 # set additonal directories for static files
 STATICFILES_DIRS = STATICFILES_DIRS_DEFAULT + [  # noqa
     os.path.join(BASE_DIR, "static/build"),      # noqa
