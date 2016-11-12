@@ -6,6 +6,8 @@ import string
 
 from django.urls import reverse
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as timezone_now
 
@@ -93,4 +95,6 @@ class Attachment(models.Model):
         return "<Attachment %s for %s>" % (self.name, self.event)
 
 
-
+@receiver(post_delete, sender=Attachment)
+def auto_delete_file_on_delete(**kwargs):
+    kwargs['instance'].attachment.delete(save=False)
