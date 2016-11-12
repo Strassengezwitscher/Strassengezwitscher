@@ -88,7 +88,7 @@ class Attachment(models.Model):
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='attachments')
 
     def __str__(self):
-        return "%s for %s" % (self.name, self.event)
+        return self.name
 
     def __repr__(self):
         return "<Attachment %s for %s>" % (self.name, self.event)
