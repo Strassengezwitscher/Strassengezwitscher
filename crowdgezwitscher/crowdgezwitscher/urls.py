@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -50,7 +51,7 @@ urlpatterns = [
     url(r'^about/$', views.index, name='about'),
     url(r'^events/[0-9]+/$', views.index, name='eventDetail'),
     url(r'^blog/$', views.index, name='blog'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # limits itself to DEBUG=True
 
 if settings.DEBUG:
     urlpatterns += [
