@@ -25,6 +25,18 @@
             <li>End: {{ event.coverage_end }}</li>
         </ul>
     </li>
+    <li><b>Anhänge:</b></li>
+        <ul>
+            {% for attachment in event.attachments.all %}
+                <li>
+                <a href="{{ MEDIA_URL }}{{ attachment.attachment }}">
+                    {{ attachment.name }}
+                </a>
+                </li>
+            {% empty %}
+               <li>Keine Anhänge vorhanden</li>
+            {% endfor %}
+        </ul>
     <li><b>Facebook-Seiten:</b>
         <ul>
             {% for page in event.facebook_pages.all %}
