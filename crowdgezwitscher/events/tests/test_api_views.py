@@ -2,6 +2,7 @@ import json
 
 import mock
 from django.urls import reverse
+from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITestCase
 from TwitterAPI import TwitterResponse, TwitterConnectionError
@@ -66,6 +67,8 @@ class EventAPIViewTests(APITestCase):
             u'coverage': True,
             u'participants': u'',
             u'organizer': u'Person P',
+            u'attachments': [{'name': u'test.pdf',
+                              'url': u'%sevent_attachments/2016/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL}],
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
