@@ -62,14 +62,26 @@ class EventForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
+
         if self.instance.pk:
             self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
+            attachments = self.instance.attachments.all()
+            if attachments:
+                attachments_to_delete_field = forms.ModelMultipleChoiceField(
+                    queryset=attachments,
+                    required=False,
+                    widget=forms.CheckboxSelectMultiple()
+                )
+                self.fields['attachments_to_delete'] = attachments_to_delete_field
 
     def save(self, *args, **kwargs):
         instance = super(EventForm, self).save(*args, **kwargs)
         if instance.pk:
             instance.facebook_pages.clear()
             instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
+
+            for attachment in self.cleaned_data.get('attachments_to_delete', []):
+                attachment.delete()
 
             if self.files:
                 for attachment in self.files.getlist('attachments'):

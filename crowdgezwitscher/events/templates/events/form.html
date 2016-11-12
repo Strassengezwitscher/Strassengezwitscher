@@ -166,6 +166,13 @@
                 {{ form.attachments }}
             </div>
         </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.attachments_to_delete.errors }}
+            <div class="form-group">
+                {{ form.attachments_to_delete.label_tag }}
+                {{ form.attachments_to_delete }}
+            </div>
+        </div>
     </div>
 
     <div class="row">
