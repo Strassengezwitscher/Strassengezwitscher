@@ -63,16 +63,21 @@ class Event(MapObject):
 @python_2_unicode_compatible
 class Attachment(models.Model):
 
-    def get_path_and_set_filename(instance, filename):
+    def get_path_and_set_filename(self, filename):
+        """Takes the filename and returns where to store that file.
+
+        Also saves the original file name in the `name` attribute.
+        This method is called during creating of an Attachment instance, do not call it manually.
+        """
 
         def random_string(length=5):
             symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
             return ''.join([random.choice(symbols) for x in range(length)])
 
-        instance.name = filename
+        self.name = filename
         filename_base, filename_ext = os.path.splitext(filename)
         return '{}/{}_{}_{}{}'.format('event_attachments',
-                                      timezone_now().strftime("%Y/%Y%m%d-%H%M"),
+                                      timezone_now().strftime("%Y/%m/%Y%m%d-%H%M"),
                                       filename_base.replace(' ', ''),
                                       random_string(),
                                       filename_ext.lower())
