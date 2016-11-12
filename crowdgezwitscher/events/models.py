@@ -1,8 +1,13 @@
 from __future__ import unicode_literals
 
+import os
+import random
+import string
+
 from django.urls import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.timezone import now as timezone_now
 
 from crowdgezwitscher.models import MapObject
 
@@ -53,3 +58,34 @@ class Event(MapObject):
             hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags]  # require leading '#'
             query += ' %s' % ' OR '.join(hashtags)
         return query
+
+
+@python_2_unicode_compatible
+class Attachment(models.Model):
+
+    def get_path_and_set_filename(instance, filename):
+
+        def random_string(length=5):
+            symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
+            return ''.join([random.choice(symbols) for x in range(length)])
+
+        instance.name = filename
+        filename_base, filename_ext = os.path.splitext(filename)
+        return '{}/{}_{}_{}{}'.format('event_attachments',
+                                      timezone_now().strftime("%Y/%Y%m%d-%H%M"),
+                                      filename_base.replace(' ', ''),
+                                      random_string(),
+                                      filename_ext.lower())
+
+    attachment = models.FileField(upload_to=get_path_and_set_filename)
+    name = models.CharField(max_length=50, blank=True)
+    event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='attachments')
+
+    def __str__(self):
+        return "%s for %s" % (self.name, self.event)
+
+    def __repr__(self):
+        return "<Attachment %s for %s>" % (self.name, self.event)
+
+
+
