@@ -28,7 +28,7 @@ from facebook.models import FacebookPage
 class EventForm(forms.ModelForm):
     attachments = forms.FileField(
         required=False,
-        widget=forms.FileInput(attrs={'multiple': True})
+        widget=forms.ClearableFileInput(attrs={'multiple': True})
     )
     facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
