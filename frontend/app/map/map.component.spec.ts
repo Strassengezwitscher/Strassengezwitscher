@@ -13,6 +13,14 @@ describe("MapComponent", () => {
                                              new NgZone(true));
     });
 
+    it("Should set the selectedMapObjectInfo to null, when the infobox is cleared", done => {
+        this.mapComponent.clearInfoBox();
+        expect(this.mapComponent.selectedMapObject).toEqual(null);
+        expect(this.mapComponent.selectedMapObjectType).toEqual(null);
+        expect(this.mapComponent.selectedMarker).toEqual(null);
+        done();
+    });
+
     it("Should have an initialized markerMap and mapObjectSettings after construction", done => {
         expect(this.mapComponent.markers.size).toBe(this.mapComponent.mapObjectTypes.length);
         for (let mapObjectType of this.mapComponent.mapObjectTypes) {
