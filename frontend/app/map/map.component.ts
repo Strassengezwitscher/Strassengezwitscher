@@ -83,6 +83,10 @@ export class MapComponent implements AfterViewInit {
         this.retrieveVisibleMapObjects();
     }
 
+    public clearInfoBox() {
+        this.updateSelectedMapObjectInfo(null, null, null);
+    }
+
     private initMap() {
         const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
@@ -185,7 +189,7 @@ export class MapComponent implements AfterViewInit {
         let mapFacebookPagesFilterOptions = [
             new MapFilter(
                 "alle", null, DateFilter.all,
-            )
+            ),
         ];
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
             new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions[0],
