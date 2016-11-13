@@ -18,6 +18,6 @@
 </md-card>
 <div [ngSwitch]= "selectedMapObjectType" class="map-infos">
     <cg-event-detail *ngSwitchCase="0" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-event-detail>
-    <cg-fb-detail *ngSwitchCase="1" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)"></cg-fb-detail>
+    <cg-fb-detail *ngSwitchCase="1" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-fb-detail>
 </div>
 <md-card class="error-message" *ngIf="errorMessage">{{errorMessage}}</md-card>
