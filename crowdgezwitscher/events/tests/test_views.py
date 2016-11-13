@@ -151,11 +151,18 @@ class EventViewCorrectPermissionMixin(object):
         response = self.client.get(reverse('events:update', kwargs={'pk': 1000}))
         self.assertEqual(response.status_code, 404)
 
-    def test_post_update_view(self):
+    def test_post_update_view_with_unchanged_attachments(self):
         self.post_data.update({'name': 'Updated Event'})
         response = self.client.post(reverse('events:update', kwargs={'pk': 1}), self.post_data, follow=True)
         self.assertEqual(Event.objects.get(pk=1).name, 'Updated Event')
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 1}))
+
+    def test_post_update_view_with_deleted_attachment(self):
+        self.assertEqual(Attachment.objects.count(), 1)
+        self.post_data.update({'attachments_to_delete': 1})
+        response = self.client.post(reverse('events:update', kwargs={'pk': 1}), self.post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 1}))
+        self.assertEqual(Attachment.objects.count(), 0)
 
     def test_post_update_view_no_data(self):
         response = self.client.post(reverse('events:update', kwargs={'pk': 1}))
