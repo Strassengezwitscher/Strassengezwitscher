@@ -75,7 +75,7 @@ class Attachment(models.Model):
             symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
             return ''.join([random.choice(symbols) for _ in range(length)])
 
-        self.name = filename
+        self.name = filename = os.path.basename(filename)
         filename_base, filename_ext = os.path.splitext(filename)
         return '{}/{}_{}_{}{}'.format('event_attachments',
                                       timezone_now().strftime("%Y/%m/%Y%m%d-%H%M"),

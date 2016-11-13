@@ -1,8 +1,14 @@
 from datetime import date
+import os
+import tempfile
 
+import mock
+
+from django.core.files import File
 from django.test import TestCase
+from django.utils.timezone import now
 
-from events.models import Event
+from events.models import Event, Attachment
 
 
 class EventModelTests(TestCase):
@@ -55,3 +61,51 @@ class EventModelTests(TestCase):
                          'from:foo OR from:bar OR from:foobar #baz OR #quux OR #bazquux')
         event.twitter_hashtags = ''
         self.assertEqual(event.build_twitter_search_query(), 'from:foo OR from:bar OR from:foobar')
+
+
+class AttachmentModelTests(TestCase):
+    fixtures = ['events_views_testdata']
+
+    def tearDown(self):
+        Attachment.objects.all().delete()  # not only delete DB entries but also the actual files from disk
+
+    def test_repesentation(self):
+        attachment = Attachment.objects.get(pk=1)
+        self.assertEqual(repr(attachment), "<Attachment test.pdf for Test Event at 2016-07-20 by Person P>")
+
+    def test_string_representation(self):
+        attachment = Attachment.objects.get(pk=1)
+        self.assertEqual(str(attachment), "test.pdf")
+
+    @mock.patch('random.choice', lambda *args, **kwargs: 'x')
+    def test_get_path_and_set_filename(self):
+        attachment = Attachment.objects.get(pk=1)
+        name = '/foo/bar/  baz    .TXT'
+        path = attachment.get_path_and_set_filename(name)
+        self.assertEqual(attachment.name, '  baz    .TXT')
+        self.assertEqual(path, 'event_attachments/%s_baz_xxxxx.txt' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
+
+    def test_auto_delete_file_on_delete(self):
+        event = Event.objects.get(pk=1)
+        with tempfile.NamedTemporaryFile() as f1:
+            attachment = Attachment(attachment=File(f1), event=event)
+            attachment.save()
+            file_path = attachment.attachment.path
+            self.assertTrue(os.path.exists(file_path))
+            attachment.delete()
+            self.assertFalse(os.path.exists(file_path))
+
+    def test_auto_delete_file_on_change(self):
+        event = Event.objects.get(pk=1)
+        with tempfile.NamedTemporaryFile() as f1:
+            attachment = Attachment(attachment=File(f1), event=event)
+            attachment.save()
+            old_file_path = attachment.attachment.path
+            self.assertTrue(os.path.exists(old_file_path))
+            with tempfile.NamedTemporaryFile() as f2:
+                attachment.attachment = File(f2)
+                attachment.save()
+                new_file_path = attachment.attachment.path
+                self.assertNotEqual(old_file_path, new_file_path)
+                self.assertTrue(os.path.exists(new_file_path))
+                self.assertFalse(os.path.exists(old_file_path))
