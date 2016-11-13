@@ -1,5 +1,4 @@
 from django import forms
-from django.template.defaultfilters import date
 from django.utils.safestring import mark_safe
 
 

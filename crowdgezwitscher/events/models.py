@@ -103,7 +103,8 @@ def auto_delete_file_on_delete(**kwargs):
 @receiver(models.signals.pre_save, sender=Attachment)
 def auto_delete_file_on_change(sender, instance, **kwargs):
     """Deletes file from filesystem when corresponding `Attachment` instance is changed."""
-    if not instance.pk: return  # file is created instead of changed
+    if not instance.pk:  # file is created instead of changed
+        return
 
     try:
         Attachment.objects.get(pk=instance.pk).attachment.delete(save=False)
