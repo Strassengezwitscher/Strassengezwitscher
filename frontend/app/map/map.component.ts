@@ -189,7 +189,7 @@ export class MapComponent implements AfterViewInit {
         let mapFacebookPagesFilterOptions = [
             new MapFilter(
                 "alle", null, DateFilter.all,
-            )
+            ),
         ];
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =
             new MapObjectSetting(false, "Facebook-Seiten", mapFacebookPagesFilterOptions[0],
