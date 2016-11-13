@@ -81,7 +81,7 @@ class EventViewCorrectPermissionMixin(object):
     @mock.patch('random.choice', lambda *args, **kwargs: 'x')
     def test_post_create_view_with_one_attachment(self):
         attachment_name = "dolphin      diary.TXT"
-        attachment_content = "Thanks for all the fish.".encode('utf-8')
+        attachment_content = "Thanks for all the fish."
         tempdir = tempfile.gettempdir()
         settings.MEDIA_ROOT = tempdir
         f = open(os.path.join(tempdir, attachment_name), 'w+')
@@ -100,7 +100,7 @@ class EventViewCorrectPermissionMixin(object):
     @mock.patch('random.choice', lambda *args, **kwargs: 'x')
     def test_post_create_view_with_multiple_attachments(self):
         attachment_name = "dolphin      diary.TXT"
-        attachment_content = "Thanks for all the fish.".encode('utf-8')
+        attachment_content = "Thanks for all the fish."
         tempdir = tempfile.gettempdir()
         settings.MEDIA_ROOT = tempdir
         file1 = open(os.path.join(tempdir, attachment_name), 'w+')
