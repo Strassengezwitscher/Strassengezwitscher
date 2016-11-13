@@ -29,6 +29,10 @@ class MockEventService {
     }
 }
 
+class MockRoute {
+    public params = [{"id" : 1}];
+}
+
 describe("EventDetailComponent", () => {
 
     beforeEach(() => {
@@ -37,6 +41,7 @@ describe("EventDetailComponent", () => {
                 EventDetailComponent,
                 {
                     provide: ActivatedRoute,
+                    useClass: MockRoute,
                 },
                 {
                     provide: EventService,
@@ -69,6 +74,11 @@ describe("EventDetailComponent", () => {
     it("Should set tweet ids on refresh", inject([EventDetailComponent], (evDComponent) =>  {
         evDComponent.onRefresh();
         expect(evDComponent.tweetIds).toEqual(["1"]);
+    }));
+
+    it("Should set correct event on init", inject([EventDetailComponent], (evDComponent) =>  {
+        evDComponent.ngOnInit();
+        expect(evDComponent.event.id).toBe(1);
     }));
 
 });
