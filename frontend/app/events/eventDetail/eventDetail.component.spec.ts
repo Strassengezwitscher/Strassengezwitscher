@@ -12,6 +12,9 @@ class MockEventService {
             let ev = new Event();
             ev.id = 1;
             ev.name = "Test";
+            if (id === 2) {
+                ev.coverage = true;
+            }
             return new Observable<Event>(observer => {
                 observer.next(ev);
                 observer.complete();
@@ -43,9 +46,14 @@ describe("EventDetailComponent", () => {
         });
     });
 
-    it("Should set a new active Event", inject([EventDetailComponent], (evDComponent) =>  {
+    it("Should set a new active & not covered Event", inject([EventDetailComponent], (evDComponent) =>  {
         evDComponent.getEvent(1);
         expect(evDComponent.event.id).toBe(1);
+    }));
+
+    it("Should set a new active & covered Event", inject([EventDetailComponent], (evDComponent) =>  {
+        evDComponent.getEvent(2);
+        expect(evDComponent.tweetIds).toEqual(["1"]);
     }));
 
     it("Should set the error message on error from service", inject([EventDetailComponent], (evDComponent) =>  {
@@ -57,4 +65,10 @@ describe("EventDetailComponent", () => {
         evDComponent.setErrorMessage("ErrorMessage");
         expect(evDComponent.errorMessage).toBe("ErrorMessage");
     }));
+
+    it("Should set tweet ids on refresh", inject([EventDetailComponent], (evDComponent) =>  {
+        evDComponent.onRefresh();
+        expect(evDComponent.tweetIds).toEqual(["1"]);
+    }));
+
 });
