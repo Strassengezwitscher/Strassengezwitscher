@@ -19,7 +19,15 @@
             <strong>Art:</strong> {{event.type}}
         </p>
         <p *ngIf="event.counterEvent">
-            <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
+            <strong>Gegenveranstaltung:</strong>
+            <span *ngIf="event.counterEvent">Ja</span>
+            <span *ngIf="!event.counterEvent">Nein</span>
+        </p>
+        <p *ngIf="event.attachments">
+            <strong>Anhänge:</strong>
+            <a md-button href="{{attachment.url}}" target="_blank" *ngFor="let attachment of event.attachments">
+                {{attachment.name}}
+            </a>
         </p>
         <div *ngIf="event.coverage">
             <div *ngIf="!twttrIsBlocked">

@@ -20,7 +20,8 @@
         </p>
         <p *ngIf="event.counterEvent">
             <strong>Gegenveranstaltung:</strong><br>
-            {{event.counterEvent}}
+            <span *ngIf="event.counterEvent">Ja</span>
+            <span *ngIf="!event.counterEvent">Nein</span>
         </p>
         <p >
             <strong>Berichterstattung:</strong><br>
