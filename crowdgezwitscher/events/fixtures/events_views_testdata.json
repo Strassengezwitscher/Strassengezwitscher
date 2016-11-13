@@ -72,7 +72,7 @@
     "model": "events.attachment",
     "pk": 1,
     "fields": {
-        "attachment": "event_attachments/2016/20161111-2349_test_g8nbW.pdf",
+        "attachment": "event_attachments/2016/11/20161111-2349_test_g8nbW.pdf",
         "name": "test.pdf",
         "event": 1
     }

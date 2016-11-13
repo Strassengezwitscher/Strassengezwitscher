@@ -68,7 +68,7 @@ class EventAPIViewTests(APITestCase):
             u'participants': u'',
             u'organizer': u'Person P',
             u'attachments': [{'name': u'test.pdf',
-                              'url': u'%sevent_attachments/2016/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL}],
+                              'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL}],
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
