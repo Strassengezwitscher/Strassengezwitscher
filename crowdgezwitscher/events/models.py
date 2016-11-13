@@ -73,7 +73,7 @@ class Attachment(models.Model):
 
         def random_string(length=5):
             symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
-            return ''.join([random.choice(symbols) for x in range(length)])
+            return ''.join([random.choice(symbols) for _ in range(length)])
 
         self.name = filename
         filename_base, filename_ext = os.path.splitext(filename)
