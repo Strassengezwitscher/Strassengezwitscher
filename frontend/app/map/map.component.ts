@@ -69,9 +69,7 @@ export class MapComponent implements AfterViewInit {
     }
 
     public onCheckboxChange(mapObjectSetting: MapObjectSetting) {
-        if (mapObjectSetting.mapFilterOptions.length === 1) {
-            this.retrieveVisibleMapObjects();
-        }
+        this.retrieveVisibleMapObjects();
         this.deleteNotVisibleMapObjects();
     }
 
@@ -169,13 +167,13 @@ export class MapComponent implements AfterViewInit {
     private initializeMapObjectSettings() {
         let mapEventFilterOptions = [
             new MapFilter(
-                "aktuell", "kommende & vergangene Veranst. (30 Tage)", DateFilter.upcoming,
+                "aktuell", "Kommende & vergangene Veranstaltungen (30 Tage)", DateFilter.upcoming,
             ),
             new MapFilter(
                 "2016", null, DateFilter.year2016,
             ),
             new MapFilter(
-                "2015", "mit freundl. Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
+                "2015", "Mit freundlicher Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
             ),
         ];
         this.mapObjectSettings[MapObjectType.EVENTS] =
