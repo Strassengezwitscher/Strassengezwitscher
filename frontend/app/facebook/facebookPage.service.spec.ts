@@ -58,4 +58,12 @@ describe("FacebookPageService", () => {
             expect(error).toBe("Internal Server Error 500");
         }
     }));
+
+    it("Should return error status code and text if present",
+        inject([MockBackend, FacebookPageService], (mockBackend, service) => {
+        spyOn(service, "handleError").and.callThrough();
+        let err = {statusText: "Resource not found", status: 404};
+
+        expect(service.handleError(err).error).toBe("404 - Resource not found");
+    }));
 });
