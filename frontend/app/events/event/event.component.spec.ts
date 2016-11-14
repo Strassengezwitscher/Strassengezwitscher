@@ -52,6 +52,12 @@ describe("EventComponent", () => {
         expect(evComponent.onError.emit).toHaveBeenCalledTimes(1);
     }));
 
+    it("Should emit bool to parent class on close", inject([EventComponent], (evComponent) =>  {
+        spyOn(evComponent.onClose, "emit");
+        evComponent.close();
+        expect(evComponent.onClose.emit).toHaveBeenCalledTimes(1);
+    }));
+
     it("Should convert date from yyyy-mm-dd to dd-mm-yyyy", inject([EventComponent], (evComponent) =>  {
         let date = evComponent.dateFormat("2015-12-30");
         expect(date).toBe("30.12.2015");

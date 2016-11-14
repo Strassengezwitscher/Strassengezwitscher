@@ -58,4 +58,10 @@ describe("FacebookPageComponent", () => {
         expect(fbPageComponent.onError.emit).toHaveBeenCalledTimes(1);
     }));
 
+    it("Should emit bool to parent class on close", inject([FacebookPageComponent], (fbPageComponent) =>  {
+        spyOn(fbPageComponent.onClose, "emit");
+        fbPageComponent.close();
+        expect(fbPageComponent.onClose.emit).toHaveBeenCalledTimes(1);
+    }));
+
 });
