@@ -56,6 +56,28 @@ describe("EventService", () => {
         });
     }));
 
+    it("Should return mocked twitter response", inject([MockBackend, EventService], (mockBackend, service) => {
+        let response = ["1","2"];
+
+        mockBackend.connections.subscribe(connection => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(response)})));
+        });
+        service.getTweetIds(1).subscribe(res => {
+            expect(res).toEqual(["1","2"]);
+        });
+    }));
+
+    it("Should return twitter error", inject([MockBackend, EventService], (mockBackend, service) => {
+        mockBackend.connections.subscribe(connection => {
+            connection.mockError(new Error("Internal Server Error 500"));
+        });
+        try {
+            service.getTweetIds(1).subscribe();
+        } catch (error) {
+            expect(error).toBe("[]");
+        }
+    }));
+
     it("Should return server error message if Internal Server Error occurs",
        inject([MockBackend, EventService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
