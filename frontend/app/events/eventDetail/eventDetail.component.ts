@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Observable } from "rxjs/Observable";
 
 import { Event } from "../shared/event.model";
 import { EventService } from "../shared/event.service";
