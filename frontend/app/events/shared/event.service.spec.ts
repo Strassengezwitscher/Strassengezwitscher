@@ -21,11 +21,38 @@ describe("EventService", () => {
         });
     });
 
-    it("Should return mocked response", inject([MockBackend, EventService], (mockBackend, service) => {
+    it("Should return mocked response from last Event", inject([MockBackend, EventService], (mockBackend, service) => {
         service.lastEvent = new Event();
         service.lastEvent.id = 1;
         service.getEvent(1).subscribe(res => {
             expect(res.id).toEqual(1);
+        });
+    }));
+
+    it("Should return mocked response", inject([MockBackend, EventService], (mockBackend, service) => {
+        let response = [
+            {
+                "id": 1,
+                "name": "name",
+                "location": "Dresden",
+                "events": [1, 2],
+                "notes": "Note",
+                "facebookId": "10",
+            },
+        ];
+
+        mockBackend.connections.subscribe(connection => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(response)})));
+        });
+        service.getEvent(1).subscribe(res => {
+            expect(res).toContain({
+                "id": 1,
+                "name": "name",
+                "location": "Dresden",
+                "events": [1, 2],
+                "notes": "Note",
+                "facebookId": "10",
+            });
         });
     }));
 
