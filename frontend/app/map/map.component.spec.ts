@@ -38,7 +38,7 @@ describe("MapComponent", () => {
 
         this.mapComponent.onCheckboxChange(this.mapComponent.mapObjectSettings[MapObjectType.EVENTS]);
         expect(this.mapComponent.deleteNotVisibleMapObjects).toHaveBeenCalledTimes(2);
-        expect(this.mapComponent.retrieveVisibleMapObjects).toHaveBeenCalledTimes(1);
+        expect(this.mapComponent.retrieveVisibleMapObjects).toHaveBeenCalledTimes(2);
 
         done();
     });
