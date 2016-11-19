@@ -87,6 +87,10 @@ class Attachment(models.Model):
     name = models.CharField(max_length=50, blank=True)
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='attachments')
 
+    def __init__(self, *args, **kwargs):
+        super(Attachment, self).__init__(*args, **kwargs)
+        self.old_attachment = self.attachment
+
     def __str__(self):
         return self.name
 
@@ -102,11 +106,12 @@ def auto_delete_file_on_delete(**kwargs):
 
 @receiver(models.signals.pre_save, sender=Attachment)
 def auto_delete_file_on_change(sender, instance, **kwargs):
-    """Deletes file from filesystem when corresponding `Attachment` instance is changed."""
+    """Deletes file from filesystem when corresponding `Attachment` instance's attachment field is changed."""
     if not instance.pk:  # file is created instead of changed
         return
 
-    try:
-        Attachment.objects.get(pk=instance.pk).attachment.delete(save=False)
-    except Attachment.DoesNotExist:
-        return
+    if instance.attachment != instance.old_attachment:
+        try:
+            Attachment.objects.get(pk=instance.pk).attachment.delete(save=False)
+        except Attachment.DoesNotExist:
+            return

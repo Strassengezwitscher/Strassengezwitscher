@@ -95,7 +95,7 @@ class AttachmentModelTests(TestCase):
             attachment.delete()
             self.assertFalse(os.path.exists(file_path))
 
-    def test_auto_delete_file_on_change(self):
+    def test_auto_delete_file_on_change_with_changed_attachment(self):
         event = Event.objects.get(pk=1)
         with tempfile.NamedTemporaryFile() as f1:
             attachment = Attachment(attachment=File(f1), event=event)
@@ -109,3 +109,14 @@ class AttachmentModelTests(TestCase):
                 self.assertNotEqual(old_file_path, new_file_path)
                 self.assertTrue(os.path.exists(new_file_path))
                 self.assertFalse(os.path.exists(old_file_path))
+
+    def test_auto_delete_file_on_change_with_unchanged_attachment(self):
+        event = Event.objects.get(pk=1)
+        with tempfile.NamedTemporaryFile() as f1:
+            attachment = Attachment(attachment=File(f1), event=event)
+            attachment.save()  # create attachment
+            old_file_path = attachment.attachment.path
+            self.assertTrue(os.path.exists(old_file_path))
+
+            attachment.save()  # save unchanged attachment
+            self.assertTrue(os.path.exists(old_file_path))
