@@ -15,6 +15,7 @@ export class EventComponent implements OnChanges {
     public event: Event = null;
     @Input("id") public id: number;
     @Output() public onError = new EventEmitter<string>();
+    @Output() public onClose = new EventEmitter<boolean>();
 
     constructor(private eventService: EventService) {}
 
@@ -29,11 +30,14 @@ export class EventComponent implements OnChanges {
         return Helper.regionalDateFormat(date);
     }
 
+    public close() {
+        this.onClose.emit(true);
+    }
+
     private getEvent(id: number) {
         this.eventService.getEvent(id).subscribe(
             event => this.event = event,
             error => this.onError.emit(error),
         );
     }
-
 }
