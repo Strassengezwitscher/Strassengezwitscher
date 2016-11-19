@@ -7,7 +7,11 @@ from events.models import Event
 class AttachmentField(serializers.Field):
     """Responsible for serialization of attachments refering to an event."""
     def to_representation(self, attachments):
-        return [{'name': att.name, 'url': settings.MEDIA_URL + str(att.attachment)} for att in attachments]
+        return [
+            {'name': att.name,
+             'description': att.description,
+             'url': settings.MEDIA_URL + str(att.attachment),} for att in attachments
+        ]
 
 
 class EventSerializer(serializers.ModelSerializer):

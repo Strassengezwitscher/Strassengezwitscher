@@ -74,6 +74,7 @@
     "fields": {
         "attachment": "event_attachments/2016/11/20161111-2349_test_g8nbW.pdf",
         "name": "test.pdf",
+        "description": "I can haz description",
         "event": 1
     }
 }

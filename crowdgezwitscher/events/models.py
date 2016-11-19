@@ -85,6 +85,7 @@ class Attachment(models.Model):
 
     attachment = models.FileField(upload_to=get_path_and_set_filename)
     name = models.CharField(max_length=50, blank=True)
+    description = models.TextField(blank=True)
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='attachments')
 
     def __init__(self, *args, **kwargs):
