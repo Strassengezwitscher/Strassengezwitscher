@@ -12,9 +12,16 @@
 @include angular-material-theme($theme);
 
 // FIX: hide focus for radio buttons
-.md-radio-focused .md-ink-ripple {
-  background-color: transparent;
+.md-radio-ripple {
+  display: none;
 }
+
+// FIX: button link disabled problem
+.md-button-link-workaround {
+  color: rgba(0, 0, 0, .87) !important;
+  cursor: pointer !important;
+}
+// End: FIXES
 
 $background: map-get($theme, background);
 
