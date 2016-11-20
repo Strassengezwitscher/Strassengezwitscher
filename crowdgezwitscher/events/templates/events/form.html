@@ -158,22 +158,27 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.attachments.errors }}
-            <div class="form-group">
-                {{ form.attachments.label_tag }}
-                {{ form.attachments }}
+    {{ inlines.0.management_form }}
+    {{ inlines.0.non_form_errors }}
+    {% for form in inlines.0 %}
+        {{ form.id }}
+            <div class="row">
+                <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    {{ form.attachment.errors }}
+                    <div class="form-group">
+                        {{ form.attachment.label_tag }}
+                        {{ form.attachment }}
+                    </div>
+                </div>
+                <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    {{ form.description.errors }}
+                    <div class="form-group">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.attachments_to_delete.errors }}
-            <div class="form-group">
-                {{ form.attachments_to_delete.label_tag }}
-                {{ form.attachments_to_delete }}
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">

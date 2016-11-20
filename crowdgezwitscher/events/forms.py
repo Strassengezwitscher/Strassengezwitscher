@@ -1,15 +1,26 @@
 from django import forms
+from extra_views import InlineFormSet
 
 from events.models import Event, Attachment
 from facebook.models import FacebookPage
 from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatepicker
 
 
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        fields = ('attachment', 'description')
+        widgets = {
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class AttachmentFormSet(InlineFormSet):
+    model = Attachment
+    extra = 1
+    form_class = AttachmentForm
+
+
 class EventForm(forms.ModelForm):
-    attachments = forms.FileField(
-        required=False,
-        widget=forms.ClearableFileInput(attrs={'multiple': True})
-    )
     facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
         required=False,
@@ -21,7 +32,7 @@ class EventForm(forms.ModelForm):
         fields = (
             'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end', 'participants', 'attachments',
+            'coverage_start', 'coverage_end', 'participants',
         )
         widgets = {
             'coverage_start': BootstrapDatepicker(),
@@ -45,26 +56,10 @@ class EventForm(forms.ModelForm):
 
         if self.instance.pk:
             self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
-            attachments = self.instance.attachments.all()
-            if attachments:
-                attachments_to_delete_field = forms.ModelMultipleChoiceField(
-                    queryset=attachments,
-                    required=False,
-                    widget=forms.CheckboxSelectMultiple()
-                )
-                self.fields['attachments_to_delete'] = attachments_to_delete_field
 
     def save(self, *args, **kwargs):
         instance = super(EventForm, self).save(*args, **kwargs)
         if instance.pk:
             instance.facebook_pages.clear()
             instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
-
-            for attachment in self.cleaned_data.get('attachments_to_delete', []):
-                attachment.delete()
-
-            if self.files:
-                for attachment in self.files.getlist('attachments'):
-                    Attachment(attachment=attachment, event=instance).save()
-
         return instance

@@ -12,15 +12,16 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event, Attachment
 from events.serializers import EventSerializer, EventSerializerShortened
-from events.forms import EventForm
+from events.forms import EventForm, AttachmentFormSet
 
 
 class EventListView(PermissionRequiredMixin, ListView):
@@ -38,16 +39,18 @@ class EventDetail(PermissionRequiredMixin, DetailView):
     context_object_name = 'event'
 
 
-class EventCreate(PermissionRequiredMixin, CreateView):
+class EventCreate(PermissionRequiredMixin, CreateWithInlinesView):
     permission_required = 'events.add_event'
     model = Event
+    inlines = [AttachmentFormSet]
     template_name = 'events/form.html'
     form_class = EventForm
 
 
-class EventUpdate(PermissionRequiredMixin, UpdateView):
+class EventUpdate(PermissionRequiredMixin, UpdateWithInlinesView):
     permission_required = 'events.change_event'
     model = Event
+    inlines = [AttachmentFormSet]
     template_name = 'events/form.html'
     form_class = EventForm
 
