@@ -112,7 +112,4 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         return
 
     if instance.attachment != instance.old_attachment:
-        try:
-            Attachment.objects.get(pk=instance.pk).attachment.delete(save=False)
-        except Attachment.DoesNotExist:
-            return
+        Attachment.objects.get(pk=instance.pk).attachment.delete(save=False)
