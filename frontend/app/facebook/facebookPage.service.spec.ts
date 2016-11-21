@@ -20,7 +20,8 @@ describe("FacebookPageService", () => {
         });
     });
 
-    it("Should return mocked response", inject([MockBackend, FacebookPageService], (mockBackend, service) => {
+    it("Should return fake facebookPage response on getFacebookPage",
+        inject([MockBackend, FacebookPageService], (mockBackend, service) => {
         let response = [
             {
                 "id": 1,

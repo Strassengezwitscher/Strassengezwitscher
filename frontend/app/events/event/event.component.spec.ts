@@ -46,7 +46,7 @@ describe("EventComponent", () => {
         expect(evComponent.event.name).toBe("Test");
     }));
 
-    it("Should throw emit an error", inject([EventComponent], (evComponent) =>  {
+    it("Should emit an error to parent class on error in getEvent method", inject([EventComponent], (evComponent) =>  {
         spyOn(evComponent.onError, "emit");
         evComponent.getEvent(10);
         expect(evComponent.onError.emit).toHaveBeenCalledTimes(1);
@@ -58,7 +58,7 @@ describe("EventComponent", () => {
         expect(evComponent.onClose.emit).toHaveBeenCalledTimes(1);
     }));
 
-    it("Should convert date from yyyy-mm-dd to dd-mm-yyyy", inject([EventComponent], (evComponent) =>  {
+    it("Should convert date from yyyy-mm-dd to dd.mm.yyyy", inject([EventComponent], (evComponent) =>  {
         let date = evComponent.dateFormat("2015-12-30");
         expect(date).toBe("30.12.2015");
     }));

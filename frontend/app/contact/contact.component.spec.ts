@@ -97,7 +97,7 @@ describe("ContactComponent", () => {
         expect(scriptTag != null);
     });
 
-    it("check if message is blurred", function() {
+    it("check if message is blurred, this is a temporary workaround", function() {
         this.cc.contact = new Contact("test", "", "", "test", false, false);
         this.cc.blurMessageInput();
         expect(this.cc.isMessageInputFocused).toEqual(true);

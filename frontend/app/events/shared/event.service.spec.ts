@@ -21,23 +21,24 @@ describe("EventService", () => {
         });
     });
 
-    it("Should return mocked response from last Event", inject([MockBackend, EventService], (mockBackend, service) => {
+    it("Should return last event without a server request",
+        inject([MockBackend, EventService], (mockBackend, service) => {
+        spyOn(service.http, "get");
         service.lastEvent = new Event();
         service.lastEvent.id = 1;
         service.getEvent(1).subscribe(res => {
             expect(res.id).toEqual(1);
+            expect(service.http.get).toHaveBeenCalledTimes(0);
         });
     }));
 
-    it("Should return mocked response", inject([MockBackend, EventService], (mockBackend, service) => {
+    it("Should return fake event response on getEvent",
+        inject([MockBackend, EventService], (mockBackend, service, done) => {
         let response = [
             {
                 "id": 1,
                 "name": "name",
                 "location": "Dresden",
-                "events": [1, 2],
-                "notes": "Note",
-                "facebookId": "10",
             },
         ];
 
@@ -49,21 +50,19 @@ describe("EventService", () => {
                 "id": 1,
                 "name": "name",
                 "location": "Dresden",
-                "events": [1, 2],
-                "notes": "Note",
-                "facebookId": "10",
             });
         });
     }));
 
-    it("Should return mocked twitter response", inject([MockBackend, EventService], (mockBackend, service) => {
-        let response = ["1","2"];
+    it("Should return fake twitter response on getTweetIds",
+        inject([MockBackend, EventService], (mockBackend, service) => {
+        let response = ["1", "2"];
 
         mockBackend.connections.subscribe(connection => {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(response)})));
         });
         service.getTweetIds(1).subscribe(res => {
-            expect(res).toEqual(["1","2"]);
+            expect(res).toEqual(["1", "2"]);
         });
     }));
 
