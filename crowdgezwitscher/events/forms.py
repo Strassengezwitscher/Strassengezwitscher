@@ -3,7 +3,7 @@ from extra_views import InlineFormSet
 
 from events.models import Event, Attachment
 from facebook.models import FacebookPage
-from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatepicker
+from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatepicker, AttachmentInput
 
 
 class AttachmentForm(forms.ModelForm):
@@ -11,6 +11,7 @@ class AttachmentForm(forms.ModelForm):
         fields = ('attachment', 'description')
         widgets = {
             'description': forms.TextInput(attrs={'class': 'form-control'}),
+            'attachment': AttachmentInput(),
         }
 
     class Media:
