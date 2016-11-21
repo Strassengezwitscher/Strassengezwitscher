@@ -19,7 +19,7 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
-from events.models import Event, Attachment
+from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
 from events.forms import EventForm, AttachmentFormSet
 
