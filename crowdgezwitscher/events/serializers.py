@@ -1,5 +1,6 @@
 from django.conf import settings
 from rest_framework import serializers
+import six
 
 from events.models import Event
 
@@ -10,7 +11,7 @@ class AttachmentField(serializers.Field):
         return [
             {'name': att.name,
              'description': att.description,
-             'url': settings.MEDIA_URL + str(att.attachment), } for att in attachments
+             'url': settings.MEDIA_URL + six.text_type(att.attachment), } for att in attachments
         ]
 
 
