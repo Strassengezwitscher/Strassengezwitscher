@@ -8,7 +8,9 @@
         $(function() {
             $('.inline').formset({
                 prefix: '{{ inline.prefix }}',
-                addText: 'Weiteren Anhang hinzufügen',
+                addText: '<a class="btn btn-default">' +
+                    '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Weiterer Anhang' +
+                    '</a>',
             })
         })
     </script>
@@ -177,7 +179,9 @@
             {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
             <div class="row">
                 <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
-                    <a class="delete-row">Anhang löschen</a>
+                    <a class="delete-row btn btn-danger">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
                 </div>
                 <div class="fieldWrapper col-xs-10 col-sm-5 col-md-5 col-lg-5">
                     {{ form.attachment.errors }}
