@@ -13,6 +13,9 @@ class AttachmentForm(forms.ModelForm):
             'description': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+    class Media:
+        js = ('django-formset/dist/django-formset.js',)
+
 
 class AttachmentFormSet(InlineFormSet):
     model = Attachment
