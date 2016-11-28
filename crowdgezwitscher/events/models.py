@@ -135,6 +135,11 @@ class Attachment(models.Model):
                 print("settings.MEDIA_ROOT:", settings.MEDIA_ROOT)
                 print("absolute_file_path", absolute_file_path)
                 print("will now save thumbnail to disk")
+
+                # make sure directory structure exists
+                directory = os.path.dirname(absolute_file_path)
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
                 image.save(absolute_file_path)
 
                 print("will not set attribute thumbnail")
