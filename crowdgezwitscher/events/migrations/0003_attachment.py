@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Attachment',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('attachment', models.FileField(upload_to=events.models.Attachment.get_path_and_set_filename)),
+                ('attachment', models.FileField(upload_to=events.models.Attachment._get_path_and_set_filename)),
                 ('thumbnail', models.ImageField(blank=True, upload_to='')),
                 ('name', models.CharField(blank=True, max_length=50)),
                 ('description', models.TextField(blank=True)),
