@@ -3,8 +3,10 @@ import os
 import tempfile
 
 import mock
+from PIL import Image
 
 from django.core.files import File
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.utils.timezone import now
 
@@ -84,6 +86,23 @@ class AttachmentModelTests(TestCase):
         path = attachment._get_path_and_set_filename(name)
         self.assertEqual(attachment.name, '  baz    .TXT')
         self.assertEqual(path, 'event_attachments/%s_baz_xxxxx.txt' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
+
+    @mock.patch('random.choice', lambda *args, **kwargs: 'x')
+    def test_build_thumbnail(self):
+        attachment = Attachment.objects.get(pk=1)
+        self.assertEqual(attachment.thumbnail, "")
+        attachment.attachment = SimpleUploadedFile(
+            name='Lena.jpg',
+            content=open(os.path.join(os.path.dirname(__file__), 'files', 'Lena.jpg'), 'rb').read(),
+            content_type='image/jpeg')
+        attachment.save()
+        self.assertEqual(attachment.name, 'Lena.jpg')
+        self.assertEqual(str(attachment.thumbnail),
+                         'event_attachments/%s_Lena_xxxxx.thumbnail.jpg' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
+        self.assertTrue(os.path.exists(attachment.thumbnail.path))
+        thumbnail = Image.open(attachment.thumbnail)
+        self.assertEqual(thumbnail.height, attachment.MAX_HEIGHT)
+        self.assertLess(thumbnail.width, attachment.MAX_WIDTH)
 
     def test_auto_delete_file_on_delete(self):
         event = Event.objects.get(pk=1)
