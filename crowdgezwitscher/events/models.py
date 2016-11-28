@@ -130,6 +130,12 @@ class Attachment(models.Model):
                 file_path = os.path.splitext(self._get_path(self.attachment.name))[0] + ".thumbnail.jpg"
 
                 absolute_file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+
+                # make sure directory structure exists
+                directory = os.path.dirname(absolute_file_path)
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+
                 image.save(absolute_file_path)
 
                 self.thumbnail = file_path
