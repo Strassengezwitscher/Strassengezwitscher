@@ -86,7 +86,7 @@ class EventAPIViewTests(APITestCase):
                     'url': u'%sevent_attachments/2016/11/20161111-2349_image_12345.PNG' % settings.MEDIA_URL,
                     'thumbnail_url': u'%sevent_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg' %
                                      settings.MEDIA_URL
-                 },
+                },
             ],
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
