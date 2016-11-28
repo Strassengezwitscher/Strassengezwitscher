@@ -171,34 +171,36 @@
         </div>
     </div>
 
-    {{ inlines.0.management_form }}
-    {{ inlines.0.non_form_errors }}
-    {% for form in inlines.0 %}
-        {{ form.id }}
-        <div class="inline">
-            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-            <div class="row">
-                <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
-                    <a class="delete-row btn btn-danger">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </a>
-                </div>
-                <div class="fieldWrapper col-xs-10 col-sm-5 col-md-5 col-lg-5">
-                    {{ form.attachment.errors }}
-                    <div class="form-group">
-                        {{ form.attachment.label_tag }}
-                        {{ form.attachment }}
+    {% for inline in inlines %}
+        {{ inline.management_form }}
+        {{ inline.non_form_errors }}
+        {% for form in inline %}
+            {{ form.id }}
+            <div class="inline">
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                <div class="row">
+                    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+                        <a class="delete-row btn btn-danger">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
                     </div>
-                </div>
-                <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    {{ form.description.errors }}
-                    <div class="form-group">
-                        {{ form.description.label_tag }}
-                        {{ form.description }}
+                    <div class="fieldWrapper col-xs-10 col-sm-5 col-md-5 col-lg-5">
+                        {{ form.attachment.errors }}
+                        <div class="form-group">
+                            {{ form.attachment.label_tag }}
+                            {{ form.attachment }}
+                        </div>
+                    </div>
+                    <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        {{ form.description.errors }}
+                        <div class="form-group">
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     {% endfor %}
 
     <div class="row">
