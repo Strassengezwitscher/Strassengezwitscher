@@ -99,6 +99,7 @@ class AttachmentModelTests(TestCase):
         self.assertEqual(attachment.name, 'Lena.jpg')
         self.assertEqual(str(attachment.thumbnail),
                          'event_attachments/%s_Lena_xxxxx.thumbnail.jpg' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
+        print("test attachment.thumbnail.path", attachment.thumbnail.path)
         self.assertTrue(os.path.exists(attachment.thumbnail.path))
         thumbnail = Image.open(attachment.thumbnail)
         self.assertEqual(thumbnail.height, attachment.MAX_HEIGHT)

@@ -140,10 +140,13 @@ class Attachment(models.Model):
                 directory = os.path.dirname(absolute_file_path)
                 if not os.path.exists(directory):
                     os.makedirs(directory)
-                image.save(absolute_file_path)
+                res = image.save(absolute_file_path)
+                print("res", res)
+                print("thumbail exists:", os.path.exists(absolute_file_path))
 
-                print("will not set attribute thumbnail")
+                print("will now set attribute thumbnail")
                 self.thumbnail = file_path
+                print("model self.thumbnail.path", self.thumbnail.path)
             except Exception as e:  # noqa
                 # lots of stuff can happen when trying to create thumbnails from broken images or files that are not
                 # images at all.
