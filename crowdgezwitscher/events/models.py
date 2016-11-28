@@ -122,16 +122,21 @@ class Attachment(models.Model):
             self.thumbnail.delete(save=False)
             size = (self.MAX_WIDTH, self.MAX_HEIGHT)  # maximal width and height. aspect ratio is not changed.
             try:
+                print("will noe open attachment")
                 image = Image.open(self.attachment)
+                print("will now create thumbnail")
                 image.thumbnail(size)
 
                 # build a file path. remove original file extension and add ".thumbnail.jpg" instead.
                 # ".jpg" leads to Pillow building a JPEG image
+                print("will not build file_path")
                 file_path = os.path.splitext(self._get_path(self.attachment.name))[0] + ".thumbnail.jpg"
 
                 absolute_file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+                print("will now save thumbnail to disk")
                 image.save(absolute_file_path)
 
+                print("will not set attribute thumbnail")
                 self.thumbnail = file_path
             except Exception as e:  # noqa
                 # lots of stuff can happen when trying to create thumbnails from broken images or files that are not
