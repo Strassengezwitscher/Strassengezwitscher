@@ -66,6 +66,8 @@ class Event(MapObject):
 
 @python_2_unicode_compatible
 class Attachment(models.Model):
+    MAX_WIDTH = 256
+    MAX_HEIGHT = 256
 
     def _get_path(self, filename):
         def random_string(length=5):
@@ -118,9 +120,9 @@ class Attachment(models.Model):
         if not self.pk or self.attachment != self.old_attachment:
             # delete any existing thumbnail. ok when no thumbnail exists. save() will be called later.
             self.thumbnail.delete(save=False)
-            size = (256, 256)  # maximal width and height. aspect ratio is not changed.
+            size = (self.MAX_WIDTH, self.MAX_HEIGHT)  # maximal width and height. aspect ratio is not changed.
             try:
-                image = Image.open(self.attachment.file)
+                image = Image.open(self.attachment)
                 image.thumbnail(size)
 
                 # build a file path. remove original file extension and add ".thumbnail.jpg" instead.
