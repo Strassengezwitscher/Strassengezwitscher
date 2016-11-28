@@ -84,6 +84,7 @@ class Attachment(models.Model):
                                       filename_ext.lower())
 
     attachment = models.FileField(upload_to=get_path_and_set_filename)
+    thumbnail = models.ImageField(blank=True)
     name = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='attachments')
