@@ -4,6 +4,9 @@ import os
 import random
 import string
 
+from PIL import Image
+
+from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from django.dispatch import receiver
@@ -101,18 +104,45 @@ class Attachment(models.Model):
     def __repr__(self):
         return "<Attachment %s for %s>" % (self.name, self.event)
 
+    def save(self, *args, **kwargs):
+        # Delete file and thumbnail from filesystem when attachment field is changed.
+        if self.pk and self.attachment != self.old_attachment:
+            # for building the thumbnail, we need the attachment attribute. that's why we must not use self instead
+            # of instance. As we use save=False, the instance is not saved, just the files are removed from the
+            # filesystem
+            instance = Attachment.objects.get(pk=self.pk)
+            instance.attachment.delete(save=False)
+            instance.thumbnail.delete(save=False)
+
+        # build thumbnail when creating Attachment instance or when changing attachment field
+        if not self.pk or self.attachment != self.old_attachment:
+            # delete any existing thumbnail. ok when no thumbnail exists. save() will be called later.
+            self.thumbnail.delete(save=False)
+            size = (256, 256)  # maximal width and height. aspect ratio is not changed.
+            try:
+                image = Image.open(self.attachment.file)
+                image.thumbnail(size)
+
+                name = self.name or self.attachment.name  # works for both updating and creating
+
+                # build a file path. remove original file extension and add ".thumbnail.jpg" instead.
+                # ".jpg" leads to Pillow building a JPEG image
+                file_path = os.path.splitext(self._get_path(name))[0] + ".thumbnail.jpg"
+
+                absolute_file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+                image.save(absolute_file_path)
+
+                self.thumbnail = file_path
+            except Exception:  # noqa
+                # lots of stuff can happen when trying to create thumbnails from broken images or files that are not
+                # images at all.
+                pass
+
+        super(Attachment, self).save(*args, **kwargs)
+
 
 @receiver(models.signals.post_delete, sender=Attachment)
-def auto_delete_file_on_delete(**kwargs):
+def auto_delete_file_on_delete(sender, instance, **kwargs):
     """Deletes file from filesystem when corresponding `Attachment` instance is deleted."""
-    kwargs['instance'].attachment.delete(save=False)
-
-
-@receiver(models.signals.pre_save, sender=Attachment)
-def auto_delete_file_on_change(sender, instance, **kwargs):
-    """Deletes file from filesystem when corresponding `Attachment` instance's attachment field is changed."""
-    if not instance.pk:  # file is created instead of changed
-        return
-
-    if instance.attachment != instance.old_attachment:
-        Attachment.objects.get(pk=instance.pk).attachment.delete(save=False)
+    instance.attachment.delete(save=False)
+    instance.thumbnail.delete(save=False)
