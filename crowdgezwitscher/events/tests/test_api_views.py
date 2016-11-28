@@ -70,7 +70,8 @@ class EventAPIViewTests(APITestCase):
             u'attachments': [
                 {'name': u'test.pdf',
                  'description': u'I can haz description',
-                 'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL}
+                 'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
+                 'thumbnail_url': u'%simg/icon_pdf.png' % settings.STATIC_URL},
             ],
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)

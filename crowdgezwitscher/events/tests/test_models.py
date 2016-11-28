@@ -81,7 +81,7 @@ class AttachmentModelTests(TestCase):
     def test_get_path_and_set_filename(self):
         attachment = Attachment.objects.get(pk=1)
         name = '/foo/bar/  baz    .TXT'
-        path = attachment.get_path_and_set_filename(name)
+        path = attachment._get_path_and_set_filename(name)
         self.assertEqual(attachment.name, '  baz    .TXT')
         self.assertEqual(path, 'event_attachments/%s_baz_xxxxx.txt' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
 
