@@ -81,7 +81,7 @@ class EventViewCorrectPermissionMixin(object):
     def test_post_create_view_without_attachments(self):
         response = self.client.post(reverse('events:create'), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
-        self.assertEqual(Attachment.objects.count(), 1)
+        self.assertEqual(Attachment.objects.count(), 3)
 
     @mock.patch('random.choice', lambda *args, **kwargs: 'x')
     def test_post_create_view_with_one_attachment(self):
@@ -100,8 +100,8 @@ class EventViewCorrectPermissionMixin(object):
         })
         response = self.client.post(reverse('events:create'), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
-        self.assertEqual(Attachment.objects.count(), 2)
-        attachment = Attachment.objects.get(pk=2)
+        self.assertEqual(Attachment.objects.count(), 4)
+        attachment = Attachment.objects.get(pk=4)
         self.assertEqual(attachment.name, attachment_name)
         self.assertEqual(attachment.description, attachment_description)
         self.assertEqual(attachment.event.id, 4)
@@ -130,14 +130,14 @@ class EventViewCorrectPermissionMixin(object):
         })
         response = self.client.post(reverse('events:create'), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
-        self.assertEqual(Attachment.objects.count(), 3)
-        attachment1 = Attachment.objects.get(pk=2)
+        self.assertEqual(Attachment.objects.count(), 5)
+        attachment1 = Attachment.objects.get(pk=4)
         self.assertEqual(attachment1.name, attachment_name)
         self.assertEqual(attachment1.description, attachment_description)
         self.assertEqual(attachment1.event.id, 4)
         self.assertEqual(str(attachment1.attachment),
                          'event_attachments/%s_dolphindiary_xxxxx.txt' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
-        attachment2 = Attachment.objects.get(pk=3)
+        attachment2 = Attachment.objects.get(pk=5)
         self.assertEqual(attachment2.name, attachment_name + '2')
         self.assertEqual(attachment2.description, attachment_description + '2')
         self.assertEqual(attachment2.event.id, 4)
@@ -173,20 +173,24 @@ class EventViewCorrectPermissionMixin(object):
         self.assertEqual(response.status_code, 404)
 
     def test_post_update_view_with_unchanged_attachments(self):
-        self.assertEqual(Attachment.objects.count(), 1)
+        self.assertEqual(Attachment.objects.count(), 3)
         self.post_data.update({'name': 'Updated Event'})
         response = self.client.post(reverse('events:update', kwargs={'pk': 1}), self.post_data, follow=True)
         self.assertEqual(Event.objects.get(pk=1).name, 'Updated Event')
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 1}))
-        self.assertEqual(Attachment.objects.count(), 1)
+        self.assertEqual(Attachment.objects.count(), 3)
 
     def test_post_update_view_with_deleted_attachment(self):
-        self.assertEqual(Attachment.objects.count(), 1)
+        self.assertEqual(Attachment.objects.count(), 3)
         self.post_data.update({
-            'attachments-TOTAL_FORMS': 2,
-            'attachments-INITIAL_FORMS': 1,
+            'attachments-TOTAL_FORMS': 4,
+            'attachments-INITIAL_FORMS': 3,
             'attachments-0-id': 1,
             'attachments-0-DELETE': 'on',
+            'attachments-1-id': 2,
+            'attachments-1-DELETE': 'on',
+            'attachments-2-id': 3,
+            'attachments-2-DELETE': 'on',
         })
         response = self.client.post(reverse('events:update', kwargs={'pk': 1}), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 1}))

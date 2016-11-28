@@ -68,10 +68,25 @@ class EventAPIViewTests(APITestCase):
             u'participants': u'',
             u'organizer': u'Person P',
             u'attachments': [
-                {'name': u'test.pdf',
-                 'description': u'I can haz description',
-                 'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
-                 'thumbnail_url': u'%simg/icon_pdf.png' % settings.STATIC_URL},
+                {
+                    'name': u'test.pdf',
+                    'description': u'I need a pdf icon',
+                    'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
+                    'thumbnail_url': u'%simg/icon_pdf.png' % settings.STATIC_URL
+                },
+                {
+                    'name': u'noext',
+                    'description': u'I have no file extension and need a generic icon',
+                    'url': u'%sevent_attachments/2016/11/20161111-2349_noext_abcde' % settings.MEDIA_URL,
+                    'thumbnail_url': u'%simg/icon_file.png' % settings.STATIC_URL
+                },
+                {
+                    'name': u'image.PNG',
+                    'description': u'I have a jpg-thumbnail and need no special icon',
+                    'url': u'%sevent_attachments/2016/11/20161111-2349_image_12345.PNG' % settings.MEDIA_URL,
+                    'thumbnail_url': u'%sevent_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg' %
+                                     settings.MEDIA_URL
+                 },
             ],
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
