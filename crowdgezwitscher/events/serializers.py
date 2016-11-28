@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 from rest_framework import serializers
 import six
@@ -6,12 +8,26 @@ from events.models import Event
 
 
 class AttachmentField(serializers.Field):
-    """Responsible for serialization of attachments refering to an event."""
+    """Responsible for serialization of attachments referring to an event."""
     def to_representation(self, attachments):
+        def _build_thumbnail_url(attachment):
+            extension_icon_mapping = {
+                '.pdf':  'img/icon_pdf.png',
+            }
+            default_icon = 'img/icon_file.png'
+
+            if attachment.thumbnail:
+                return settings.MEDIA_URL + six.text_type(attachment.thumbnail)
+            else:
+                extension = os.path.splitext(attachment.name)[1].lower()
+                icon_path = extension_icon_mapping.get(extension, default_icon)
+                return settings.STATIC_URL + six.text_type(icon_path)
+
         return [
             {'name': att.name,
              'description': att.description,
-             'url': settings.MEDIA_URL + six.text_type(att.attachment), } for att in attachments
+             'url': settings.MEDIA_URL + six.text_type(att.attachment),
+             'thumbnail_url': _build_thumbnail_url(att), } for att in attachments
         ]
 
 
