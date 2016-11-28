@@ -89,7 +89,6 @@ class EventViewCorrectPermissionMixin(object):
         attachment_content = "Thanks for all the fish."
         attachment_description = "A diary written by dolphins."
         tempdir = tempfile.gettempdir()
-        settings.MEDIA_ROOT = tempdir
         f = open(os.path.join(tempdir, attachment_name), 'w+')
         f.write(attachment_content)
         f.seek(0)
@@ -114,7 +113,6 @@ class EventViewCorrectPermissionMixin(object):
         attachment_content = "Thanks for all the fish."
         attachment_description = "A diary written by dolphins."
         tempdir = tempfile.gettempdir()
-        settings.MEDIA_ROOT = tempdir
         file1 = open(os.path.join(tempdir, attachment_name), 'w+')
         file1.write(attachment_content)
         file1.seek(0)
