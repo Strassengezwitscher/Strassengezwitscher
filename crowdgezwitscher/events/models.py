@@ -133,10 +133,10 @@ class Attachment(models.Model):
                 image.save(absolute_file_path)
 
                 self.thumbnail = file_path
-            except Exception:  # noqa
+            except Exception as e:  # noqa
                 # lots of stuff can happen when trying to create thumbnails from broken images or files that are not
                 # images at all.
-                pass
+                print("Error when creating thumbnail:", e)
 
         super(Attachment, self).save(*args, **kwargs)
 
