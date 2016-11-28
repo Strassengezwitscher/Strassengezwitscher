@@ -123,11 +123,9 @@ class Attachment(models.Model):
                 image = Image.open(self.attachment.file)
                 image.thumbnail(size)
 
-                name = self.name or self.attachment.name  # works for both updating and creating
-
                 # build a file path. remove original file extension and add ".thumbnail.jpg" instead.
                 # ".jpg" leads to Pillow building a JPEG image
-                file_path = os.path.splitext(self._get_path(name))[0] + ".thumbnail.jpg"
+                file_path = os.path.splitext(self._get_path(self.attachment.name))[0] + ".thumbnail.jpg"
 
                 absolute_file_path = os.path.join(settings.MEDIA_ROOT, file_path)
                 image.save(absolute_file_path)
