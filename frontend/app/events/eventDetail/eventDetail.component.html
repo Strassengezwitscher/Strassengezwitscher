@@ -23,13 +23,23 @@
             <span *ngIf="event.counterEvent">Ja</span>
             <span *ngIf="!event.counterEvent">Nein</span>
         </p>
-        <p *ngIf="event.attachments">
+        <div *ngIf="event.attachments">
             <strong>Anhänge:</strong>
-            <a md-button href="{{attachment.url}}" target="_blank" *ngFor="let attachment of event.attachments">
-                {{attachment.name}}
-            </a>
-        </p>
-        <div *ngIf="event.coverage">
+            <div class="attachment-container">
+                <a href="{{attachment.url}}" target="_blank" *ngFor="let attachment of event.attachments">
+                    <md-card class="attachment" *ngIf="attachment.description" md-tooltip="{{attachment.description}}" tooltip-position="below">
+                        <img md-card-image src="{{attachment.thumbnail_url}}">
+                        <md-card-content>{{attachment.name}}</md-card-content>
+                    </md-card>
+                    <md-card class="attachment" *ngIf="!attachment.description">
+                        <img md-card-image src="{{attachment.thumbnail_url}}">
+                        <md-card-content>{{attachment.name}}</md-card-content>
+                    </md-card>
+                </a>
+            </div>
+        </div>
+        <br>
+        <span *ngIf="event.coverage">
             <div *ngIf="!twttrIsBlocked">
                 <a md-raised-button class="refresh-button" (click)="onRefresh()">Refresh Twitter-Feed</a>
                 <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
@@ -41,7 +51,7 @@
                     <p>(zum Beispiel durch ein Browser-AddOn wie AdBlocker)</p>
                 </md-content>
             </md-card>
-        </div>
+        </span>
         <md-card *ngIf="!event.coverage">
             Keine Berichterstattung geplant.
         </md-card>

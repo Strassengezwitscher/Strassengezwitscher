@@ -10,6 +10,10 @@ $foreground: map-get($theme, foreground);
   color: map-get($foreground, text);
   text-align: center;
 
+  a {
+    text-decoration: none;
+  }
+
   h1 {
     font-size: 3em;
 
@@ -22,5 +26,22 @@ $foreground: map-get($theme, foreground);
 
   .refresh-button {
     margin-bottom: 16px;
+  }
+}
+
+.attachment-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  .attachment {
+    flex: none;
+    margin: 8px;
+    width: 132px;
+
+    img {
+      height: 150px;
+      object-fit: cover;
+    }
   }
 }
