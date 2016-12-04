@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 
 import { FacebookPage } from "./facebookPage.model";
 import { Observable } from "rxjs/Observable";
@@ -11,7 +11,9 @@ export class FacebookPageService {
     constructor(private http: Http) {}
 
     public getFacebookPage(id: number): Observable<FacebookPage> {
-        return this.http.get(this.facebookPageUrl + id + "/")
+        let headers = new Headers({ "Accept": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.facebookPageUrl + id + "/", options)
                         .map(this.extractData)
                         .catch(this.handleError);
     }
