@@ -10,10 +10,6 @@ $foreground: map-get($theme, foreground);
   color: map-get($foreground, text);
   text-align: center;
 
-  a {
-    text-decoration: none;
-  }
-
   h1 {
     font-size: 3em;
 
@@ -33,15 +29,29 @@ $foreground: map-get($theme, foreground);
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  text-align: left;
+}
+
+.attachment-wrapper {
+  text-decoration: none;
 
   .attachment {
     flex: none;
     margin: 8px;
-    width: 132px;
+  }
+
+  img {
+    object-fit: contain;
+  }
+
+  &.without-description {
+    .attachment {
+      height: 96px;
+      width: 96px;
+    }
 
     img {
-      height: 150px;
-      object-fit: cover;
+      border-radius: 2px;
     }
   }
 }

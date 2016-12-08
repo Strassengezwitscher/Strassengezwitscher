@@ -26,16 +26,21 @@
         <div *ngIf="event.attachments">
             <strong>Anhänge:</strong>
             <div class="attachment-container">
-                <a href="{{attachment.url}}" target="_blank" *ngFor="let attachment of event.attachments">
-                    <md-card class="attachment" *ngIf="attachment.description" md-tooltip="{{attachment.description}}" tooltip-position="below">
-                        <img md-card-image src="{{attachment.thumbnail_url}}">
-                        <md-card-content>{{attachment.name}}</md-card-content>
-                    </md-card>
-                    <md-card class="attachment" *ngIf="!attachment.description">
-                        <img md-card-image src="{{attachment.thumbnail_url}}">
-                        <md-card-content>{{attachment.name}}</md-card-content>
-                    </md-card>
-                </a>
+                <span *ngFor="let attachment of event.attachments">
+                    <a href="{{attachment.url}}" class="attachment-wrapper" target="_blank" *ngIf="attachment.description">
+                        <md-card class="attachment" >
+                            <md-card-title-group>
+                                <img md-card-md-image src="{{attachment.thumbnail_url}}">
+                                <md-card-subtitle>{{attachment.description}}</md-card-subtitle>
+                            </md-card-title-group>
+                        </md-card>
+                    </a>
+                    <a href="{{attachment.url}}" class="attachment-wrapper without-description" target="_blank" *ngIf="!attachment.description">
+                        <md-card class="attachment" *ngIf="!attachment.description">
+                            <img md-card-image src="{{attachment.thumbnail_url}}">
+                        </md-card>
+                    </a>
+                </span>
             </div>
         </div>
         <br>
