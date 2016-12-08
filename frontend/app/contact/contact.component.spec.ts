@@ -97,6 +97,12 @@ describe("ContactComponent", () => {
         expect(scriptTag != null);
     });
 
+    it("check if message is blurred, this is a temporary workaround", function() {
+        this.cc.contact = new Contact("test", "", "", "test", false, false);
+        this.cc.blurMessageInput();
+        expect(this.cc.isMessageInputFocused).toEqual(true);
+    });
+
     it("check that captcha is verified", function() {
         this.cc.verifiedCaptcha();
         expect(this.cc.captchaVerified).toEqual(true);

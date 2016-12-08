@@ -10,10 +10,14 @@ class MockFacebookPageService {
         let fb = new FacebookPage();
         fb.id = 1;
         fb.name = "Test";
-        return new Observable<FacebookPage>(observer => {
-            observer.next(fb);
-            observer.complete();
-        });
+        if (id === 1) {
+            return new Observable<FacebookPage>(observer => {
+                observer.next(fb);
+                observer.complete();
+            });
+        } else {
+            return Observable.throw(new Error("error"));
+        }
     }
 }
 
@@ -43,8 +47,21 @@ describe("FacebookPageComponent", () => {
     }));
 
     it("Should set a new active Page on ngChange", inject([FacebookPageComponent], (fbPageComponent) =>  {
+        fbPageComponent.id = 1;
         fbPageComponent.ngOnChanges({"id": 125});
         expect(fbPageComponent.activePage.name).toBe("Test");
+    }));
+
+    it("Should throw emit an error", inject([FacebookPageComponent], (fbPageComponent) =>  {
+        spyOn(fbPageComponent.onError, "emit");
+        fbPageComponent.getFacebookPageDetails(10);
+        expect(fbPageComponent.onError.emit).toHaveBeenCalledTimes(1);
+    }));
+
+    it("Should emit bool to parent class on close", inject([FacebookPageComponent], (fbPageComponent) =>  {
+        spyOn(fbPageComponent.onClose, "emit");
+        fbPageComponent.close();
+        expect(fbPageComponent.onClose.emit).toHaveBeenCalledTimes(1);
     }));
 
 });
