@@ -23,7 +23,7 @@
             <span *ngIf="event.counterEvent">Ja</span>
             <span *ngIf="!event.counterEvent">Nein</span>
         </p>
-        <div *ngIf="event.attachments">
+        <div *ngIf="event.attachments && event.attachments.length > 0">
             <strong>Anhänge:</strong>
             <div class="attachment-container">
                 <span *ngFor="let attachment of event.attachments">
