@@ -74,7 +74,9 @@ class BootstrapDatepicker(forms.widgets.DateInput):
 class AttachmentInput(forms.widgets.ClearableFileInput):
     template_with_initial = (
         '<br />%(initial_text)s: <a href="%(initial_url)s">%(initial)s</a> '
-        '%(clear_template)s<br /><div style="float:left; margin-right:10px;">%(input_text)s:</div> %(input)s'
+        '%(clear_template)s<br />'
+        '<div style="float:left; margin-right:10px;">%(input_text)s:</div>'
+        '<span style="display: block; overflow: hidden;">%(input)s</span>'
     )
 
     def get_template_substitution_values(self, value):
