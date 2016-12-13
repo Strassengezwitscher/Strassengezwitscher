@@ -9,6 +9,8 @@ from django.db.models.signals import post_save
 from django.db import IntegrityError
 from django.dispatch import receiver
 
+from datetime import datetime
+
 from crowdgezwitscher.log import logger
 from TwitterAPI import TwitterAPI, TwitterConnectionError
 
@@ -101,6 +103,7 @@ class Tweet(models.Model):
     content = models.CharField(max_length=250)
     account = models.ForeignKey(TwitterAccount, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag)
+    created_at = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return "%s - %s" % (self.account, self.content)
