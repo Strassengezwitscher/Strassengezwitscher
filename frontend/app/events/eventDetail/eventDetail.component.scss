@@ -41,7 +41,9 @@ $foreground: map-get($theme, foreground);
   }
 
   img {
-    object-fit: contain;
+    min-width: 112px;
+    object-fit: cover;
+    padding-left: 8px;
   }
 
   &.without-description {
@@ -52,6 +54,7 @@ $foreground: map-get($theme, foreground);
 
     img {
       border-radius: 2px;
+      padding-left: 0;
     }
   }
 }
