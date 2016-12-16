@@ -41,7 +41,13 @@ $foreground: map-get($theme, foreground);
   }
 
   img {
-    min-width: 112px;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    margin: -24px;
+    margin-left: 0;
+    margin-right: -16px;
+    min-height: 144px;
+    min-width: 144px;
     object-fit: cover;
     padding-left: 8px;
   }
@@ -54,6 +60,7 @@ $foreground: map-get($theme, foreground);
 
     img {
       border-radius: 2px;
+      margin-left: -24px;
       padding-left: 0;
     }
   }
