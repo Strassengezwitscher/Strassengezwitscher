@@ -91,6 +91,41 @@ class EventAPIViewTests(APITestCase):
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
+    # GET /api/events/1/
+    def test_read_detail_events_with_non_public_attachments(self):
+        # set all but one attachments' public fields
+
+        event = Event.objects.get(pk=1)
+        for att in event.attachments.all():
+            if att.id != 1:
+                att.public = False
+                att.save()
+        url = reverse('events_api:detail', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = {
+            u'id': 1,
+            u'name': u'Test Event',
+            u'location': u'Here',
+            u'date': u'2016-07-20',
+            u'repetitionCycle': u'unbekannter Rhythmus',
+            u'type': u'',
+            u'url': u'',
+            u'counterEvent': False,
+            u'coverage': True,
+            u'participants': u'',
+            u'organizer': u'Person P',
+            u'attachments': [
+                {
+                    'name': u'test.pdf',
+                    'description': u'I need a pdf icon',
+                    'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
+                    'thumbnail_url': u'%simg/icon_pdf.png' % settings.STATIC_URL
+                },
+            ],
+        }
+        self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
+
     # GET /api/events/1000/
     def test_read_detail_not_existant_event(self):
         url = reverse('events_api:detail', kwargs={'pk': 1000})

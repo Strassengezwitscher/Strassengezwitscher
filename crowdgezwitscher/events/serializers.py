@@ -4,7 +4,7 @@ from django.conf import settings
 from rest_framework import serializers
 import six
 
-from events.models import Event
+from events.models import Event, Attachment
 
 
 class AttachmentSerializer(serializers.Serializer):
@@ -32,7 +32,12 @@ class AttachmentSerializer(serializers.Serializer):
 class EventSerializer(serializers.ModelSerializer):
     repetitionCycle = serializers.CharField(source='repetition_cycle')
     counterEvent = serializers.BooleanField(source='counter_event')
-    attachments = AttachmentSerializer(many=True)
+    attachments = serializers.SerializerMethodField()
+
+    def get_attachments(self, event):
+        queryset = Attachment.objects.filter(public=True)
+        serializer = AttachmentSerializer(instance=queryset, many=True)
+        return serializer.data
 
     class Meta:
         model = Event
