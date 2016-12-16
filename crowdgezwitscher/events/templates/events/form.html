@@ -171,6 +171,17 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{ form.facebook_pages.errors }}
+            <div class="form-group">
+                {{ form.facebook_pages.label_tag }}
+                {{ form.facebook_pages }}
+            </div>
+        </div>
+    </div>
+
+    <strong>Anhänge:</strong>
     {% for inline in inlines %}
         {{ inline.management_form }}
         {{ inline.non_form_errors }}
@@ -211,16 +222,7 @@
             </div>
         {% endfor %}
     {% endfor %}
-
-    <div class="row">
-        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{ form.facebook_pages.errors }}
-            <div class="form-group">
-                {{ form.facebook_pages.label_tag }}
-                {{ form.facebook_pages }}
-            </div>
-        </div>
-    </div>
+    <br/>
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
