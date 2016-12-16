@@ -8,7 +8,7 @@ from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput,
 
 class AttachmentForm(forms.ModelForm):
     class Meta:
-        fields = ('attachment', 'description')
+        fields = ('attachment', 'description', 'public')
         widgets = {
             'description': forms.TextInput(attrs={'class': 'form-control'}),
             'attachment': AttachmentInput(),

@@ -184,14 +184,23 @@
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </a>
                     </div>
-                    <div class="fieldWrapper col-xs-10 col-sm-5 col-md-5 col-lg-5">
+                    <div class="fieldWrapper col-xs-8 col-sm-5 col-md-5 col-lg-5">
                         {{ form.attachment.errors }}
                         <div class="form-group">
                             {{ form.attachment.label_tag }}
                             {{ form.attachment }}
                         </div>
                     </div>
-                    <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="fieldWrapper col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                        {{ form.public.errors }}
+                        <div class="checkbox">
+                            <label>
+                                {{ form.public }}
+                                {{ form.public.label }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="fieldWrapper col-xs-12 col-sm-4 col-md-5 col-lg-5">
                         {{ form.description.errors }}
                         <div class="form-group">
                             {{ form.description.label_tag }}

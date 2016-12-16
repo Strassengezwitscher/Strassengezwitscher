@@ -96,6 +96,7 @@ class EventViewCorrectPermissionMixin(object):
             'attachments-TOTAL_FORMS': 1,
             'attachments-0-attachment': f,
             'attachments-0-description': attachment_description,
+            'attachments-0-public': True,
         })
         response = self.client.post(reverse('events:create'), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
@@ -103,6 +104,7 @@ class EventViewCorrectPermissionMixin(object):
         attachment = Attachment.objects.get(pk=4)
         self.assertEqual(attachment.name, attachment_name)
         self.assertEqual(attachment.description, attachment_description)
+        self.assertEqual(attachment.public, True)
         self.assertEqual(attachment.event.id, 4)
         self.assertEqual(str(attachment.attachment),
                          'event_attachments/%s_dolphindiary_xxxxx.txt' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
@@ -123,8 +125,10 @@ class EventViewCorrectPermissionMixin(object):
             'attachments-TOTAL_FORMS': 2,
             'attachments-0-attachment': file1,
             'attachments-0-description': attachment_description,
+            'attachments-0-public': False,
             'attachments-1-attachment': file2,
             'attachments-1-description': attachment_description + '2',
+            'attachments-1-public': False,
         })
         response = self.client.post(reverse('events:create'), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
@@ -132,12 +136,14 @@ class EventViewCorrectPermissionMixin(object):
         attachment1 = Attachment.objects.get(pk=4)
         self.assertEqual(attachment1.name, attachment_name)
         self.assertEqual(attachment1.description, attachment_description)
+        self.assertEqual(attachment1.public, False)
         self.assertEqual(attachment1.event.id, 4)
         self.assertEqual(str(attachment1.attachment),
                          'event_attachments/%s_dolphindiary_xxxxx.txt' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
         attachment2 = Attachment.objects.get(pk=5)
         self.assertEqual(attachment2.name, attachment_name + '2')
         self.assertEqual(attachment2.description, attachment_description + '2')
+        self.assertEqual(attachment2.public, False)
         self.assertEqual(attachment2.event.id, 4)
         self.assertEqual(str(attachment2.attachment),
                          'event_attachments/%s_dolphindiary_xxxxx.txt2' % now().strftime("%Y/%m/%Y%m%d-%H%M"))

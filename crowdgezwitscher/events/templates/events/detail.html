@@ -48,6 +48,7 @@
                     {{ attachment.name }}
                 </a>
                 <ul>
+                    <li>Öffentlich: {{ attachment.public }}</li>
                     {% if attachment.thumbnail %}
                         <li>
                             <a href="{{ MEDIA_URL }}{{ attachment.attachment }}">
