@@ -3,7 +3,6 @@ import tempfile
 
 import mock
 
-from django.conf import settings
 from django.urls import reverse
 from django.test import Client, TestCase
 from django.utils.timezone import now
