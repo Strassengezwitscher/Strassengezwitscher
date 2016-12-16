@@ -1,16 +1,48 @@
-from rest_framework import serializers
+import os
 
-from events.models import Event
+from django.conf import settings
+from rest_framework import serializers
+import six
+
+from events.models import Event, Attachment
+
+
+class AttachmentSerializer(serializers.Serializer):
+    def to_representation(self, attachment):
+        extension_icon_mapping = {
+            '.pdf':  'img/icon_pdf.png',
+        }
+        default_icon = 'img/icon_file.png'
+
+        if attachment.thumbnail:
+            thumbnail_url = settings.MEDIA_URL + six.text_type(attachment.thumbnail)
+        else:
+            extension = os.path.splitext(attachment.name)[1].lower()
+            icon_path = extension_icon_mapping.get(extension, default_icon)
+            thumbnail_url = settings.STATIC_URL + six.text_type(icon_path)
+
+        return {
+            'name': attachment.name,
+            'description': attachment.description,
+            'url': settings.MEDIA_URL + six.text_type(attachment.attachment),
+            'thumbnail_url': thumbnail_url,
+        }
 
 
 class EventSerializer(serializers.ModelSerializer):
     repetitionCycle = serializers.CharField(source='repetition_cycle')
     counterEvent = serializers.BooleanField(source='counter_event')
+    attachments = serializers.SerializerMethodField()
+
+    def get_attachments(self, event):
+        queryset = Attachment.objects.filter(public=True)
+        serializer = AttachmentSerializer(instance=queryset, many=True)
+        return serializer.data
 
     class Meta:
         model = Event
         fields = ('id', 'name', 'location', 'date', 'repetitionCycle', 'type', 'url', 'counterEvent',
-                  'coverage', 'participants', 'organizer')
+                  'coverage', 'participants', 'organizer', 'attachments')
 
 
 class EventSerializerShortened(serializers.ModelSerializer):

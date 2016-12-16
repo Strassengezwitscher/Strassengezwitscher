@@ -40,6 +40,32 @@
             {% endfor %}
         </ul>
     </li>
+    <li><b>Anhänge:</b>
+        <ul>
+            {% for attachment in event.attachments.all %}
+                <li>
+                <a href="{{ MEDIA_URL }}{{ attachment.attachment }}">
+                    {{ attachment.name }}
+                </a>
+                <ul>
+                    <li>Öffentlich: {{ attachment.public }}</li>
+                    {% if attachment.thumbnail %}
+                        <li>
+                            <a href="{{ MEDIA_URL }}{{ attachment.attachment }}">
+                                <img src="{{ MEDIA_URL }}{{ attachment.thumbnail }}"/>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if attachment.description %}
+                        <li>Beschreibung: {{ attachment.description }}</li>
+                    {% endif %}
+                </ul>
+                </li>
+            {% empty %}
+               <li>Keine Anhänge vorhanden</li>
+            {% endfor %}
+        </ul>
+    </li>
 </ul>
 
 {% if perms.events.change_event %}

@@ -67,5 +67,41 @@
         "coverage_start": null,
         "coverage_end": null
     }
+},
+{
+    "model": "events.attachment",
+    "pk": 1,
+    "fields": {
+        "attachment": "event_attachments/2016/11/20161111-2349_test_g8nbW.pdf",
+        "thumbnail": "",
+        "name": "test.pdf",
+        "description": "I need a pdf icon",
+        "event": 1,
+        "public": true
+    }
+},
+{
+    "model": "events.attachment",
+    "pk": 2,
+    "fields": {
+        "attachment": "event_attachments/2016/11/20161111-2349_noext_abcde",
+        "thumbnail": "",
+        "name": "noext",
+        "description": "I have no file extension and need a generic icon",
+        "event": 1,
+        "public": true
+    }
+},
+{
+    "model": "events.attachment",
+    "pk": 3,
+    "fields": {
+        "attachment": "event_attachments/2016/11/20161111-2349_image_12345.PNG",
+        "thumbnail": "event_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg",
+        "name": "image.PNG",
+        "description": "I have a jpg-thumbnail and need no special icon",
+        "event": 1,
+        "public": true
+    }
 }
 ]

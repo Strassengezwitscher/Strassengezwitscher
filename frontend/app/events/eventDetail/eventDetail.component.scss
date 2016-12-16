@@ -24,3 +24,44 @@ $foreground: map-get($theme, foreground);
     margin-bottom: 16px;
   }
 }
+
+.attachment-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  text-align: left;
+}
+
+.attachment-wrapper {
+  text-decoration: none;
+
+  .attachment {
+    flex: none;
+    margin: 8px;
+  }
+
+  img {
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    margin: -24px;
+    margin-left: 0;
+    margin-right: -16px;
+    min-height: 144px;
+    min-width: 144px;
+    object-fit: cover;
+    padding-left: 8px;
+  }
+
+  &.without-description {
+    .attachment {
+      height: 96px;
+      width: 96px;
+    }
+
+    img {
+      border-radius: 2px;
+      margin-left: -24px;
+      padding-left: 0;
+    }
+  }
+}

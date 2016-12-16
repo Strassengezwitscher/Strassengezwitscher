@@ -2,10 +2,23 @@
 
 {% block header %}
 {{ form.media }}
+{% for inline in inlines %}
+    {{ inline.media }}
+    <script type="text/javascript">
+        $(function() {
+            $('.inline').formset({
+                prefix: '{{ inline.prefix }}',
+                addText: '<a class="btn btn-default">' +
+                    '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Weiterer Anhang' +
+                    '</a>',
+            })
+        })
+    </script>
+{% endfor %}
 {% endblock %}
 
 {% block content %}
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     {{ form.non_field_errors }}
@@ -167,6 +180,49 @@
             </div>
         </div>
     </div>
+
+    <strong>Anhänge:</strong>
+    {% for inline in inlines %}
+        {{ inline.management_form }}
+        {{ inline.non_form_errors }}
+        {% for form in inline %}
+            {{ form.id }}
+            <div class="inline">
+                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                <div class="row">
+                    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+                        <a class="delete-row btn btn-danger">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div class="fieldWrapper col-xs-8 col-sm-5 col-md-5 col-lg-5">
+                        {{ form.attachment.errors }}
+                        <div class="form-group">
+                            {{ form.attachment.label_tag }}
+                            {{ form.attachment }}
+                        </div>
+                    </div>
+                    <div class="fieldWrapper col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                        {{ form.public.errors }}
+                        <div class="checkbox">
+                            <label>
+                                {{ form.public }}
+                                {{ form.public.label }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="fieldWrapper col-xs-12 col-sm-4 col-md-5 col-lg-5">
+                        {{ form.description.errors }}
+                        <div class="form-group">
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <br/>
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
