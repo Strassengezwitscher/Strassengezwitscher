@@ -76,7 +76,8 @@
         "thumbnail": "",
         "name": "test.pdf",
         "description": "I need a pdf icon",
-        "event": 1
+        "event": 1,
+        "public": true
     }
 },
 {
@@ -87,7 +88,8 @@
         "thumbnail": "",
         "name": "noext",
         "description": "I have no file extension and need a generic icon",
-        "event": 1
+        "event": 1,
+        "public": true
     }
 },
 {
@@ -98,7 +100,8 @@
         "thumbnail": "event_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg",
         "name": "image.PNG",
         "description": "I have a jpg-thumbnail and need no special icon",
-        "event": 1
+        "event": 1,
+        "public": true
     }
 }
 ]
