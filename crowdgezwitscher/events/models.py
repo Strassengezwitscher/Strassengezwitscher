@@ -95,6 +95,7 @@ class Attachment(models.Model):
     name = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='attachments')
+    public = models.BooleanField(default=False)
 
     def __init__(self, *args, **kwargs):
         super(Attachment, self).__init__(*args, **kwargs)
