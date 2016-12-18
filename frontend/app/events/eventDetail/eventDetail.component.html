@@ -19,9 +19,32 @@
             <strong>Art:</strong> {{event.type}}
         </p>
         <p *ngIf="event.counterEvent">
-            <strong>Gegenveranstaltung:</strong> {{event.counterEvent}}
+            <strong>Gegenveranstaltung:</strong>
+            <span *ngIf="event.counterEvent">Ja</span>
+            <span *ngIf="!event.counterEvent">Nein</span>
         </p>
-        <div *ngIf="event.coverage">
+        <div *ngIf="event.attachments && event.attachments.length > 0">
+            <strong>Anhänge:</strong>
+            <div class="attachment-container">
+                <span *ngFor="let attachment of event.attachments">
+                    <a href="{{attachment.url}}" class="attachment-wrapper" target="_blank" *ngIf="attachment.description">
+                        <md-card class="attachment" >
+                            <md-card-title-group>
+                                <img md-card-md-image src="{{attachment.thumbnail_url}}">
+                                <md-card-subtitle>{{attachment.description}}</md-card-subtitle>
+                            </md-card-title-group>
+                        </md-card>
+                    </a>
+                    <a href="{{attachment.url}}" class="attachment-wrapper without-description" target="_blank" *ngIf="!attachment.description">
+                        <md-card class="attachment" *ngIf="!attachment.description">
+                            <img md-card-image src="{{attachment.thumbnail_url}}">
+                        </md-card>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <br>
+        <span *ngIf="event.coverage">
             <div *ngIf="!twttrIsBlocked">
                 <button md-raised-button class="refresh-button" (click)="onRefresh()">Refresh Twitter-Feed</button>
                 <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
@@ -33,7 +56,7 @@
                     <p>(zum Beispiel durch ein Browser-AddOn wie AdBlocker)</p>
                 </md-content>
             </md-card>
-        </div>
+        </span>
         <md-card *ngIf="!event.coverage">
             Keine Berichterstattung geplant.
         </md-card>

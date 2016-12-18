@@ -19,10 +19,10 @@ class FacebookPageForm(forms.ModelForm):
         fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'notes', 'events')
         widgets = {
             'events': SelectizeSelectMultiple(),
-            'location_long': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
-            'location_lat': forms.NumberInput(attrs={'class':'form-control', 'step': 'any'}),
-            'location': forms.TextInput(attrs={'class':'form-control'}),
-            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'location_long': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+            'location_lat': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         }
 

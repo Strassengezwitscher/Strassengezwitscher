@@ -88,6 +88,9 @@ yarn.lock
 # Sensitive data
 crowdgezwitscher/crowdgezwitscher/initial/
 
+# uploaded files
+crowdgezwitscher/uploads/
+
 # tmp directories for Angular compilation
 aot/
 aot-compiled/

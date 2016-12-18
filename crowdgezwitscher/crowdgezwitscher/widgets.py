@@ -1,6 +1,6 @@
 from django import forms
-from django.template.defaultfilters import date
 from django.utils.safestring import mark_safe
+from django.utils.html import conditional_escape
 
 
 class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
@@ -69,3 +69,19 @@ class BootstrapDatepicker(forms.widgets.DateInput):
                 </div> \
             </div>' % html
         return mark_safe(html)
+
+
+class AttachmentInput(forms.widgets.ClearableFileInput):
+    template_with_initial = (
+        '<br />%(initial_text)s: <a href="%(initial_url)s">%(initial)s</a> '
+        '%(clear_template)s<br />'
+        '<div style="float:left; margin-right:10px;">%(input_text)s:</div>'
+        '<span style="display: block; overflow: hidden;">%(input)s</span>'
+    )
+
+    def get_template_substitution_values(self, value):
+        """Show attachment's name instead of its URL."""
+        return {
+            'initial': conditional_escape(value.instance.name),
+            'initial_url': conditional_escape(value.url),
+        }

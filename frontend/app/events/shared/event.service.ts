@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 
 import { Event } from "./event.model";
 import { Observable } from "rxjs/Observable";
@@ -16,7 +16,9 @@ export class EventService {
         if (this.lastEvent != null && this.lastEvent.id === id) {
             return Observable.of(this.lastEvent);
         }
-        return this.http.get(this.eventUrl(id))
+        let headers = new Headers({ "Accept": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.get(this.eventUrl(id), options)
             .map(this.extractEventData)
             .do(event => this.lastEvent = event)
             .catch(this.handleError);
