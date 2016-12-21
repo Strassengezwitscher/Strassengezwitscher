@@ -35,7 +35,7 @@ class EventSerializer(serializers.ModelSerializer):
     attachments = serializers.SerializerMethodField()
 
     def get_attachments(self, event):
-        queryset = Attachment.objects.filter(public=True)
+        queryset = Attachment.objects.filter(event=event, public=True)
         serializer = AttachmentSerializer(instance=queryset, many=True)
         return serializer.data
 
