@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
 import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
 
 import { Helper } from "../helper";
-import { MapObject, MapObjectType } from "./mapObject.model";
+import { MapObject, MapObjectType, MapStateType } from "./mapObject.model";
 import { MapService } from "./map.service";
 
 export enum DateFilter {
@@ -49,6 +49,8 @@ export class MapComponent implements AfterViewInit {
     // Utilized for holding status and name of different types of MapObjects
     public mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
     public selectedMapObjectType: MapObjectType;
+    public mapState: MapStateType;
+    public mapStateEnum = MapStateType;
     @ViewChild("mapCanvas") public mapCanvas;
     private errorMessageDisplayTime: number = 5000;
     private map: google.maps.Map;
@@ -62,6 +64,7 @@ export class MapComponent implements AfterViewInit {
     constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
         this.initializeMapObjectSettings();
+        this.viewingState();
     }
 
     public ngAfterViewInit() {
@@ -83,6 +86,14 @@ export class MapComponent implements AfterViewInit {
 
     public clearInfoBox() {
         this.updateSelectedMapObjectInfo(null, null, null);
+    }
+
+    public addEventState() {
+        this.mapState = MapStateType.ADDING;
+    }
+
+    public viewingState() {
+        this.mapState = MapStateType.VIEWING;
     }
 
     private initMap() {

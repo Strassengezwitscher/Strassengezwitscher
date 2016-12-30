@@ -13,3 +13,8 @@ export enum MapObjectType {
             EVENTS = 0,
             FACEBOOK_PAGES
 }
+
+export enum MapStateType {
+            VIEWING = 0,
+            ADDING = 1
+}

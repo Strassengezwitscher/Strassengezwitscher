@@ -1,6 +1,6 @@
 <div class="map-canvas" #mapCanvas></div>
 <div class="map-settings">
-    <md-card>
+    <md-card *ngIf="mapState == mapStateEnum.VIEWING">
         <md-card-content>
             <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
                 <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange(mapObjectSetting)">
@@ -17,13 +17,17 @@
             </div>
         </md-card-content>
     </md-card>
+    <md-card *ngIf="mapState == mapStateEnum.ADDING">
+    This should become the child component
+    </md-card>
     <md-card>
-        <md-card-actions>
-            <button md-button>Aktivität melden</button>
+        <md-card-actions [ngSwitch]= "mapState" >
+            <button *ngSwitchCase="mapStateEnum.VIEWING" md-button (click)="addEventState()">Aktivität melden</button>
+            <button *ngSwitchCase="mapStateEnum.ADDING" md-button (click)="viewingState()">Abrechen</button>
         </md-card-actions>
     </md-card>
 </div>
-<div [ngSwitch]= "selectedMapObjectType" class="map-infos">
+<div [ngSwitch]= "selectedMapObjectType" class="map-infos" *ngIf="mapState == mapStateEnum.VIEWING">
     <cg-event-detail *ngSwitchCase="0" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-event-detail>
     <cg-fb-detail *ngSwitchCase="1" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-fb-detail>
 </div>
