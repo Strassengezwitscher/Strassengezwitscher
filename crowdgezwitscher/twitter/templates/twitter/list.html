@@ -23,7 +23,7 @@
             {{ account.account_id }}
         </td>
         <td>
-            {% if perms.twitter.add_twitteraccount and account.tweet_set.count == 0 %}
+            {% if debug and perms.twitter.add_twitteraccount %}
                 <button class="btn btn-default btn-sm tweet_fetch_button" data-fetch-url="{% url 'twitter:fetch_tweets' account.id %}">Tweets einlesen</button>
             {% endif %}
             {% if perms.twitter.delete_twitteraccount %}
@@ -47,8 +47,10 @@
             data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
         });
         var button = $(event.target);
+        button_text = button.text();
         $.post(button.data("fetch-url"), function() {
-            button.remove();
+            button.text(button_text);
+            button.prop("disabled", false);
         });
         button.text("Loading");
         button.prop("disabled", true);
