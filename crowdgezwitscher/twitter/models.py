@@ -13,6 +13,7 @@ from django.utils import timezone
 from datetime import datetime
 import time
 
+from twitter import utils
 from crowdgezwitscher.log import logger
 from TwitterAPI import TwitterAPI, TwitterConnectionError
 
@@ -70,6 +71,9 @@ class TwitterAccount(models.Model):
             return tweets[0]['user']['utc_offset']
 
     def fetch_tweets(self):
+        if not utils.lock_twitter():
+            return
+
         new_tweets = []
         tweet_hashtag_mappings = {}
         twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
@@ -116,6 +120,8 @@ class TwitterAccount(models.Model):
         if last_known_tweet_id:
             self.last_known_tweet_id = last_known_tweet_id
             self.save()
+
+        utils.unlock_twitter()
 
 
 @python_2_unicode_compatible
