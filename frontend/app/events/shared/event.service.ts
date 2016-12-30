@@ -8,6 +8,7 @@ import "rxjs/add/observable/throw";
 @Injectable()
 export class EventService {
     private eventBaseUrl = "api/events/";
+    private eventCreateUrl = "api/events";
     private lastEvent: Event = null;
 
     constructor(private http: Http) {}
@@ -28,6 +29,16 @@ export class EventService {
         return this.http.get(this.tweetsUrl(event.id))
             .map(this.extractTweetData)
             .catch(error => Observable.of([]));
+    }
+
+    public addEvent (event: Event) {
+        let headers = new Headers({ "Content-Type": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this.eventCreateUrl, event, options)
+                        .map( res => { return; } )
+                        .catch(this.handleError);
+
     }
 
     private eventUrl(eventId: number): string {

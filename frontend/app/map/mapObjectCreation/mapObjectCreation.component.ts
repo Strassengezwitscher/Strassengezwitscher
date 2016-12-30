@@ -4,6 +4,10 @@ import { MapService } from "../map.service";
 import { MapObjectType, MapObjectTypeNaming } from "../mapObject.model";
 import { CaptchaService } from "../../captcha/captcha.service";
 import { Config } from "../../../config/config";
+import { FacebookPageService } from "../../facebook/facebookPage.service";
+import { FacebookPage } from "../../facebook/facebookPage.model";
+import { EventService } from "../../events/shared/event.service";
+import { Event } from "../../events/shared/event.model";
 
 @Component({
     moduleId: module.id,
@@ -13,7 +17,8 @@ import { Config } from "../../../config/config";
 })
 export class MapObjectCreationComponent implements OnInit, OnDestroy {
     @Output() public onError = new EventEmitter<string>();
-    public selectedMapObjectType: MapObjectType;
+    @Output() public onSuccess = new EventEmitter<string>();
+    public selectedMapObjectType;
     public mapObjectType = MapObjectType;
     public mapObjectTypes = MapObjectTypeNaming;
     public currentTime = new Date();
@@ -21,6 +26,7 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     private script;
     private config: Config;
     constructor(private mapService: MapService, private captchaService: CaptchaService,
+                private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
         this.captchaVerified = false;
         this.config = new Config();
@@ -28,8 +34,24 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     }
 
     public send(moc) {
-        console.log(this.selectedMapObjectType);
-        console.log(moc);
+        switch (parseInt(this.selectedMapObjectType, 10)) {
+            case MapObjectType.EVENTS:
+                // TODO construct correct event here
+                let event = new Event();
+                this.eventService.addEvent(event).subscribe(
+                       res  => this.onSuccess.emit(res),
+                       error =>  this.onError.emit(error));
+                break;
+            case MapObjectType.FACEBOOK_PAGES:
+                // TODO construct correct fbPage here
+                let fbPage = new FacebookPage();
+                this.fbPageService.addFacebookPage(fbPage).subscribe(
+                       res  => this.onSuccess.emit(res),
+                       error =>  this.onError.emit(error));
+                break;
+            default:
+                this.onError.emit("Keine valide Kategorie gewählt");
+        }
     }
 
     public ngOnInit() {

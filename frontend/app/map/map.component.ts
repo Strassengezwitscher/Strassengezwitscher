@@ -46,6 +46,7 @@ class MapObjectSetting {
 })
 export class MapComponent implements AfterViewInit {
     public errorMessage: string;
+    public successMessage: string;
     // Utilized for holding status and name of different types of MapObjects
     public mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
     public selectedMapObjectType: MapObjectType;
@@ -53,6 +54,7 @@ export class MapComponent implements AfterViewInit {
     public mapStateEnum = MapStateType;
     @ViewChild("mapCanvas") public mapCanvas;
     private errorMessageDisplayTime: number = 5000;
+    private successMessageDisplayTime: number = 5000;
     private map: google.maps.Map;
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
@@ -94,6 +96,14 @@ export class MapComponent implements AfterViewInit {
 
     public viewingState() {
         this.mapState = MapStateType.VIEWING;
+    }
+
+    public setSuccessMessage(successMessage: string) {
+        this.successMessage = successMessage;
+        const tmpScope = this;
+        setTimeout(function() {
+            tmpScope.successMessage = "";
+        }, this.successMessageDisplayTime);
     }
 
     private initMap() {

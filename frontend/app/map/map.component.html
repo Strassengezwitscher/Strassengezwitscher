@@ -22,7 +22,7 @@
         </md-card-content>
     </md-card>
     <md-card *ngIf="mapState == mapStateEnum.ADDING">
-    <cg-map-object-creation (onError)="setErrorMessage($event)"></cg-map-object-creation>
+    <cg-map-object-creation (onError)="setErrorMessage($event)" (onSuccess)="setSuccessMessage($event)"></cg-map-object-creation>
     </md-card>
 </div>
 <div [ngSwitch]= "selectedMapObjectType" class="map-infos" *ngIf="mapState == mapStateEnum.VIEWING">
@@ -30,3 +30,4 @@
     <cg-fb-detail *ngSwitchCase="1" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-fb-detail>
 </div>
 <md-card class="error-message" *ngIf="errorMessage">{{errorMessage}}</md-card>
+<md-card class="success-message" *ngIf="successMessage">{{successMessage}}</md-card>
