@@ -1,21 +1,28 @@
 <div class="map-canvas" #mapCanvas></div>
-<md-card class="map-settings">
-    <md-card-content>
-        <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
-            <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange(mapObjectSetting)">
-                {{mapObjectSetting.name}}
-            </md-slide-toggle>
-            <div class="map-sub-settings" *ngIf="mapObjectSetting.visible && mapObjectSetting.mapFilterOptions.length > 1" [@slideInOut]="mapObjectSetting.visible">
-                <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter" (ngModelChange)="onRadioChange()">
-                    <md-radio-button class="map-sub-setting" *ngFor="let option of mapObjectSetting.mapFilterOptions" [value]="option">
-                        {{ option.name }}
-                        <md-icon *ngIf="option.infoText" style="font-size:16px; padding-left: 4px; line-height: 24px;" md-tooltip="{{ option.infoText }}" tooltip-position="before">info</md-icon>
-                    </md-radio-button>
-                </md-radio-group>
+<div class="map-settings">
+    <md-card>
+        <md-card-content>
+            <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
+                <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange(mapObjectSetting)">
+                    {{mapObjectSetting.name}}
+                </md-slide-toggle>
+                <div class="map-sub-settings" *ngIf="mapObjectSetting.visible && mapObjectSetting.mapFilterOptions.length > 1" [@slideInOut]="mapObjectSetting.visible">
+                    <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter" (ngModelChange)="onRadioChange()">
+                        <md-radio-button class="map-sub-setting" *ngFor="let option of mapObjectSetting.mapFilterOptions" [value]="option">
+                            {{ option.name }}
+                            <md-icon *ngIf="option.infoText" style="font-size:16px; padding-left: 4px; line-height: 24px;" md-tooltip="{{ option.infoText }}" tooltip-position="before">info</md-icon>
+                        </md-radio-button>
+                    </md-radio-group>
+                </div>
             </div>
-        </div>
-    </md-card-content>
-</md-card>
+        </md-card-content>
+    </md-card>
+    <md-card>
+        <md-card-actions>
+            <button md-button>Aktivität melden</button>
+        </md-card-actions>
+    </md-card>
+</div>
 <div [ngSwitch]= "selectedMapObjectType" class="map-infos">
     <cg-event-detail *ngSwitchCase="0" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-event-detail>
     <cg-fb-detail *ngSwitchCase="1" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-fb-detail>
