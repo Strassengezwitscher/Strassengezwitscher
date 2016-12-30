@@ -51,8 +51,8 @@ class TwitterAccountDelete(PermissionRequiredMixin, DeleteView):
 
 
 @require_POST
-def fetch_initial_tweets(request, pk):
+def fetch_tweets(request, pk):
     twitter_account = get_object_or_404(TwitterAccount, pk=pk)
-    twitter_account.fetch_initial_tweets()
+    twitter_account.fetch_tweets()
 
     return HttpResponse()

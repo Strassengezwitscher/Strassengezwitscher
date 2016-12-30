@@ -24,7 +24,7 @@
         </td>
         <td>
             {% if perms.twitter.add_twitteraccount and account.tweet_set.count == 0 %}
-                <button class="btn btn-default btn-sm tweet_fetch_button" data-fetch-url="{% url 'twitter:fetch_initial_tweets' account.id %}">Tweets einlesen</button>
+                <button class="btn btn-default btn-sm tweet_fetch_button" data-fetch-url="{% url 'twitter:fetch_tweets' account.id %}">Tweets einlesen</button>
             {% endif %}
             {% if perms.twitter.delete_twitteraccount %}
                 <a class="btn btn-default btn-sm" href="{% url 'twitter:delete' account.id %}">Löschen</a>
