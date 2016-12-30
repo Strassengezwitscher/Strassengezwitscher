@@ -8,6 +8,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.db.models.signals import post_save
 from django.db import IntegrityError
 from django.dispatch import receiver
+from django.utils import timezone
 
 from datetime import datetime
 import time
@@ -50,7 +51,7 @@ class TwitterAccount(models.Model):
             'count': count,
             'user_id': self.account_id,
             'trim_user': trim_user,
-            'exclude_replies': True,
+            'exclude_replies': False,
             'contributor_details': False,
         }
 
@@ -64,7 +65,7 @@ class TwitterAccount(models.Model):
         return twitter.request('statuses/user_timeline',request_parameters).json()
 
     def _get_utc_offset(self, twitter):
-        tweets = self._fetch_tweets_from_api(twitter, None, 1, False)
+        tweets = self._fetch_tweets_from_api(twitter, None, None, 1, False)
         if len(tweets) > 0:
             return tweets[0]['user']['utc_offset']
 
@@ -85,7 +86,7 @@ class TwitterAccount(models.Model):
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
-                    created_at = datetime.fromtimestamp(time.mktime(time.strptime(tweet_from_api['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) + utc_offset)
+                    created_at = timezone.make_aware(datetime.fromtimestamp(time.mktime(time.strptime(tweet_from_api['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) + utc_offset))
                     tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], created_at = created_at, account=self)
                     new_tweets.append(tweet)
                     hashtags = []
@@ -94,9 +95,11 @@ class TwitterAccount(models.Model):
                         hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_text)
                         hashtags.append(hashtag)
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
-                tweets_from_api = self._fetch_tweets_from_api(twitter, max_id=int(new_tweets[-1].tweet_id) - 1)
+                tweets_from_api = self._fetch_tweets_from_api(twitter, since_id=new_tweets[0].tweet_id)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
+
+        new_tweets.reverse()
 
         Tweet.objects.bulk_create(new_tweets)
         for tweet in self.tweet_set.all():
