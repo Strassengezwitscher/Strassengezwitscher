@@ -45,7 +45,7 @@ class TwitterAccount(models.Model):
             logger.warning("Could not find user with provided name.")
             raise ValidationError("Could not find user with provided name.")
 
-    def _fetch_tweets_from_api(self, twitter, max_id=None, count=200, trim_user=True):
+    def _fetch_tweets_from_api(self, twitter, max_id=None, since_id=None, count=200, trim_user=True):
         request_parameters = {
             'count': count,
             'user_id': self.account_id,
@@ -57,6 +57,9 @@ class TwitterAccount(models.Model):
         # max_id is optional and not known for first request
         if max_id:
             request_parameters['max_id'] = max_id
+        # since_id is optional and used to get newer tweets than those already saved
+        if since_id:
+            request_parameters['since_id'] = since_id
 
         return twitter.request('statuses/user_timeline',request_parameters).json()
 
@@ -65,17 +68,20 @@ class TwitterAccount(models.Model):
         if len(tweets) > 0:
             return tweets[0]['user']['utc_offset']
 
-    def fetch_initial_tweets(self):
+    def fetch_tweets(self):
         new_tweets = []
         tweet_hashtag_mappings = {}
         twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
                              settings.TWITTER_CONSUMER_SECRET,
                              auth_type='oAuth2')
 
+        last_known_tweet_id = None
         try:
             # Twitter does somehow not reflect the combination of timezone and daylight savings time correctly
             utc_offset = self._get_utc_offset(twitter)
-            tweets_from_api = self._fetch_tweets_from_api(twitter)
+            tweets_from_api = self._fetch_tweets_from_api(twitter, since_id=self.last_known_tweet_id)
+            if tweets_from_api:
+                last_known_tweet_id = tweets_from_api[0]['id_str']
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
@@ -88,7 +94,7 @@ class TwitterAccount(models.Model):
                         hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_text)
                         hashtags.append(hashtag)
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
-                tweets_from_api = self._fetch_tweets_from_api(twitter, int(new_tweets[-1].tweet_id) - 1)
+                tweets_from_api = self._fetch_tweets_from_api(twitter, max_id=int(new_tweets[-1].tweet_id) - 1)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
 
@@ -96,6 +102,10 @@ class TwitterAccount(models.Model):
         for tweet in self.tweet_set.all():
             tweet.hashtags.add(*(tweet_hashtag_mappings.get(tweet.tweet_id, [])))
             tweet.save()
+
+        if last_known_tweet_id:
+            self.last_known_tweet_id = last_known_tweet_id
+            self.save()
 
 
 @python_2_unicode_compatible
