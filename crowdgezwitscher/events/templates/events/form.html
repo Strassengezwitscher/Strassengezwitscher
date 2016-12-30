@@ -66,14 +66,21 @@
     </div>
 
     <div class="row">
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
             {{ form.date.errors }}
             <div class="form-group">
                 {{ form.date.label_tag }}
                 {{ form.date }}
             </div>
         </div>
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {{ form.time.errors }}
+            <div class="form-group">
+                {{ form.time.label_tag }}
+                {{ form.time }}
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
             {{ form.repetition_cycle.errors }}
             <div class="form-group">
                 {{ form.repetition_cycle.label_tag }}

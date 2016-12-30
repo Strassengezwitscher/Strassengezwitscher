@@ -12,10 +12,13 @@ $foreground: map-get($theme, foreground);
 
   h1 {
     font-size: 3em;
+  }
 
+  h2 {
     .small {
       color: map-get($foreground, secondary-text);
-      font-size: .6em;
+      display: block;
+      font-size: 1.2em;
       font-weight: 500;
     }
   }
