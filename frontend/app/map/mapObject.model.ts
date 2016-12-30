@@ -14,6 +14,11 @@ export enum MapObjectType {
             FACEBOOK_PAGES
 }
 
+export var MapObjectTypeNaming = [
+    {"id": MapObjectType.EVENTS, "name": "Veranstaltung"},
+    {"id": MapObjectType.FACEBOOK_PAGES, "name": "Facebook Seite"},
+];
+
 export enum MapStateType {
             VIEWING = 0,
             ADDING = 1

@@ -1,0 +1,50 @@
+<select placeholder="Kartenobjekt Kategorie" [(ngModel)]="selectedMapObjectType">
+	<option *ngFor="let mot of mapObjectTypes" [value]="mot.id">{{mot.name}}</option>
+</select>
+<form mapObjectCreation #moc="ngForm" class="moc-card">
+	<md-input-container>
+		<md-input placeholder="Name" type="text"></md-input>
+	</md-input-container>
+	<md-input-container>
+		<md-input placeholder="Breitengrad" type="number" step="any"></md-input>
+	</md-input-container>
+	<md-input-container>
+		<md-input placeholder="Längengrad" type="number" step="any"></md-input>
+	</md-input-container>
+	<md-input-container>
+		<md-input placeholder="Ort" type="text"></md-input>
+	</md-input-container>
+	<div *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+		<md-input-container>
+			<md-input placeholder="Datum und Uhrzeit" type="datetime-local" [value]="currentTime.toJSON()"></md-input>
+		</md-input-container>
+		<md-input-container>
+			<md-input placeholder="Wiederholungszyklus" type="text"></md-input>
+		</md-input-container>
+		<md-input-container>
+			<md-input placeholder="Organisator" type="text"></md-input>
+		</md-input-container>
+		<md-input-container>
+			<md-input placeholder="Veranstaltungsart" type="text"></md-input>
+		</md-input-container>
+		<md-input-container>
+			<md-input placeholder="Webseite" type="url"></md-input>
+		</md-input-container>
+		<md-input-container>
+			<md-checkbox>Gegenveranstaltung?</md-checkbox>
+		</md-input-container>
+		<md-input-container>
+			<md-input placeholder="Teilnehmeranzahl" type="number" min="0"></md-input>
+		</md-input-container>
+	</div>
+	<div *ngIf="selectedMapObjectType == mapObjectType.FACEBOOK_PAGES">
+
+		<md-input-container>
+			<md-input placeholder="Notizen" type="text"></md-input>
+		</md-input-container>
+		<md-input-container>
+			<md-input placeholder="Facebook Link" type="url"></md-input>
+		</md-input-container>
+	</div>
+</form>
+<button (click)="send(moc)"> Melden </button>

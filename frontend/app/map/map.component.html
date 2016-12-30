@@ -1,5 +1,9 @@
 <div class="map-canvas" #mapCanvas></div>
 <div class="map-settings">
+    <div [ngSwitch]= "mapState">
+        <button md-raised-button class="map-modification-button" *ngSwitchCase="mapStateEnum.VIEWING" md-button (click)="addEventState()">Aktivität melden</button>
+        <button md-raised-button class="map-modification-button" *ngSwitchCase="mapStateEnum.ADDING" md-button (click)="viewingState()">Abrechen</button>
+    </div>
     <md-card *ngIf="mapState == mapStateEnum.VIEWING">
         <md-card-content>
             <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
@@ -18,13 +22,7 @@
         </md-card-content>
     </md-card>
     <md-card *ngIf="mapState == mapStateEnum.ADDING">
-    This should become the child component
-    </md-card>
-    <md-card>
-        <md-card-actions [ngSwitch]= "mapState" >
-            <button *ngSwitchCase="mapStateEnum.VIEWING" md-button (click)="addEventState()">Aktivität melden</button>
-            <button *ngSwitchCase="mapStateEnum.ADDING" md-button (click)="viewingState()">Abrechen</button>
-        </md-card-actions>
+    <cg-map-object-creation (onError)="setErrorMessage($event)"></cg-map-object-creation>
     </md-card>
 </div>
 <div [ngSwitch]= "selectedMapObjectType" class="map-infos" *ngIf="mapState == mapStateEnum.VIEWING">
