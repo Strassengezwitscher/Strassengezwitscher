@@ -87,9 +87,10 @@ class BootstrapPicker(object):
             'useCurrent': False,
         }
 
+
 class ClearableBootstrapPickerMixin(object):
     def config(self, *args, **kwargs):
-        config = super(ClearableBootstrapPickerMixin, self).config(*args, **kwargs   )
+        config = super(ClearableBootstrapPickerMixin, self).config(*args, **kwargs)
         config.update({'showClear': True})
         return config
 

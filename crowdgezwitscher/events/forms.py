@@ -3,7 +3,10 @@ from extra_views import InlineFormSet
 
 from events.models import Event, Attachment
 from facebook.models import FacebookPage
-from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput, BootstrapDatePicker, BootstrapTimePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker, AttachmentInput
+from crowdgezwitscher.widgets import (
+    SelectizeSelectMultiple, SelectizeCSVInput, AttachmentInput,
+    BootstrapDatePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker,
+)
 
 
 class AttachmentForm(forms.ModelForm):
