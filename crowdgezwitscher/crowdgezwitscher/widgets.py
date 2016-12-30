@@ -80,7 +80,7 @@ class BootstrapPicker(object):
         </script>' % (attrs['id'], json.dumps(self.config()))
         return mark_safe(html)
 
-    def config(self, *args, **kwargs):
+    def config(self):
         return {
             'locale': 'de',
             'showClose': True,
@@ -89,15 +89,15 @@ class BootstrapPicker(object):
 
 
 class ClearableBootstrapPickerMixin(object):
-    def config(self, *args, **kwargs):
-        config = super(ClearableBootstrapPickerMixin, self).config(*args, **kwargs)
+    def config(self):
+        config = super(ClearableBootstrapPickerMixin, self).config()
         config.update({'showClear': True})
         return config
 
 
 class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
-    def config(self, *args, **kwargs):
-        config = super(BootstrapDatePicker, self).config(*args, **kwargs)
+    def config(self):
+        config = super(BootstrapDatePicker, self).config()
         config.update({
             'viewMode': 'days',
             'format': 'YYYY-MM-DD',
@@ -106,8 +106,8 @@ class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
 
 
 class BootstrapTimePicker(BootstrapPicker, forms.widgets.DateInput):
-    def config(self, *args, **kwargs):
-        config = super(BootstrapTimePicker, self).config(*args, **kwargs)
+    def config(self):
+        config = super(BootstrapTimePicker, self).config()
         config.update({
             'format': 'HH:mm',
         })
