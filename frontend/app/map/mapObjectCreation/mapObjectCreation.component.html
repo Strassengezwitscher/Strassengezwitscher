@@ -46,5 +46,6 @@
 			<md-input placeholder="Facebook Link" type="url"></md-input>
 		</md-input-container>
 	</div>
+	<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
 </form>
-<button (click)="send(moc)"> Melden </button>
+<button md-raised-button (click)="send(moc)" [disabled]="!(moc.form.valid && captchaVerified)"> Melden </button>
