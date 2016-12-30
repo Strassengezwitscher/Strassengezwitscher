@@ -62,3 +62,13 @@ $card-padding: 10px;
   text-align: center;
   transform: translateX(-50%);
 }
+
+.success-message {
+  background-color: map-get($message, success);
+  bottom: $card-padding;
+  left: 50vw;
+  min-width: 200px;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%);
+}
