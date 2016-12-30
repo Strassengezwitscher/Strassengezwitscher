@@ -21,7 +21,6 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public selectedMapObjectType;
     public mapObjectType = MapObjectType;
     public mapObjectTypes = MapObjectTypeNaming;
-    public currentTime = new Date();
     private captchaVerified;
     private script;
     private config: Config;
@@ -34,6 +33,7 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     }
 
     public send(moc) {
+        console.log(moc);
         switch (parseInt(this.selectedMapObjectType, 10)) {
             case MapObjectType.EVENTS:
                 // TODO construct correct event here
