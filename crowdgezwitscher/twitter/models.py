@@ -96,7 +96,7 @@ class TwitterAccount(models.Model):
                         hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_text)
                         hashtags.append(hashtag)
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
-                tweets_from_api = self._fetch_tweets_from_api(twitter, since_id=new_tweets[0].tweet_id)
+                tweets_from_api = self._fetch_tweets_from_api(twitter, max_id=int(new_tweets[-1].tweet_id) - 1)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
 
