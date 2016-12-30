@@ -5,9 +5,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
-from django.db.models.signals import post_save
-from django.db import IntegrityError
-from django.dispatch import receiver
 from django.utils import timezone
 
 from datetime import datetime
@@ -34,8 +31,8 @@ class TwitterAccount(models.Model):
 
     def clean(self):
         twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
-                        settings.TWITTER_CONSUMER_SECRET,
-                        auth_type='oAuth2')
+                             settings.TWITTER_CONSUMER_SECRET,
+                             auth_type='oAuth2')
         try:
             user = twitter.request('users/show', {'screen_name': self.name}).json()
         except TwitterConnectionError:
@@ -90,13 +87,31 @@ class TwitterAccount(models.Model):
                 last_known_tweet_id = tweets_from_api[0]['id_str']
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
+                    # check if received tweet is already in DB.
+                    # if so, break, as we already have all following tweets (Twitter sends newest tweets first)
                     if tweet_from_api['id_str'] <= self.last_known_tweet_id:
                         should_brake = True
                         break
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
-                    created_at = timezone.make_aware(datetime.fromtimestamp(time.mktime(time.strptime(tweet_from_api['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) + utc_offset))
-                    is_reply = False if tweet_from_api["in_reply_to_user_id_str"] == None else True
-                    tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], created_at = created_at, is_reply = is_reply, account=self)
+                    try:
+                        created_at = timezone.make_aware(
+                            datetime.fromtimestamp(
+                                time.mktime(
+                                    time.strptime(
+                                        tweet_from_api['created_at'],
+                                        '%a %b %d %H:%M:%S +0000 %Y')
+                                ) + utc_offset
+                            )
+                        )
+                    except ValueError:
+                        logger.warning("Got unexpected result while fetching tweets and parsing their creation times.")
+                        continue
+                    is_reply = tweet_from_api["in_reply_to_user_id_str"] is not None
+                    tweet = Tweet(tweet_id=tweet_from_api['id_str'],
+                                  content=tweet_from_api['text'],
+                                  created_at=created_at,
+                                  is_reply=is_reply,
+                                  account=self)
                     new_tweets.append(tweet)
                     hashtags = []
                     for hashtag_from_api in tweet_from_api['entities']['hashtags']:
@@ -106,9 +121,14 @@ class TwitterAccount(models.Model):
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
                 if should_brake:
                     break
-                tweets_from_api = self._fetch_tweets_from_api(twitter, max_id=int(new_tweets[-1].tweet_id) - 1)
+                tweets_from_api = self._fetch_tweets_from_api(
+                    twitter,
+                    max_id=int(new_tweets[-1].tweet_id) - 1)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
+        except KeyError:
+            logger.warning("Got unexpected result while fetching tweets.")
+            return
 
         new_tweets.reverse()
 
