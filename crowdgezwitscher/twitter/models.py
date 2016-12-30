@@ -77,6 +77,7 @@ class TwitterAccount(models.Model):
                              auth_type='oAuth2')
 
         last_known_tweet_id = None
+        should_brake = False
         try:
             # Twitter does somehow not reflect the combination of timezone and daylight savings time correctly
             utc_offset = self._get_utc_offset(twitter)
@@ -85,6 +86,9 @@ class TwitterAccount(models.Model):
                 last_known_tweet_id = tweets_from_api[0]['id_str']
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
+                    if tweet_from_api['id_str'] <= self.last_known_tweet_id:
+                        should_brake = True
+                        break
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
                     created_at = timezone.make_aware(datetime.fromtimestamp(time.mktime(time.strptime(tweet_from_api['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) + utc_offset))
                     is_reply = False if tweet_from_api["in_reply_to_user_id_str"] == None else True
@@ -96,6 +100,8 @@ class TwitterAccount(models.Model):
                         hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_text)
                         hashtags.append(hashtag)
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
+                if should_brake:
+                    break
                 tweets_from_api = self._fetch_tweets_from_api(twitter, max_id=int(new_tweets[-1].tweet_id) - 1)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
