@@ -87,7 +87,8 @@ class TwitterAccount(models.Model):
                 for tweet_from_api in tweets_from_api:
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
                     created_at = timezone.make_aware(datetime.fromtimestamp(time.mktime(time.strptime(tweet_from_api['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) + utc_offset))
-                    tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], created_at = created_at, account=self)
+                    is_reply = False if tweet_from_api["in_reply_to_user_id_str"] == None else True
+                    tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], created_at = created_at, is_reply = is_reply, account=self)
                     new_tweets.append(tweet)
                     hashtags = []
                     for hashtag_from_api in tweet_from_api['entities']['hashtags']:
@@ -126,6 +127,7 @@ class Tweet(models.Model):
     account = models.ForeignKey(TwitterAccount, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag)
     created_at = models.DateTimeField(default=datetime.now)
+    is_reply = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s - %s" % (self.account, self.content)
