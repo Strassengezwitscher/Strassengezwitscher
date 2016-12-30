@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from django.dispatch import receiver
 
 from datetime import datetime
+import time
 
 from crowdgezwitscher.log import logger
 from TwitterAPI import TwitterAPI, TwitterConnectionError
@@ -44,11 +45,11 @@ class TwitterAccount(models.Model):
             logger.warning("Could not find user with provided name.")
             raise ValidationError("Could not find user with provided name.")
 
-    def _fetch_tweets_from_api(self, twitter, max_id=None):
+    def _fetch_tweets_from_api(self, twitter, max_id=None, count=200, trim_user=True):
         request_parameters = {
-            'count': 200,
+            'count': count,
             'user_id': self.account_id,
-            'trim_user': True,
+            'trim_user': trim_user,
             'exclude_replies': True,
             'contributor_details': False,
         }
@@ -59,6 +60,11 @@ class TwitterAccount(models.Model):
 
         return twitter.request('statuses/user_timeline',request_parameters).json()
 
+    def _get_utc_offset(self, twitter):
+        tweets = self._fetch_tweets_from_api(twitter, None, 1, False)
+        if len(tweets) > 0:
+            return tweets[0]['user']['utc_offset']
+
     def fetch_initial_tweets(self):
         new_tweets = []
         tweet_hashtag_mappings = {}
@@ -67,11 +73,14 @@ class TwitterAccount(models.Model):
                              auth_type='oAuth2')
 
         try:
+            # Twitter does somehow not reflect the combination of timezone and daylight savings time correctly
+            utc_offset = self._get_utc_offset(twitter)
             tweets_from_api = self._fetch_tweets_from_api(twitter)
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
-                    tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], account=self)
-                    print(tweet_from_api[''])
+                    # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
+                    created_at = datetime.fromtimestamp(time.mktime(time.strptime(tweet_from_api['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) + utc_offset)
+                    tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], created_at = created_at, account=self)
                     new_tweets.append(tweet)
                     hashtags = []
                     for hashtag_from_api in tweet_from_api['entities']['hashtags']:
