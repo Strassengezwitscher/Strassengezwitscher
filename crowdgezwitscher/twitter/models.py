@@ -71,7 +71,7 @@ class TwitterAccount(models.Model):
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
                     tweet = Tweet(tweet_id=tweet_from_api['id_str'], content=tweet_from_api['text'], account=self)
-                    print tweet_from_api['']
+                    print(tweet_from_api[''])
                     new_tweets.append(tweet)
                     hashtags = []
                     for hashtag_from_api in tweet_from_api['entities']['hashtags']:
