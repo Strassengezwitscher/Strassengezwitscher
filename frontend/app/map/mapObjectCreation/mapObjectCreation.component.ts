@@ -33,18 +33,34 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     }
 
     public send(moc) {
-        console.log(moc);
         switch (parseInt(this.selectedMapObjectType, 10)) {
             case MapObjectType.EVENTS:
-                // TODO construct correct event here
+                // TODO constructing event should be changed with JSONAPI
                 let event = new Event();
+                event.counterEvent = moc.form._value.counterEvent;
+                event.date = moc.form._value.date;
+                event.location = moc.form._value.location;
+                event.locationLat = moc.form._value.locationLat;
+                event.locationLong = moc.form._value.locationLong;
+                event.name = moc.form._value.name;
+                event.organizer = moc.form._value.organizer;
+                event.participants = moc.form._value.participants;
+                event.repetitionCycle = moc.form._value.repetitionCycle;
+                event.type = moc.form._value.type;
+                event.url = moc.form._value.url;
                 this.eventService.addEvent(event).subscribe(
                        res  => this.onSuccess.emit(res),
                        error =>  this.onError.emit(error));
                 break;
             case MapObjectType.FACEBOOK_PAGES:
-                // TODO construct correct fbPage here
+                // TODO constructing fbPage should be changed with JSONAPI
                 let fbPage = new FacebookPage();
+                fbPage.facebookId = moc.form._value.facebookId;
+                fbPage.location = moc.form._value.location;
+                fbPage.locationLat =  moc.form._value.locationLat;
+                fbPage.locationLong =  moc.form._value.locationLong;
+                fbPage.name =  moc.form._value.name;
+                fbPage.notes =  moc.form._value.notes;
                 this.fbPageService.addFacebookPage(fbPage).subscribe(
                        res  => this.onSuccess.emit(res),
                        error =>  this.onError.emit(error));
