@@ -26,10 +26,13 @@
             <span *ngIf="event.counterEvent">Ja</span>
             <span *ngIf="!event.counterEvent">Nein</span>
         </p>
-        <p >
+        <p>
             <strong>Berichterstattung:</strong><br>
             <span *ngIf="event.coverage">Ja (Twitter-Feed)</span>
             <span *ngIf="!event.coverage">Nein</span>
+        </p>
+        <p *ngIf="event.notes">
+            {{event.notes}}
         </p>
     </md-card-content>
     <md-card-actions>
