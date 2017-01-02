@@ -1,8 +1,8 @@
+import json
+
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
-
-import json
 
 
 class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
