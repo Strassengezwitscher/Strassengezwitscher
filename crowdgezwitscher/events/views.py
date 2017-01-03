@@ -125,40 +125,25 @@ class EventAPIDetail(generics.RetrieveAPIView):
 def get_tweets(request, pk, format=None):
     """Get tweets for Event with primary key pk.
 
-    Searches for tweets matching the Event's registered hashtags, accounts and dates. The dates form an open interval.
-    Modify TWITTER_TWEET_COUNT to change the maximum number of returned tweet IDs.
+    Searches for saved tweets matching the Event's registered hashtags, accounts and dates.
+    The dates form an open interval.
     """
     event = get_object_or_404(Event, pk=pk)
     if not event.coverage:
         return Response([])
-    query = event.build_twitter_search_query()
-    if not query:
-        return Response({'status': 'error', 'errors': 'Twitter not or improperly configured for this event.'},
-                        status=status.HTTP_503_SERVICE_UNAVAILABLE)
-    since = event.coverage_start.strftime('%Y-%m-%d')
-    until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
-    twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
-                         settings.TWITTER_CONSUMER_SECRET,
-                         auth_type='oAuth2')
-    try:
-        tweets = twitter.request('search/tweets', {'q': query,
-                                                   'count': settings.TWITTER_TWEET_COUNT,
-                                                   'since': since,
-                                                   'until': until})
-    except TwitterConnectionError:
-        logger.warning("Could not connect to Twitter.")
-        return Response([])
-    res = []
-    try:
-        for tweet in tweets:
-            try:
-                res.append(tweet['id_str'])
-            except KeyError:
-                logger.warning("Got tweet without expected fields.")
-                continue
-    except TwitterRequestError as e:
-        if e.status_code == 429:
-            logger.warning("Twitter rate limit exhausted")
-        else:
-            logger.warning("TwitterRequestError, status code: %d", e.status_code)
-    return Response(res)
+
+    tweets_ids = []
+
+    for account in event.twitter_accounts.all():
+        for tweet in account.tweet_set.all():
+            if event.coverage_start <= tweet.created_at.date() <= event.coverage_end:
+                if tweet.account in event.twitter_accounts.all():
+                    event_hashtags = event.hashtags.all()
+                    twitter_hashtags = tweet.hashtags.all()
+                    if event_hashtags:
+                        if any([hashtag in twitter_hashtags for hashtag in event_hashtags]):
+                            tweets_ids.append(tweet.tweet_id)
+                    else:
+                        tweets_ids.append(tweet.tweet_id)
+
+    return Response(tweets_ids)
