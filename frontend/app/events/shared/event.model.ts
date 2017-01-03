@@ -11,4 +11,5 @@ export class Event {
     public counterEvent: boolean;
     public coverage: boolean;
     public participants: string;
+    public notes: string;
 }

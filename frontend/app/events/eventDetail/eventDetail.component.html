@@ -27,6 +27,10 @@
             <span *ngIf="event.counterEvent">Ja</span>
             <span *ngIf="!event.counterEvent">Nein</span>
         </p>
+        <p *ngIf="event.notes">
+            <strong>Notizen:</strong><br>
+            {{event.notes}}
+        </p>
         <div *ngIf="event.attachments && event.attachments.length > 0">
             <strong>Anhänge:</strong>
             <div class="attachment-container">

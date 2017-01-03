@@ -67,6 +67,7 @@ class EventAPIViewTests(APITestCase):
             u'counterEvent': False,
             u'coverage': True,
             u'participants': u'',
+            u'notes': u'',
             u'organizer': u'Person P',
             u'attachments': [
                 {
@@ -116,6 +117,7 @@ class EventAPIViewTests(APITestCase):
             u'counterEvent': False,
             u'coverage': True,
             u'participants': u'',
+            u'notes': u'',
             u'organizer': u'Person P',
             u'attachments': [
                 {

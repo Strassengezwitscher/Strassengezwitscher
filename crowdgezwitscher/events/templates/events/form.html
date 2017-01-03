@@ -180,6 +180,16 @@
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{ form.notes.errors }}
+            <div class="form-group">
+                {{ form.notes.label_tag }}
+                {{ form.notes }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{ form.facebook_pages.errors }}
             <div class="form-group">
                 {{ form.facebook_pages.label_tag }}

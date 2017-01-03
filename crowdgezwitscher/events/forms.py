@@ -39,7 +39,7 @@ class EventForm(forms.ModelForm):
         fields = (
             'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end', 'participants', 'time',
+            'coverage_start', 'coverage_end', 'participants', 'time', 'notes',
         )
         widgets = {
             'coverage_start': ClearableBootstrapDatePicker(),
@@ -50,6 +50,7 @@ class EventForm(forms.ModelForm):
             'location_lat': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
             'participants': forms.TextInput(attrs={'class': 'form-control'}),
             'organizer': forms.TextInput(attrs={'class': 'form-control'}),
             'repetition_cycle': forms.TextInput(attrs={'class': 'form-control'}),
