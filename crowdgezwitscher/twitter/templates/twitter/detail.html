@@ -5,6 +5,21 @@
 <h1>{{ account.name }}</h1>
 <ul>
     <li><b>Twitter-Account-ID:</b> {{ account.account_id }}</li>
+    <li><b>Veranstaltungen von denen dieser Account berichtet:</b>
+        <ul>
+            {% for event in account.events.all %}
+                <li>
+                {% if perms.events.view_event %}
+                    <a href="{% url 'events:detail' event.id %}">{{ event.name }}</a>
+                {% else %}
+                    {{ event.name }}
+                {% endif %}
+                </li>
+            {% empty %}
+                <li>Keine Veranstaltungen verknüpft</li>
+            {% endfor %}
+        </ul>
+    </li>
 </ul>
 
 {% if perms.twitter.view_twitteraccount %}
