@@ -33,6 +33,7 @@ class EventSerializer(serializers.ModelSerializer):
     repetitionCycle = serializers.CharField(source='repetition_cycle')
     counterEvent = serializers.BooleanField(source='counter_event')
     attachments = serializers.SerializerMethodField()
+    time = serializers.TimeField(format="%H:%M")
 
     def get_attachments(self, event):
         queryset = Attachment.objects.filter(event=event, public=True)
@@ -41,8 +42,8 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'location', 'date', 'repetitionCycle', 'type', 'url', 'counterEvent',
-                  'coverage', 'participants', 'organizer', 'attachments', 'notes',)
+        fields = ('id', 'name', 'location', 'date', 'time', 'repetitionCycle', 'type', 'url', 'counterEvent',
+                  'coverage', 'participants', 'organizer', 'attachments', 'notes')
 
 
 class EventSerializerShortened(serializers.ModelSerializer):

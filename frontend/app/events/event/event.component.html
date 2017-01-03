@@ -8,6 +8,7 @@
         <p *ngIf="event.date">
             <strong>Datum:</strong><br>
             {{dateFormat(event.date)}}
+            <span *ngIf="event.time">- {{ event.time }}</span>
         </p>
         <p *ngIf="event.organizer">
             <strong>Organisator:</strong><br>
