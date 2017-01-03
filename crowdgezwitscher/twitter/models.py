@@ -19,7 +19,7 @@ from TwitterAPI import TwitterAPI, TwitterConnectionError
 @python_2_unicode_compatible
 class TwitterAccount(models.Model):
     name = models.CharField(max_length=15, unique=True)
-    account_id = models.CharField(max_length=15, unique=True)
+    account_id = models.CharField(max_length=20, unique=True)
     last_known_tweet_id = models.CharField(max_length=20)
 
     def __repr__(self):
