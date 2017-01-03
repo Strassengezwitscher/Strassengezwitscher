@@ -23,11 +23,17 @@ from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
-
+from twitter.models import Hashtag
 
 class EventForm(ModelForm):
     facebook_pages = ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
+        required=False,
+        widget=SelectizeSelectMultiple()
+    )
+
+    twitter_hashtags = ModelMultipleChoiceField(
+        queryset=Hashtag.objects.all().order_by('hashtag_text'),
         required=False,
         widget=SelectizeSelectMultiple()
     )
@@ -48,12 +54,16 @@ class EventForm(ModelForm):
         super(EventForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
+            self.initial['twitter_hashtags'] = self.instance.hashtags.values_list('pk', flat=True)
 
     def save(self, *args, **kwargs):
         instance = super(EventForm, self).save(*args, **kwargs)
         if instance.pk:
             instance.facebook_pages.clear()
             instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
+
+            instance.hashtags.clear()
+            instance.hashtags.add(*self.cleaned_data['twitter_hashtags'])
         return instance
 
 

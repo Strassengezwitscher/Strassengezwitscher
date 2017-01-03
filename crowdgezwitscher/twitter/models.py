@@ -12,7 +12,9 @@ import time
 
 from twitter import utils
 from crowdgezwitscher.log import logger
+from events.models import Event
 from TwitterAPI import TwitterAPI, TwitterConnectionError
+
 
 @python_2_unicode_compatible
 class TwitterAccount(models.Model):
@@ -147,6 +149,7 @@ class TwitterAccount(models.Model):
 @python_2_unicode_compatible
 class Hashtag(models.Model):
     hashtag_text = models.CharField(max_length=50, unique=True)
+    events = models.ManyToManyField(Event, blank=True, related_name="hashtags")
 
     def __str__(self):
         return self.hashtag_text
