@@ -19,6 +19,7 @@ from crowdgezwitscher.models import MapObject
 @python_2_unicode_compatible
 class Event(MapObject):
     date = models.DateField()
+    time = models.TimeField(blank=True, null=True)
     repetition_cycle = models.CharField(max_length=50, default='unbekannter Rhythmus')
     organizer = models.CharField(max_length=100, blank=True)
     type = models.CharField(max_length=50, blank=True)
