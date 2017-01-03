@@ -23,7 +23,7 @@ from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
 from facebook.models import FacebookPage
-from twitter.models import Hashtag
+from twitter.models import Hashtag, TwitterAccount
 
 class EventForm(ModelForm):
     facebook_pages = ModelMultipleChoiceField(
@@ -38,6 +38,12 @@ class EventForm(ModelForm):
         widget=SelectizeSelectMultiple()
     )
 
+    twitter_account_names = ModelMultipleChoiceField(
+        queryset=TwitterAccount.objects.all().order_by('name'),
+        required=False,
+        widget=SelectizeSelectMultiple()
+    )
+
     class Meta:
         model = Event
         fields = (
@@ -45,16 +51,13 @@ class EventForm(ModelForm):
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
             'coverage_start', 'coverage_end',
         )
-        widgets = {
-            'twitter_account_names': SelectizeCSVInput(),
-            'twitter_hashtags': SelectizeCSVInput(),
-        }
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
             self.initial['twitter_hashtags'] = self.instance.hashtags.values_list('pk', flat=True)
+            self.initial['twitter_account_names'] = self.instance.twitter_accounts.values_list('pk', flat=True)
 
     def save(self, *args, **kwargs):
         instance = super(EventForm, self).save(*args, **kwargs)
@@ -64,6 +67,9 @@ class EventForm(ModelForm):
 
             instance.hashtags.clear()
             instance.hashtags.add(*self.cleaned_data['twitter_hashtags'])
+
+            instance.twitter_accounts.clear()
+            instance.twitter_accounts.add(*self.cleaned_data['twitter_account_names'])
         return instance
 
 

@@ -21,6 +21,7 @@ class TwitterAccount(models.Model):
     name = models.CharField(max_length=15, unique=True)
     account_id = models.CharField(max_length=20, unique=True)
     last_known_tweet_id = models.CharField(max_length=20)
+    events = models.ManyToManyField(Event, blank=True, related_name="twitter_accounts")
 
     def __repr__(self):
         return '<TwitterAccount %s>' % self.name

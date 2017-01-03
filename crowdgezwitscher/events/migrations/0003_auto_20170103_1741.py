@@ -6,7 +6,7 @@ from django.db import migrations
 
 
 def forwards_func(apps, schema_editor):
-    """Adds the string represented hashtags of events to the database and connects events with these hashtags"""
+    """Adds the string representing hashtags of events to the hashtag table and connects events with these hashtags"""
     Event = apps.get_model('events', 'Event')
     Hashtag = apps.get_model('twitter', 'Hashtag')
 
@@ -26,6 +26,7 @@ def forwards_func(apps, schema_editor):
 
 
 def reverse_func(apps, schema_editor):
+    """The reverse of the above"""
     Event = apps.get_model('events', 'Event')
     Hashtag = apps.get_model('twitter', 'Hashtag')
 
