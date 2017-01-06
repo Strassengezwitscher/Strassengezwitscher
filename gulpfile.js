@@ -19,7 +19,7 @@ var productionMode = (argv.production || argv.prod)
 
 if (!productionMode) {
     var tslint = require('gulp-tslint');
-    var sassLint = require('gulp-sass-lint');
+    var scsslint = require('gulp-scss-lint');
     var Server = require('karma').Server;
     var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 }
@@ -42,6 +42,12 @@ gulp.task('clean:report', function() {
 gulp.task('clean:aot', function() {
     return gulp.src([config.path.aot.slice(0, -1), config.path.aot_compiled.slice(0, -1)], {read: false})
         .pipe(clean());
+});
+
+// to be deleted once https://github.com/angular/material2/issues/1348 is closed
+gulp.task('clean:angular_material', function () {
+    return gulp.src('node_modules/@angular/material/core/overlay/overlay.css', {read: false})
+        .pipe(clean({force: true}));
 });
 
 gulp.task('clean', ['clean:build', 'clean:dist', 'clean:report', 'clean:aot']);
@@ -97,7 +103,7 @@ gulp.task('copy:html', function() {
 
 gulp.task('copy:staticfiles', ['copy:npmfiles', 'copy:sharednpmfiles', 'copy:systemjsconfig']);
 
-gulp.task('compile:sass', function() {
+gulp.task('compile:sass', ['clean:angular_material'], function() {
     var dest = productionMode ? config.path.aot : config.path.build;
     return gulp.src(config.sass.files, {base: config.path.root})
         .pipe(sourcemaps.init())
@@ -203,8 +209,7 @@ if (!productionMode) {
 
     gulp.task('lint:sass', function() {
         return gulp.src(config.sass.files)
-            .pipe(sassLint())
-            .pipe(sassLint.format());
+            .pipe(scsslint())
     });
 
     gulp.task('lint', ['lint:python', 'lint:typescript', 'lint:sass']);

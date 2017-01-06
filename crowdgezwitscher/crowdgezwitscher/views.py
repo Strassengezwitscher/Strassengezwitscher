@@ -2,11 +2,11 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from django.conf import settings
 from django.utils.safestring import mark_safe
 
 from facebook.models import FacebookPage
 from events.models import Event
+from blog.models import BlogEntry
 
 
 def index(request):
@@ -24,6 +24,7 @@ def landingpage(request):
 @login_required
 def intern_index(request):
     return render(request, 'dashboard.html', {
+        'blogentry_count': BlogEntry.objects.count(),
         'facebook_page_count': FacebookPage.objects.count(),
         'event_count': Event.objects.count(),
         'active_user_count': User.objects.exclude(is_staff=True, is_active=False).count(),

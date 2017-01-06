@@ -1,0 +1,7 @@
+@import '../colors';
+
+$foreground: map-get($theme, foreground);
+
+.container {
+  color: map-get($foreground, text);
+}

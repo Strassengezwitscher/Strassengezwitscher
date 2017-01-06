@@ -62,8 +62,12 @@ module.exports = function () {
             path.npm + 'bootstrap/dist/js/bootstrap.min.js',
             path.npm + 'bootstrap/dist/fonts/*',
             path.npm + 'jquery/dist/jquery.min.js',
+            path.npm + 'django-formset/dist/django-formset.js',
             path.npm + 'selectize/dist/js/standalone/selectize.min.js',
             path.npm + 'selectize/dist/css/selectize.bootstrap3.css',
+            path.npm + 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+            path.npm + 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+            path.npm + 'moment/min/moment-with-locales.min.js',
         ],
         angular_dependencies: {
             files: [

@@ -9,13 +9,15 @@
         "location_lat": "87.654000",
         "location_long": "45.678000",
         "date": "2016-07-20",
+        "time": "13:37",
         "repetition_cycle": "unbekannter Rhythmus",
-        "organizer": "",
+        "organizer": "Person P",
         "type": "",
         "url": "",
         "counter_event": false,
         "coverage": true,
         "participants": "",
+        "notes": "",
         "twitter_account_names": "foo,bar",
         "twitter_hashtags": "baz,quux",
         "coverage_start": "2016-07-24",
@@ -26,12 +28,13 @@
     "model": "events.event",
     "pk": 2,
     "fields": {
-        "name": "Test Event 2",
-        "active": true,
+        "name": "Inactive Test Event",
+        "active": false,
         "location": "There",
         "location_lat": "45.678000",
         "location_long": "87.654000",
-        "date": "2016-07-15",
+        "date": "2016-07-10",
+        "time": null,
         "repetition_cycle": "unbekannter Rhythmus",
         "organizer": "",
         "type": "",
@@ -39,6 +42,7 @@
         "counter_event": false,
         "coverage": true,
         "participants": "",
+        "notes": "",
         "twitter_account_names": "",
         "twitter_hashtags": "",
         "coverage_start": null,
@@ -49,12 +53,13 @@
     "model": "events.event",
     "pk": 3,
     "fields": {
-        "name": "Inactive Test Event",
-        "active": false,
+        "name": "Test Event 3",
+        "active": true,
         "location": "Wow, much water",
         "location_lat": "0.0",
         "location_long": "0.0",
-        "date": "2016-07-10",
+        "date": "2016-07-15",
+        "time": null,
         "repetition_cycle": "unbekannter Rhythmus",
         "organizer": "",
         "type": "",
@@ -62,10 +67,47 @@
         "counter_event": false,
         "coverage": false,
         "participants": "",
+        "notes": "",
         "twitter_account_names": "",
         "twitter_hashtags": "",
         "coverage_start": null,
         "coverage_end": null
+    }
+},
+{
+    "model": "events.attachment",
+    "pk": 1,
+    "fields": {
+        "attachment": "event_attachments/2016/11/20161111-2349_test_g8nbW.pdf",
+        "thumbnail": "",
+        "name": "test.pdf",
+        "description": "I need a pdf icon",
+        "event": 1,
+        "public": true
+    }
+},
+{
+    "model": "events.attachment",
+    "pk": 2,
+    "fields": {
+        "attachment": "event_attachments/2016/11/20161111-2349_noext_abcde",
+        "thumbnail": "",
+        "name": "noext",
+        "description": "I have no file extension and need a generic icon",
+        "event": 1,
+        "public": true
+    }
+},
+{
+    "model": "events.attachment",
+    "pk": 3,
+    "fields": {
+        "attachment": "event_attachments/2016/11/20161111-2349_image_12345.PNG",
+        "thumbnail": "event_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg",
+        "name": "image.PNG",
+        "description": "I have a jpg-thumbnail and need no special icon",
+        "event": 1,
+        "public": true
     }
 }
 ]

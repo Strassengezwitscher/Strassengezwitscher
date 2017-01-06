@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'contact.apps.ContactConfig',
     'captcha.apps.CaptchaConfig',
+    'blog.apps.BlogConfig',
     'twitter.apps.TwitterConfig',
     'rest_framework',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -110,6 +113,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS_DEFAULT = [
     os.path.join(BASE_DIR, "static/shared"),
 ]
+
+MEDIA_URL = '/media/'
 
 
 # Set absolute URLs

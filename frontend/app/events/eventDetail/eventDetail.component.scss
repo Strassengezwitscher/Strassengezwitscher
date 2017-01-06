@@ -1,43 +1,70 @@
+@import '../../colors';
+
+$foreground: map-get($theme, foreground);
+
 .error-message {
-  background-color: #f2dede;
-  white-space: pre-line;
-
-  .md-card {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    button {
-      height: 18px;
-      width: 18px;
-
-      span.md-button-wrapper {
-        position: absolute;
-        top: 0;
-        right: -3px;
-
-        md-icon {
-          font-size: 16px;
-        }
-      }
-    }
-  }
+  background-color: map-get($message, error);
 }
 
 .event-container {
+  color: map-get($foreground, text);
   text-align: center;
 
   h1 {
     font-size: 3em;
+  }
 
+  h2 {
     .small {
-      font-size: 0.6em;
+      color: map-get($foreground, secondary-text);
+      display: block;
+      font-size: 1.2em;
       font-weight: 500;
-      color: #888888;
     }
   }
 
-  .refreshButton {
+  .refresh-button {
     margin-bottom: 16px;
+  }
+}
+
+.attachment-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  text-align: left;
+}
+
+.attachment-wrapper {
+  text-decoration: none;
+
+  .attachment {
+    flex: none;
+    margin: 8px;
+  }
+
+  img {
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    margin: -24px;
+    margin-left: 0;
+    margin-right: -16px;
+    min-height: 144px;
+    min-width: 144px;
+    object-fit: cover;
+    padding-left: 8px;
+  }
+
+  &.without-description {
+    .attachment {
+      height: 96px;
+      width: 96px;
+    }
+
+    img {
+      border-radius: 2px;
+      margin-left: -24px;
+      padding-left: 0;
+    }
   }
 }

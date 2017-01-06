@@ -23,6 +23,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+crowdgezwitscher/static/shared/**/min/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -78,11 +79,18 @@ frontend/config/config.ts
 # npm
 node_modules/
 
+# yarn
+yarn.lock
+.yarnclean
+
 # pyenv
 .python-version
 
 # Sensitive data
 crowdgezwitscher/crowdgezwitscher/initial/
+
+# uploaded files
+crowdgezwitscher/uploads/
 
 # tmp directories for Angular compilation
 aot/

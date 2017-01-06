@@ -75,7 +75,7 @@ def send_form(request):
         #   tempfile.NamedTemporaryFile's default mode 'w+b', so we could create a subclass of both classes as
         # another alternative.
         if uploaded_file.content_type and uploaded_file.content_type.split('/')[0] == 'text':
-            email.attach(uploaded_file.name, uploaded_file.read().decode(),)
+            email.attach(uploaded_file.name, uploaded_file.read().decode('utf-8'),)
         else:
             email.attach(uploaded_file.name, uploaded_file.read(),)
 

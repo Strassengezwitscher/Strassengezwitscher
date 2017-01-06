@@ -1,0 +1,50 @@
+{% extends "admin.html" %}
+
+{% block header %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.title.errors }}
+            <div class="form-group">
+                <label class="control-label" for="{{ form.title.id_for_label }}"> Titel </label>
+                <input id="{{ form.title.id_for_label }}" name="{{ form.title.html_name }}" type="text" class="form-control" value="{{ form.title.value }}">
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            {{ form.status.errors }}
+            <div class="form-group">
+                {{ form.status.label_tag }}
+                {{ form.status }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{ form.content.errors }}
+            <label class="control-label" for="{{ form.content.id_for_label }}"> Inhalt </label>
+            <div class="form-group">
+                {{ form.content }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {% if perms.blog.add_blogentry %}
+                <input class="btn btn-primary" type="submit" value="Speichern" role="button">
+            {% endif %}
+            {% if perms.blog.view_blogentry %}
+                <a class="btn btn-link" href="{% url 'blog:list' %}">Zurück</a>
+            {% endif %}
+        </div>
+    </div>
+</form>
+{% endblock %}

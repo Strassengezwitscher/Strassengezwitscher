@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Observable } from "rxjs/Observable";
 
 import { Event } from "../shared/event.model";
 import { EventService } from "../shared/event.service";
+
+declare var twttr: any;
 
 @Component({
     moduleId: module.id,
@@ -15,6 +16,7 @@ export class EventDetailComponent implements OnInit {
     public event: Event;
     public tweetIds: string[] = null;
     public errorMessage: string;
+    public twttrIsBlocked: boolean = (typeof twttr === "undefined");
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
@@ -23,10 +25,6 @@ export class EventDetailComponent implements OnInit {
             let id = + params["id"];
             this.getEvent(id);
         });
-    }
-
-    public clearError() {
-        this.errorMessage = "";
     }
 
     public onRefresh() {

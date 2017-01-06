@@ -9,68 +9,19 @@ from rest_framework.decorators import api_view
 
 from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.forms import ModelForm, ModelMultipleChoiceField
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from crowdgezwitscher.models import MapObjectFilter
-from crowdgezwitscher.widgets import SelectizeSelectMultiple, SelectizeCSVInput
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
-from facebook.models import FacebookPage
-from twitter.models import Hashtag, TwitterAccount
-
-class EventForm(ModelForm):
-    facebook_pages = ModelMultipleChoiceField(
-        queryset=FacebookPage.objects.all(),
-        required=False,
-        widget=SelectizeSelectMultiple()
-    )
-
-    twitter_hashtags = ModelMultipleChoiceField(
-        queryset=Hashtag.objects.all().order_by('hashtag_text'),
-        required=False,
-        widget=SelectizeSelectMultiple()
-    )
-
-    twitter_account_names = ModelMultipleChoiceField(
-        queryset=TwitterAccount.objects.all().order_by('name'),
-        required=False,
-        widget=SelectizeSelectMultiple()
-    )
-
-    class Meta:
-        model = Event
-        fields = (
-            'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
-            'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end',
-        )
-
-    def __init__(self, *args, **kwargs):
-        super(EventForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
-            self.initial['twitter_hashtags'] = self.instance.hashtags.values_list('pk', flat=True)
-            self.initial['twitter_account_names'] = self.instance.twitter_accounts.values_list('pk', flat=True)
-
-    def save(self, *args, **kwargs):
-        instance = super(EventForm, self).save(*args, **kwargs)
-        if instance.pk:
-            instance.facebook_pages.clear()
-            instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
-
-            instance.hashtags.clear()
-            instance.hashtags.add(*self.cleaned_data['twitter_hashtags'])
-
-            instance.twitter_accounts.clear()
-            instance.twitter_accounts.add(*self.cleaned_data['twitter_account_names'])
-        return instance
+from events.forms import EventForm, AttachmentFormSet
 
 
 class EventListView(PermissionRequiredMixin, ListView):
@@ -78,6 +29,7 @@ class EventListView(PermissionRequiredMixin, ListView):
     model = Event
     template_name = 'events/list.html'
     context_object_name = 'events'
+    ordering = '-date'
 
 
 class EventDetail(PermissionRequiredMixin, DetailView):
@@ -87,16 +39,18 @@ class EventDetail(PermissionRequiredMixin, DetailView):
     context_object_name = 'event'
 
 
-class EventCreate(PermissionRequiredMixin, CreateView):
+class EventCreate(PermissionRequiredMixin, CreateWithInlinesView):
     permission_required = 'events.add_event'
     model = Event
+    inlines = [AttachmentFormSet]
     template_name = 'events/form.html'
     form_class = EventForm
 
 
-class EventUpdate(PermissionRequiredMixin, UpdateView):
+class EventUpdate(PermissionRequiredMixin, UpdateWithInlinesView):
     permission_required = 'events.change_event'
     model = Event
+    inlines = [AttachmentFormSet]
     template_name = 'events/form.html'
     form_class = EventForm
 

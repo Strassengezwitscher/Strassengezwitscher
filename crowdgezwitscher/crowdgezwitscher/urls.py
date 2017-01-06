@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -26,12 +27,14 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # API URLs
+    url(r'^api/', include('blog.urls_api', namespace='blog_api')),
     url(r'^api/', include('facebook.urls_api', namespace='facebook_api')),
     url(r'^api/', include('events.urls_api', namespace='events_api')),
     url(r'^api/', include('contact.urls')),
     url(r'^api/', include('captcha.urls')),
 
     # Admin area URLs
+    url(r'^intern/blog/', include('blog.urls', namespace='blog')),
     url(r'^intern/facebook/', include('facebook.urls', namespace='facebook')),
     url(r'^intern/events/', include('events.urls', namespace='events')),
     url(r'^intern/users/', include('users.urls', namespace='users')),
@@ -49,7 +52,7 @@ urlpatterns = [
     url(r'^about/$', views.index, name='about'),
     url(r'^events/[0-9]+/$', views.index, name='eventDetail'),
     url(r'^blog/$', views.index, name='blog'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # limits itself to DEBUG=True
 
 if settings.DEBUG:
     urlpatterns += [

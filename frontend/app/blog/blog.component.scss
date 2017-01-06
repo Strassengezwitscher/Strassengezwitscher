@@ -1,18 +1,23 @@
+@import '../colors';
+
+$foreground: map-get($theme, foreground);
+
 .blog-entry {
-    background-color: white;
-    margin: 32px auto;
-}
+  margin: 32px auto;
 
-#blogPost {
+  .blog-entry-content {
     p {
-        text-align: justify;
+      text-align: justify;
     }
-}
 
-#blogPost {
-     a {
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
+    li {
+      text-align: justify;
     }
+
+    a {
+      color: map-get($foreground, text);
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
 }

@@ -1,0 +1,41 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>{{ blogentry.title }}</h1>
+
+<div class="row">
+    <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <label class="control-label" > Inhalt </label>
+        <div style="border-style:solid;padding:5px;">
+            {{blogentry.content|safe}}
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <label class="control-label" > Status </label>
+        {{ blogentry.get_status_display}}
+    </div>
+    <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <label class="control-label" > Erstellungsdatum </label>
+        {{ blogentry.created_on}}
+    </div>
+    <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <label class="control-label" > Autor </label>
+        {{ blogentry.created_by}}
+    </div>
+</div>
+
+
+{% if perms.blog.change_blogentry %}
+    <a class="btn btn-primary" href="{% url 'blog:update' blogentry.id %}">Bearbeiten</a>
+{% endif %}
+
+{% if perms.blog.view_blogentry %}
+    <a class="btn btn-link" href="{% url 'blog:list' %}">Zurück</a>
+{% endif %}
+
+{% endblock %}

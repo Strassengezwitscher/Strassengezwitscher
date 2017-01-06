@@ -1,23 +1,10 @@
-@import 'base';
-
 @import '../../node_modules/@angular/material/core/theming/all-theme';
-// Plus imports for other components in your app.
+@import 'base';
+@import 'colors';
 
 // Include the base styles for Angular Material core. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 @include md-core();
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue.
-$primary: md-palette($md-indigo);
-$accent:  md-palette($md-purple);
-
-// The warn palette is optional (defaults to red).
-$warn:    md-palette($md-red);
-
-// Create the theme object (a Sass map containing all of the palettes).
-$theme: md-light-theme($primary, $accent, $warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -25,19 +12,89 @@ $theme: md-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
 
 // FIX: hide focus for radio buttons
-.md-radio-focused .md-ink-ripple {
-  background-color: transparent;
+.md-radio-ripple {
+  display: none;
 }
 
+// FIX: button link disabled problem
+.md-button-link-workaround {
+  color: rgba(0, 0, 0, .87) !important;
+  cursor: pointer !important;
+}
+// End: FIXES
+
+$background: map-get($theme, background);
+
 body {
+  background-color: map-get($background, app-bar);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
   padding: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: whitesmoke;
 }
+
+// --------------------
+// responsive helpers
+// source: materialize-css
+// --------------------
+.hide-on-small-only,
+.hide-on-small-and-down {
+  @media #{$small-and-down} {
+    display: none;
+  }
+}
+
+.hide-on-med-and-down {
+  @media #{$medium-and-down} {
+    display: none;
+  }
+}
+
+.hide-on-med-and-up {
+  @media #{$medium-and-up} {
+    display: none;
+  }
+}
+
+.hide-on-med-only {
+  @media only screen and (min-width: $small-screen) and (max-width: $medium-screen) {
+    display: none;
+  }
+}
+
+.hide-on-large-only {
+  @media #{$large-and-up} {
+    display: none;
+  }
+}
+
+.container {
+  margin: 8px;
+  width: calc(100% - 16px);
+
+  @media #{$medium-and-up} {
+    margin: auto;
+    width: 600px;
+  }
+
+  @media #{$large-and-up} {
+    width: 800px;
+  }
+}
+// --------------------
+// end: responsive helpers
+// --------------------
+
 
 .toolbar-menu {
   flex-basis: 40px;
+
+  @media #{$medium-and-up} {
+    flex-basis: 230px;
+  }
+
+  @media #{$large-and-up} {
+    flex-basis: 390px;
+  }
 }
 
 .toolbar-spacer {
@@ -46,52 +103,15 @@ body {
   flex: 1 1 auto;
 }
 
-a.brand-logo {
+.brand-logo {
   background: url('/static/img/cg-logo.svg') no-repeat center;
+  background-size: 100% 70%;
+  color: transparent;
+  cursor: pointer;
   height: 100%;
   width: 250px;
-  background-size: 100% 70%;
-  cursor: pointer;
-  color: transparent;
 }
 
-a.unfocusable.md-button-focus::after {
+.unfocusable.md-button-focus::after {
   background-color: transparent;
-}
-
-@media only screen and (min-width: 740px) {
-  .toolbar-menu {
-    flex-basis: 230px;
-  }
-}
-
-@media only screen and (min-width: 1100px) {
-  .toolbar-menu {
-    flex-basis: 390px;
-  }
-}
-
-
-.hide-on-small-only-custom {
-  @media only screen and (max-width: 739px) {
-    display: none !important;
-  }
-}
-
-.hide-on-med-and-down-custom {
-  @media only screen and (max-width: 1099px) {
-    display: none !important;
-  }
-}
-
-.hide-on-med-and-up-custom {
-  @media only screen and (min-width: 740px) {
-    display: none !important;
-  }
-}
-
-.hide-on-large-only-custom {
-  @media only screen and (min-width: 1100px) {
-    display: none !important;
-  }
 }

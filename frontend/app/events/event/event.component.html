@@ -1,14 +1,14 @@
 <md-card class="event-card" *ngIf="event">
+    <button md-icon-button class="close-button" (click)="close()">
+        <md-icon>clear</md-icon>
+    </button>
     <md-card-title>{{event.name}}</md-card-title>
     <md-card-subtitle>{{event.location}}</md-card-subtitle>
     <md-card-content>
         <p *ngIf="event.date">
             <strong>Datum:</strong><br>
             {{dateFormat(event.date)}}
-        </p>
-        <p *ngIf="event.repetitionCycle">
-            <strong>Wiederholungszyklus:</strong><br>
-            {{event.repetitionCycle}}
+            <span *ngIf="event.time">- {{ event.time }}</span>
         </p>
         <p *ngIf="event.organizer">
             <strong>Organisator:</strong><br>
@@ -24,12 +24,17 @@
         </p>
         <p *ngIf="event.counterEvent">
             <strong>Gegenveranstaltung:</strong><br>
-            {{event.counterEvent}}
+            <span *ngIf="event.counterEvent">Ja</span>
+            <span *ngIf="!event.counterEvent">Nein</span>
         </p>
-        <p >
+        <p>
             <strong>Berichterstattung:</strong><br>
             <span *ngIf="event.coverage">Ja (Twitter-Feed)</span>
             <span *ngIf="!event.coverage">Nein</span>
+        </p>
+        <p *ngIf="event.notes">
+            <strong>Notizen:</strong><br>
+            {{event.notes}}
         </p>
     </md-card-content>
     <md-card-actions>

@@ -2,6 +2,24 @@
 
 {% block content %}
 
+{% if perms.blog.view_blogentry %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <a href="{% url 'blog:list' %}">Blogeinträge</a>
+        </h3>
+    </div>
+    <div class="panel-body">
+        Es gibt insgesamt {{ blogentry_count }}
+        {% if blogentry_count == 1 %}
+            Blogeintrag.
+        {% else %}
+            Blogeinträge.
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
 {% if perms.facebook.view_facebookpage %}
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -62,7 +80,7 @@
 </div>
 {% endif %}
 
-{% if not perms.facebook.view_facebookpage and not perms.events.view_event and not perms.auth.view_user%}
+{% if not perms.facebook.view_facebookpage and not perms.events.view_event and not perms.auth.view_user and not perms.blog.view_blogentry %}
     Du brauchst mehr Berechtigungen.
 {% endif %}
 
