@@ -21,17 +21,24 @@
 	<form *ngIf="!contactSuccessMessage" id="contact-form" #contactForm="ngForm">
 		<table style="width: 100%" cellspacing="0">
 			<tr>
-				<td><md-input id="contact-name" placeholder="Name" name="name" maxlength="50" [(ngModel)]="contact.name" dividerColor="accent" style="width: 100%"></md-input></td>
-				<td><md-input id="contact-email" placeholder="Email" type="email" name="email" [(ngModel)]="contact.email" dividerColor="accent" style="width: 100%"></md-input></td>
+				<td style="width: 50%">
+					<md-input-container dividerColor="accent" style="width: 100%">
+						<input md-input id="contact-name" placeholder="Name" name="name" maxlength="50" [(ngModel)]="contact.name">
+					</md-input-container>
+				</td>
+				<td style="width: 50%">
+					<md-input-container dividerColor="accent" style="width: 100%">
+						<input md-input id="contact-email" placeholder="Email" type="email" name="email" [(ngModel)]="contact.email">
+					</md-input-container>
+				</td>
 			</tr>
 		</table>
-		<div>
-			<md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" dividerColor="accent" style="width: 100%"></md-input>
-		</div>
-		<div class="input-field">
-			<textarea id="contact-message" class="materialize-textarea" name="message" required [(ngModel)]="contact.message" (focus)="isMessageInputFocused = true" (blur)="blurMessageInput()"></textarea>
-			<label for="contact-message" [class.active]="isMessageInputFocused">Nachricht *</label>
-		</div>
+		<md-input-container dividerColor="accent" style="width: 100%">
+			<input md-input id="contact-subject" placeholder="Betreff" name="subject" required [(ngModel)]="contact.subject" dividerColor="accent" style="width: 100%">
+		</md-input-container>
+		<md-input-container dividerColor="accent" style="width: 100%">
+			<textarea md-input id="contact-message" placeholder="Nachricht" name="message" required [(ngModel)]="contact.message" style="resize: vertical;"></textarea>
+		</md-input-container>
 
 		<table style="width: 100%" cellspacing="0">
 			<tr>
