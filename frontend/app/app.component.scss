@@ -25,6 +25,10 @@
   }
 }
 
+.md-radio-container {
+  min-width: 20px;
+}
+
 // End: FIXES for Angular Material
 
 $background: map-get($theme, background);
