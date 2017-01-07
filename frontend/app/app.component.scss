@@ -18,15 +18,16 @@
   display: none;
 }
 
+// Correct size for radio button (incl. spacing)
+.md-radio-container {
+  min-width: 20px;
+}
+
 // Remove focus ripple for links with target "_blank"
 .unfocusable.md-button-focus {
   .md-button-focus-overlay {
     background-color: transparent;
   }
-}
-
-.md-radio-container {
-  min-width: 20px;
 }
 
 // End: FIXES for Angular Material
