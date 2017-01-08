@@ -11,7 +11,14 @@ def forwards_func(apps, schema_editor):
 
     db_alias = schema_editor.connection.alias
 
-    account_id_dict = {'streetcoverage': 3079082955, 'coverage_le': 4884120381, 'coverage_che': 707960814423166978}
+    account_id_dict = {
+        'streetcoverage': 3079082955,
+        'coverage_le': 4884120381,
+        'coverage_che': 707960814423166978,
+        'reDDakteur': 97706519,
+        'streetphotose': 705825972617125888,
+        'MDR_SN': 581765861
+    }
 
     event_account_dict = {}
 
