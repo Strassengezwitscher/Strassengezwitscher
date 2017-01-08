@@ -5,7 +5,7 @@ from events.models import Event, Attachment
 from facebook.models import FacebookPage
 from twitter.models import Hashtag, TwitterAccount
 from crowdgezwitscher.widgets import (
-    SelectizeSelectMultiple, SelectizeCSVInput, AttachmentInput,
+    SelectizeSelectMultiple, SelectizeSelectMultipleCSVInput, AttachmentInput,
     BootstrapDatePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker,
 )
 
@@ -38,7 +38,7 @@ class EventForm(forms.ModelForm):
     twitter_hashtags = forms.ModelMultipleChoiceField(
         queryset=Hashtag.objects.all().order_by('hashtag_text'),
         required=False,
-        widget=SelectizeSelectMultiple()
+        widget=SelectizeSelectMultipleCSVInput()
     )
 
     twitter_account_names = forms.ModelMultipleChoiceField(
@@ -91,3 +91,20 @@ class EventForm(forms.ModelForm):
             instance.twitter_accounts.clear()
             instance.twitter_accounts.add(*self.cleaned_data['twitter_account_names'])
         return instance
+
+    def clean(self):
+        cleaned_data = super(EventForm, self).clean()
+        cleaned_hashtags = []
+
+        for hashtag in self['twitter_hashtags'].value():
+            hashtag_split = hashtag.split("__new_hashtag__")
+            if len(hashtag_split) > 1:
+                hashtag_db, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_split[1])
+                cleaned_hashtags.append(hashtag_db)
+            else:
+                cleaned_hashtags.append(Hashtag.objects.get(pk=int(hashtag_split[0])))
+
+        if 'twitter_hashtags' in self.errors:
+            del self.errors['twitter_hashtags']
+        self.cleaned_data['twitter_hashtags'] = cleaned_hashtags
+        return cleaned_data
