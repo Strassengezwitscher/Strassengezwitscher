@@ -97,12 +97,11 @@ class EventForm(forms.ModelForm):
         cleaned_hashtags = []
 
         for hashtag in self['twitter_hashtags'].value():
-            hashtag_split = hashtag.split("__new_hashtag__")
-            if len(hashtag_split) > 1:
-                hashtag_db, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_split[1])
+            if hashtag.startswith("__new_hashtag__"):
+                hashtag_db, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag.split("__new_hashtag__")[1])
                 cleaned_hashtags.append(hashtag_db)
             else:
-                cleaned_hashtags.append(Hashtag.objects.get(pk=int(hashtag_split[0])))
+                cleaned_hashtags.append(Hashtag.objects.get(pk=int(hashtag)))
 
         if 'twitter_hashtags' in self.errors:
             del self.errors['twitter_hashtags']
