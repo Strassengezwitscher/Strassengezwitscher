@@ -113,12 +113,10 @@ gulp.task('compile:sass', ['clean:angular_material'], function() {
 });
 
 gulp.task('compile:typescript', ['copy:config'], function() {
-    var tsProject = ts.createProject('./tsconfig-dev.json', {
-        typescript: require('typescript')
-    });
+    var tsProject = ts.createProject('./tsconfig-dev.json');
     var tsResult = gulp.src([config.typescript.files, config.typescript.exclude_files])
         .pipe(sourcemaps.init())
-        .pipe(ts(tsProject));
+        .pipe(tsProject());
     return merge([
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
