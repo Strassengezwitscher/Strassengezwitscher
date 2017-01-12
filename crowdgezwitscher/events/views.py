@@ -16,7 +16,7 @@ from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from crowdgezwitscher.models import MapObjectFilter
+from base.models import MapObjectFilterBackend
 from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event
@@ -67,7 +67,7 @@ class EventDelete(PermissionRequiredMixin, DeleteView):
 class EventAPIList(generics.ListAPIView):
     queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializerShortened
-    filter_backends = (MapObjectFilter, DateFilterBackend)
+    filter_backends = (MapObjectFilterBackend, DateFilterBackend)
 
 
 class EventAPIDetail(generics.RetrieveAPIView):
