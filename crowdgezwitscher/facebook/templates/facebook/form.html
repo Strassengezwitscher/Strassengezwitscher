@@ -13,64 +13,31 @@
     {{ form.non_field_errors }}
     <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group {% if form.name.errors %} has-error {% endif %}">
-                {{ form.name.label_tag }}
-                {{ form.name }}
-            </div>
-            {% bootstrap_error_list form.name.errors %}
+            {% bootstrap_field form.name %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <label class="hidden-xs"></label>
-            <div class="{% if form.active.errors %} has-error {% endif %}">
-                <div class="checkbox">
-                    <label>
-                        {{ form.active }}
-                        {{ form.active.label }}
-                    </label>
-                </div>
-            </div>
-            {% bootstrap_error_list form.active.errors %}
+            {% bootstrap_checkbox form.active %}
         </div>
     </div>
     <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            <div class="form-group {% if form.location_lat.errors %} has-error {% endif %}">
-                {{ form.location_lat.label_tag }}
-                {{ form.location_lat }}
-            </div>
-            {% bootstrap_error_list form.location_lat.errors %}
+            {% bootstrap_field form.location_lat %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            <div class="form-group {% if form.location_long.errors %} has-error {% endif %}">
-                {{ form.location_long.label_tag }}
-                {{ form.location_long }}
-            </div>
-            {% bootstrap_error_list form.location_long.errors %}
+            {% bootstrap_field form.location_long %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <div class="form-group {% if form.location.errors %} has-error {% endif %}">
-                {{ form.location.label_tag }}
-                {{ form.location }}
-            </div>
-            {% bootstrap_error_list form.location.errors %}
+            {% bootstrap_field form.location %}
         </div>
     </div>
     <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="form-group {% if form.notes.errors %} has-error {% endif %}">
-                {{ form.notes.label_tag }}
-                {{ form.notes }}
-            </div>
-            {% bootstrap_error_list form.notes.errors %}
+            {% bootstrap_field form.notes %}
         </div>
     </div>
     <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="form-group {% if form.events.errors %} has-error {% endif %}">
-                {{ form.events.label_tag }}
-                {{ form.events }}
-            </div>
-            {% bootstrap_error_list form.events.errors %}
+            {% bootstrap_field form.events %}
         </div>
     </div>
 
