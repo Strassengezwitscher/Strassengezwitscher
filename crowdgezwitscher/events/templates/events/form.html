@@ -1,5 +1,7 @@
 {% extends "admin.html" %}
 
+{% load bootstrap_tags %}
+
 {% block header %}
 {{ form.media }}
 {% for inline in inlines %}
@@ -22,179 +24,185 @@
     {% csrf_token %}
 
     {{ form.non_field_errors }}
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.name.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.name.errors %} has-error {% endif %}">
                 {{ form.name.label_tag }}
                 {{ form.name }}
             </div>
+            {% bootstrap_error_list form.name.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.active.errors }}
             <label class="hidden-xs"></label>
-            <div class="checkbox">
-                <label>
-                    {{ form.active }}
-                    {{ form.active.label }}
-                </label>
+            <div class="{% if form.active.errors %} has-error {% endif %}">
+                <div class="checkbox">
+                    <label>
+                        {{ form.active }}
+                        {{ form.active.label }}
+                    </label>
+                </div>
             </div>
+            {% bootstrap_error_list form.active.errors %}
         </div>
     </div>
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            {{ form.location_lat.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.location_lat.errors %} has-error {% endif %}">
                 {{ form.location_lat.label_tag }}
                 {{ form.location_lat }}
             </div>
+            {% bootstrap_error_list form.location_lat.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            {{ form.location_long.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.location_long.errors %} has-error {% endif %}">
                 {{ form.location_long.label_tag }}
                 {{ form.location_long }}
             </div>
+            {% bootstrap_error_list form.location_long.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{ form.location.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.location.errors %} has-error {% endif %}">
                 {{ form.location.label_tag }}
                 {{ form.location }}
             </div>
+            {% bootstrap_error_list form.location.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            {{ form.date.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.date.errors %} has-error {% endif %}">
                 {{ form.date.label_tag }}
                 {{ form.date }}
             </div>
+            {% bootstrap_error_list form.date.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            {{ form.time.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.time.errors %} has-error {% endif %}">
                 {{ form.time.label_tag }}
                 {{ form.time }}
             </div>
+            {% bootstrap_error_list form.time.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            {{ form.repetition_cycle.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.repetition_cycle.errors %} has-error {% endif %}">
                 {{ form.repetition_cycle.label_tag }}
                 {{ form.repetition_cycle }}
             </div>
+            {% bootstrap_error_list form.repetition_cycle.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.organizer.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.organizer.errors %} has-error {% endif %}">
                 {{ form.organizer.label_tag }}
                 {{ form.organizer }}
             </div>
+            {% bootstrap_error_list form.organizer.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.type.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.type.errors %} has-error {% endif %}">
                 {{ form.type.label_tag }}
                 {{ form.type }}
             </div>
+            {% bootstrap_error_list form.type.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.url.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.url.errors %} has-error {% endif %}">
                 {{ form.url.label_tag }}
                 {{ form.url }}
             </div>
+            {% bootstrap_error_list form.url.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.participants.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.participants.errors %} has-error {% endif %}">
                 {{ form.participants.label_tag }}
                 {{ form.participants }}
             </div>
+            {% bootstrap_error_list form.participants.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.counter_event.errors }}
-            <div class="checkbox">
-                <label>
-                    {{ form.counter_event }}
-                    {{ form.counter_event.label }}
-                </label>
+            <div class="{% if form.counter_event.errors %} has-error {% endif %}">
+                <div class="checkbox">
+                    <label>
+                        {{ form.counter_event }}
+                        {{ form.counter_event.label }}
+                    </label>
+                </div>
             </div>
+            {% bootstrap_error_list form.counter_event.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.coverage.errors }}
-            <div class="checkbox">
-                <label>
-                    {{ form.coverage }}
-                    {{ form.coverage.label }}
-                </label>
+            <div class="{% if form.coverage.errors %} has-error {% endif %}">
+                <div class="checkbox">
+                    <label>
+                        {{ form.coverage }}
+                        {{ form.coverage.label }}
+                    </label>
+                </div>
             </div>
+            {% bootstrap_error_list form.coverage.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.twitter_account_names.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.twitter_account_names.errors %} has-error {% endif %}">
                 {{ form.twitter_account_names.label_tag }}
                 {{ form.twitter_account_names }}
             </div>
+            {% bootstrap_error_list form.twitter_account_names.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.twitter_hashtags.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.twitter_hashtags.errors %} has-error {% endif %}">
                 {{ form.twitter_hashtags.label_tag }}
                 {{ form.twitter_hashtags }}
             </div>
+            {{% bootstrap_error_list form.twitter_hashtags.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.coverage_start.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.coverage_start.errors %} has-error {% endif %}">
                 {{ form.coverage_start.label_tag }}
                 {{ form.coverage_start }}
             </div>
+            {% bootstrap_error_list form.coverage_start.errors %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.coverage_end.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.coverage_end.errors %} has-error {% endif %}">
                 {{ form.coverage_end.label_tag }}
                 {{ form.coverage_end }}
             </div>
+            {% bootstrap_error_list form.coverage_end.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{ form.notes.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.notes.errors %} has-error {% endif %}">
                 {{ form.notes.label_tag }}
                 {{ form.notes }}
             </div>
+            {% bootstrap_error_list form.notes.errors %}
         </div>
     </div>
 
-    <div class="row">
+    <div class="row aligned-fields">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{ form.facebook_pages.errors }}
-            <div class="form-group">
+            <div class="form-group {% if form.facebook_pages.errors %} has-error {% endif %}">
                 {{ form.facebook_pages.label_tag }}
                 {{ form.facebook_pages }}
             </div>
+            {% bootstrap_error_list form.facebook_pages.errors %}
         </div>
     </div>
 
@@ -213,27 +221,29 @@
                         </a>
                     </div>
                     <div class="fieldWrapper col-xs-8 col-sm-5 col-md-5 col-lg-5">
-                        {{ form.attachment.errors }}
-                        <div class="form-group">
+                        <div class="form-group {% if form.attachment.errors %} has-error {% endif %}">
                             {{ form.attachment.label_tag }}
                             {{ form.attachment }}
                         </div>
+                        {% bootstrap_error_list form.attachment.errors %}
                     </div>
                     <div class="fieldWrapper col-xs-2 col-sm-2 col-md-1 col-lg-1">
-                        {{ form.public.errors }}
-                        <div class="checkbox">
-                            <label>
-                                {{ form.public }}
-                                {{ form.public.label }}
-                            </label>
+                        <div class="{% if form.public.errors %} has-error {% endif %}">
+                            <div class="checkbox">
+                                <label>
+                                    {{ form.public }}
+                                    {{ form.public.label }}
+                                </label>
+                            </div>
                         </div>
+                        {% bootstrap_error_list form.public.errors %}
                     </div>
                     <div class="fieldWrapper col-xs-12 col-sm-4 col-md-5 col-lg-5">
-                        {{ form.description.errors }}
-                        <div class="form-group">
+                        <div class="form-group {% if form.description.errors %} has-error {% endif %}">
                             {{ form.description.label_tag }}
                             {{ form.description }}
                         </div>
+                        {% bootstrap_error_list form.description.errors %}
                     </div>
                 </div>
             </div>
