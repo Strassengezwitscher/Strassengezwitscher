@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from crowdgezwitscher.fields import RoundingDecimalField
 from crowdgezwitscher.models import MapObjectFilter
 from crowdgezwitscher.widgets import SelectizeSelectMultiple
 from facebook.models import FacebookPage
@@ -14,6 +15,9 @@ from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerS
 
 
 class FacebookPageForm(forms.ModelForm):
+    location_lat = RoundingDecimalField(max_digits=9, decimal_places=6)
+    location_long = RoundingDecimalField(max_digits=9, decimal_places=6)
+
     class Meta:
         model = FacebookPage
         fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'notes', 'events')

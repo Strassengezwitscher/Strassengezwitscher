@@ -3,6 +3,7 @@ from extra_views import InlineFormSet
 
 from events.models import Event, Attachment
 from facebook.models import FacebookPage
+from crowdgezwitscher.fields import RoundingDecimalField
 from crowdgezwitscher.widgets import (
     SelectizeSelectMultiple, SelectizeCSVInput, AttachmentInput,
     BootstrapDatePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker,
@@ -28,6 +29,8 @@ class AttachmentFormSet(InlineFormSet):
 
 
 class EventForm(forms.ModelForm):
+    location_lat = RoundingDecimalField(max_digits=9, decimal_places=6)
+    location_long = RoundingDecimalField(max_digits=9, decimal_places=6)
     facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
         required=False,

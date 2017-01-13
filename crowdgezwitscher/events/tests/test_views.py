@@ -21,8 +21,8 @@ class EventTestCase(TestCase):
         self.post_data.update({
             'name': 'Random Event',
             'active': True,
-            'location_lat': 0.0,
-            'location_long': 0.0,
+            'location_lat': 0.1234567,
+            'location_long': 0.1234567,
             'location': 'Water',
             'date': '2013-05-16',
             'repetition_cycle': 'unbekannter Rhythmus',
