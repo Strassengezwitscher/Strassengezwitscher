@@ -6,10 +6,10 @@
 		<md-input placeholder="Name" type="text" required ngModel name="name"></md-input>
 	</md-input-container>
 	<md-input-container>
-		<md-input placeholder="Breitengrad" type="number" step="any" required ngModel name="locationLat"></md-input>
+		<md-input placeholder="Breitengrad" type="number" step="any" required [ngModel]="marker.position.Lat" name="locationLat"></md-input>
 	</md-input-container>
 	<md-input-container>
-		<md-input placeholder="Längengrad" type="number" step="any" required ngModel name="locationLong"></md-input>
+		<md-input placeholder="Längengrad" type="number" step="any" required [ngModel]="marker.position.Lng" name="locationLong"></md-input>
 	</md-input-container>
 	<md-input-container>
 		<md-input placeholder="Ort" type="text" required ngModel name="location"></md-input>

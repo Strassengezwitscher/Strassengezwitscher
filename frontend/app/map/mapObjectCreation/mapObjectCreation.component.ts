@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, NgZone, OnDestroy } from "@angular/core";
+import { Component, Output, EventEmitter, Input, OnInit, NgZone, OnDestroy } from "@angular/core";
 
 import { MapService } from "../map.service";
 import { MapObjectType, MapObjectTypeNaming } from "../mapObject.model";
@@ -18,9 +18,11 @@ import { Event } from "../../events/shared/event.model";
 export class MapObjectCreationComponent implements OnInit, OnDestroy {
     @Output() public onError = new EventEmitter<string>();
     @Output() public onSuccess = new EventEmitter<string>();
+    @Input("map") public map: google.maps.Map;
     public selectedMapObjectType;
     public mapObjectType = MapObjectType;
     public mapObjectTypes = MapObjectTypeNaming;
+    public marker;
     private captchaVerified;
     private script;
     private config: Config;
@@ -30,6 +32,20 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         this.captchaVerified = false;
         this.config = new Config();
         window["verifyCallback"] = this.verifyCallback.bind(this);
+        /*this.marker = new google.maps.Marker({
+            position: new google.maps.LatLng(0.0,0.0),
+            map: this.map
+        });
+
+        google.maps.event.addListener(this.map, 'click', function(event){
+            this.zone.run(() => {
+                this.moveMarker(event.latLng);
+            });
+        });*/
+    }
+
+    public moveMarker(location) {
+        this.marker.position(location);
     }
 
     public send(moc) {

@@ -53,9 +53,9 @@ export class MapComponent implements AfterViewInit {
     public mapState: MapStateType;
     public mapStateEnum = MapStateType;
     @ViewChild("mapCanvas") public mapCanvas;
+    public map: google.maps.Map;
     private errorMessageDisplayTime: number = 5000;
     private successMessageDisplayTime: number = 5000;
-    private map: google.maps.Map;
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
