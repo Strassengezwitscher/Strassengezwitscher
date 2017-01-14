@@ -7,7 +7,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework import filters
 
 
-class MapObjectFilter(filters.BaseFilterBackend):
+class MapObjectFilterBackend(filters.BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
 

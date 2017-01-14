@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 
-from crowdgezwitscher.models import MapObject
+from base.models import MapObject
 
 
 class MapObjectModelTests(TestCase):
