@@ -1,8 +1,9 @@
 from django import forms
 from extra_views import InlineFormSet
 
+from base.fields import ModelMultipleChoiceImplicitCreationField
 from base.widgets import (
-    SelectizeSelectMultiple, SelectizeSelectMultipleCSVInput, AttachmentInput,
+    SelectizeSelectMultiple, AttachmentInput,
     BootstrapDatePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker,
 )
 from events.models import Event, Attachment
@@ -35,10 +36,11 @@ class EventForm(forms.ModelForm):
         widget=SelectizeSelectMultiple()
     )
 
-    twitter_hashtags = forms.ModelMultipleChoiceField(
+    twitter_hashtags = ModelMultipleChoiceImplicitCreationField(
         queryset=Hashtag.objects.all().order_by('hashtag_text'),
-        required=False,
-        widget=SelectizeSelectMultipleCSVInput()
+        prefix='__new_hashtag__',
+        attr_name='hashtag_text',
+        required=False
     )
 
     twitter_account_names = forms.ModelMultipleChoiceField(
@@ -91,19 +93,3 @@ class EventForm(forms.ModelForm):
             instance.twitter_accounts.clear()
             instance.twitter_accounts.add(*self.cleaned_data['twitter_account_names'])
         return instance
-
-    def clean(self):
-        cleaned_data = super(EventForm, self).clean()
-        cleaned_hashtags = []
-
-        for hashtag in self['twitter_hashtags'].value():
-            if hashtag.startswith("__new_hashtag__"):
-                hashtag_db, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag.split("__new_hashtag__")[1])
-                cleaned_hashtags.append(hashtag_db)
-            else:
-                cleaned_hashtags.append(Hashtag.objects.get(pk=int(hashtag)))
-
-        if 'twitter_hashtags' in self.errors:
-            del self.errors['twitter_hashtags']
-        self.cleaned_data['twitter_hashtags'] = cleaned_hashtags
-        return cleaned_data
