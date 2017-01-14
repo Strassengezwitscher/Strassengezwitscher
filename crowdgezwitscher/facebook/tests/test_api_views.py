@@ -4,8 +4,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from base.tests.test_api_views import MapObjectApiViewTestTemplate
 from facebook.models import FacebookPage
-from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
 class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):

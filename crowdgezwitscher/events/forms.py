@@ -1,12 +1,12 @@
 from django import forms
 from extra_views import InlineFormSet
 
-from events.models import Event, Attachment
-from facebook.models import FacebookPage
-from crowdgezwitscher.widgets import (
+from base.widgets import (
     SelectizeSelectMultiple, SelectizeCSVInput, AttachmentInput,
     BootstrapDatePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker,
 )
+from events.models import Event, Attachment
+from facebook.models import FacebookPage
 
 
 class AttachmentForm(forms.ModelForm):
