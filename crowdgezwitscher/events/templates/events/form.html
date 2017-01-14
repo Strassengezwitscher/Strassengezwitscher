@@ -43,17 +43,17 @@
     </div>
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            {{ form.location_long.errors }}
-            <div class="form-group">
-                {{ form.location_long.label_tag }}
-                {{ form.location_long }}
-            </div>
-        </div>
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {{ form.location_lat.errors }}
             <div class="form-group">
                 {{ form.location_lat.label_tag }}
                 {{ form.location_lat }}
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            {{ form.location_long.errors }}
+            <div class="form-group">
+                {{ form.location_long.label_tag }}
+                {{ form.location_long }}
             </div>
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -66,14 +66,21 @@
     </div>
 
     <div class="row">
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
             {{ form.date.errors }}
             <div class="form-group">
                 {{ form.date.label_tag }}
                 {{ form.date }}
             </div>
         </div>
-        <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {{ form.time.errors }}
+            <div class="form-group">
+                {{ form.time.label_tag }}
+                {{ form.time }}
+            </div>
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
             {{ form.repetition_cycle.errors }}
             <div class="form-group">
                 {{ form.repetition_cycle.label_tag }}
@@ -167,6 +174,16 @@
             <div class="form-group">
                 {{ form.coverage_end.label_tag }}
                 {{ form.coverage_end }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {{ form.notes.errors }}
+            <div class="form-group">
+                {{ form.notes.label_tag }}
+                {{ form.notes }}
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@
         <p *ngIf="event.date">
             <strong>Datum:</strong><br>
             {{dateFormat(event.date)}}
+            <span *ngIf="event.time">- {{ event.time }}</span>
         </p>
         <p *ngIf="event.organizer">
             <strong>Organisator:</strong><br>
@@ -26,10 +27,14 @@
             <span *ngIf="event.counterEvent">Ja</span>
             <span *ngIf="!event.counterEvent">Nein</span>
         </p>
-        <p >
+        <p>
             <strong>Berichterstattung:</strong><br>
             <span *ngIf="event.coverage">Ja (Twitter-Feed)</span>
             <span *ngIf="!event.coverage">Nein</span>
+        </p>
+        <p *ngIf="event.notes">
+            <strong>Notizen:</strong><br>
+            {{event.notes}}
         </p>
     </md-card-content>
     <md-card-actions>

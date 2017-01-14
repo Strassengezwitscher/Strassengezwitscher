@@ -1,3 +1,5 @@
+import json
+
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
@@ -51,24 +53,73 @@ class SelectizeCSVInput(forms.widgets.TextInput):
         return mark_safe(''.join(html + script))
 
 
-class BootstrapDatepicker(forms.widgets.DateInput):
+class BootstrapPicker(object):
     class Media:
         css = {
-            'all': ('bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',)
+            'all': ('eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',)
         }
-        js = ('bootstrap-datepicker/dist/js/bootstrap-datepicker.js',)
+        js = (
+            'moment/min/moment-with-locales.min.js',
+            'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+        )
 
     def render(self, name, value, attrs=None):
         attrs = {} if attrs is None else attrs
         attrs.update({'class': 'form-control'})
-        html = super(BootstrapDatepicker, self).render(name, value, attrs)
-        html = '<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd"> \
+        html = super(BootstrapPicker, self).render(name, value, attrs)
+        html = '<div class="input-group date"> \
                 %s \
                 <div class="input-group-addon"> \
-                    <span class="glyphicon glyphicon-th"></span> \
+                    <span class="glyphicon glyphicon-calendar"></span> \
                 </div> \
             </div>' % html
+        html += '<script type="text/javascript"> \
+            $(function() { \
+                $("#%s").datetimepicker(%s); \
+           }); \
+        </script>' % (attrs['id'], json.dumps(self.config()))
         return mark_safe(html)
+
+    def config(self):
+        return {
+            'locale': 'de',
+            'showClose': True,
+            'useCurrent': False,
+        }
+
+
+class ClearableBootstrapPickerMixin(object):
+    def config(self):
+        config = super(ClearableBootstrapPickerMixin, self).config()
+        config.update({'showClear': True})
+        return config
+
+
+class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
+    def config(self):
+        config = super(BootstrapDatePicker, self).config()
+        config.update({
+            'viewMode': 'days',
+            'format': 'YYYY-MM-DD',
+        })
+        return config
+
+
+class BootstrapTimePicker(BootstrapPicker, forms.widgets.DateInput):
+    def config(self):
+        config = super(BootstrapTimePicker, self).config()
+        config.update({
+            'format': 'HH:mm',
+        })
+        return config
+
+
+class ClearableBootstrapDatePicker(ClearableBootstrapPickerMixin, BootstrapDatePicker):
+    pass
+
+
+class ClearableBootstrapTimePicker(ClearableBootstrapPickerMixin, BootstrapTimePicker):
+    pass
 
 
 class AttachmentInput(forms.widgets.ClearableFileInput):

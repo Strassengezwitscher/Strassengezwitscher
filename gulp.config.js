@@ -65,9 +65,9 @@ module.exports = function () {
             path.npm + 'django-formset/dist/django-formset.js',
             path.npm + 'selectize/dist/js/standalone/selectize.min.js',
             path.npm + 'selectize/dist/css/selectize.bootstrap3.css',
-            path.npm + 'bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
-            path.npm + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
-            path.npm + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css.map',
+            path.npm + 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+            path.npm + 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+            path.npm + 'moment/min/moment-with-locales.min.js',
         ],
         angular_dependencies: {
             files: [

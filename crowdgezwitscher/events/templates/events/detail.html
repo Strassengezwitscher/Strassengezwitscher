@@ -6,7 +6,7 @@
 <ul>
     <li><b>Aktiv:</b> {{ event.active }}</li>
     <li><b>Position:</b> {{ event.location_lat }} {{ event.location_long }} {% if event.location %}({{ event.location }}){% endif %}</li>
-    <li><b>Tag:</b> {{ event.date }}</li>
+    <li><b>Tag:</b> {{ event.date }} {% if event.time %} {{ event.time}} {% endif %}</li>
     <li><b>Zyklus:</b> {{ event.repetition_cycle }}</li>
     <li><b>Organizator:</b> {{ event.organizer }}</li>
     <li><b>Typ:</b> {{ event.type }}</li>
@@ -40,6 +40,7 @@
             {% endfor %}
         </ul>
     </li>
+    <li><b>Notizen:</b>{{ event.notes | linebreaks }}</li>
     <li><b>Anhänge:</b>
         <ul>
             {% for attachment in event.attachments.all %}

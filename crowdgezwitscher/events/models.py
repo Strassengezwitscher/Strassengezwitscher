@@ -19,6 +19,7 @@ from crowdgezwitscher.models import MapObject
 @python_2_unicode_compatible
 class Event(MapObject):
     date = models.DateField()
+    time = models.TimeField(blank=True, null=True)
     repetition_cycle = models.CharField(max_length=50, default='unbekannter Rhythmus')
     organizer = models.CharField(max_length=100, blank=True)
     type = models.CharField(max_length=50, blank=True)
@@ -26,6 +27,7 @@ class Event(MapObject):
     counter_event = models.BooleanField(default=False)
     coverage = models.BooleanField(default=False)
     participants = models.CharField(max_length=20, blank=True)
+    notes = models.TextField(blank=True)
     twitter_account_names = models.CharField(max_length=150, blank=True)
     twitter_hashtags = models.CharField(max_length=150, blank=True)
     coverage_start = models.DateField(blank=True, null=True)

@@ -60,12 +60,14 @@ class EventAPIViewTests(APITestCase):
             u'name': u'Test Event',
             u'location': u'Here',
             u'date': u'2016-07-20',
+            u'time': u'13:37',
             u'repetitionCycle': u'unbekannter Rhythmus',
             u'type': u'',
             u'url': u'',
             u'counterEvent': False,
             u'coverage': True,
             u'participants': u'',
+            u'notes': u'',
             u'organizer': u'Person P',
             u'attachments': [
                 {
@@ -108,12 +110,14 @@ class EventAPIViewTests(APITestCase):
             u'name': u'Test Event',
             u'location': u'Here',
             u'date': u'2016-07-20',
+            u'time': u'13:37',
             u'repetitionCycle': u'unbekannter Rhythmus',
             u'type': u'',
             u'url': u'',
             u'counterEvent': False,
             u'coverage': True,
             u'participants': u'',
+            u'notes': u'',
             u'organizer': u'Person P',
             u'attachments': [
                 {

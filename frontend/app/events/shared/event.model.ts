@@ -5,6 +5,7 @@ export class Event {
     public locationLong: number;
     public locationLat: number;
     public date: string;
+    public time: string;
     public repetitionCycle: string;
     public organizer: string;
     public type: string;
@@ -12,4 +13,5 @@ export class Event {
     public counterEvent: boolean;
     public coverage: boolean;
     public participants: string;
+    public notes: string;
 }

@@ -15,6 +15,7 @@ export enum DateFilter {
 class MapFilter {
     constructor(
         public name: string, public infoText: string, public filter: DateFilter,
+        public showInfo: boolean = false,
     ) {}
 }
 

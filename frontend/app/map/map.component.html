@@ -13,8 +13,15 @@
                 <div class="map-sub-settings" *ngIf="mapObjectSetting.visible && mapObjectSetting.mapFilterOptions.length > 1" [@slideInOut]="mapObjectSetting.visible">
                     <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter" (ngModelChange)="onRadioChange()">
                         <md-radio-button class="map-sub-setting" *ngFor="let option of mapObjectSetting.mapFilterOptions" [value]="option">
-                            {{ option.name }}
-                            <md-icon *ngIf="option.infoText" style="font-size:16px; padding-left: 4px; line-height: 24px;" md-tooltip="{{ option.infoText }}" tooltip-position="before">info</md-icon>
+                            <div>
+                                <div (mouseenter)="option.showInfo = true" (mouseleave)="option.showInfo = false">
+                                    {{ option.name }}
+                                    <md-icon class="infoIcon" *ngIf="option.infoText">info</md-icon>
+                                </div>
+                                <div class="infoText" *ngIf="option.showInfo" [@slideInOut]="option.showInfo">
+                                    {{ option.infoText }}
+                                </div>
+                            </div>
                         </md-radio-button>
                     </md-radio-group>
                 </div>
