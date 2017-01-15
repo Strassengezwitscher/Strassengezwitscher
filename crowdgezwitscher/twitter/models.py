@@ -33,6 +33,10 @@ class TwitterAccount(models.Model):
         return reverse('twitter:detail', kwargs={'pk': self.pk})
 
     def clean(self):
+        # remove leading @
+        if self.name.startswith('@'):
+            self.name = self.name[1:]
+
         twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
                              settings.TWITTER_CONSUMER_SECRET,
                              auth_type='oAuth2')
@@ -154,6 +158,11 @@ class Hashtag(models.Model):
 
     def __str__(self):
         return self.hashtag_text
+
+    def clean(self):
+        # remove leading #
+        if self.hashtag_text.startswith('#'):
+            self.hashtag_text = self.hashtag_text[1:]
 
 
 @python_2_unicode_compatible
