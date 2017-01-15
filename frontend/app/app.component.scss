@@ -11,17 +11,26 @@
 // that you are using.
 @include angular-material-theme($theme);
 
-// FIX: hide focus for radio buttons
+// Begin: FIXES for Angular Material
+
+// Hide focus for radio buttons
 .md-radio-ripple {
   display: none;
 }
 
-// FIX: button link disabled problem
-.md-button-link-workaround {
-  color: rgba(0, 0, 0, .87) !important;
-  cursor: pointer !important;
+// Correct size for radio button (incl. spacing)
+.md-radio-container {
+  min-width: 20px;
 }
-// End: FIXES
+
+// Remove focus ripple for links with target "_blank"
+.unfocusable.md-button-focus {
+  .md-button-focus-overlay {
+    background-color: transparent;
+  }
+}
+
+// End: FIXES for Angular Material
 
 $background: map-get($theme, background);
 
@@ -56,7 +65,7 @@ body {
 }
 
 .hide-on-med-only {
-  @media only screen and (min-width: $small-screen) and (max-width: $medium-screen) {
+  @media only screen and (min-width: $small-screen-up) and (max-width: $medium-screen) {
     display: none;
   }
 }
@@ -110,8 +119,4 @@ body {
   cursor: pointer;
   height: 100%;
   width: 250px;
-}
-
-.unfocusable.md-button-focus::after {
-  background-color: transparent;
 }
