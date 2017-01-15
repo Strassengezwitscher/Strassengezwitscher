@@ -12,7 +12,7 @@
     {% csrf_token %}
 
     {% bootstrap_error_list form.non_field_errors %}
-    <div class="row aligned-fields">
+    <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
             {% bootstrap_field form.name %}
         </div>
@@ -20,7 +20,7 @@
             {% bootstrap_checkbox form.active %}
         </div>
     </div>
-    <div class="row aligned-fields">
+    <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
             {% bootstrap_field form.location_lat %}
         </div>
@@ -31,12 +31,12 @@
             {% bootstrap_field form.location %}
         </div>
     </div>
-    <div class="row aligned-fields">
+    <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {% bootstrap_field form.notes %}
         </div>
     </div>
-    <div class="row aligned-fields">
+    <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {% bootstrap_field form.events %}
         </div>
