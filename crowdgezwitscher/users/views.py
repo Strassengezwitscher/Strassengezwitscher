@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.models import User
 
-from crowdgezwitscher.widgets import SelectizeSelectMultiple
+from base.widgets import SelectizeSelectMultiple
 from .mixins import NoStaffMixin
 
 

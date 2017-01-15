@@ -7,8 +7,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from TwitterAPI import TwitterResponse, TwitterConnectionError
 
+from base.tests.test_api_views import MapObjectApiViewTestTemplate
 from events.models import Event
-from crowdgezwitscher.tests.test_api_views import MapObjectApiViewTestTemplate
 
 
 class EventAPIViewTests(APITestCase):
