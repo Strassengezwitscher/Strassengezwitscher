@@ -39,9 +39,9 @@ class ModelMultipleChoiceImplicitCreationField(forms.ModelMultipleChoiceField):
         return super(ModelMultipleChoiceImplicitCreationField, self)._check_values(existing_elems)
 
     def save_new_elements(self):
-        model = self.queryset.model
         new_objs = []
         if hasattr(self, 'new_elements'):
+            model = self.queryset.model
             for elem in self.new_elements:
                 try:
                     obj = model.objects.get(**{'%s' % self.attr_name: elem})
