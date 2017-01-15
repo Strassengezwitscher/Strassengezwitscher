@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView
 
-from . import views
+from base import views
 
 urlpatterns = [
     # Django admin URLs

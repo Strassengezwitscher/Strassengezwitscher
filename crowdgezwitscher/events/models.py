@@ -13,7 +13,7 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as timezone_now
 
-from crowdgezwitscher.models import MapObject
+from base.models import MapObject
 
 
 @python_2_unicode_compatible

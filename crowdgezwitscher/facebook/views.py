@@ -7,9 +7,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from crowdgezwitscher.fields import RoundingDecimalField
-from crowdgezwitscher.models import MapObjectFilter
-from crowdgezwitscher.widgets import SelectizeSelectMultiple
+from base.fields import RoundingDecimalField
+from base.models import MapObjectFilterBackend
+from base.widgets import SelectizeSelectMultiple
 from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 
@@ -71,7 +71,7 @@ class FacebookPageDelete(PermissionRequiredMixin, DeleteView):
 class FacebookPageAPIList(generics.ListAPIView):
     queryset = FacebookPage.objects.filter(active=True)
     serializer_class = FacebookPageSerializerShortened
-    filter_backends = (MapObjectFilter,)
+    filter_backends = (MapObjectFilterBackend,)
 
 
 class FacebookPageAPIDetail(generics.RetrieveAPIView):

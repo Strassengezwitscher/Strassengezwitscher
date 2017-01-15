@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.test import TestCase
 
-from crowdgezwitscher.fields import RoundingDecimalField
+from base.fields import RoundingDecimalField
 
 
 class RoundingDecimalFieldTests(TestCase):
