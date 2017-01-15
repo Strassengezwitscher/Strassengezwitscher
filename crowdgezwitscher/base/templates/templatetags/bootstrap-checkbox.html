@@ -1,0 +1,12 @@
+{% load bootstrap_tags %}
+
+<label class="hidden-xs"></label>
+<div class="{% if field.errors %} has-error {% endif %}">
+    <div class="checkbox">
+        <label>
+            {{ field }}
+            {{ field.label }}
+        </label>
+    </div>
+</div>
+{% bootstrap_error_list field.errors %}
