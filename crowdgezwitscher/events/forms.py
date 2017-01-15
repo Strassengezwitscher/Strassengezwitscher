@@ -29,8 +29,12 @@ class AttachmentFormSet(InlineFormSet):
 
 
 class EventForm(forms.ModelForm):
-    location_lat = RoundingDecimalField(max_digits=9, decimal_places=6)
-    location_long = RoundingDecimalField(max_digits=9, decimal_places=6)
+    location_lat = RoundingDecimalField(
+        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+    )
+    location_long = RoundingDecimalField(
+        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+    )
     facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
         required=False,
@@ -49,8 +53,6 @@ class EventForm(forms.ModelForm):
             'coverage_end': ClearableBootstrapDatePicker(),
             'date': BootstrapDatePicker(),
             'time': ClearableBootstrapTimePicker(),
-            'location_long': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
-            'location_lat': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
