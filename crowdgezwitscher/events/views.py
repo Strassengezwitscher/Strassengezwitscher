@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
+from django.utils import timezone
 from django.urls import reverse_lazy
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
@@ -17,6 +18,7 @@ from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
 from events.forms import EventForm, AttachmentFormSet
+from twitter.models import Tweet
 
 
 class EventListView(PermissionRequiredMixin, ListView):
@@ -81,18 +83,35 @@ def get_tweets(request, pk, format=None):
     if not event.coverage:
         return Response([])
 
-    tweets_ids = []
+    event_hashtag_ids = [hashtag.id for hashtag in event.hashtags.all()]
 
-    for account in event.twitter_accounts.all():
-        for tweet in account.tweet_set.all():
-            if event.coverage_start <= tweet.created_at.date() <= event.coverage_end:
-                if tweet.account in event.twitter_accounts.all():
-                    event_hashtags = event.hashtags.all()
-                    twitter_hashtags = tweet.hashtags.all()
-                    if event_hashtags:
-                        if any([hashtag in twitter_hashtags for hashtag in event_hashtags]):
-                            tweets_ids.append(tweet.tweet_id)
-                    else:
-                        tweets_ids.append(tweet.tweet_id)
+    # Convert event coverage dates to datetimes as they will be compared to Tweets' creation datetimes.
+    # The time part will be set to 00:00:00.
+    # tweets_till would therefore be the earliest possible datetime for coverage_end. As we want to includes dates from
+    # that date, we add another day to tweets_till.
+    tweets_from = timezone.make_aware(datetime(
+        event.coverage_start.year,
+        event.coverage_start.month,
+        event.coverage_start.day
+    ))
+    tweets_till = timezone.make_aware(datetime(
+        event.coverage_end.year,
+        event.coverage_end.month,
+        event.coverage_end.day
+    )) + timedelta(days=1)
 
-    return Response(tweets_ids)
+    # It would be possible also use the __date field lookup of created_at before using __range.
+    # This would allow using coverage_start and coverage_end, so no need for tweets_from and tweets_till.
+    # However, this would nearly double the processing time.
+    tweets = Tweet.objects.filter(
+            account__in=event.twitter_accounts.all(),
+            created_at__range=(tweets_from, tweets_till),
+    )
+    # If the event specifies hashtags, each tweet needs to include at least one of them.
+    # Otherwise, there are no restrictions on tweets' hashtags.
+    if event_hashtag_ids:
+        tweets = tweets.filter(hashtags__in=event_hashtag_ids)
+
+    # If a tweet and the event have multiple hashtags in common, the tweet is included multiple times.
+    # We therefore need to call distinct().
+    return Response([tweet.tweet_id for tweet in tweets.distinct()])
