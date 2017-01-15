@@ -77,7 +77,7 @@ def get_tweets(request, pk, format=None):
     Searches for saved tweets matching the Event's registered hashtags, accounts and dates.
     The dates form an open interval.
     """
-    event = get_object_or_404(Event, pk=pk)
+    event = get_object_or_404(Event, pk=pk, active=True)
     if not event.coverage:
         return Response([])
 
