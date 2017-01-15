@@ -43,10 +43,11 @@ class EventForm(forms.ModelForm):
         required=False
     )
 
-    twitter_account_names = forms.ModelMultipleChoiceField(
+    twitter_account_names = ModelMultipleChoiceImplicitCreationField(
         queryset=TwitterAccount.objects.all().order_by('name'),
+        prefix='__new_account__',
+        attr_name='name',
         required=False,
-        widget=SelectizeSelectMultiple()
     )
 
     class Meta:

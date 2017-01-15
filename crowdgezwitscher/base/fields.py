@@ -42,6 +42,11 @@ class ModelMultipleChoiceImplicitCreationField(forms.ModelMultipleChoiceField):
         model = self.queryset.model
         new_objs = []
         for elem in self.new_elements:
-            obj, __ = model.objects.get_or_create(**{'%s' % self.attr_name: elem})
+            try:
+                obj = model.objects.get(**{'%s' % self.attr_name: elem})
+            except model.DoesNotExist:
+                obj = model(**{'%s' % self.attr_name: elem})
+                obj.clean()
+                obj.save()
             new_objs.append(obj)
         return new_objs

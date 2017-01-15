@@ -58,7 +58,7 @@ class SelectizeSelectMultipleCSVInput(forms.widgets.SelectMultiple):
                         } \
                     }); \
                 }); \
-            </script>' % (attrs['id'], '[%s]' % ','.join(map(str, value)), self.prefix)
+            </script>' % (attrs['id'], '["%s"]' % '","'.join(map(str, value)), self.prefix)
         return mark_safe(''.join(html + script))
 
 
