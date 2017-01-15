@@ -70,7 +70,7 @@
     "karma-mocha-reporter": "2.2.1",
     "karma-phantomjs-launcher": "1.0.2",
     "karma-sourcemap-loader": "0.3.7",
-    "remap-istanbul": "0.8.4",
+    "remap-istanbul": "0.6.4",
     "tslint": "4.3.1"
   }
 }
