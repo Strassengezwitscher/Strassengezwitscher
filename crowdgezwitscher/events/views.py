@@ -1,13 +1,9 @@
 from datetime import timedelta
 
-from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterRequestError
-
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import api_view
 
-from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
@@ -17,7 +13,6 @@ from django.urls import reverse_lazy
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from base.models import MapObjectFilterBackend
-from crowdgezwitscher.log import logger
 from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened
