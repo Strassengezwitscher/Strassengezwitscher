@@ -120,7 +120,13 @@ gulp.task('compile:typescript', ['copy:config'], function() {
     return merge([
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
-            .pipe(sourcemaps.write('./', {sourceRoot: config.path.partial.frontend}))
+            .pipe(sourcemaps.write('.', {
+                sourceRoot: config.path.partial.frontend,
+                mapSources: function(path) {
+                    // see https://github.com/floridoo/gulp-sourcemaps/issues/174#issuecomment-272007526
+                    return path
+                }
+            }))
             .pipe(gulp.dest(config.path.build + config.path.partial.frontend))
     ]);
 });
