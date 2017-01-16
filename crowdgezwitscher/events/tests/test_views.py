@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import tempfile
 
@@ -229,10 +230,10 @@ class EventViewCorrectPermissionMixin(object):
         response = self.client.post(reverse('events:create'), post_data)
         self.assertEqual(response.status_code, 200)
         self.assertIn('form', response.context)  # shows form again
-        self.assertFormError(response, 'form', 'coverage', 'Nicht alle benötigen Felder wurden ausgefüllt')
-        self.assertFormError(response, 'form', 'twitter_account_names', 'Wird für eine Berichterstattung benötigt')
-        self.assertFormError(response, 'form', 'coverage_start', 'Wird für eine Berichterstattung benötigt')
-        self.assertFormError(response, 'form', 'coverage_end', 'Wird für eine Berichterstattung benötigt')
+        self.assertFormError(response, 'form', 'coverage', u'Nicht alle benötigen Felder wurden ausgefüllt')
+        self.assertFormError(response, 'form', 'twitter_account_names', u'Wird für eine Berichterstattung benötigt')
+        self.assertFormError(response, 'form', 'coverage_start', u'Wird für eine Berichterstattung benötigt')
+        self.assertFormError(response, 'form', 'coverage_end', u'Wird für eine Berichterstattung benötigt')
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('events:create'), self.empty_formset)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from extra_views import InlineFormSet
 
@@ -87,7 +88,7 @@ class EventForm(forms.ModelForm):
 
         # for activating a coverage all requried parameter must be set
         if coverage:
-            msg = 'Wird für eine Berichterstattung benötigt'
+            msg = u'Wird für eine Berichterstattung benötigt'
             errors = []
             if coverage_start is None:
                 errors.append(('coverage_start', msg))
@@ -98,7 +99,7 @@ class EventForm(forms.ModelForm):
             if errors:
                 for error in errors:
                     self.add_error(*error)
-                self.add_error('coverage', 'Nicht alle benötigen Felder wurden ausgefüllt')
+                self.add_error('coverage', u'Nicht alle benötigen Felder wurden ausgefüllt')
 
     def save(self, *args, **kwargs):
         instance = super(EventForm, self).save(*args, **kwargs)
