@@ -175,4 +175,5 @@ class Tweet(models.Model):
     is_reply = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%s - %s" % (self.account, self.content)
+        date = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return "%s at %s - %s" % (self.account, date, self.content)
