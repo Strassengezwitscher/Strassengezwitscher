@@ -46,19 +46,20 @@ class EventForm(forms.ModelForm):
         fields = (
             'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
             'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end', 'participants', 'time', 'notes',
+            'coverage_start', 'coverage_end', 'participants', 'time', 'notes', 'internal_notes',
         )
         widgets = {
             'coverage_start': ClearableBootstrapDatePicker(),
             'coverage_end': ClearableBootstrapDatePicker(),
             'date': BootstrapDatePicker(),
-            'time': ClearableBootstrapTimePicker(),
+            'internal_notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
             'participants': forms.TextInput(attrs={'class': 'form-control'}),
             'organizer': forms.TextInput(attrs={'class': 'form-control'}),
             'repetition_cycle': forms.TextInput(attrs={'class': 'form-control'}),
+            'time': ClearableBootstrapTimePicker(),
             'twitter_account_names': SelectizeCSVInput(),
             'twitter_hashtags': SelectizeCSVInput(),
             'type': forms.TextInput(attrs={'class': 'form-control'}),

@@ -41,6 +41,7 @@
         </ul>
     </li>
     <li><b>Notizen:</b>{{ event.notes | linebreaks }}</li>
+    <li><b>Interne Notizen:</b>{{ event.internal_notes | linebreaks }}</li>
     <li><b>Anhänge:</b>
         <ul>
             {% for attachment in event.attachments.all %}

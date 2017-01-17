@@ -31,6 +31,8 @@ class MapObject(models.Model):
     location = models.CharField(max_length=100)
     location_lat = models.DecimalField(max_digits=9, decimal_places=6)
     location_long = models.DecimalField(max_digits=9, decimal_places=6)
+    notes = models.TextField(blank=True)
+    internal_notes = models.TextField(blank=True)
 
     def __repr__(self):
         return '<MapObject %s>' % self.name

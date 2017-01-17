@@ -1,7 +1,6 @@
 from decimal import Decimal
 
 from django import forms
-from django.db import models
 
 
 def round_decimal(value, places):
