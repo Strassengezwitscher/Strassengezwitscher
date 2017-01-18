@@ -10,10 +10,10 @@ export default {
   sourceMap: false,
   format: 'iife',
   plugins: [
-      nodeResolve({jsnext: true, module: true}),
-      commonjs({
-        include: 'node_modules/rxjs/**',
-      }),
-      uglify()
+    nodeResolve({jsnext: true, module: true}),
+    commonjs({
+      include: 'node_modules/rxjs/**',
+    }),
+    uglify()
   ]
 }

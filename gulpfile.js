@@ -113,16 +113,20 @@ gulp.task('compile:sass', ['clean:angular_material'], function() {
 });
 
 gulp.task('compile:typescript', ['copy:config'], function() {
-    var tsProject = ts.createProject('./tsconfig-dev.json', {
-        typescript: require('typescript')
-    });
+    var tsProject = ts.createProject('./tsconfig-dev.json');
     var tsResult = gulp.src([config.typescript.files, config.typescript.exclude_files])
         .pipe(sourcemaps.init())
-        .pipe(ts(tsProject));
+        .pipe(tsProject());
     return merge([
         tsResult.dts.pipe(gulp.dest(config.path.build)),
         tsResult.js
-            .pipe(sourcemaps.write('./', {sourceRoot: config.path.partial.frontend}))
+            .pipe(sourcemaps.write('.', {
+                sourceRoot: config.path.partial.frontend,
+                mapSources: function(path) {
+                    // see https://github.com/floridoo/gulp-sourcemaps/issues/174#issuecomment-272007526
+                    return path
+                }
+            }))
             .pipe(gulp.dest(config.path.build + config.path.partial.frontend))
     ]);
 });
