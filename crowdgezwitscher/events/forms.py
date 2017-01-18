@@ -79,14 +79,14 @@ class EventForm(forms.ModelForm):
         coverage_start = cleaned_data.get('coverage_start')
         coverage_end = cleaned_data.get('coverage_end')
 
-        # coverage dates mus be in correct order
+        # coverage dates must be in correct order
         if coverage_start is not None and coverage_end is not None:
             if coverage_end < coverage_start:
                 msg = "'coverage_start' muss vor 'coverage_end' liegen"
                 self.add_error('coverage_start', msg)
                 self.add_error('coverage_end', msg)
 
-        # for activating a coverage all requried parameter must be set
+        # for activating a coverage all required parameters must be set
         if coverage:
             msg = u'Wird für eine Berichterstattung benötigt'
             errors = []
