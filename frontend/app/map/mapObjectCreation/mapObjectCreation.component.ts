@@ -119,6 +119,23 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         });
     }
 
+    public changeMarkerLat(lat) {
+        if (this.marker == null) {
+            this.moveMarker({"lat": Number(lat), "lng": 0.0});
+        } else {
+            this.moveMarker({"lat": Number(lat), "lng": this.marker.position.lng()});
+        }
+
+    }
+
+    public changeMarkerLng(lng) {
+        if (this.marker == null) {
+            this.moveMarker({"lat": 0.0, "lng": Number(lng)});
+        } else {
+            this.moveMarker({"lat": this.marker.position.lat(), "lng": Number(lng)});
+        }
+    }
+
     private removeCaptchaScript() {
         this.script.parentNode.removeChild(this.script);
     }
