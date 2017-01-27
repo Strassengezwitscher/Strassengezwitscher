@@ -41,6 +41,12 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
                 position: location,
                 map: this.map,
             });
+            this.marker.addListener("click", () => {
+                this.zone.run(() => {
+                    this.marker.setMap(null);
+                    this.marker = null;
+                });
+            });
         } else {
             this.marker.setPosition(location);
         }
@@ -49,10 +55,9 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         google.maps.event.clearListeners(this.map, "click");
         this.appendCaptchaScript();
-        let tmpThis = this;
         google.maps.event.addListener(this.map, "click", (event) => {
-            tmpThis.zone.run(() => {
-                tmpThis.moveMarker(event.latLng);
+            this.zone.run(() => {
+                this.moveMarker(event.latLng);
             });
         });
     }
