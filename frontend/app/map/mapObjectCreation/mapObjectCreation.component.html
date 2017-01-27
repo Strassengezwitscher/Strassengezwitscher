@@ -1,6 +1,6 @@
-<select placeholder="Kartenobjekt Kategorie" [(ngModel)]="selectedMapObjectType">
-	<option *ngFor="let mot of mapObjectTypes" [value]="mot.id">{{mot.name}}</option>
-</select>
+<md-select placeholder="Kategorie" [(ngModel)]="selectedMapObjectType" required>
+	<md-option *ngFor="let mot of mapObjectTypes" [value]="mot.id">{{mot.name}}</md-option>
+</md-select>
 <form mapObjectCreation #moc="ngForm" class="moc-card">
 	<md-input-container>
 		<input md-input placeholder="Name" type="text" required ngModel name="name">
