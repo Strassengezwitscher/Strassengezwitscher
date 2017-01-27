@@ -29,7 +29,7 @@
         </md-card-content>
     </md-card>
     <md-card *ngIf="mapState == mapStateEnum.ADDING">
-    <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" (onSuccess)="setSuccessMessage($event)"></cg-map-object-creation>
+    <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" (onSuccess)="setSuccessMessage($event)" (onDestroy)="addMapListener()"></cg-map-object-creation>
     </md-card>
 </div>
 <div [ngSwitch]= "selectedMapObjectType" class="map-infos" *ngIf="mapState == mapStateEnum.VIEWING">

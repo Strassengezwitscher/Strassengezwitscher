@@ -3,47 +3,45 @@
 </select>
 <form mapObjectCreation #moc="ngForm" class="moc-card">
 	<md-input-container>
-		<md-input placeholder="Name" type="text" required ngModel name="name"></md-input>
+		<input md-input placeholder="Name" type="text" required ngModel name="name">
 	</md-input-container>
 	<md-input-container>
-		<md-input placeholder="Breitengrad" type="number" step="any" required [ngModel]="marker.position.Lat" name="locationLat"></md-input>
+		<input md-input placeholder="Breitengrad" type="number" step="any" required [ngModel]="marker?.position.lat()" name="locationLat">
 	</md-input-container>
 	<md-input-container>
-		<md-input placeholder="Längengrad" type="number" step="any" required [ngModel]="marker.position.Lng" name="locationLong"></md-input>
+		<input md-input placeholder="Längengrad" type="number" step="any" required [ngModel]="marker?.position.lng()" name="locationLong">
 	</md-input-container>
 	<md-input-container>
-		<md-input placeholder="Ort" type="text" required ngModel name="location"></md-input>
+		<input md-input placeholder="Ort" type="text" required ngModel name="location">
 	</md-input-container>
 	<div *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
 		<md-input-container>
-			<md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date"></md-input>
+			<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
 		</md-input-container>
 		<md-input-container>
-			<md-input placeholder="Wiederholungszyklus" type="text" ngModel name="repetitionCycle"></md-input>
+			<input md-input placeholder="Wiederholungszyklus" type="text" ngModel name="repetitionCycle">
 		</md-input-container>
 		<md-input-container>
-			<md-input placeholder="Organisator" type="text" ngModel name="organizer"></md-input>
+			<input md-input placeholder="Organisator" type="text" ngModel name="organizer">
 		</md-input-container>
 		<md-input-container>
-			<md-input placeholder="Veranstaltungsart" type="text" ngModel name="type"></md-input>
+			<input md-input placeholder="Veranstaltungsart" type="text" ngModel name="type">
 		</md-input-container>
 		<md-input-container>
-			<md-input placeholder="Webseite" type="url" ngModel name="url"></md-input>
+			<input md-input placeholder="Webseite" type="url" ngModel name="url">
 		</md-input-container>
+		<md-checkbox ngModel name="counterEvent">Gegenveranstaltung?</md-checkbox>
 		<md-input-container>
-			<md-checkbox ngModel name="counterEvent">Gegenveranstaltung?</md-checkbox>
-		</md-input-container>
-		<md-input-container>
-			<md-input placeholder="Teilnehmeranzahl" type="number" min="0" ngModel name="participants"></md-input>
+			<input md-input placeholder="Teilnehmeranzahl" type="number" min="0" ngModel name="participants">
 		</md-input-container>
 	</div>
 	<div *ngIf="selectedMapObjectType == mapObjectType.FACEBOOK_PAGES">
 
 		<md-input-container>
-			<md-input placeholder="Notizen" type="text" ngModel name="notes"></md-input>
+			<input md-input placeholder="Notizen" type="text" ngModel name="notes">
 		</md-input-container>
 		<md-input-container>
-			<md-input placeholder="Facebook Link" type="url" required ngModel name="facebookId"></md-input>
+			<input md-input placeholder="Facebook Link" type="url" required ngModel name="facebookId">
 		</md-input-container>
 	</div>
 	<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>

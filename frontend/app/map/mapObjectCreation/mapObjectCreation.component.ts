@@ -18,34 +18,43 @@ import { Event } from "../../events/shared/event.model";
 export class MapObjectCreationComponent implements OnInit, OnDestroy {
     @Output() public onError = new EventEmitter<string>();
     @Output() public onSuccess = new EventEmitter<string>();
+    @Output() public onDestroy = new EventEmitter<boolean>();
     @Input("map") public map: google.maps.Map;
     public selectedMapObjectType;
     public mapObjectType = MapObjectType;
     public mapObjectTypes = MapObjectTypeNaming;
-    public marker;
+    public marker = null;
     private captchaVerified;
     private script;
     private config: Config;
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
-        this.captchaVerified = false;
         this.config = new Config();
+        this.captchaVerified = false;
         window["verifyCallback"] = this.verifyCallback.bind(this);
-        /*this.marker = new google.maps.Marker({
-            position: new google.maps.LatLng(0.0,0.0),
-            map: this.map
-        });
-
-        google.maps.event.addListener(this.map, 'click', function(event){
-            this.zone.run(() => {
-                this.moveMarker(event.latLng);
-            });
-        });*/
     }
 
     public moveMarker(location) {
-        this.marker.position(location);
+        if ( this.marker == null ) {
+            this.marker = new google.maps.Marker({
+                position: location,
+                map: this.map,
+            });
+        } else {
+            this.marker.setPosition(location);
+        }
+    }
+
+    public ngOnInit() {
+        google.maps.event.clearListeners(this.map, "click");
+        this.appendCaptchaScript();
+        let tmpThis = this;
+        google.maps.event.addListener(this.map, "click", (event) => {
+            tmpThis.zone.run(() => {
+                tmpThis.moveMarker(event.latLng);
+            });
+        });
     }
 
     public send(moc) {
@@ -86,13 +95,11 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         }
     }
 
-    public ngOnInit() {
-        // Add script tag manually as it does not work from frontend.html, g-recaptcha not displayed
-        this.appendCaptchaScript();
-    }
-
     public ngOnDestroy() {
         this.removeCaptchaScript();
+        this.marker.setMap(null);
+        google.maps.event.clearListeners(this.map, "click");
+        this.onDestroy.emit(true);
     }
 
     public verifyCallback(response) {

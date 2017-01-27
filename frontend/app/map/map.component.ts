@@ -107,6 +107,10 @@ export class MapComponent implements AfterViewInit {
         }, this.successMessageDisplayTime);
     }
 
+    public addMapListener() {
+        this.map.addListener("click", () =>  this.updateSelectedMapObjectInfo(null, null, null));
+    }
+
     private initMap() {
         const latlng = new google.maps.LatLng(51.0679567, 13.5767141);
         const mapOptions = {
