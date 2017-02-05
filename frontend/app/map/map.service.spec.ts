@@ -8,8 +8,8 @@ import { MapService } from "./map.service";
 
 describe("MapService", () => {
     beforeEach(() => {
-        // Set mockdate to 31st of May 2016
-        let mockDate = new Date(2016, 4, 31);
+        // Set mockdate to 31st of May 2017
+        let mockDate = new Date(2017, 4, 31);
         jasmine.clock().mockDate(mockDate);
 
         TestBed.configureTestingModule({
@@ -116,7 +116,7 @@ describe("MapService", () => {
 
     it("Should have an initialized urlMap after construction", inject([MapService], (service) => {
         expect(service.urlMap.size).toBe(2);
-        expect(service.urlMap.get(MapObjectType.EVENTS).size).toBe(4);
+        expect(service.urlMap.get(MapObjectType.EVENTS).size).toBe(5);
         expect(service.urlMap.get(MapObjectType.FACEBOOK_PAGES).size).toBe(1);
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.all)).toBe("api/events.json");
         expect(service.urlMap.get(MapObjectType.FACEBOOK_PAGES).get(DateFilter.all)).toBe("api/facebook.json");
@@ -124,13 +124,15 @@ describe("MapService", () => {
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2015)).
             toBe("api/events.json?from=2015-01-01&to=2015-12-31");
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2016)).
-            toContain("api/events.json?from=2016-01-01&");
+            toBe("api/events.json?from=2016-01-01&to=2016-12-31");
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2017)).
+            toContain("api/events.json?from=2017-01-01&");
 
         // Folling two specs based on mocked date
-        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2016)).
-            toContain("to=2016-5-31");
+        expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.year2017)).
+            toContain("to=2017-5-31");
         expect(service.urlMap.get(MapObjectType.EVENTS).get(DateFilter.upcoming)).
-            toBe("api/events.json?from=2016-5-1");
+            toBe("api/events.json?from=2017-5-1");
     }));
 
 });
