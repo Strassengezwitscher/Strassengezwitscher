@@ -1,0 +1,7 @@
+{% load bootstrap_tags %}
+
+<div class="form-group {% if field.errors %} has-error {% endif %}">
+    {{ field.label_tag }}
+    {{ field }}
+</div>
+{% bootstrap_error_list field.errors %}

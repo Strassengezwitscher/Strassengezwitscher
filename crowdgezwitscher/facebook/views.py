@@ -7,20 +7,26 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from crowdgezwitscher.models import MapObjectFilter
-from crowdgezwitscher.widgets import SelectizeSelectMultiple
+from base.fields import RoundingDecimalField
+from base.models import MapObjectFilterBackend
+from base.widgets import SelectizeSelectMultiple
 from facebook.models import FacebookPage
 from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
 
 
 class FacebookPageForm(forms.ModelForm):
+    location_lat = RoundingDecimalField(
+        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+    )
+    location_long = RoundingDecimalField(
+        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+    )
+
     class Meta:
         model = FacebookPage
         fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'notes', 'events')
         widgets = {
             'events': SelectizeSelectMultiple(),
-            'location_long': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
-            'location_lat': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
@@ -67,7 +73,7 @@ class FacebookPageDelete(PermissionRequiredMixin, DeleteView):
 class FacebookPageAPIList(generics.ListAPIView):
     queryset = FacebookPage.objects.filter(active=True)
     serializer_class = FacebookPageSerializerShortened
-    filter_backends = (MapObjectFilter,)
+    filter_backends = (MapObjectFilterBackend,)
 
 
 class FacebookPageAPIDetail(generics.RetrieveAPIView):

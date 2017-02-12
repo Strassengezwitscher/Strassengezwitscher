@@ -8,6 +8,7 @@ import { MapService } from "./map.service";
 export enum DateFilter {
     all = 0,
     upcoming,
+    year2017,
     year2016,
     year2015,
 }
@@ -158,7 +159,8 @@ export class MapComponent implements AfterViewInit {
                                         "static/img/facebook_aktiv.png", 1.0);
         } else {
             if (this.mapObjectSettings[mapObjectType].mapFilter.name === "2015" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2016") {
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2016" ||
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2017") {
                 this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
                                         "static/img/schild_aktiv_schwarz.png", 1.0);
             } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
@@ -198,6 +200,9 @@ export class MapComponent implements AfterViewInit {
         let mapEventFilterOptions = [
             new MapFilter(
                 "aktuell", "Kommende & vergangene Veranstaltungen (30 Tage)", DateFilter.upcoming,
+            ),
+            new MapFilter(
+                "2017", null, DateFilter.year2017,
             ),
             new MapFilter(
                 "2016", null, DateFilter.year2016,

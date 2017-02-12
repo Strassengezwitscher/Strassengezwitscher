@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import tempfile
 
@@ -21,8 +22,8 @@ class EventTestCase(TestCase):
         self.post_data.update({
             'name': 'Random Event',
             'active': True,
-            'location_lat': 0.0,
-            'location_long': 0.0,
+            'location_lat': 0.1234567,
+            'location_long': 0.1234567,
             'location': 'Water',
             'date': '2013-05-16',
             'repetition_cycle': 'unbekannter Rhythmus',
@@ -146,6 +147,93 @@ class EventViewCorrectPermissionMixin(object):
         self.assertEqual(attachment2.event.id, 4)
         self.assertEqual(str(attachment2.attachment),
                          'event_attachments/%s_dolphindiary_xxxxx.txt2' % now().strftime("%Y/%m/%Y%m%d-%H%M"))
+
+    def test_post_create_view_coverage_valid_1(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': True,
+            'twitter_account_names': 'Foobar',
+            'coverage_start': '2017-01-01',
+            'coverage_end': '2017-01-02',
+        })
+        response = self.client.post(reverse('events:create'), post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+
+    def test_post_create_view_coverage_valid_2(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': False,
+            'coverage_start': '2017-01-01',
+            'coverage_end': '2017-01-02',
+        })
+        response = self.client.post(reverse('events:create'), post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+
+    def test_post_create_view_coverage_valid_3(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': False,
+            'coverage_start': '2017-01-01',
+            'coverage_end': '2017-01-01',
+        })
+        response = self.client.post(reverse('events:create'), post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+
+    def test_post_create_view_coverage_valid_4(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': False,
+            'coverage_start': '',
+            'coverage_end': '',
+        })
+        response = self.client.post(reverse('events:create'), post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+
+    def test_post_create_view_coverage_valid_5(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': False,
+            'coverage_start': '2017-01-01',
+            'coverage_end': '',
+        })
+        response = self.client.post(reverse('events:create'), post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+
+    def test_post_create_view_coverage_missing_2(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': False,
+            'coverage_start': '',
+            'coverage_end': '2017-01-02',
+        })
+        response = self.client.post(reverse('events:create'), post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+
+    def test_post_create_view_coverage_invalid_dates(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': False,
+            'coverage_start': '2017-01-02',
+            'coverage_end': '2017-01-01',
+        })
+        response = self.client.post(reverse('events:create'), post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)  # shows form again
+        self.assertFormError(response, 'form', 'coverage_start', "'coverage_start' muss vor 'coverage_end' liegen")
+        self.assertFormError(response, 'form', 'coverage_end', "'coverage_start' muss vor 'coverage_end' liegen")
+
+    def test_post_create_view_coverage_invalid_fields_missing(self):
+        post_data = self.post_data.copy()
+        post_data.update({
+            'coverage': True,
+        })
+        response = self.client.post(reverse('events:create'), post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)  # shows form again
+        self.assertFormError(response, 'form', 'coverage', u'Nicht alle benötigen Felder wurden ausgefüllt')
+        self.assertFormError(response, 'form', 'twitter_account_names', u'Wird für eine Berichterstattung benötigt')
+        self.assertFormError(response, 'form', 'coverage_start', u'Wird für eine Berichterstattung benötigt')
+        self.assertFormError(response, 'form', 'coverage_end', u'Wird für eine Berichterstattung benötigt')
 
     def test_post_create_view_no_data(self):
         response = self.client.post(reverse('events:create'), self.empty_formset)

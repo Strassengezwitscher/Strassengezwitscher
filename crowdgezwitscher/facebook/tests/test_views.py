@@ -44,8 +44,8 @@ class FacebookPageViewCorrectPermissionMixin(object):
         data = {
             'name': 'Random Facebook Page',
             'active': True,
-            'location_lat': 0.0,
-            'location_long': 0.0,
+            'location_lat': 0.1234567,
+            'location_long': 0.1234567,
             'location': 'Water',
             'notes': 'Random Note',
             'facebook_id': '1234567890',
@@ -84,8 +84,8 @@ class FacebookPageViewCorrectPermissionMixin(object):
         data = {
             'name': 'Updated Facebook Page',
             'active': True,
-            'location_lat': 0.0,
-            'location_long': 0.0,
+            'location_lat': 0.1234567,
+            'location_long': 0.1234567,
             'location': 'Water',
             'notes': 'Random Note',
             'facebook_id': '1234567890',
