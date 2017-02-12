@@ -7,7 +7,7 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class FacebookPageService {
     private facebookPageUrl = "api/facebook/";
-    private facebookPageCreateUrl = "api/facebook/"; /// TODO Remove/Change once backend is implemented
+    private facebookPageCreateUrl = "api/facebook/new/";
 
     constructor(private http: Http) {}
 

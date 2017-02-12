@@ -1,4 +1,8 @@
 from rest_framework import generics
+from rest_framework.decorators import authentication_classes, api_view, parser_classes
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 
 from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -7,11 +11,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from crowdgezwitscher.auth import CsrfExemptSessionAuthentication
+
 from base.fields import RoundingDecimalField
 from base.models import MapObjectFilterBackend
 from base.widgets import SelectizeSelectMultiple
 from facebook.models import FacebookPage
-from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
+from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened, FacebookPageSerializerCreate
 
 
 class FacebookPageForm(forms.ModelForm):
@@ -79,3 +85,21 @@ class FacebookPageAPIList(generics.ListAPIView):
 class FacebookPageAPIDetail(generics.RetrieveAPIView):
     queryset = FacebookPage.objects.filter(active=True)
     serializer_class = FacebookPageSerializer
+
+
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication,))
+@parser_classes((JSONParser,))
+def send_form(request):
+    print(request.data)
+    serializer = FacebookPageSerializerCreate(data=request.data)
+    if not serializer.is_valid():
+        return Response({'status': 'error', 'errors': 'Informationen nicht valide.'},
+                        status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer.save()
+    except Exception as e:
+        return Response({'status': 'error', 'errors': 'Fehler beim Speichern der Informationen.'},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({'status': 'success'})
