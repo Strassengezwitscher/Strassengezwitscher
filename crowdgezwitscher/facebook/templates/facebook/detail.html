@@ -28,7 +28,7 @@
 {% if perms.facebook.change_facebookpage %}
     <a class="btn btn-primary" href="{% url 'facebook:update' page.id %}">Bearbeiten</a>
 {% endif %}
-<a class="btn btn-default" href="{{ page.url }}">Zur Facebook</a>
+<a class="btn btn-default" href="{{ page.url }}">Zur Facebookseite</a>
 {% if perms.facebook.view_facebookpage %}
     <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
 {% endif %}
