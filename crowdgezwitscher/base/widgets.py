@@ -66,6 +66,7 @@ class BootstrapPicker(object):
     def render(self, name, value, attrs=None):
         attrs = {} if attrs is None else attrs
         attrs.update({'class': 'form-control'})
+        print("render", name, value, attrs)
         html = super(BootstrapPicker, self).render(name, value, attrs)
         html = '<div class="input-group date"> \
                 %s \
@@ -105,7 +106,7 @@ class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
         return config
 
 
-class BootstrapTimePicker(BootstrapPicker, forms.widgets.DateInput):
+class BootstrapTimePicker(BootstrapPicker, forms.widgets.TimeInput):
     def config(self):
         config = super(BootstrapTimePicker, self).config()
         config.update({
