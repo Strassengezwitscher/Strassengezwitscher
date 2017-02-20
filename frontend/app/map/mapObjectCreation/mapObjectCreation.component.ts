@@ -102,7 +102,9 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy() {
         this.removeCaptchaScript();
-        this.marker.setMap(null);
+        if (this.marker != null) {
+            this.marker.setMap(null);
+        }
         google.maps.event.clearListeners(this.map, "click");
         this.onDestroy.emit(true);
     }
