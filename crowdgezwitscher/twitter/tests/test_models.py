@@ -7,7 +7,7 @@ from mock import patch
 from twitter import utils
 from twitter.models import Hashtag, TwitterAccount, Tweet
 
-from TwitterAPI import TwitterConnectionError, TwitterResponse
+from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterResponse
 import requests
 
 
@@ -34,28 +34,115 @@ class TwitterAccountTests(TestCase):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         self.assertEqual(repr(twitter_account), '<TwitterAccount Strassengezwitscher>')
 
+
     def test_string_representation(self):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         self.assertEqual(str(twitter_account), 'Strassengezwitscher')
 
-    def mock_twitter_request_users_show_connection_error(*args, **kwargs):
-        raise TwitterConnectionError("wow, much error, such bad")
 
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_request_users_show_connection_error)
+    def test_get_absolute_url(self):
+        twitter_account = TwitterAccount(name='PeterTheUnique')
+        twitter_account.save()
+        self.assertEqual(twitter_account.get_absolute_url(), '/intern/twitter_accounts/1/')
+
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.Tweet.objects.bulk_create', mock.Mock())
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
+        'id_str': '1234',
+        'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
+        'in_reply_to_user_id_str': None,
+        'text': 'Hallo, so ein toller Tweet!',
+        'entities': {
+            'hashtags': []
+        }
+    }], []]))
+    def test_last_known_tweet_id_changes(self):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        last_known_tweet_id_old = twitter_account.last_known_tweet_id
+        twitter_account.fetch_tweets()
+        self.assertNotEqual(twitter_account.last_known_tweet_id, last_known_tweet_id_old)
+        self.assertEqual(twitter_account.last_known_tweet_id, '1234')
+
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[{'id_str': '1234'}]))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.utils.unlock_twitter')
+    def test_fetch_tweets_unlocks_if_success(self, unlock_mock):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter_account.fetch_tweets()
+        unlock_mock.assert_called_once()
+
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(side_effect=KeyError("wow, much error, such bad")))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.utils.unlock_twitter')
+    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_key_error(self, unlock_mock):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter_account.fetch_tweets()
+        unlock_mock.assert_called_once()
+
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(side_effect=TwitterConnectionError("wow, much error, such bad")))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.utils.unlock_twitter')
+    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_connection_error(self, unlock_mock):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter_account.fetch_tweets()
+        unlock_mock.assert_called_once()
+
+
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[]))
+    def test_get_utc_offset_to_return_nothing_on_no_tweets(self):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        self.assertEqual(twitter_account._get_utc_offset(None), None)
+
+
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[{'user': {'utc_offset': 3600}}]))
+    def test_get_utc_offset_to_return_nothing_on_no_tweets(self):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        self.assertEqual(twitter_account._get_utc_offset(None), 3600)
+
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request')
+    def test_fetch_tweets_from_api_max_since_id_none(self, request_mock):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter = TwitterAPI('a', 'b', auth_type='oAuth2')
+        twitter_account._fetch_tweets_from_api(twitter)
+        self.assertEqual('since_id' in request_mock.call_args[0][1], False)
+        self.assertEqual('max_id' in request_mock.call_args[0][1], False)
+
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request')
+    def test_fetch_tweets_from_api_max_since_id_set(self, request_mock):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter = TwitterAPI('a', 'b', auth_type='oAuth2')
+        twitter_account._fetch_tweets_from_api(twitter, 99, 17)
+        self.assertEqual('since_id' in request_mock.call_args[0][1], True)
+        self.assertEqual('max_id' in request_mock.call_args[0][1], True)
+
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request', mock.Mock(side_effect=TwitterConnectionError("wow, much error, such bad")))
     def test_clean_raises_validation_error_on_twitter_connection_error(self):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         self.assertRaisesMessage(ValidationError, 'Could not connect to Twitter to retrieve user_id.', lambda: twitter_account.clean())
 
-    def mock_response_json(*args, **kwargs):
-        return {"not_id_str": '1'}
 
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('TwitterAPI.TwitterAPI.request')
-    @mock.patch('requests.Response.json', mock_response_json)
+    @mock.patch('requests.Response.json', mock.Mock(return_value={"not_id_str": '1'}))
     def test_clean_raises_validation_error_on_user_not_found(self, _):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         self.assertRaisesMessage(ValidationError, 'Could not find user with provided name.', lambda: twitter_account.clean())
+
 
     def mocked_requests_get(*args, **kwargs):
         class MockResponse:
@@ -70,24 +157,23 @@ class TwitterAccountTests(TestCase):
             r = MockResponse({"id_str": "1337"}, 200)
             return TwitterResponse(r, None)
 
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
     def test_clean_removes_leading_at(self):
         twitter_account = TwitterAccount(name="@Strassengezwitscher")
         twitter_account.clean()
         self.assertEqual(twitter_account.name, "Strassengezwitscher")
 
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
     def test_clean_adds_account_id(self):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.clean()
         self.assertEqual(twitter_account.account_id, "1337")
 
-    def mock_lock_twitter(*args, **kwargs):
-        return False
 
-    @mock.patch('twitter.utils.lock_twitter', mock_lock_twitter)
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=False))
     @mock.patch('TwitterAPI.TwitterAPI.__init__')
     def test_fetch_tweets_returns_after_cannot_acquire_lock(self, mock_twitter_init):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
