@@ -135,6 +135,7 @@ class TwitterAccount(models.Model):
             logger.warning("Could not connect to Twitter.")
         except KeyError:
             logger.warning("Got unexpected result while fetching tweets.")
+            utils.unlock_twitter()
             return
 
         new_tweets.reverse()
