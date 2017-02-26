@@ -94,12 +94,12 @@ def send_form(request):
     print(request.data)
     serializer = FacebookPageSerializerCreate(data=request.data)
     if not serializer.is_valid():
-        return Response({'status': 'error', 'errors': 'Informationen nicht valide.'},
+        return Response({'status': 'error', 'message': 'Fehler beim Speichern der Informationen. \n' + '\n'.join([serializer.errors[msg][0] for msg in serializer.errors])},
                         status=status.HTTP_400_BAD_REQUEST)
     try:
         serializer.save()
     except Exception as e:
-        return Response({'status': 'error', 'errors': 'Fehler beim Speichern der Informationen.'},
+        return Response({'status': 'error', 'message': 'Fehler beim Speichern der Informationen.'},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response({'status': 'success'})

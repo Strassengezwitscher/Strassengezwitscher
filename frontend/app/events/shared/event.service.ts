@@ -60,8 +60,12 @@ export class EventService {
 
     private handleError(error: any) {
         let errorMessage = "Server error";
-        if (error.message) {
-            errorMessage = error.message;
+        let parsedError = {'message':''};
+        try {
+            parsedError = (error._body) ? JSON.parse(error._body) : parsedError;
+        } catch (e) { }
+        if (parsedError.message) {
+            errorMessage = parsedError.message;
         } else if (error.status) {
             errorMessage = `${error.status} - ${error.statusText}`;
         }
