@@ -16,10 +16,14 @@ class FacebookPageForm(forms.ModelForm):
 
     class Meta:
         model = FacebookPage
-        fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'facebook_id', 'notes', 'events')
+        fields = (
+            'name', 'active', 'location_long', 'location_lat', 'location', 'facebook_id', 'notes', 'events',
+            'internal_notes',
+        )
         widgets = {
             'events': SelectizeSelectMultiple(),
             'facebook_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'internal_notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
