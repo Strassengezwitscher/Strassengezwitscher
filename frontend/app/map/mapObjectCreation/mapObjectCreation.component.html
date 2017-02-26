@@ -8,7 +8,10 @@
 	<md-input-container>
 		<input md-input placeholder="Ort" type="text" required ngModel name="location">
 	</md-input-container>
-	<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()">Marker gesetzt</md-slide-toggle>
+	<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()">
+		Marker gesetzt*
+		<md-icon style="font-size:16px;" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="above">info</md-icon>
+	</md-slide-toggle>
 	<div *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
 		<md-input-container>
 			<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
@@ -39,6 +42,7 @@
 			<input md-input placeholder="Facebook Link" type="url" required ngModel name="facebookId">
 		</md-input-container>
 	</div>
+	<p>* Pflichtfelder</p>
 	<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
 	<input type="number" required [ngModel]="marker?.position.lat()" (change)="changeMarkerLat($event.target.value)" name="locationLat" hidden>
 	<input type="number" required [ngModel]="marker?.position.lng()" (change)="changeMarkerLng($event.target.value)" name="locationLong" hidden>
