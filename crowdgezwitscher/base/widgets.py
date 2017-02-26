@@ -105,7 +105,7 @@ class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
         return config
 
 
-class BootstrapTimePicker(BootstrapPicker, forms.widgets.DateInput):
+class BootstrapTimePicker(BootstrapPicker, forms.widgets.TimeInput):
     def config(self):
         config = super(BootstrapTimePicker, self).config()
         config.update({
