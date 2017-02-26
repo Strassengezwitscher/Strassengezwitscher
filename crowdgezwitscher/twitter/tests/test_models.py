@@ -46,6 +46,51 @@ class TwitterAccountTests(TestCase):
         self.assertEqual(twitter_account.get_absolute_url(), '/intern/twitter_accounts/1/')
 
 
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[
+        {
+            'id_str': '1234',
+            'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
+            'in_reply_to_user_id_str': None,
+            'text': 'Hallo, so ein toller Tweet!',
+            'entities': {
+                'hashtags': [
+                    {
+                        'text': 'Hashtag1'
+                    },
+                    {
+                        'text': 'Hashtag2'
+                    }
+                ]
+            }
+        },
+        {
+            'id_str': '1235',
+            'created_at': 'Wed Aug 29 17:14:59 +0000 2012',
+            'in_reply_to_user_id_str': None,
+            'text': 'Hey, wie toll ist dieser Tweet?',
+            'entities': {
+                'hashtags': [
+                    {
+                        'text': 'Hashtag2'
+                    },
+                    {
+                        'text': 'Hashtag3'
+                    }
+                ]
+            }
+        },
+    ], []]))
+    @mock.patch('crowdgezwitscher.log.logger.warning')
+    def test_complete_tweets_including_hashtags(self, logger):
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher")
+        last_known_tweet_id_old = twitter_account.last_known_tweet_id
+        twitter_account.fetch_tweets()
+        self.assertEqual(len(Tweet.objects.all()), 2)
+        self.assertEqual(len(Hashtag.objects.all()), 3)
+
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
@@ -132,7 +177,7 @@ class TwitterAccountTests(TestCase):
 
 
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[{'user': {'utc_offset': 3600}}]))
-    def test_get_utc_offset_to_return_nothing_on_no_tweets(self):
+    def test_get_utc_offset_to_return_correctly(self):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         self.assertEqual(twitter_account._get_utc_offset(None), 3600)
 
