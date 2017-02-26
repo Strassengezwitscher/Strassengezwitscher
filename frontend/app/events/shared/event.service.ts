@@ -35,7 +35,8 @@ export class EventService {
         let headers = new Headers({ "Content-Type": "application/json" });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.eventCreateUrl, event, options)
-                        .map( res => { return; } )
+                        .map( res => { return "Vielen Dank für Ihren Beitrag.\n " +
+                                              "Nach einer Prüfung werden wir das Event hinzufügen!"})
                         .catch(this.handleError);
 
     }

@@ -24,7 +24,8 @@ export class FacebookPageService {
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this.facebookPageCreateUrl, fbPage, options)
-                        .map(this.extractData)
+                        .map( res => { return "Vielen Dank für Ihren Beitrag.\n " +
+                                              "Nach einer Prüfung werden wir die Facebook Seite hinzufügen!" })
                         .catch(this.handleError);
 
     }
