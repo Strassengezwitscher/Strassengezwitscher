@@ -46,6 +46,21 @@ class TwitterAccountTests(TestCase):
         self.assertEqual(twitter_account.get_absolute_url(), '/intern/twitter_accounts/1/')
 
 
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
+        'id_str': '1234',
+        'created_at': '29 Wed 2012 Aug 17:12:58 +0000'
+    }], []]))
+    @mock.patch('crowdgezwitscher.log.logger.warning')
+    def test_error_during_parsing_creation_time_gets_caught(self, logger):
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher")
+        twitter_account.fetch_tweets()
+        logger.assert_called_once_with('Got unexpected result while fetching tweets and parsing their creation times.')
+
+
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
