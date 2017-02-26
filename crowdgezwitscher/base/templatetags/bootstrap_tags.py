@@ -10,6 +10,13 @@ def bootstrap_error_list(errors):
     }
 
 
+@register.inclusion_tag('templatetags/bootstrap-helptext.html')
+def bootstrap_help_text(help_text):
+    return {
+        'help_text': help_text,
+    }
+
+
 @register.inclusion_tag('templatetags/bootstrap-field.html')
 def bootstrap_field(field):
     return {

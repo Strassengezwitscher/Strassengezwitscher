@@ -1,5 +1,7 @@
 {% extends "admin.html" %}
 
+{% load bootstrap_tags %}
+
 {% block header %}
 {{ form.media }}
 {% endblock%}
@@ -8,8 +10,39 @@
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-primary" type="submit" value="Speichern" />
+
+    {% bootstrap_error_list form.non_field_errors %}
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_field form.username %}
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_field form.first_name %}
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_field form.last_name %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_field form.email %}
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_field form.password %}
+        </div>
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_checkbox form.is_active %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {% bootstrap_field form.groups %}
+        </div>
+    </div>
+
+    {% if perms.auth.add_user %}
+        <input class="btn btn-primary" type="submit" value="Speichern" />
+    {% endif %}
     {% if perms.auth.view_user %}
         <a class="btn btn-link" href="{% url 'users:list' %}">Zurück</a>
     {% endif %}

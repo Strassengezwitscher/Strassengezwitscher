@@ -1,19 +1,24 @@
+from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.forms import ModelForm
+from django.contrib.auth.models import User
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from django.contrib.auth.models import User
 
 from base.widgets import SelectizeSelectMultiple
 from .mixins import NoStaffMixin
 
 
-class UserForm(ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password', 'is_active', 'groups')
         widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
             'groups': SelectizeSelectMultiple()
         }
 

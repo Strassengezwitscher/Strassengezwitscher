@@ -6,7 +6,7 @@
 <ul>
     <li><b>Aktiv:</b> {{ page.active }}</li>
     <li><b>Position:</b> {{ page.location_lat }} {{ page.location_long }} {% if page.location %}({{ page.location }}){% endif %}</li>
-    <li><b>Link:</b> {{ page.url }}</li>
+    <li><b>Id:</b> {{ page.facebook_id }}</li>
     <li><b>Veranstaltungen:</b>
         <ul>
             {% for event in page.events.all %}
@@ -29,6 +29,7 @@
 {% if perms.facebook.change_facebookpage %}
     <a class="btn btn-primary" href="{% url 'facebook:update' page.id %}">Bearbeiten</a>
 {% endif %}
+<a class="btn btn-default" href="{{ page.url }}">Zur Facebookseite</a>
 {% if perms.facebook.view_facebookpage %}
     <a class="btn btn-link" href="{% url 'facebook:list' %}">Zurück</a>
 {% endif %}
