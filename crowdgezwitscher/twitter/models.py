@@ -130,7 +130,7 @@ class TwitterAccount(models.Model):
                     break
                 tweets_from_api = self._fetch_tweets_from_api(
                     twitter,
-                    max_id=int(new_tweets[-1].tweet_id) - 1)
+                    max_id=int(tweets_from_api[-1]['id_str']) - 1)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
         except KeyError:
