@@ -3,13 +3,18 @@
 {% block content %}
 
 <h1>Blogeinträge</h1>
-{% if blog %}
+{% if blogentries %}
 <table class="table table-striped">
     <tr>
         <th>Titel</th>
+         {% if perms.blog.view_blogentry %}
+         <th>Status</th>
+         <th>Datum</th>
+         <th>Author</th>
+         {% endif %}
         <th style="width: 170px;"></th>
     </tr>
-    {% for blogentry in blog %}
+    {% for blogentry in blogentries %}
     <tr>
         <td>
             {% if perms.blog.view_blogentry %}
@@ -18,6 +23,11 @@
                 {{ blogentry.title }}
             {% endif %}
         </td>
+        {% if perms.blog.view_blogentry %}
+        <td>{{ blogentry.status }}</td>
+        <td>{{ blogentry.created_on }}</td>
+        <td>{{ blogentry.created_by.get_fullname }}</td>
+        {% endif %}
         <td>
             {% if perms.blog.change_blogentry %}
                 <a class="btn btn-default btn-sm" href="{% url 'blog:update' blogentry.id %}">Bearbeiten</a>
