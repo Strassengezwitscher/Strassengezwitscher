@@ -23,6 +23,7 @@
         </ul>
     </li>
     <li><b>Notizen:</b> {{ page.notes | linebreaks }}</li>
+    <li><b>Interne Notizen:</b> {{ page.internal_notes | linebreaks }}</li>
 </ul>
 
 {% if perms.facebook.change_facebookpage %}
