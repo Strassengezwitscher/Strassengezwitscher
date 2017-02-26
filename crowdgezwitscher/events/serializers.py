@@ -56,3 +56,19 @@ class EventSerializerShortened(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'name', 'locationLong', 'locationLat', 'date')
+
+class EventSerializerCreate(serializers.ModelSerializer):
+    locationLong = serializers.CharField(source='location_long')
+    locationLat = serializers.CharField(source='location_lat')
+    date = serializers.DateField(input_formats=["%Y-%m-%dT%H:%M"])
+    repetitionCycle = serializers.CharField(source='repetition_cycle')
+    counterEvent = serializers.CharField(source='counter_event')
+    time = serializers.TimeField(input_formats=["%Y-%m-%dT%H:%M"])
+
+    class Meta:
+        model = Event
+        fields = ('name', 'location', 'locationLong', 'locationLat', 'date', 'participants', 'repetitionCycle',
+                  'organizer', 'type', 'url', 'time', 'counterEvent',)
+
+    def create(self, validated_data):
+        return Event.objects.create(**validated_data)

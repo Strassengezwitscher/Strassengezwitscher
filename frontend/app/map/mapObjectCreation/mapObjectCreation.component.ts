@@ -67,15 +67,16 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
             case MapObjectType.EVENTS:
                 // TODO constructing event should be changed with JSONAPI
                 let event = new Event();
-                event.counterEvent = moc.form._value.counterEvent;
+                event.counterEvent = (moc.form.controls.counterEvent.touched) ?  moc.form._value.counterEvent : false;
                 event.date = moc.form._value.date;
+                event.time = moc.form._value.date;
                 event.location = moc.form._value.location;
                 event.locationLat = moc.form._value.locationLat;
                 event.locationLong = moc.form._value.locationLong;
                 event.name = moc.form._value.name;
                 event.organizer = moc.form._value.organizer;
                 event.participants = moc.form._value.participants;
-                event.repetitionCycle = moc.form._value.repetitionCycle;
+                event.repetitionCycle = (moc.form._value.repetitionCycle != '') ? moc.form._value.repetitionCycle : 'Unbekannter Rhytmus';
                 event.type = moc.form._value.type;
                 event.url = moc.form._value.url;
                 this.eventService.addEvent(event).subscribe(

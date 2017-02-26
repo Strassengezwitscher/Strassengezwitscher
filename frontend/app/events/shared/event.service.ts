@@ -8,7 +8,7 @@ import "rxjs/add/observable/throw";
 @Injectable()
 export class EventService {
     private eventBaseUrl = "api/events/";
-    private eventCreateUrl = "api/events/"; /// TODO Remove/Change once backend is implemented
+    private eventCreateUrl = "api/events/new/";
     private lastEvent: Event = null;
 
     constructor(private http: Http) {}

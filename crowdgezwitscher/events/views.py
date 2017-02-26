@@ -5,7 +5,8 @@ from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterRequestError
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import authentication_classes, api_view, parser_classes
+from rest_framework.parsers import JSONParser
 
 from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -18,9 +19,10 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from base.models import MapObjectFilterBackend
 from crowdgezwitscher.log import logger
+from crowdgezwitscher.auth import CsrfExemptSessionAuthentication
 from events.filters import DateFilterBackend
 from events.models import Event
-from events.serializers import EventSerializer, EventSerializerShortened
+from events.serializers import EventSerializer, EventSerializerShortened, EventSerializerCreate
 from events.forms import EventForm, AttachmentFormSet
 
 
@@ -116,3 +118,19 @@ def get_tweets(request, pk, format=None):
         else:
             logger.warning("TwitterRequestError, status code: %d", e.status_code)
     return Response(res)
+
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication,))
+@parser_classes((JSONParser,))
+def send_form(request):
+    serializer = EventSerializerCreate(data=request.data)
+    if not serializer.is_valid():
+        return Response({'status': 'error', 'errors': 'Informationen nicht valide.'},
+                        status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer.save()
+    except Exception as e:
+        return Response({'status': 'error', 'errors': 'Fehler beim Speichern der Informationen.'},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({'status': 'success'})
