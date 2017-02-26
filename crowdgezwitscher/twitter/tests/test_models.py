@@ -47,8 +47,21 @@ class TwitterAccountTests(TestCase):
 
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
-    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=True))
-    @mock.patch('twitter.models.Tweet.objects.bulk_create', mock.Mock())
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
+        'id_str': '9'}], []]))
+    def test_fetch_tweets_tweet_already_in_db(self):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter_account.last_known_tweet_id = '10'
+        twitter_account.save()
+        twitter_account.fetch_tweets()
+        self.assertEqual(len(twitter_account.tweet_set.all()), 0)
+
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
         'id_str': '1234',
         'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
@@ -59,7 +72,7 @@ class TwitterAccountTests(TestCase):
         }
     }], []]))
     def test_last_known_tweet_id_changes(self):
-        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher")
         last_known_tweet_id_old = twitter_account.last_known_tweet_id
         twitter_account.fetch_tweets()
         self.assertNotEqual(twitter_account.last_known_tweet_id, last_known_tweet_id_old)
