@@ -328,7 +328,7 @@ class EventFilterAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             'min_lat': 41.941380,
             'min_long': 72.467309,
             'max_lat': 51.267301,
-            'max_long': 99.713402
+            'max_long': 99.713402,
         }
         super(EventFilterAPIViewTests, self).test_correct_filter(url, rect_params)
 

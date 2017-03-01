@@ -24,6 +24,7 @@ class SelectizeSelect(forms.widgets.Select):
             </script>' % attrs['id']
         return mark_safe(''.join(html + script))
 
+
 class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
     class Media:
         css = {
@@ -118,8 +119,8 @@ class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
     def config(self):
         config = super(BootstrapDatePicker, self).config()
         config.update({
-            'viewMode': 'days',
             'format': 'YYYY-MM-DD',
+            'viewMode': 'days',
         })
         return config
 

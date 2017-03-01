@@ -13,10 +13,14 @@ from facebook.models import FacebookPage
 
 class AttachmentForm(forms.ModelForm):
     class Meta:
-        fields = ('attachment', 'description', 'public')
+        fields = (
+            'attachment',
+            'description',
+            'public',
+        )
         widgets = {
-            'description': forms.TextInput(attrs={'class': 'form-control'}),
             'attachment': AttachmentInput(),
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     class Media:
@@ -31,10 +35,14 @@ class AttachmentFormSet(InlineFormSet):
 
 class EventForm(forms.ModelForm):
     location_lat = RoundingDecimalField(
-        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
     )
     location_long = RoundingDecimalField(
-        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
     )
     facebook_pages = forms.ModelMultipleChoiceField(
         queryset=FacebookPage.objects.all(),
@@ -45,9 +53,27 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = (
-            'name', 'active', 'location_long', 'location_lat', 'location', 'date', 'repetition_cycle', 'organizer',
-            'type', 'url', 'counter_event', 'coverage', 'facebook_pages', 'twitter_account_names', 'twitter_hashtags',
-            'coverage_start', 'coverage_end', 'participants', 'time', 'notes', 'internal_notes',
+            'active',
+            'counter_event',
+            'coverage',
+            'coverage_end',
+            'coverage_start',
+            'date',
+            'facebook_pages',
+            'internal_notes',
+            'location',
+            'location_lat',
+            'location_long',
+            'name',
+            'notes',
+            'organizer',
+            'participants',
+            'repetition_cycle',
+            'type',
+            'twitter_account_names',
+            'twitter_hashtags',
+            'url',
+            'time',
         )
         widgets = {
             'coverage_start': ClearableBootstrapDatePicker(),
