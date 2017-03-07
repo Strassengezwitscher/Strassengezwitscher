@@ -24,7 +24,9 @@ class AttachmentForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('django-formset/dist/django-formset.js',)
+        js = (
+            'django-formset/dist/django-formset.js',
+        )
 
 
 class AttachmentFormSet(InlineFormSet):

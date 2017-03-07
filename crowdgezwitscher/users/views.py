@@ -12,14 +12,22 @@ from .mixins import NoStaffMixin
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'is_active', 'groups')
+        fields = (
+            'email',
+            'first_name',
+            'groups',
+            'is_active',
+            'last_name',
+            'password',
+            'username',
+        )
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'groups': SelectizeSelectMultiple(),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control'}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'groups': SelectizeSelectMultiple()
         }
 
 
