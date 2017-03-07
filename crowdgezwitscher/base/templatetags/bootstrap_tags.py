@@ -23,6 +23,7 @@ def bootstrap_field(field):
         'field': field,
     }
 
+
 @register.inclusion_tag('templatetags/bootstrap-checkbox.html')
 def bootstrap_checkbox(field):
     return {

@@ -20,7 +20,10 @@ from events.serializers import EventSerializer, EventSerializerShortened
 class EventAPIList(generics.ListAPIView):
     queryset = Event.objects.filter(active=True)
     serializer_class = EventSerializerShortened
-    filter_backends = (MapObjectFilterBackend, DateFilterBackend)
+    filter_backends = (
+        DateFilterBackend,
+        MapObjectFilterBackend,
+    )
 
 
 class EventAPIDetail(generics.RetrieveAPIView):

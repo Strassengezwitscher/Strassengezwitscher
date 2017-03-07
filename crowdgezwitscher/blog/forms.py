@@ -8,7 +8,10 @@ from blog.models import BlogEntry
 class BlogForm(forms.ModelForm):
     class Meta:
         model = BlogEntry
-        exclude = ['created_on', 'created_by']
+        exclude = (
+            'created_by',
+            'created_on',
+        )
         widgets = {
             'content': CKEditorWidget(),
             'status': SelectizeSelect(),

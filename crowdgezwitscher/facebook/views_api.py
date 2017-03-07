@@ -8,7 +8,9 @@ from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerS
 class FacebookPageAPIList(generics.ListAPIView):
     queryset = FacebookPage.objects.filter(active=True)
     serializer_class = FacebookPageSerializerShortened
-    filter_backends = (MapObjectFilterBackend,)
+    filter_backends = (
+        MapObjectFilterBackend,
+    )
 
 
 class FacebookPageAPIDetail(generics.RetrieveAPIView):

@@ -8,17 +8,28 @@ from facebook.models import FacebookPage
 
 class FacebookPageForm(forms.ModelForm):
     location_lat = RoundingDecimalField(
-        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
     )
     location_long = RoundingDecimalField(
-        max_digits=9, decimal_places=6, widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
     )
 
     class Meta:
         model = FacebookPage
         fields = (
-            'name', 'active', 'location_long', 'location_lat', 'location', 'facebook_id', 'notes', 'events',
+            'active',
+            'events',
+            'facebook_id',
             'internal_notes',
+            'location',
+            'location_lat',
+            'location_long',
+            'name',
+            'notes',
         )
         widgets = {
             'events': SelectizeSelectMultiple(),

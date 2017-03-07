@@ -40,4 +40,9 @@ class BlogEntry(models.Model):
         return "< BlogEntry title='{}' created_by='{}' status='{}' >".format(self.title, self.created_by, self.status)
 
     class Meta:
-        default_permissions = ('add', 'change', 'delete', 'view')
+        default_permissions = (
+            'add',
+            'change',
+            'delete',
+            'view',
+        )
