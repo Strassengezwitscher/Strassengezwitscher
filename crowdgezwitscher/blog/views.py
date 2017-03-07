@@ -4,12 +4,9 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
-from rest_framework import generics
 
 from blog.forms import BlogForm
 from blog.models import BlogEntry
-from blog.serializers import BlogSerializer
-
 
 
 class BlogListView(PermissionRequiredMixin, ListView):
@@ -53,14 +50,3 @@ class BlogDelete(PermissionRequiredMixin, DeleteView):
     template_name = 'blog/delete.html'
     success_url = reverse_lazy('blog:list')
     context_object_name = 'blogentry'
-
-
-# API Views
-class BlogAPIList(generics.ListAPIView):
-    queryset = BlogEntry.objects.filter(status=BlogEntry.PUBLISHED)
-    serializer_class = BlogSerializer
-
-
-class BlogAPIDetail(generics.RetrieveAPIView):
-    queryset = BlogEntry.objects.filter(status=BlogEntry.PUBLISHED)
-    serializer_class = BlogSerializer
