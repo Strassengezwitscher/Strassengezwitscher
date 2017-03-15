@@ -80,7 +80,7 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
                 event.type = moc.form._value.type;
                 event.url = moc.form._value.url;
                 this.eventService.addEvent(event).subscribe(
-                       res  => this.onSuccess.emit(res),
+                       res  => this.successfulResponse(res, moc),
                        error =>  this.onError.emit(error));
                 break;
             case MapObjectType.FACEBOOK_PAGES:
@@ -93,7 +93,7 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
                 fbPage.name =  moc.form._value.name;
                 fbPage.notes =  moc.form._value.notes;
                 this.fbPageService.addFacebookPage(fbPage).subscribe(
-                       res  => this.onSuccess.emit(res),
+                       res  => this.successfulResponse(res, moc),
                        error =>  this.onError.emit(error));
                 break;
             default:
@@ -103,9 +103,7 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy() {
         this.removeCaptchaScript();
-        if (this.marker != null) {
-            this.marker.setMap(null);
-        }
+        this.removeMarker();
         google.maps.event.clearListeners(this.map, "click");
         this.onDestroy.emit(true);
     }
@@ -136,6 +134,24 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
             this.moveMarker({"lat": 0.0, "lng": Number(lng)});
         } else {
             this.moveMarker({"lat": this.marker.position.lat(), "lng": Number(lng)});
+        }
+    }
+
+    private successfulResponse(res, moc) {
+        this.onSuccess.emit(res);
+        this.removeMarker();
+        this.clearForm(moc);
+    }
+
+    private clearForm(moc) {
+        moc.reset();
+        this.selectedMapObjectType = null;
+    }
+
+    private removeMarker() {
+        if (this.marker != null) {
+            this.marker.setMap(null);
+            this.marker = null;
         }
     }
 
