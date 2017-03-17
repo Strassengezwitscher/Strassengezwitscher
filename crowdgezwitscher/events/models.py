@@ -27,7 +27,6 @@ class Event(MapObject):
     counter_event = models.BooleanField(default=False)
     coverage = models.BooleanField(default=False)
     participants = models.CharField(max_length=20, blank=True)
-    notes = models.TextField(blank=True)
     twitter_account_names = models.CharField(max_length=150, blank=True)
     twitter_hashtags = models.CharField(max_length=150, blank=True)
     coverage_start = models.DateField(blank=True, null=True)

@@ -12,8 +12,10 @@ class BlogEntryViewCorrectPermissionMixin(object):
     def test_get_list_view(self):
         response = self.client.get(reverse('blog:list'))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('blog', response.context)
-        self.assertEqual(list(response.context['blog']), list(BlogEntry.objects.all()))
+        self.assertIn('blogentries', response.context)
+        blog_entries = list(response.context['blogentries'])
+        all_blog_entries = BlogEntry.objects.all()
+        self.assertSequenceEqual(blog_entries, sorted(all_blog_entries, key=lambda ent: ent.created_on, reverse=True))
 
     def test_post_list_view_not_allowed(self):
         response = self.client.post(reverse('blog:list'))
