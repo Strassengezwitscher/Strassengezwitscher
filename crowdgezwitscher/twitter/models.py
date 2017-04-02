@@ -140,8 +140,8 @@ class TwitterAccount(models.Model):
 
         new_tweets.reverse()
 
-        Tweet.objects.bulk_create(new_tweets)
-        for tweet in self.tweet_set.all():
+        for tweet in new_tweets:
+            tweet.save()
             tweet.hashtags.add(*(tweet_hashtag_mappings.get(tweet.tweet_id, [])))
             tweet.save()
 
