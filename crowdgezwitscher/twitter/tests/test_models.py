@@ -98,6 +98,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.fetch_tweets()
         self.assertEqual(len(Tweet.objects.all()), 2)
         self.assertEqual(len(Hashtag.objects.all()), 3)
+        self.assertTrue(all([tweet.account == twitter_account for tweet in Tweet.objects.all()]))
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))

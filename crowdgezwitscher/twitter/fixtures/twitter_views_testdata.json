@@ -1,0 +1,12 @@
+[
+{
+    "model": "twitter.twitteraccount",
+    "pk": 1,
+    "fields": {
+        "name": "streetcoverage",
+        "account_id": "3079082955",
+        "last_known_tweet_id": 0,
+        "events": []
+    }
+}
+]
