@@ -107,6 +107,16 @@ class TwitterAccountViewCorrectPermissionMixin(object):
         response = self.csrf_client.post(reverse('twitter:delete', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 403)
 
+    # Fetch Tweets
+    @mock.patch('twitter.models.TwitterAccount.fetch_tweets', mock.Mock(return_value=None))
+    def test_post_fetch_tweets_view(self):
+        response = self.client.post(reverse('twitter:fetch_tweets', kwargs={'pk': 1}), {})
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_fetch_tweets_view_not_allowed(self):
+        response = self.client.get(reverse('twitter:fetch_tweets', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, 405)
+
 
 class TwitterAccountViewWrongPermissionMixin(object):
     """User testing the views is not logged and therefore lacking the required permissions."""
@@ -132,6 +142,12 @@ class TwitterAccountViewWrongPermissionMixin(object):
     def test_get_delete_view(self):
         url = reverse('twitter:delete', kwargs={'pk': 1})
         response = self.client.get(url)
+        self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+    # Fetch Tweets
+    def test_post_fetch_tweets_view(self):
+        url = reverse('twitter:fetch_tweets', kwargs={'pk': 1})
+        response = self.client.post(url, {})
         self.assertRedirects(response, reverse('login') + '?next=' + url)
 
 

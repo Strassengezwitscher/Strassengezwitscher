@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import ModelForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.views.decorators.http import require_POST
+from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -50,9 +50,10 @@ class TwitterAccountDelete(PermissionRequiredMixin, DeleteView):
     context_object_name = 'account'
 
 
-@require_POST
-def fetch_tweets(request, pk):
-    twitter_account = get_object_or_404(TwitterAccount, pk=pk)
-    twitter_account.fetch_tweets()
+class FetchTweets(PermissionRequiredMixin, View):
+    permission_required = 'twitter.add_twitteraccount'
 
-    return HttpResponse()
+    def post(self, request, pk):
+        twitter_account = get_object_or_404(TwitterAccount, pk=pk)
+        twitter_account.fetch_tweets()
+        return HttpResponse()
