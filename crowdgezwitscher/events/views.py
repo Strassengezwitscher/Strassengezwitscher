@@ -104,8 +104,8 @@ def get_tweets(request, pk, format=None):
     # This would allow using coverage_start and coverage_end, so no need for tweets_from and tweets_till.
     # However, this would nearly double the processing time.
     tweets = Tweet.objects.filter(
-            account__in=event.twitter_accounts.all(),
-            created_at__range=(tweets_from, tweets_till),
+        account__in=event.twitter_accounts.all(),
+        created_at__range=(tweets_from, tweets_till),
     )
     # If the event specifies hashtags, each tweet needs to include at least one of them.
     # Otherwise, there are no restrictions on tweets' hashtags.

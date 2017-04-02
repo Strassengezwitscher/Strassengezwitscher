@@ -1,11 +1,9 @@
 import json
 
-import mock
 from django.urls import reverse
 from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITestCase
-from TwitterAPI import TwitterResponse, TwitterConnectionError
 
 from base.tests.test_api_views import MapObjectApiViewTestTemplate
 from events.models import Event

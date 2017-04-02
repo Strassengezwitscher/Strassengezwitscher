@@ -67,7 +67,7 @@ class TwitterAccount(models.Model):
         if since_id:
             request_parameters['since_id'] = since_id
 
-        return twitter.request('statuses/user_timeline',request_parameters).json()
+        return twitter.request('statuses/user_timeline', request_parameters).json()
 
     def _get_utc_offset(self, twitter):
         tweets = self._fetch_tweets_from_api(twitter, None, None, 1, False)

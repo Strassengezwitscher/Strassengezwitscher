@@ -4,8 +4,7 @@ LOCK_PATH = ".tweets.lock"
 
 
 def lock_twitter():
-    """Must be called before
-    """
+    """Must be called by TwitterAccount's fetch_tweets method when it starts."""
 
     if os.path.exists(LOCK_PATH):
         pidfile = open(LOCK_PATH, "r")
@@ -23,5 +22,6 @@ def lock_twitter():
 
 
 def unlock_twitter():
+    """Must be called by TwitterAccount's fetch_tweets method when it ends."""
     if os.path.exists(LOCK_PATH):
         os.remove(LOCK_PATH)

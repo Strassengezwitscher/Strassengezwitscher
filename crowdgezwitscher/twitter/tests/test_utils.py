@@ -1,15 +1,16 @@
 from django.test import TestCase
 
 import mock
-from mock import patch
 import os
 
 from twitter import utils
+
 
 class TwitterUtilTests(TestCase):
 
     def test_unlock_removes_file(self):
         pidfile = open(utils.LOCK_PATH, 'w')
+        pidfile.close()
         self.assertTrue(os.path.exists(utils.LOCK_PATH))
         utils.unlock_twitter()
         self.assertFalse(os.path.exists(utils.LOCK_PATH))
