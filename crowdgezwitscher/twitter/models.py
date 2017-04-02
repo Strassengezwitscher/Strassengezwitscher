@@ -157,6 +157,9 @@ class Hashtag(models.Model):
     hashtag_text = models.CharField(max_length=50, unique=True)
     events = models.ManyToManyField(Event, blank=True, related_name="hashtags")
 
+    def __repr__(self):
+        return '<Hashtag %s>' % self.hashtag_text
+
     def __str__(self):
         return self.hashtag_text
 
@@ -174,6 +177,10 @@ class Tweet(models.Model):
     hashtags = models.ManyToManyField(Hashtag)
     created_at = models.DateTimeField(default=datetime.now)
     is_reply = models.BooleanField(default=False)
+
+    def __repr__(self):
+        date = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return '<Tweet from %s at %s>' % (self.account, date)
 
     def __str__(self):
         date = self.created_at.strftime('%Y-%m-%d %H:%M:%S')

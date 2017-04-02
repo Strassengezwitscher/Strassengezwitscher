@@ -12,6 +12,10 @@ import requests
 
 
 class HashtagModelTests(TestCase):
+    def test_representation(self):
+        hashtag = Hashtag(hashtag_text='crowdgezwitscher')
+        self.assertEqual(repr(hashtag), '<Hashtag crowdgezwitscher>')
+
     def test_string_representation(self):
         hashtag = Hashtag(hashtag_text='crowdgezwitscher')
         self.assertEqual(str(hashtag), 'crowdgezwitscher')
@@ -23,6 +27,14 @@ class HashtagModelTests(TestCase):
 
 
 class TweetModelTests(TestCase):
+    def test_representation(self):
+        twitter_account = TwitterAccount(name='Peter')
+        tweet = Tweet(content='Erster Tweet, #cool!',
+                      created_at=datetime(2012, 12, 21, 19, 9, 0),
+                      account=twitter_account,
+                      )
+        self.assertEqual(repr(tweet), '<Tweet from Peter at 2012-12-21 19:09:00>')
+
     def test_string_representation(self):
         twitter_account = TwitterAccount(name='Peter')
         tweet = Tweet(content='Erster Tweet, #cool!', created_at=datetime(2012, 12, 21, 19, 9, 0), account=twitter_account)
