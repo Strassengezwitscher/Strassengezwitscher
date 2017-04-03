@@ -24,9 +24,9 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public mapObjectType = MapObjectType;
     public mapObjectTypes = MapObjectTypeNaming;
     public marker = null;
-    private captchaVerified;
+    public captchaVerified;
+    public config: Config;
     private script;
-    private config: Config;
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
