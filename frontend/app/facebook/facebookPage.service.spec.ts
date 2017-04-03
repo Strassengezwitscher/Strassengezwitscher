@@ -48,6 +48,18 @@ describe("FacebookPageService", () => {
         });
     }));
 
+    it("Should send a fake facebookPage and return success on addFacebookPage",
+        inject([MockBackend, FacebookPageService], (mockBackend, service) => {
+
+        mockBackend.connections.subscribe(connection => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({'status': 'success'})})));
+        });
+        service.addFacebookPage(1).subscribe(res => {
+            expect(res).toBe("Vielen Dank für Ihren Beitrag.\n "+
+                "Nach einer Prüfung werden wir die Facebook Seite hinzufügen!");
+        });
+    }));
+
     it("Should return server error message if Internal Server Error occurs",
        inject([MockBackend, FacebookPageService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
