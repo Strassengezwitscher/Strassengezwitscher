@@ -60,6 +60,20 @@ describe("FacebookPageService", () => {
         }
     }));
 
+    it("Should return parsed error message",
+       inject([MockBackend, FacebookPageService], (mockBackend, service) => {
+        mockBackend.connections.subscribe(connection => {
+            var tmpError = new Error();
+            tmpError._body = '{"status":"error","message":"Fataler Fehler"}'
+            connection.mockError(tmpError);
+        });
+        try {
+            service.getFacebookPage(1).subscribe();
+        } catch (error) {
+            expect(error).toBe("Fataler Fehler");
+        }
+    }));
+
     it("Should return error status code and text if present",
         inject([MockBackend, FacebookPageService], (mockBackend, service) => {
         spyOn(service, "handleError").and.callThrough();
