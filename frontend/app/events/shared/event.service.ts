@@ -60,7 +60,7 @@ export class EventService {
     }
 
     private handleError(error: any) {
-        let errorMessage = "Server error";
+        let errorMessage = "Interner Serverfehler";
         let parsedError = {'message':''};
         try {
             parsedError = (error._body) ? JSON.parse(error._body) : parsedError;

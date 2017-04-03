@@ -51,12 +51,12 @@ describe("FacebookPageService", () => {
     it("Should return server error message if Internal Server Error occurs",
        inject([MockBackend, FacebookPageService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
-            connection.mockError(new Error("Internal Server Error 500"));
+            connection.mockError(new Error("Interner Serverfehler"));
         });
         try {
             service.getFacebookPage(1).subscribe();
         } catch (error) {
-            expect(error).toBe("Internal Server Error 500");
+            expect(error).toBe("Interner Serverfehler");
         }
     }));
 
