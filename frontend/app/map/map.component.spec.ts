@@ -63,4 +63,10 @@ describe("MapComponent", () => {
         done();
     });
 
+    it("Should set the successMessage", done => {
+        this.mapComponent.setSuccessMessage("Test Nachricht");
+        expect(this.mapComponent.successMessage).toEqual("Test Nachricht");
+        done();
+    });
+
 });
