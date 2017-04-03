@@ -104,9 +104,7 @@ describe("EventService", () => {
     it("Should return parsed error message",
        inject([MockBackend, EventService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
-            var tmpError = new Error();
-            tmpError._body = '{"status":"error","message":"Fataler Fehler"}'
-            connection.mockError(tmpError);
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({'status': 'error','message':'Fataler Fehler'})})));
         });
         try {
             service.getEvent(1).subscribe();
