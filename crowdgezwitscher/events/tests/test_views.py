@@ -6,8 +6,10 @@ import mock
 from django.urls import reverse
 from django.test import Client, TestCase
 from django.utils.timezone import now
+from TwitterAPI import TwitterResponse
 
 from events.models import Event, Attachment
+from twitter.models import TwitterAccount, Hashtag
 
 
 class EventTestCase(TestCase):
@@ -81,6 +83,46 @@ class EventViewCorrectPermissionMixin(object):
         response = self.client.post(reverse('events:create'), self.post_data, follow=True)
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
         self.assertEqual(Attachment.objects.count(), 3)
+
+    def mocked_requests_get(*args):
+        class MockResponse:
+            def __init__(self, json_data, status_code):
+                self.json_data = json_data
+                self.status_code = status_code
+
+            def json(self):
+                return self.json_data
+
+        if args[1] == 'users/show':
+            r = MockResponse({"id_str": "1337"}, 200)
+            return TwitterResponse(r, None)
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
+    def test_post_create_with_twitter_coverage(self):
+        twitter_account_cnt_old = TwitterAccount.objects.count()
+        hashtag_cnt_old = Hashtag.objects.count()
+        self.post_data.update({
+            'twitter_account_names': [
+                1,
+                2,
+                '__new_account__some-new-account',
+            ],
+            'twitter_hashtags':[
+                1,
+                2,
+                '__new_hashtag__some-new-hashtag',
+                '__new_hashtag__some-more-new-hashtag',
+            ],
+        })
+        response = self.client.post(reverse('events:create'), self.post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+        self.assertEqual(TwitterAccount.objects.count(), twitter_account_cnt_old + 1)
+        self.assertEqual(Hashtag.objects.count(), hashtag_cnt_old + 2)
+
+        event = Event.objects.get(pk=4)
+        self.assertEqual(event.twitter_accounts.count(), 3)
+        self.assertEqual(event.hashtags.count(), 4)
 
     @mock.patch('random.choice', lambda *args, **kwargs: 'x')
     def test_post_create_view_with_one_attachment(self):
@@ -183,6 +225,37 @@ class EventViewCorrectPermissionMixin(object):
         self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 1}))
         self.assertEqual(Attachment.objects.count(), 3)
 
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
+    def test_post_update_with_twitter_coverage(self):
+        # as multiple fixtures are combined here, let's test first if the setup is as expected
+        event = Event.objects.get(pk=1)
+        self.assertEqual(event.twitter_accounts.count(), 3)
+        self.assertEqual(event.hashtags.count(), 2)
+        twitter_account_cnt_old = TwitterAccount.objects.count()
+        hashtag_cnt_old = Hashtag.objects.count()
+        self.assertEqual(twitter_account_cnt_old, 4)
+        self.assertEqual(hashtag_cnt_old, 3)
+
+        self.post_data.update({
+            'twitter_account_names': [
+                1,
+                '__new_account__some-new-account',
+            ],
+            'twitter_hashtags':[
+                1,
+                '__new_hashtag__some-new-hashtag',
+                '__new_hashtag__some-more-new-hashtag',
+            ],
+        })
+
+        response = self.client.post(reverse('events:update', kwargs={'pk': 1}), self.post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 1}))
+        self.assertEqual(TwitterAccount.objects.count(), twitter_account_cnt_old + 1)
+        self.assertEqual(Hashtag.objects.count(), hashtag_cnt_old + 2)
+        self.assertEqual(event.twitter_accounts.count(), 2)
+        self.assertEqual(event.hashtags.count(), 3)
+
     def test_post_update_view_with_deleted_attachment(self):
         self.assertEqual(Attachment.objects.count(), 3)
         self.post_data.update({
@@ -281,7 +354,7 @@ class EventViewWrongPermissionMixin(object):
 
 class EventViewAdministratorTests(EventTestCase, EventViewCorrectPermissionMixin):
     """User testing the views is logged in as Administrator"""
-    fixtures = ['events_views_testdata', 'users_views_testdata']
+    fixtures = ['events_views_testdata', 'users_views_testdata', 'twitter_views_testdata']
 
     def setUp(self):
         self.client.login(username='adm', password='adm')
@@ -289,7 +362,7 @@ class EventViewAdministratorTests(EventTestCase, EventViewCorrectPermissionMixin
 
 class EventViewModeratorTests(EventTestCase, EventViewCorrectPermissionMixin):
     """User testing the views is logged in as Moderator"""
-    fixtures = ['events_views_testdata', 'users_views_testdata']
+    fixtures = ['events_views_testdata', 'users_views_testdata', 'twitter_views_testdata']
 
     def setUp(self):
         self.client.login(username='john.doe', password='john.doe')
@@ -297,4 +370,4 @@ class EventViewModeratorTests(EventTestCase, EventViewCorrectPermissionMixin):
 
 class EventViewNoPermissionTests(EventTestCase, EventViewWrongPermissionMixin):
     """User testing the views is not logged in"""
-    fixtures = ['events_views_testdata', 'users_views_testdata']
+    fixtures = ['events_views_testdata', 'users_views_testdata', 'twitter_views_testdata']
