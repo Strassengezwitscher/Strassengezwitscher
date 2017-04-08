@@ -10,7 +10,7 @@ from events.models import Event
 
 
 class EventAPIViewTests(APITestCase):
-    fixtures = ['events_views_testdata.json']
+    fixtures = ['events_views_testdata.json', 'twitter_views_testdata']
     model = Event
 
     # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
@@ -217,6 +217,50 @@ class EventAPIViewTests(APITestCase):
         url = '/api/events1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /api/events/1/tweets
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # As this view combines quite some data, this tests needs some documenentation.
+        # Please update it if you change the fixtures.
+        #
+        # The event is limited to the hashtags "wow" and "awesome".
+        # Only tweets from 2016-07-24 until 2016-07-25 are considered.
+        # The event is limited to the twitter accounts "streetcoverage", "inglor.basterds" and "stalingrad42".
+        # There are 3 tweets, each from one of the accounts with at least one of the specified hashtags and within the
+        # creation date range:
+        response_json = ['11', '22', '66']
+        self.assertEqual(json.loads(response.content.decode("utf-8")).sort(), response_json.sort())
+
+    # GET /api/events/1000/tweets
+    def test_get_tweets_not_existant_event(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1000})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /api/events/2/tweets
+    def test_get_tweets_inactive_event(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 2})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /api/events/3/tweets
+    def test_get_tweets_no_coverage_event(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 3})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content.decode("utf-8")), [])
+
+    # POST /api/events/1/tweets
+    def test_get_tweets_post_request(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        data = {
+            'id': '1',
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class EventFilterAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):

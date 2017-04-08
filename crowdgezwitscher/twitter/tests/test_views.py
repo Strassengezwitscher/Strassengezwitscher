@@ -62,7 +62,7 @@ class TwitterAccountViewCorrectPermissionMixin(object):
             'name': 'Random Account',
         }
         response = self.client.post(reverse('twitter:create'), data, follow=True)
-        self.assertRedirects(response, reverse('twitter:detail', kwargs={'pk': 2}))
+        self.assertRedirects(response, reverse('twitter:detail', kwargs={'pk': 5}))
 
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
