@@ -132,10 +132,13 @@ class TwitterAccount(models.Model):
                 tweets_from_api = self._fetch_tweets_from_api(
                     twitter,
                     max_id=tweets_from_api[-1]['id'] - 1)
-        except TwitterConnectionError:
-            logger.warning("Could not connect to Twitter.")
-        except KeyError:
-            logger.warning("Got unexpected result while fetching tweets.")
+        except Exception as e:  # broad exception clause as we need to unlock in any case.
+            exception_log_map = {
+                TwitterConnectionError: "Could not connect to Twitter.",
+                KeyError: "Got unexpected result while fetching tweets."
+            }
+            logger.warning(exception_log_map.get(type(e), "Got unexpected exception while fetching tweets."))
+
             utils.unlock_twitter()
             return
 

@@ -158,9 +158,11 @@ class TwitterAccountModelTests(TestCase):
                 mock.Mock(side_effect=KeyError("wow, much error, such bad")))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.utils.unlock_twitter')
-    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_key_error(self, unlock_mock):
+    @mock.patch('crowdgezwitscher.log.logger.warning')
+    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_key_error(self, logger, unlock_mock):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
+        logger.assert_called_once_with("Got unexpected result while fetching tweets.")
         unlock_mock.assert_called_once()
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
@@ -168,9 +170,23 @@ class TwitterAccountModelTests(TestCase):
                 mock.Mock(side_effect=TwitterConnectionError("wow, much error, such bad")))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.utils.unlock_twitter')
-    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_connection_error(self, unlock_mock):
+    @mock.patch('crowdgezwitscher.log.logger.warning')
+    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_connection_error(self, logger, unlock_mock):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
+        logger.assert_called_once_with("Could not connect to Twitter.")
+        unlock_mock.assert_called_once()
+
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
+                mock.Mock(side_effect=Exception("wow, much error, such bad")))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('twitter.utils.unlock_twitter')
+    @mock.patch('crowdgezwitscher.log.logger.warning')
+    def test_fetch_tweets_unlocks_if_get_utc_offset_throws_unknown_error(self, logger, unlock_mock):
+        twitter_account = TwitterAccount(name="Strassengezwitscher")
+        twitter_account.fetch_tweets()
+        logger.assert_called_once_with("Got unexpected exception while fetching tweets.")
         unlock_mock.assert_called_once()
 
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[]))
