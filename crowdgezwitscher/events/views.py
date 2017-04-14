@@ -114,4 +114,4 @@ class EventAPIGetTweets(APIView):
 
         # If a tweet and the event have multiple hashtags in common, the tweet is included multiple times.
         # We therefore need to call distinct().
-        return Response([tweet.tweet_id for tweet in tweets.distinct()])
+        return Response([str(tweet.tweet_id) for tweet in tweets.distinct()])
