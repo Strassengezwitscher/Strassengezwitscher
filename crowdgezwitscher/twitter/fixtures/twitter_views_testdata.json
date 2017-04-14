@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "name": "streetcoverage",
-            "account_id": "3079082955",
+            "account_id": 3079082955,
             "last_known_tweet_id": 0,
             "events": [
                 1
@@ -16,7 +16,7 @@
         "pk": 2,
         "fields": {
             "name": "inglor.basterds",
-            "account_id": "2222222222",
+            "account_id": 2222222222,
             "last_known_tweet_id": 0,
             "events": [
                 1
@@ -28,7 +28,7 @@
         "pk": 3,
         "fields": {
             "name": "stalingrad42",
-            "account_id": "3333333333",
+            "account_id": 3333333333,
             "last_known_tweet_id": 0,
             "events": [
                 1
@@ -40,7 +40,7 @@
         "pk": 4,
         "fields": {
             "name": "attentionseeker",
-            "account_id": "1234567890",
+            "account_id": 1234567890,
             "last_known_tweet_id": 0,
             "events": [
                 3
@@ -81,7 +81,7 @@
         "model": "twitter.tweet",
         "pk": 1,
         "fields": {
-            "tweet_id": "11",
+            "tweet_id": 11,
             "content": "right account, hashtag and time",
             "account": 1,
             "hashtags": [
@@ -95,7 +95,7 @@
         "model": "twitter.tweet",
         "pk": 2,
         "fields": {
-            "tweet_id": "22",
+            "tweet_id": 22,
             "content": "right account, hashtag and time",
             "account": 2,
             "hashtags": [
@@ -109,7 +109,7 @@
         "model": "twitter.tweet",
         "pk": 3,
         "fields": {
-            "tweet_id": "33",
+            "tweet_id": 33,
             "content": "right account, wrong hashtag, right time",
             "account": 1,
             "hashtags": [
@@ -123,7 +123,7 @@
         "model": "twitter.tweet",
         "pk": 4,
         "fields": {
-            "tweet_id": "44",
+            "tweet_id": 44,
             "content": "right account, right hashtag, wrong time",
             "account": 1,
             "hashtags": [
@@ -137,7 +137,7 @@
         "model": "twitter.tweet",
         "pk": 5,
         "fields": {
-            "tweet_id": "55",
+            "tweet_id": 55,
             "content": "right account, wrong hashtag, wrong time",
             "account": 2,
             "hashtags": [
@@ -151,7 +151,7 @@
         "model": "twitter.tweet",
         "pk": 6,
         "fields": {
-            "tweet_id": "66",
+            "tweet_id": 66,
             "content": "right account, multiple right hashtags and time",
             "account": 3,
             "hashtags": [
@@ -166,7 +166,7 @@
         "model": "twitter.tweet",
         "pk": 7,
         "fields": {
-            "tweet_id": "77",
+            "tweet_id": 77,
             "content": "wrong account, right hashtag and time",
             "account": 4,
             "hashtags": [

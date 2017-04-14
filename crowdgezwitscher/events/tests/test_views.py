@@ -94,7 +94,7 @@ class EventViewCorrectPermissionMixin(object):
                 return self.json_data
 
         if args[1] == 'users/show':
-            r = MockResponse({"id_str": "1337"}, 200)
+            r = MockResponse({'id': 1337}, 200)
             return TwitterResponse(r, None)
 
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))

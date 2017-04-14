@@ -51,7 +51,7 @@ class TwitterAccountModelTests(TestCase):
         self.assertEqual(str(twitter_account), 'Strassengezwitscher')
 
     def test_get_absolute_url(self):
-        twitter_account = TwitterAccount(name='PeterTheUnique')
+        twitter_account = TwitterAccount(name='PeterTheUnique', account_id=1337)
         twitter_account.save()
         self.assertEqual(twitter_account.get_absolute_url(), '/intern/twitter_accounts/1/')
 
@@ -60,9 +60,9 @@ class TwitterAccountModelTests(TestCase):
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[
         {
-            'id_str': '1234',
+            'id': 1234,
             'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
-            'in_reply_to_user_id_str': None,
+            'in_reply_to_user_id': None,
             'text': 'Hallo, so ein toller Tweet!',
             'entities': {
                 'hashtags': [
@@ -76,9 +76,9 @@ class TwitterAccountModelTests(TestCase):
             }
         },
         {
-            'id_str': '1235',
+            'id': 1235,
             'created_at': 'Wed Aug 29 17:14:59 +0000 2012',
-            'in_reply_to_user_id_str': None,
+            'in_reply_to_user_id': None,
             'text': 'Hey, wie toll ist dieser Tweet?',
             'entities': {
                 'hashtags': [
@@ -94,7 +94,7 @@ class TwitterAccountModelTests(TestCase):
     ], []]))
     @mock.patch('crowdgezwitscher.log.logger.warning')
     def test_complete_tweets_including_hashtags(self, logger):
-        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher")
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher", account_id=1337)
         twitter_account.fetch_tweets()
         self.assertEqual(len(Tweet.objects.all()), 2)
         self.assertEqual(len(Hashtag.objects.all()), 3)
@@ -104,12 +104,12 @@ class TwitterAccountModelTests(TestCase):
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
-        'id_str': '1234',
+        'id': 1234,
         'created_at': '29 Wed 2012 Aug 17:12:58 +0000'
     }], []]))
     @mock.patch('crowdgezwitscher.log.logger.warning')
     def test_error_during_parsing_creation_time_gets_caught(self, logger):
-        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher")
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher", account_id=1337)
         twitter_account.fetch_tweets()
         logger.assert_called_once_with('Got unexpected result while fetching tweets and parsing their creation times.')
 
@@ -117,10 +117,10 @@ class TwitterAccountModelTests(TestCase):
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
-        'id_str': '9'}], []]))
+        'id': 9}], []]))
     def test_fetch_tweets_tweet_already_in_db(self):
-        twitter_account = TwitterAccount(name="Strassengezwitscher")
-        twitter_account.last_known_tweet_id = '10'
+        twitter_account = TwitterAccount(name="Strassengezwitscher", account_id=1337)
+        twitter_account.last_known_tweet_id = 10
         twitter_account.save()
         twitter_account.fetch_tweets()
         self.assertEqual(len(twitter_account.tweet_set.all()), 0)
@@ -129,24 +129,24 @@ class TwitterAccountModelTests(TestCase):
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[{
-        'id_str': '1234',
+        'id': 1234,
         'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
-        'in_reply_to_user_id_str': None,
+        'in_reply_to_user_id': None,
         'text': 'Hallo, so ein toller Tweet!',
         'entities': {
             'hashtags': []
         }
     }], []]))
     def test_last_known_tweet_id_changes(self):
-        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher")
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher", account_id=1337)
         last_known_tweet_id_old = twitter_account.last_known_tweet_id
         twitter_account.fetch_tweets()
         self.assertNotEqual(twitter_account.last_known_tweet_id, last_known_tweet_id_old)
-        self.assertEqual(twitter_account.last_known_tweet_id, '1234')
+        self.assertEqual(twitter_account.last_known_tweet_id, 1234)
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
-    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[{'id_str': '1234'}]))
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[{'id': 1234}]))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('twitter.utils.unlock_twitter')
     def test_fetch_tweets_unlocks_if_success(self, unlock_mock):
@@ -214,7 +214,7 @@ class TwitterAccountModelTests(TestCase):
 
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
     @mock.patch('TwitterAPI.TwitterAPI.request')
-    @mock.patch('requests.Response.json', mock.Mock(return_value={"not_id_str": '1'}))
+    @mock.patch('requests.Response.json', mock.Mock(return_value={"not_id": 1}))
     def test_clean_raises_validation_error_on_user_not_found(self, _):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         self.assertRaisesMessage(ValidationError, 'Could not find user with provided name.', twitter_account.clean)
@@ -229,7 +229,7 @@ class TwitterAccountModelTests(TestCase):
                 return self.json_data
 
         if args[1] == 'users/show':
-            r = MockResponse({"id_str": "1337"}, 200)
+            r = MockResponse({'id': 1337}, 200)
             return TwitterResponse(r, None)
 
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
@@ -244,7 +244,7 @@ class TwitterAccountModelTests(TestCase):
     def test_clean_adds_account_id(self):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.clean()
-        self.assertEqual(twitter_account.account_id, "1337")
+        self.assertEqual(twitter_account.account_id, 1337)
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=False))
     @mock.patch('TwitterAPI.TwitterAPI.__init__')

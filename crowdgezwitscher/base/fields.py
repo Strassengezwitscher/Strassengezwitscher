@@ -1,9 +1,38 @@
+from django.db import models
 from django import forms
 import six
 
 from .widgets import SelectizeSelectMultipleCSVInput
 
 
+##############
+# Model fields
+##############
+class UnsignedBigIntegerField(models.BigIntegerField):
+    """A 64 bit field storing unsigned integers from 0 to 18446744073709551615."""
+    description = "Big (8 byte) unsigned integer"
+    MAX_BIGINT = 18446744073709551615
+
+    def formfield(self, **kwargs):
+        defaults = {'min_value': 0,
+                    'max_value': UnsignedBigIntegerField.MAX_BIGINT}
+        defaults.update(kwargs)
+        return super(UnsignedBigIntegerField, self).formfield(**defaults)
+
+    def from_db_value(self, value, *_):
+        if value is None:
+            return value
+        return value + 2 ** 63
+
+    def get_prep_value(self, value):
+        if value is None:
+            return value
+        return int(value) - 2 ** 63
+
+
+#############
+# Form fields
+#############
 class ModelMultipleChoiceImplicitCreationField(forms.ModelMultipleChoiceField):
     """
     A ModelMultipleChoiceField that allows implicitly creating new model instances.

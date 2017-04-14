@@ -11,6 +11,7 @@ from datetime import datetime
 import time
 
 from twitter import utils
+from base.fields import UnsignedBigIntegerField
 from crowdgezwitscher.log import logger
 from events.models import Event
 from TwitterAPI import TwitterAPI, TwitterConnectionError
@@ -19,8 +20,8 @@ from TwitterAPI import TwitterAPI, TwitterConnectionError
 @python_2_unicode_compatible
 class TwitterAccount(models.Model):
     name = models.CharField(max_length=15, unique=True)
-    account_id = models.CharField(max_length=20, unique=True)
-    last_known_tweet_id = models.CharField(max_length=20, default=0)
+    account_id = UnsignedBigIntegerField(unique=True)
+    last_known_tweet_id = UnsignedBigIntegerField(default=0)
     events = models.ManyToManyField(Event, blank=True, related_name="twitter_accounts")
 
     def __repr__(self):
@@ -45,8 +46,8 @@ class TwitterAccount(models.Model):
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
             raise ValidationError("Could not connect to Twitter to retrieve user_id.")
-        if 'id_str' in user:
-            self.account_id = user['id_str']
+        if 'id' in user:
+            self.account_id = user['id']
         else:
             logger.warning("Could not find user with provided name.")
             raise ValidationError("Could not find user with provided name.")
@@ -91,12 +92,12 @@ class TwitterAccount(models.Model):
             utc_offset = self._get_utc_offset(twitter)
             tweets_from_api = self._fetch_tweets_from_api(twitter, since_id=self.last_known_tweet_id)
             if tweets_from_api:
-                last_known_tweet_id = int(tweets_from_api[0]['id_str'])
+                last_known_tweet_id = tweets_from_api[0]['id']
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
                     # check if received tweet is already in DB.
                     # if so, break, as we already have all following tweets (Twitter sends newest tweets first)
-                    if int(tweet_from_api['id_str']) <= int(self.last_known_tweet_id):
+                    if tweet_from_api['id'] <= self.last_known_tweet_id:
                         should_brake = True
                         break
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
@@ -113,8 +114,8 @@ class TwitterAccount(models.Model):
                     except ValueError:
                         logger.warning("Got unexpected result while fetching tweets and parsing their creation times.")
                         continue
-                    is_reply = tweet_from_api["in_reply_to_user_id_str"] is not None
-                    tweet = Tweet(tweet_id=tweet_from_api['id_str'],
+                    is_reply = tweet_from_api['in_reply_to_user_id'] is not None
+                    tweet = Tweet(tweet_id=tweet_from_api['id'],
                                   content=tweet_from_api['text'],
                                   created_at=created_at,
                                   is_reply=is_reply,
@@ -130,7 +131,7 @@ class TwitterAccount(models.Model):
                     break
                 tweets_from_api = self._fetch_tweets_from_api(
                     twitter,
-                    max_id=int(tweets_from_api[-1]['id_str']) - 1)
+                    max_id=tweets_from_api[-1]['id'] - 1)
         except TwitterConnectionError:
             logger.warning("Could not connect to Twitter.")
         except KeyError:
@@ -146,7 +147,7 @@ class TwitterAccount(models.Model):
             tweet.save()
 
         if last_known_tweet_id:
-            self.last_known_tweet_id = str(last_known_tweet_id)
+            self.last_known_tweet_id = last_known_tweet_id
             self.save()
 
         utils.unlock_twitter()
@@ -171,7 +172,7 @@ class Hashtag(models.Model):
 
 @python_2_unicode_compatible
 class Tweet(models.Model):
-    tweet_id = models.CharField(max_length=20, unique=True)
+    tweet_id = UnsignedBigIntegerField(unique=True)
     content = models.CharField(max_length=250)
     account = models.ForeignKey(TwitterAccount, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag)
