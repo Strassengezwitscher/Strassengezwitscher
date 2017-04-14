@@ -1,20 +1,20 @@
 from __future__ import unicode_literals
 
+from datetime import datetime
+import time
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
+from TwitterAPI import TwitterAPI, TwitterConnectionError
 
-from datetime import datetime
-import time
-
-from twitter import utils
 from base.fields import UnsignedBigIntegerField
 from crowdgezwitscher.log import logger
 from events.models import Event
-from TwitterAPI import TwitterAPI, TwitterConnectionError
+from twitter import utils
 
 
 @python_2_unicode_compatible

@@ -1,11 +1,11 @@
-from django.test import TestCase
-from django.core.exceptions import ValidationError
 from datetime import datetime
 
+from django.test import TestCase
+from django.core.exceptions import ValidationError
 import mock
-from twitter.models import Hashtag, TwitterAccount, Tweet
-
 from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterResponse
+
+from twitter.models import Hashtag, TwitterAccount, Tweet
 
 
 class HashtagModelTests(TestCase):
@@ -92,12 +92,11 @@ class TwitterAccountModelTests(TestCase):
             }
         },
     ], []]))
-    @mock.patch('crowdgezwitscher.log.logger.warning')
-    def test_complete_tweets_including_hashtags(self, logger):
+    def test_complete_tweets_including_hashtags(self):
         twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher", account_id=1337)
         twitter_account.fetch_tweets()
-        self.assertEqual(len(Tweet.objects.all()), 2)
-        self.assertEqual(len(Hashtag.objects.all()), 3)
+        self.assertEqual(Tweet.objects.count(), 2)
+        self.assertEqual(Hashtag.objects.count(), 3)
         self.assertTrue(all([tweet.account == twitter_account for tweet in Tweet.objects.all()]))
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
@@ -123,7 +122,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.last_known_tweet_id = 10
         twitter_account.save()
         twitter_account.fetch_tweets()
-        self.assertEqual(len(twitter_account.tweet_set.all()), 0)
+        self.assertEqual(twitter_account.tweet_set.count(), 0)
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))

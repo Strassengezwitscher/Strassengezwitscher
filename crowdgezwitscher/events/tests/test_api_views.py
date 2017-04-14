@@ -93,7 +93,7 @@ class EventAPIViewTests(APITestCase):
 
     # GET /api/events/1/
     def test_read_detail_events_with_non_public_attachments(self):
-        # set all but one attachments' public fields
+        # set all but one attachment's public fields
 
         event = Event.objects.get(pk=1)
         for att in event.attachments.all():

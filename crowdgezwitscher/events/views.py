@@ -87,8 +87,8 @@ class EventAPIGetTweets(APIView):
 
         # Convert event coverage dates to datetimes as they will be compared to Tweets' creation datetimes.
         # The time part will be set to 00:00:00.
-        # tweets_till would therefore be the earliest possible datetime for coverage_end. As we want to includes dates from
-        # that date, we add another day to tweets_till.
+        # tweets_till would therefore be the earliest possible datetime for coverage_end. As we want to includes dates
+        # from that date, we add another day to tweets_till.
         tweets_from = timezone.make_aware(datetime(
             event.coverage_start.year,
             event.coverage_start.month,

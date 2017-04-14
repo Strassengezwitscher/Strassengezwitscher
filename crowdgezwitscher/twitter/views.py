@@ -1,23 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.forms import ModelForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView
 from django.urls import reverse_lazy
 
 from twitter.models import TwitterAccount
-
-
-# class TwitterAccountForm(ModelForm):
-#     # class Meta:
-#     model = TwitterAccount
-#     permission_required = 'twitter..add_user'
-#     template_name = 'users/form.html'
-#     fields = ['username', 'email', 'password', 'groups']
-#         # fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'notes', 'events')
 
 
 class TwitterAccountListView(PermissionRequiredMixin, ListView):
@@ -39,7 +29,6 @@ class TwitterAccountCreate(PermissionRequiredMixin, CreateView):
     model = TwitterAccount
     template_name = 'twitter/form.html'
     fields = ['name']
-    # form_class = TwitterAccountForm
 
 
 class TwitterAccountDelete(PermissionRequiredMixin, DeleteView):

@@ -108,7 +108,7 @@ class EventViewCorrectPermissionMixin(object):
                 2,
                 '__new_account__some-new-account',
             ],
-            'twitter_hashtags':[
+            'twitter_hashtags': [
                 1,
                 2,
                 '__new_hashtag__some-new-hashtag',
@@ -242,7 +242,7 @@ class EventViewCorrectPermissionMixin(object):
                 1,
                 '__new_account__some-new-account',
             ],
-            'twitter_hashtags':[
+            'twitter_hashtags': [
                 1,
                 '__new_hashtag__some-new-hashtag',
                 '__new_hashtag__some-more-new-hashtag',
