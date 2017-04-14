@@ -76,6 +76,14 @@ class TwitterAccount(models.Model):
             return tweets[0]['user']['utc_offset']
 
     def fetch_tweets(self):
+        # Fetching tweets can require multiple request to Twitter's API.
+        # This algorithm first fetches the newest tweets and fetches increasingly older ones with every subsequent
+        # request.
+        # The algorithm is based Twitter's suggestions on "Working with Timelines":
+        # https://dev.twitter.com/rest/public/timelines
+        # General information about the used API can be found here:
+        # https://dev.twitter.com/rest/reference/get/statuses/user_timeline
+
         if not utils.lock_twitter():
             return
 
@@ -90,15 +98,20 @@ class TwitterAccount(models.Model):
         try:
             # Twitter does somehow not reflect the combination of timezone and daylight savings time correctly
             utc_offset = self._get_utc_offset(twitter)
+            # fetch 1st batch of tweets but only ones we do not have already have in the database. we therefore set
+            # since_id to the newest tweet's ID we already have. this will return the newest tweets for the account.
+            # if there are more new tweets than we can get in a single request, we will get the older ones later.
             tweets_from_api = self._fetch_tweets_from_api(twitter, since_id=self.last_known_tweet_id)
             if tweets_from_api:
+                # extract the newest tweet's ID for the account. however, we will not store this reference in the DB
+                # until all new tweets have been fetched and saved.
                 last_known_tweet_id = tweets_from_api[0]['id']
             while tweets_from_api:
                 for tweet_from_api in tweets_from_api:
                     # check if received tweet is already in DB.
                     # if so, break, as we already have all following tweets (Twitter sends newest tweets first)
                     if tweet_from_api['id'] <= self.last_known_tweet_id:
-                        should_brake = True
+                        should_brake = True  # a hint to also break out of the outer loop
                         break
                     # Parses twitter date format, converts to timestamp, adds utc_offset and creates datetime object
                     try:
@@ -129,6 +142,9 @@ class TwitterAccount(models.Model):
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
                 if should_brake:
                     break
+                # fetch next batch of older tweets. therefore set max_id to the oldest tweet's ID that we already
+                # processed. as max_id is inclusive and we do not want to receive the same tweet again, we substract 1
+                # from the oldest tweet's ID.
                 tweets_from_api = self._fetch_tweets_from_api(
                     twitter,
                     max_id=tweets_from_api[-1]['id'] - 1)
@@ -140,8 +156,17 @@ class TwitterAccount(models.Model):
             logger.warning(exception_log_map.get(type(e), "Got unexpected exception while fetching tweets."))
 
             utils.unlock_twitter()
+
+            # We return here without saving any possibly already fetched tweets.
+            # If we would save them, we would also save last_known_tweet_id. So on the next run of this function, we
+            # would not fetch any tweets older than last_known_tweet_id. So if the error occurred before all tweets were
+            # fetched, we would never try to fetch the missing tweets again.
+            # To not have missing tweets, we prefer to not save at all when an error occurs but hope that the error will
+            # not occur again on the next run of this function so we can fetch and save all tweets.
             return
 
+        # Newer tweets were added earlier than older ones to new_tweets. However, we want to store older tweets first,
+        # so we reverse new_tweets.
         new_tweets.reverse()
 
         for tweet in new_tweets:
