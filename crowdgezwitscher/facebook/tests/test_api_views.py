@@ -55,11 +55,11 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = {
-            u'id': 1,
-            u'name': u'Test page',
-            u'location': u'Nowhere',
-            u'facebookId': u'1',
-            u'notes': u'',
+            'id': 1,
+            'name': 'Test page',
+            'location': 'Nowhere',
+            'facebookId': '1',
+            'notes': '',
         }
         self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 

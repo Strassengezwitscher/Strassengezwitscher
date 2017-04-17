@@ -2,4 +2,3 @@
 coverage==4.2
 prospector==0.12
 tox==2.3.1
-mock==2.0.0

@@ -1,8 +1,8 @@
 from datetime import date
 import os
 import tempfile
+from unittest import mock
 
-import mock
 from PIL import Image
 
 from django.core.files import File
