@@ -2,7 +2,6 @@ import os
 
 from django.conf import settings
 from rest_framework import serializers
-import six
 
 from events.models import Event, Attachment
 
@@ -15,17 +14,17 @@ class AttachmentSerializer(serializers.Serializer):
         default_icon = 'img/icon_file.png'
 
         if attachment.thumbnail:
-            thumbnail_url = settings.MEDIA_URL + six.text_type(attachment.thumbnail)
+            thumbnail_url = settings.MEDIA_URL + str(attachment.thumbnail)
         else:
             extension = os.path.splitext(attachment.name)[1].lower()
             icon_path = extension_icon_mapping.get(extension, default_icon)
-            thumbnail_url = settings.STATIC_URL + six.text_type(icon_path)
+            thumbnail_url = settings.STATIC_URL + str(icon_path)
 
         return {
             'description': attachment.description,
             'name': attachment.name,
             'thumbnail_url': thumbnail_url,
-            'url': settings.MEDIA_URL + six.text_type(attachment.attachment),
+            'url': settings.MEDIA_URL + str(attachment.attachment),
         }
 
 

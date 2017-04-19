@@ -1,14 +1,12 @@
-from __future__ import unicode_literals
+from tempfile import TemporaryDirectory
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from gnupg import GPG
 
 from crowdgezwitscher.log import logger
-from contact.utils import GPGException, TemporaryDirectory, addresses_for_key, handle_gpg_error
+from contact.utils import GPGException, addresses_for_key, handle_gpg_error
 
 
-@python_2_unicode_compatible
 class Key(models.Model):
     """Stores a GPG public key and the corresponding email addresses extracted from it."""
     key = models.TextField(unique=True)

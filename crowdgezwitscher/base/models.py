@@ -1,8 +1,6 @@
-from __future__ import unicode_literals
 from decimal import Decimal
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.exceptions import ValidationError
 from rest_framework import filters
 
@@ -24,7 +22,6 @@ class MapObjectFilterBackend(filters.BaseFilterBackend):
         return queryset
 
 
-@python_2_unicode_compatible
 class MapObject(models.Model):
     name = models.CharField(max_length=100, default="unbenannt")
     active = models.BooleanField(default=False)

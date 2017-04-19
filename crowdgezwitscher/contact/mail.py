@@ -1,6 +1,6 @@
 # pylint: disable=bad-builtin
-from __future__ import unicode_literals
 from email.utils import formatdate
+from tempfile import TemporaryDirectory
 
 from django.core.mail import EmailMessage, SafeMIMEText, SafeMIMEMultipart, make_msgid
 from django.core.mail.utils import DNS_NAME
@@ -13,7 +13,7 @@ from gnupg import GPG
 
 from crowdgezwitscher.log import logger
 from contact.models import Key
-from contact.utils import GPGException, TemporaryDirectory, handle_gpg_error
+from contact.utils import GPGException, handle_gpg_error
 
 
 class GPGEmailMessage(EmailMessage):
