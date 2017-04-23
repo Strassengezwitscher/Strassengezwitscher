@@ -1,17 +1,20 @@
+from tempfile import TemporaryDirectory
+
 from django.contrib import admin
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from gnupg import GPG
 
 from contact.models import Key
-from contact.utils import TemporaryDirectory
 
 
 class KeyAdminForm(forms.ModelForm):
 
     class Meta:
         model = Key
-        fields = ['key']
+        fields = (
+            'key',
+        )
 
     def clean_key(self):
         """

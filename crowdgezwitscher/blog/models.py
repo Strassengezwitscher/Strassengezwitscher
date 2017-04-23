@@ -1,15 +1,10 @@
-from __future__ import unicode_literals
-
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils import timezone
 from ckeditor.fields import RichTextField
 
-from django.utils.encoding import python_2_unicode_compatible
 
-
-@python_2_unicode_compatible
 class BlogEntry(models.Model):
     HIDDEN = 'HIDDEN'
     DRAFT = 'DRAFT'
@@ -25,7 +20,8 @@ class BlogEntry(models.Model):
     status = models.CharField(
         max_length=15,
         choices=BLOGENTRY_CHOICES,
-        default=DRAFT)
+        default=DRAFT,
+    )
 
     created_on = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(User, unique=False)
@@ -40,4 +36,9 @@ class BlogEntry(models.Model):
         return "< BlogEntry title='{}' created_by='{}' status='{}' >".format(self.title, self.created_by, self.status)
 
     class Meta:
-        default_permissions = ('add', 'change', 'delete', 'view')
+        default_permissions = (
+            'add',
+            'change',
+            'delete',
+            'view',
+        )

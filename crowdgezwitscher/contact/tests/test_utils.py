@@ -1,10 +1,10 @@
-import os
+from tempfile import TemporaryDirectory
 
 from django.test import TestCase
 from gnupg import GPG
 
 from contact.models import Key
-from contact.utils import TemporaryDirectory, GPGException, addresses_for_key, handle_gpg_error
+from contact.utils import GPGException, addresses_for_key, handle_gpg_error
 
 
 class UtilTests(TestCase):
@@ -12,16 +12,6 @@ class UtilTests(TestCase):
 
     def setUp(self):
         self.key = Key.objects.get(pk=1)
-
-    def test_temp_dir_gets_deleted(self):
-        """
-        Test if a temporary directory created by TemporaryDirectory() is deleted after leaving the context manager.
-        """
-        with TemporaryDirectory() as temp_dir:
-            self.assertTrue(os.path.isdir(temp_dir))
-            self.assertFalse(os.path.isfile(temp_dir))
-        self.assertFalse(os.path.isdir(temp_dir))
-        self.assertFalse(os.path.isfile(temp_dir))
 
     def test_addresses_for_key(self):
         """Test email address extraction from GPG public keys."""

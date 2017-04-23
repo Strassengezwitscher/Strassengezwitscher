@@ -1,30 +1,11 @@
-from rest_framework import generics
-
-from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from base.models import MapObjectFilterBackend
-from base.widgets import SelectizeSelectMultiple
+from facebook.forms import FacebookPageForm
 from facebook.models import FacebookPage
-from facebook.serializers import FacebookPageSerializer, FacebookPageSerializerShortened
-
-
-class FacebookPageForm(forms.ModelForm):
-    class Meta:
-        model = FacebookPage
-        fields = ('name', 'active', 'location_long', 'location_lat', 'location', 'notes', 'events')
-        widgets = {
-            'events': SelectizeSelectMultiple(),
-            'location_long': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
-            'location_lat': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
-        }
 
 
 class FacebookPageListView(PermissionRequiredMixin, ListView):
@@ -61,15 +42,3 @@ class FacebookPageDelete(PermissionRequiredMixin, DeleteView):
     template_name = 'facebook/delete.html'
     success_url = reverse_lazy('facebook:list')
     context_object_name = 'page'
-
-
-# API Views
-class FacebookPageAPIList(generics.ListAPIView):
-    queryset = FacebookPage.objects.filter(active=True)
-    serializer_class = FacebookPageSerializerShortened
-    filter_backends = (MapObjectFilterBackend,)
-
-
-class FacebookPageAPIDetail(generics.RetrieveAPIView):
-    queryset = FacebookPage.objects.filter(active=True)
-    serializer_class = FacebookPageSerializer

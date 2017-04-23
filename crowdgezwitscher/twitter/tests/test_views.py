@@ -1,6 +1,7 @@
+from unittest import mock
+
 from django.urls import reverse
 from django.test import Client, TestCase
-import mock
 from TwitterAPI import TwitterResponse
 
 from twitter.models import TwitterAccount

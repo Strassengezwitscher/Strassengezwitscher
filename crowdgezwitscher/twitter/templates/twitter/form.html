@@ -1,12 +1,27 @@
 {% extends "admin.html" %}
 
+{% load bootstrap_tags %}
+
+{% block header %}
+{{ form.media }}
+{% endblock%}
+
 {% block content %}
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-primary" type="submit" value="Speichern" />
-    {% if perms.auth.view_twitteraccount %}
+
+    {% bootstrap_error_list form.non_field_errors %}
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            {% bootstrap_field form.name %}
+        </div>
+    </div>
+
+    {% if perms.twitter.add_twitteraccount %}
+        <input class="btn btn-primary" type="submit" value="Speichern" />
+    {% endif %}
+    {% if perms.twitter.view_twitteraccount %}
         <a class="btn btn-link" href="{% url 'twitter:list' %}">Zurück</a>
     {% endif %}
 </form>

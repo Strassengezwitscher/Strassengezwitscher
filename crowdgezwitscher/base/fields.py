@@ -1,6 +1,7 @@
+from decimal import Decimal
+
 from django.db import models
 from django import forms
-import six
 
 from .widgets import SelectizeSelectMultipleCSVInput
 
@@ -33,6 +34,18 @@ class UnsignedBigIntegerField(models.BigIntegerField):
 #############
 # Form fields
 #############
+def round_decimal(value, places):
+    if value is not None:
+        return value.quantize(Decimal(10) ** -places)
+    return value
+
+
+class RoundingDecimalField(forms.DecimalField):
+    def to_python(self, value):
+        value = super(RoundingDecimalField, self).to_python(value)
+        return round_decimal(value, self.decimal_places)
+
+
 class ModelMultipleChoiceImplicitCreationField(forms.ModelMultipleChoiceField):
     """
     A ModelMultipleChoiceField that allows implicitly creating new model instances.
@@ -60,7 +73,7 @@ class ModelMultipleChoiceImplicitCreationField(forms.ModelMultipleChoiceField):
         existing_elems = []
         new_elems = []
         for elem in value:
-            if isinstance(elem, six.text_type) and elem.startswith(self.prefix):
+            if isinstance(elem, str) and elem.startswith(self.prefix):
                 new_elems.append(elem.replace(self.prefix, '', 1))
             else:
                 existing_elems.append(elem)

@@ -1,31 +1,20 @@
-from ckeditor.widgets import CKEditorWidget
-from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
-from django.forms import ModelForm
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
-from rest_framework import generics
 
+from blog.forms import BlogForm
 from blog.models import BlogEntry
-from blog.serializers import BlogSerializer
-
-
-class BlogForm(ModelForm):
-    content = forms.CharField(widget=CKEditorWidget())
-
-    class Meta:
-        model = BlogEntry
-        exclude = ['created_on', 'created_by']
 
 
 class BlogListView(PermissionRequiredMixin, ListView):
     permission_required = 'blog.view_blogentry'
     model = BlogEntry
     template_name = 'blog/list.html'
-    context_object_name = 'blog'
+    context_object_name = 'blogentries'
+    ordering = '-created_on'
 
 
 class BlogDetail(PermissionRequiredMixin, DetailView):
@@ -61,14 +50,3 @@ class BlogDelete(PermissionRequiredMixin, DeleteView):
     template_name = 'blog/delete.html'
     success_url = reverse_lazy('blog:list')
     context_object_name = 'blogentry'
-
-
-# API Views
-class BlogAPIList(generics.ListAPIView):
-    queryset = BlogEntry.objects.filter(status=BlogEntry.PUBLISHED)
-    serializer_class = BlogSerializer
-
-
-class BlogAPIDetail(generics.RetrieveAPIView):
-    queryset = BlogEntry.objects.filter(status=BlogEntry.PUBLISHED)
-    serializer_class = BlogSerializer

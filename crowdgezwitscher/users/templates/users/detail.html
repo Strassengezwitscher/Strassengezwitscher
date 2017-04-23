@@ -2,7 +2,13 @@
 
 {% block content %}
 
-<h1>{{ user_data.first_name }} {{ user_data.last_name }}</h1>
+<h1>
+    {% if user_data.first_name or user_data.last_name %}
+        {{ user_data.first_name }} {{ user_data.last_name }}
+    {% else %}
+        {{ user_data.username }}
+    {% endif %}
+</h1>
 <ul>
     <li><b>Username:</b> {{ user_data.username }}</li>
     <li><b>Email:</b> {{ user_data.email }}</li>

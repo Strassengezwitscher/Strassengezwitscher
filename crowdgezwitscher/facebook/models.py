@@ -1,17 +1,12 @@
-from __future__ import unicode_literals
-
 from django.urls import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 
 from base.models import MapObject
 from events.models import Event
 
 
-@python_2_unicode_compatible
 class FacebookPage(MapObject):
     events = models.ManyToManyField(Event, blank=True, related_name="facebook_pages")
-    notes = models.TextField(blank=True)
     facebook_id = models.CharField(max_length=50)
 
     def __repr__(self):
@@ -23,8 +18,10 @@ class FacebookPage(MapObject):
     def get_absolute_url(self):
         return reverse('facebook:detail', kwargs={'pk': self.pk})
 
+    def url(self):
+        return 'https://www.facebook.com/%s' % self.facebook_id
 
-@python_2_unicode_compatible
+
 class FacebookLikeStatistic(models.Model):
     date = models.DateField()
     like_count = models.PositiveIntegerField()

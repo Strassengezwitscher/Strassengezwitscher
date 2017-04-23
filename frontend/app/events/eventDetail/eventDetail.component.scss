@@ -68,3 +68,7 @@ $foreground: map-get($theme, foreground);
     }
   }
 }
+
+.running-text {
+  white-space: pre-line;
+}

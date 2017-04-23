@@ -2,7 +2,6 @@ import os
 
 from django.conf import settings
 from rest_framework import serializers
-import six
 
 from events.models import Event, Attachment
 
@@ -15,17 +14,17 @@ class AttachmentSerializer(serializers.Serializer):
         default_icon = 'img/icon_file.png'
 
         if attachment.thumbnail:
-            thumbnail_url = settings.MEDIA_URL + six.text_type(attachment.thumbnail)
+            thumbnail_url = settings.MEDIA_URL + str(attachment.thumbnail)
         else:
             extension = os.path.splitext(attachment.name)[1].lower()
             icon_path = extension_icon_mapping.get(extension, default_icon)
-            thumbnail_url = settings.STATIC_URL + six.text_type(icon_path)
+            thumbnail_url = settings.STATIC_URL + str(icon_path)
 
         return {
-            'name': attachment.name,
             'description': attachment.description,
-            'url': settings.MEDIA_URL + six.text_type(attachment.attachment),
+            'name': attachment.name,
             'thumbnail_url': thumbnail_url,
+            'url': settings.MEDIA_URL + str(attachment.attachment),
         }
 
 
@@ -42,17 +41,45 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'location', 'date', 'time', 'repetitionCycle', 'type', 'url', 'counterEvent',
-                  'coverage', 'participants', 'organizer', 'attachments', 'notes')
+        fields = (
+            'attachments',
+            'counterEvent',
+            'coverage',
+            'date',
+            'id',
+            'location',
+            'name',
+            'notes',
+            'participants',
+            'organizer',
+            'repetitionCycle',
+            'time',
+            'type',
+            'url',
+        )
 
 
 class EventSerializerShortened(serializers.ModelSerializer):
     # TODO unify with FB-SerializerShortened, issue: Cannot use ModelSerializer with Abstract Models.
     locationLong = serializers.DecimalField(
-        source='location_long', max_digits=9, decimal_places=6, coerce_to_string=False)
+        source='location_long',
+        max_digits=9,
+        decimal_places=6,
+        coerce_to_string=False,
+    )
     locationLat = serializers.DecimalField(
-        source='location_lat', max_digits=9, decimal_places=6, coerce_to_string=False)
+        source='location_lat',
+        max_digits=9,
+        decimal_places=6,
+        coerce_to_string=False,
+    )
 
     class Meta:
         model = Event
-        fields = ('id', 'name', 'locationLong', 'locationLat', 'date')
+        fields = (
+            'date',
+            'id',
+            'locationLat',
+            'locationLong',
+            'name',
+        )

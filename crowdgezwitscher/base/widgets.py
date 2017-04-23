@@ -5,12 +5,40 @@ from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 
 
+class SelectizeSelect(forms.widgets.Select):
+    class Media:
+        css = {
+            'all': (
+                'selectize/dist/css/selectize.bootstrap3.css',
+            )
+        }
+        js = (
+            'selectize/dist/js/standalone/selectize.min.js',
+        )
+
+    def render(self, name, value, attrs=None):
+        html = super(SelectizeSelect, self).render(name, value, attrs)
+        value = value or []
+        script = '<script type="text/javascript"> \
+                $(function() { \
+                    $("#%s").selectize({ \
+                        sortField: "text" \
+                    }); \
+                }); \
+            </script>' % attrs['id']
+        return mark_safe(''.join(html + script))
+
+
 class SelectizeSelectMultiple(forms.widgets.SelectMultiple):
     class Media:
         css = {
-            'all': ('selectize/dist/css/selectize.bootstrap3.css',)
+            'all': (
+                'selectize/dist/css/selectize.bootstrap3.css',
+            )
         }
-        js = ('selectize/dist/js/standalone/selectize.min.js',)
+        js = (
+            'selectize/dist/js/standalone/selectize.min.js',
+        )
 
     def render(self, name, value, attrs=None):
         html = super(SelectizeSelectMultiple, self).render(name, value, attrs)
@@ -65,9 +93,13 @@ class SelectizeSelectMultipleCSVInput(forms.widgets.SelectMultiple):
 class SelectizeCSVInput(forms.widgets.TextInput):
     class Media:
         css = {
-            'all': ('selectize/dist/css/selectize.bootstrap3.css',)
+            'all': (
+                'selectize/dist/css/selectize.bootstrap3.css',
+            )
         }
-        js = ('selectize/dist/js/standalone/selectize.min.js',)
+        js = (
+            'selectize/dist/js/standalone/selectize.min.js',
+        )
 
     def render(self, name, value, attrs=None):
         html = super(SelectizeCSVInput, self).render(name, value, attrs)
@@ -92,11 +124,13 @@ class SelectizeCSVInput(forms.widgets.TextInput):
 class BootstrapPicker(object):
     class Media:
         css = {
-            'all': ('eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',)
+            'all': (
+                'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+            )
         }
         js = (
-            'moment/min/moment-with-locales.min.js',
             'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+            'moment/min/moment-with-locales.min.js',
         )
 
     def render(self, name, value, attrs=None):
@@ -135,13 +169,13 @@ class BootstrapDatePicker(BootstrapPicker, forms.widgets.DateInput):
     def config(self):
         config = super(BootstrapDatePicker, self).config()
         config.update({
-            'viewMode': 'days',
             'format': 'YYYY-MM-DD',
+            'viewMode': 'days',
         })
         return config
 
 
-class BootstrapTimePicker(BootstrapPicker, forms.widgets.DateInput):
+class BootstrapTimePicker(BootstrapPicker, forms.widgets.TimeInput):
     def config(self):
         config = super(BootstrapTimePicker, self).config()
         config.update({

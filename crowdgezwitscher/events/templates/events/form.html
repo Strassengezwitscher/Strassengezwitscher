@@ -1,5 +1,7 @@
 {% extends "admin.html" %}
 
+{% load bootstrap_tags %}
+
 {% block header %}
 {{ form.media }}
 {% for inline in inlines %}
@@ -21,180 +23,99 @@
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {{ form.non_field_errors }}
+    {% bootstrap_error_list form.non_field_errors %}
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.name.errors }}
-            <div class="form-group">
-                {{ form.name.label_tag }}
-                {{ form.name }}
-            </div>
+            {% bootstrap_field form.name %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.active.errors }}
-            <label class="hidden-xs"></label>
-            <div class="checkbox">
-                <label>
-                    {{ form.active }}
-                    {{ form.active.label }}
-                </label>
-            </div>
+            {% bootstrap_checkbox form.active %}
         </div>
     </div>
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            {{ form.location_lat.errors }}
-            <div class="form-group">
-                {{ form.location_lat.label_tag }}
-                {{ form.location_lat }}
-            </div>
+            {% bootstrap_field form.location_lat %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-4 col-lg-4">
-            {{ form.location_long.errors }}
-            <div class="form-group">
-                {{ form.location_long.label_tag }}
-                {{ form.location_long }}
-            </div>
+            {% bootstrap_field form.location_long %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            {{ form.location.errors }}
-            <div class="form-group">
-                {{ form.location.label_tag }}
-                {{ form.location }}
-            </div>
+            {% bootstrap_field form.location %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            {{ form.date.errors }}
-            <div class="form-group">
-                {{ form.date.label_tag }}
-                {{ form.date }}
-            </div>
+            {% bootstrap_field form.date %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            {{ form.time.errors }}
-            <div class="form-group">
-                {{ form.time.label_tag }}
-                {{ form.time }}
-            </div>
+            {% bootstrap_field form.time %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            {{ form.repetition_cycle.errors }}
-            <div class="form-group">
-                {{ form.repetition_cycle.label_tag }}
-                {{ form.repetition_cycle }}
-            </div>
+            {% bootstrap_field form.repetition_cycle %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.organizer.errors }}
-            <div class="form-group">
-                {{ form.organizer.label_tag }}
-                {{ form.organizer }}
-            </div>
+            {% bootstrap_field form.organizer %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.type.errors }}
-            <div class="form-group">
-                {{ form.type.label_tag }}
-                {{ form.type }}
-            </div>
+            {% bootstrap_field form.type %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.url.errors }}
-            <div class="form-group">
-                {{ form.url.label_tag }}
-                {{ form.url }}
-            </div>
+            {% bootstrap_field form.url %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.participants.errors }}
-            <div class="form-group">
-                {{ form.participants.label_tag }}
-                {{ form.participants }}
-            </div>
+            {% bootstrap_field form.participants %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.counter_event.errors }}
-            <div class="checkbox">
-                <label>
-                    {{ form.counter_event }}
-                    {{ form.counter_event.label }}
-                </label>
-            </div>
+            {% bootstrap_checkbox form.counter_event %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.coverage.errors }}
-            <div class="checkbox">
-                <label>
-                    {{ form.coverage }}
-                    {{ form.coverage.label }}
-                </label>
-            </div>
+            {% bootstrap_checkbox form.coverage %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.twitter_account_names.errors }}
-            <div class="form-group">
-                {{ form.twitter_account_names.label_tag }} (ohne @)
-                {{ form.twitter_account_names }}
-            </div>
+            {% bootstrap_field form.twitter_account_names %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.twitter_hashtags.errors }}
-            <div class="form-group">
-                {{ form.twitter_hashtags.label_tag }} (ohne #)
-                {{ form.twitter_hashtags }}
-            </div>
+            {% bootstrap_field form.twitter_hashtags %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.coverage_start.errors }}
-            <div class="form-group">
-                {{ form.coverage_start.label_tag }}
-                {{ form.coverage_start }}
-            </div>
+            {% bootstrap_field form.coverage_start %}
         </div>
         <div class="fieldWrapper col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            {{ form.coverage_end.errors }}
-            <div class="form-group">
-                {{ form.coverage_end.label_tag }}
-                {{ form.coverage_end }}
-            </div>
+            {% bootstrap_field form.coverage_end %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{ form.notes.errors }}
-            <div class="form-group">
-                {{ form.notes.label_tag }}
-                {{ form.notes }}
-            </div>
+            {% bootstrap_field form.notes %}
         </div>
     </div>
 
     <div class="row">
         <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            {{ form.facebook_pages.errors }}
-            <div class="form-group">
-                {{ form.facebook_pages.label_tag }}
-                {{ form.facebook_pages }}
-            </div>
+            {% bootstrap_field form.internal_notes %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="fieldWrapper col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            {% bootstrap_field form.facebook_pages %}
         </div>
     </div>
 
@@ -213,27 +134,13 @@
                         </a>
                     </div>
                     <div class="fieldWrapper col-xs-8 col-sm-5 col-md-5 col-lg-5">
-                        {{ form.attachment.errors }}
-                        <div class="form-group">
-                            {{ form.attachment.label_tag }}
-                            {{ form.attachment }}
-                        </div>
+                        {% bootstrap_field form.attachment %}
                     </div>
                     <div class="fieldWrapper col-xs-2 col-sm-2 col-md-1 col-lg-1">
-                        {{ form.public.errors }}
-                        <div class="checkbox">
-                            <label>
-                                {{ form.public }}
-                                {{ form.public.label }}
-                            </label>
-                        </div>
+                        {% bootstrap_checkbox form.public %}
                     </div>
                     <div class="fieldWrapper col-xs-12 col-sm-4 col-md-5 col-lg-5">
-                        {{ form.description.errors }}
-                        <div class="form-group">
-                            {{ form.description.label_tag }}
-                            {{ form.description }}
-                        </div>
+                        {% bootstrap_field form.description %}
                     </div>
                 </div>
             </div>

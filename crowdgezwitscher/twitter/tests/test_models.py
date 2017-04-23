@@ -1,8 +1,8 @@
 from datetime import datetime
+from unittest import mock
 
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-import mock
 from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterResponse
 
 from twitter.models import Hashtag, TwitterAccount, Tweet
@@ -151,7 +151,7 @@ class TwitterAccountModelTests(TestCase):
     def test_fetch_tweets_unlocks_if_success(self, unlock_mock):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
-        unlock_mock.assert_called_once()
+        self.assertEqual(unlock_mock.call_count, 1)
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
@@ -163,7 +163,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
         logger.assert_called_once_with("Got unexpected result while fetching tweets.")
-        unlock_mock.assert_called_once()
+        self.assertEqual(unlock_mock.call_count, 1)
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
@@ -175,7 +175,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
         logger.assert_called_once_with("Could not connect to Twitter.")
-        unlock_mock.assert_called_once()
+        self.assertEqual(unlock_mock.call_count, 1)
 
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
@@ -187,7 +187,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
         logger.assert_called_once_with("Got unexpected exception while fetching tweets.")
-        unlock_mock.assert_called_once()
+        self.assertEqual(unlock_mock.call_count, 1)
 
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[]))
     def test_get_utc_offset_to_return_nothing_on_no_tweets(self):

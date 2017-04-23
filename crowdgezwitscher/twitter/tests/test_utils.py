@@ -1,7 +1,7 @@
-from django.test import TestCase
-
-import mock
 import os
+from unittest import mock
+
+from django.test import TestCase
 
 from twitter import utils
 

@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from django.test import TestCase
 from django.contrib.auth.models import User
+
 from blog.models import BlogEntry
-from datetime import datetime
 
 
 class BlogModelTests(TestCase):

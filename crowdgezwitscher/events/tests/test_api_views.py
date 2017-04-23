@@ -54,37 +54,37 @@ class EventAPIViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = {
-            u'id': 1,
-            u'name': u'Test Event',
-            u'location': u'Here',
-            u'date': u'2016-07-20',
-            u'time': u'13:37',
-            u'repetitionCycle': u'unbekannter Rhythmus',
-            u'type': u'',
-            u'url': u'',
-            u'counterEvent': False,
-            u'coverage': True,
-            u'participants': u'',
-            u'notes': u'',
-            u'organizer': u'Person P',
-            u'attachments': [
+            'id': 1,
+            'name': 'Test Event',
+            'location': 'Here',
+            'date': '2016-07-20',
+            'time': '13:37',
+            'repetitionCycle': 'unbekannter Rhythmus',
+            'type': '',
+            'url': '',
+            'counterEvent': False,
+            'coverage': True,
+            'participants': '',
+            'notes': '',
+            'organizer': 'Person P',
+            'attachments': [
                 {
-                    'name': u'test.pdf',
-                    'description': u'I need a pdf icon',
-                    'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
-                    'thumbnail_url': u'%simg/icon_pdf.png' % settings.STATIC_URL
+                    'name': 'test.pdf',
+                    'description': 'I need a pdf icon',
+                    'url': '%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
+                    'thumbnail_url': '%simg/icon_pdf.png' % settings.STATIC_URL
                 },
                 {
-                    'name': u'noext',
-                    'description': u'I have no file extension and need a generic icon',
-                    'url': u'%sevent_attachments/2016/11/20161111-2349_noext_abcde' % settings.MEDIA_URL,
-                    'thumbnail_url': u'%simg/icon_file.png' % settings.STATIC_URL
+                    'name': 'noext',
+                    'description': 'I have no file extension and need a generic icon',
+                    'url': '%sevent_attachments/2016/11/20161111-2349_noext_abcde' % settings.MEDIA_URL,
+                    'thumbnail_url': '%simg/icon_file.png' % settings.STATIC_URL
                 },
                 {
-                    'name': u'image.PNG',
-                    'description': u'I have a jpg-thumbnail and need no special icon',
-                    'url': u'%sevent_attachments/2016/11/20161111-2349_image_12345.PNG' % settings.MEDIA_URL,
-                    'thumbnail_url': u'%sevent_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg' %
+                    'name': 'image.PNG',
+                    'description': 'I have a jpg-thumbnail and need no special icon',
+                    'url': '%sevent_attachments/2016/11/20161111-2349_image_12345.PNG' % settings.MEDIA_URL,
+                    'thumbnail_url': '%sevent_attachments/2016/11/20161111-2349_image_67890.thumbnail.jpg' %
                                      settings.MEDIA_URL
                 },
             ],
@@ -104,25 +104,25 @@ class EventAPIViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = {
-            u'id': 1,
-            u'name': u'Test Event',
-            u'location': u'Here',
-            u'date': u'2016-07-20',
-            u'time': u'13:37',
-            u'repetitionCycle': u'unbekannter Rhythmus',
-            u'type': u'',
-            u'url': u'',
-            u'counterEvent': False,
-            u'coverage': True,
-            u'participants': u'',
-            u'notes': u'',
-            u'organizer': u'Person P',
-            u'attachments': [
+            'id': 1,
+            'name': 'Test Event',
+            'location': 'Here',
+            'date': '2016-07-20',
+            'time': '13:37',
+            'repetitionCycle': 'unbekannter Rhythmus',
+            'type': '',
+            'url': '',
+            'counterEvent': False,
+            'coverage': True,
+            'participants': '',
+            'notes': '',
+            'organizer': 'Person P',
+            'attachments': [
                 {
-                    'name': u'test.pdf',
-                    'description': u'I need a pdf icon',
-                    'url': u'%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
-                    'thumbnail_url': u'%simg/icon_pdf.png' % settings.STATIC_URL
+                    'name': 'test.pdf',
+                    'description': 'I need a pdf icon',
+                    'url': '%sevent_attachments/2016/11/20161111-2349_test_g8nbW.pdf' % settings.MEDIA_URL,
+                    'thumbnail_url': '%simg/icon_pdf.png' % settings.STATIC_URL
                 },
             ],
         }
@@ -293,7 +293,7 @@ class EventFilterAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             'min_lat': 41.941380,
             'min_long': 72.467309,
             'max_lat': 51.267301,
-            'max_long': 99.713402
+            'max_long': 99.713402,
         }
         super(EventFilterAPIViewTests, self).test_correct_filter(url, rect_params)
 

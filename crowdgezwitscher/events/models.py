@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os
 import random
 import string
@@ -10,13 +8,11 @@ from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from django.dispatch import receiver
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as timezone_now
 
 from base.models import MapObject
 
 
-@python_2_unicode_compatible
 class Event(MapObject):
     date = models.DateField()
     time = models.TimeField(blank=True, null=True)
@@ -47,7 +43,6 @@ class Event(MapObject):
         return reverse('events:detail', kwargs={'pk': self.pk})
 
 
-@python_2_unicode_compatible
 class Attachment(models.Model):
     MAX_WIDTH = 256
     MAX_HEIGHT = 256

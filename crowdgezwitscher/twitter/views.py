@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView
 from django.urls import reverse_lazy
 
+from twitter.forms import TwitterAccountForm
 from twitter.models import TwitterAccount
 
 
@@ -28,7 +29,7 @@ class TwitterAccountCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'twitter.add_twitteraccount'
     model = TwitterAccount
     template_name = 'twitter/form.html'
-    fields = ['name']
+    form_class = TwitterAccountForm
 
 
 class TwitterAccountDelete(PermissionRequiredMixin, DeleteView):

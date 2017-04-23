@@ -1,8 +1,6 @@
-from __future__ import unicode_literals
 from decimal import Decimal
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from rest_framework.exceptions import ValidationError
 from rest_framework import filters
 
@@ -24,13 +22,14 @@ class MapObjectFilterBackend(filters.BaseFilterBackend):
         return queryset
 
 
-@python_2_unicode_compatible
 class MapObject(models.Model):
     name = models.CharField(max_length=100, default="unbenannt")
     active = models.BooleanField(default=False)
     location = models.CharField(max_length=100)
     location_lat = models.DecimalField(max_digits=9, decimal_places=6)
     location_long = models.DecimalField(max_digits=9, decimal_places=6)
+    notes = models.TextField(blank=True)
+    internal_notes = models.TextField(blank=True)
 
     def __repr__(self):
         return '<MapObject %s>' % self.name

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from datetime import datetime
 import time
 
@@ -7,7 +5,6 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from TwitterAPI import TwitterAPI, TwitterConnectionError
 
@@ -17,7 +14,6 @@ from events.models import Event
 from twitter import utils
 
 
-@python_2_unicode_compatible
 class TwitterAccount(models.Model):
     name = models.CharField(max_length=15, unique=True)
     account_id = UnsignedBigIntegerField(unique=True)
@@ -181,7 +177,6 @@ class TwitterAccount(models.Model):
         utils.unlock_twitter()
 
 
-@python_2_unicode_compatible
 class Hashtag(models.Model):
     hashtag_text = models.CharField(max_length=50, unique=True)
     events = models.ManyToManyField(Event, blank=True, related_name="hashtags")
@@ -198,7 +193,6 @@ class Hashtag(models.Model):
             self.hashtag_text = self.hashtag_text[1:]
 
 
-@python_2_unicode_compatible
 class Tweet(models.Model):
     tweet_id = UnsignedBigIntegerField(unique=True)
     content = models.CharField(max_length=250)
