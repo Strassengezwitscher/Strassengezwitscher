@@ -232,7 +232,7 @@ class EventAPIViewTests(APITestCase):
         # There are 3 tweets, each from one of the accounts with at least one of the specified hashtags and within the
         # creation date range:
         response_json = ['11', '22', '66']
-        self.assertEqual(json.loads(response.content.decode("utf-8")).sort(), response_json.sort())
+        self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
 
     # GET /api/events/1000/tweets
     def test_get_tweets_not_existant_event(self):
