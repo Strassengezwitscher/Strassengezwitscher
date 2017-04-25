@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -41,6 +42,10 @@ class EventAPIGetTweets(APIView):
 
         event_hashtag_ids = [hashtag.id for hashtag in event.hashtags.all()]
 
+        since_id = request.query_params.get('since_id', 0)
+        if not isinstance(since_id, int):
+            raise ValidationError({'message': "Please provide since_id as int."})
+
         # Convert event coverage dates to datetimes as they will be compared to Tweets' creation datetimes.
         # The time part will be set to 00:00:00.
         # tweets_till would therefore be the earliest possible datetime for coverage_end. As we want to includes dates
@@ -62,6 +67,7 @@ class EventAPIGetTweets(APIView):
         tweets = Tweet.objects.filter(
             account__in=event.twitter_accounts.all(),
             created_at__range=(tweets_from, tweets_till),
+            tweet_id__gt=since_id,
         )
         # If the event specifies hashtags, each tweet needs to include at least one of them.
         # Otherwise, there are no restrictions on tweets' hashtags.

@@ -234,6 +234,35 @@ class EventAPIViewTests(APITestCase):
         response_json = ['11', '22', '66']
         self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
 
+    # The following four tests are testing filter functionality for tweets_ids
+    # GET /api/events/1/tweets since_id=1
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': 1})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = ['11', '22', '66']
+        self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
+
+    # GET /api/events/1/tweets since_id=50
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': 50})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = ['66']
+        self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
+
+    # GET /api/events/1/tweets since_id=-50.0
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': -50.0})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    # GET /api/events/1/tweets since_id=-50.0
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': "422"})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     # GET /api/events/1000/tweets
     def test_get_tweets_not_existant_event(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1000})
