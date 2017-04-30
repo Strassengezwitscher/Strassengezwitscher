@@ -93,8 +93,8 @@ class BootstrapPicker(object):
             )
         }
         js = (
-            'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
             'moment/min/moment-with-locales.min.js',
+            'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
         )
 
     def render(self, name, value, attrs=None):
