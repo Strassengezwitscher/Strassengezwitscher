@@ -65,11 +65,13 @@ class EventAPIGetTweets(APIView):
         # It would be possible also use the __date field lookup of created_at before using __range.
         # This would allow using coverage_start and coverage_end, so no need for tweets_from and tweets_till.
         # However, this would nearly double the processing time.
+        # The tweets are sorted in descending order to return the newest tweets first.
         tweets = Tweet.objects.filter(
             account__in=event.twitter_accounts.all(),
             created_at__range=(tweets_from, tweets_till),
             tweet_id__gt=since_id,
-        )
+        ).order_by('-tweet_id')
+
         # If the event specifies hashtags, each tweet needs to include at least one of them.
         # Otherwise, there are no restrictions on tweets' hashtags.
         if event_hashtag_ids:
