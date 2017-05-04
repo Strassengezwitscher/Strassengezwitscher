@@ -42,8 +42,9 @@ class EventAPIGetTweets(APIView):
 
         event_hashtag_ids = [hashtag.id for hashtag in event.hashtags.all()]
 
-        since_id = request.query_params.get('since_id', 0)
-        if not isinstance(since_id, int):
+        try:
+            since_id = int(request.query_params.get('since_id', 0))
+        except ValueError:
             raise ValidationError({'message': "Please provide since_id as int."})
 
         # Convert event coverage dates to datetimes as they will be compared to Tweets' creation datetimes.
