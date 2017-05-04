@@ -1,14 +1,10 @@
-from __future__ import unicode_literals
-
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 from ckeditor.fields import RichTextField
 
 
-@python_2_unicode_compatible
 class BlogEntry(models.Model):
     HIDDEN = 'HIDDEN'
     DRAFT = 'DRAFT'
