@@ -54,7 +54,7 @@
         <br>
         <span *ngIf="event.coverage">
             <div *ngIf="!twttrIsBlocked">
-                <button md-raised-button class="refresh-button" (click)="onRefresh()">Refresh Twitter-Feed</button>
+                <button md-raised-button class="refresh-button" (click)="refreshTweetIds()">Refresh Twitter-Feed</button>
                 <cg-tweet *ngFor="let tweetId of tweetIds" [id]="tweetId"></cg-tweet>
                 <md-card *ngIf="tweetIds !== null && (tweetIds)?.length == 0">Berichterstattung geplant.</md-card>
             </div>
