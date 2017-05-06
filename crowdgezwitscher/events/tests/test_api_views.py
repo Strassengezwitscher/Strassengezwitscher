@@ -235,32 +235,33 @@ class EventAPIViewTests(APITestCase):
         self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
 
     # The following four tests are testing filter functionality for tweets_ids
-    # GET /api/events/1/tweets since_id=1
+    # GET /api/events/1/tweets?since_id=1
     def test_get_tweets_filter_matches_all(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1})
         response = self.client.get(url, {'since_id': 1})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_json = ['11', '22', '66']
-        self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
+        response_json = ['66', '22', '11']
+        self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
-    # GET /api/events/1/tweets since_id=50
+    # GET /api/events/1/tweets?since_id=22
     def test_get_tweets_filter_single_tweet_id(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url, {'since_id': 50})
+        response = self.client.get(url, {'since_id': 22})  # also test > instead of ≥, i.e. '22' must not be returned
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_json = ['66']
-        self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
+        self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
 
-    # GET /api/events/1/tweets since_id=-50.0
+    # GET /api/events/1/tweets?since_id=50.0
     def test_get_tweets_filter_invalid(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url, {'since_id': -50.0})
+        response = self.client.get(url, {'since_id': 50.0})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(json.loads(response.content.decode("utf-8"))['message'], "Please provide since_id as int.")
 
-    # GET /api/events/1/tweets since_id=422
+    # GET /api/events/1/tweets?since_id=422
     def test_get_tweets_filter_empty_result_for_high_filter(self):
         url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url, {'since_id': "422"})
+        response = self.client.get(url, {'since_id': "422"})  # also test string handling
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json.loads(response.content.decode("utf-8")), [])
 
