@@ -46,6 +46,8 @@ class EventAPIGetTweets(APIView):
             since_id = int(request.query_params.get('since_id', 0))
         except ValueError:
             raise ValidationError({'message': "Please provide since_id as int."})
+        if since_id < 0:
+            raise ValidationError({'message': "since_id must be ≥ 0."})
 
         # Convert event coverage dates to datetimes as they will be compared to Tweets' creation datetimes.
         # The time part will be set to 00:00:00.
