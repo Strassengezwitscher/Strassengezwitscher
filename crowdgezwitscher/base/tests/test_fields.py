@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core import exceptions
 from django.db import models, transaction
 from django.test import TestCase
 
@@ -64,14 +65,14 @@ class UnsignedBigIntegerFieldTests(TestCase):
         min_value, max_value = self.documented_range
 
         instance = self.model(value=min_value - 1)
-        with self.assertRaises(OverflowError):
+        with self.assertRaises(exceptions.ValidationError):
             with transaction.atomic():
                 instance.save()
         qs = self.model.objects.filter(value__lte=min_value)
         self.assertEqual(qs.count(), 0)
 
         instance = self.model(value=max_value + 1)
-        with self.assertRaises(OverflowError):
+        with self.assertRaises(exceptions.ValidationError):
             with transaction.atomic():
                 instance.save()
         qs = self.model.objects.filter(value__gte=max_value)

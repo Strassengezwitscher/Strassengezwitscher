@@ -1,7 +1,9 @@
 from decimal import Decimal
 
-from django.db import models
 from django import forms
+from django.core import exceptions
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from .widgets import SelectizeSelectMultipleCSVInput
 
@@ -13,6 +15,9 @@ class UnsignedBigIntegerField(models.BigIntegerField):
     """A 64 bit field storing unsigned integers from 0 to 18446744073709551615."""
     description = "Big (8 byte) unsigned integer"
     MAX_BIGINT = 18446744073709551615
+    default_error_messages = {
+        'invalid': _("'%(value)s' value must be an integer ≥ 0 and ≤ 18446744073709551615."),
+    }
 
     def formfield(self, **kwargs):
         defaults = {'min_value': 0,
@@ -28,7 +33,18 @@ class UnsignedBigIntegerField(models.BigIntegerField):
     def get_prep_value(self, value):
         if value is None:
             return value
-        return int(value) - 2 ** 63
+        try:
+            value = int(value)
+            if value < 0 or value > self.MAX_BIGINT:
+                raise ValueError
+        except (TypeError, ValueError):
+            raise exceptions.ValidationError(
+                self.error_messages['invalid'],
+                code='invalid',
+                params={'value': value},
+            )
+        return value - 2 ** 63
+
 
 
 #############
