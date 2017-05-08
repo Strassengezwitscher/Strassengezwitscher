@@ -17,10 +17,11 @@ class HashtagModelTests(TestCase):
         hashtag = Hashtag(hashtag_text='crowdgezwitscher')
         self.assertEqual(str(hashtag), 'crowdgezwitscher')
 
+    # Tests removing of a potentially leading # and enforcing of lowercase hashtags
     def test_clean(self):
         hashtag = Hashtag(hashtag_text='#nyetMyPresident')
         hashtag.clean()
-        self.assertEqual(hashtag.hashtag_text, 'nyetMyPresident')
+        self.assertEqual(hashtag.hashtag_text, 'nyetmypresident')
 
 
 class TweetModelTests(TestCase):
@@ -83,7 +84,7 @@ class TwitterAccountModelTests(TestCase):
             'entities': {
                 'hashtags': [
                     {
-                        'text': 'Hashtag2'
+                        'text': 'hashtag2'
                     },
                     {
                         'text': 'Hashtag3'

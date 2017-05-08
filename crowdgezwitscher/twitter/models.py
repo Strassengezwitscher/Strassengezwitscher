@@ -132,7 +132,7 @@ class TwitterAccount(models.Model):
                     new_tweets.append(tweet)
                     hashtags = []
                     for hashtag_from_api in tweet_from_api['entities']['hashtags']:
-                        hashtag_text = hashtag_from_api['text']
+                        hashtag_text = hashtag_from_api['text'].lower()
                         hashtag, _ = Hashtag.objects.get_or_create(hashtag_text=hashtag_text)
                         hashtags.append(hashtag)
                     tweet_hashtag_mappings[tweet.tweet_id] = hashtags
@@ -188,6 +188,10 @@ class Hashtag(models.Model):
         return self.hashtag_text
 
     def clean(self):
+        # Twitter treats all hashtags independent of lowercase/uppcase equally.
+        # However, moderators might introduce different hashtags by using case uncarefully
+        self.hashtag_text = self.hashtag_text.lower()
+
         # remove leading #
         if self.hashtag_text.startswith('#'):
             self.hashtag_text = self.hashtag_text[1:]
