@@ -46,7 +46,6 @@ class UnsignedBigIntegerField(models.BigIntegerField):
         return value - 2 ** 63
 
 
-
 #############
 # Form fields
 #############
