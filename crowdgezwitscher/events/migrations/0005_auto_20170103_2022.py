@@ -15,7 +15,10 @@ def forwards_func(apps, schema_editor):
         'coverage_che': 707960814423166978,
         'reDDakteur': 97706519,
         'streetphotose': 705825972617125888,
-        'MDR_SN': 581765861
+        'MDR_SN': 581765861,
+        'durchgezaehlt': 3224192729,
+        'FelixMSteiner': 1976366144,
+        'SimonTelemann': 4533756861,
     }
 
     event_account_dict = {}
