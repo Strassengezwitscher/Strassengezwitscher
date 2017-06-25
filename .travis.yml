@@ -1,3 +1,5 @@
+dist: trusty
+sudo: required
 language: python
 python:
   - "3.5"
@@ -9,7 +11,7 @@ before_install:
   - npm install -g npm@latest
 install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y build-essential lcov
+  - sudo apt-get install lcov
   - gem install coveralls-lcov
   - pip install -r requirements.txt
   - pip install coveralls
