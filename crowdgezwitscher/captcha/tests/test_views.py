@@ -15,19 +15,3 @@ class ViewTests(TestCase):
         response = self.client.post(reverse('captcha:validate_captcha'), {'response': self.valid_gresponse})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['status'], 'success')
-
-    def test_wrong_captcha_response(self):
-        """
-        Test sending an invalid captcha response. Response should be success.
-        """
-        response = self.client.post(reverse('captcha:validate_captcha'), {'response': "WRONG"})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json()['status'], 'error')
-
-    def test_empty_captcha_response(self):
-        """
-        Test sending an empty captcha response. Response should be success.
-        """
-        response = self.client.post(reverse('captcha:validate_captcha'), {'response': ""})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json()['status'], 'error')

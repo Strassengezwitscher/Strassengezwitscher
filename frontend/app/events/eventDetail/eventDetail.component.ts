@@ -14,9 +14,10 @@ declare var twttr: any;
 })
 export class EventDetailComponent implements OnInit {
     public event: Event;
-    public tweetIds: string[] = null;
+    public tweetIds: string[] = [];
     public errorMessage: string;
     public twttrIsBlocked: boolean = (typeof twttr === "undefined");
+    private last_tweet_id: number = 0;
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
@@ -27,9 +28,14 @@ export class EventDetailComponent implements OnInit {
         });
     }
 
-    public onRefresh() {
-        this.eventService.getTweetIds(this.event).subscribe(
-            tweetIds => this.tweetIds = tweetIds
+    public refreshTweetIds() {
+        this.eventService.getTweetIds(this.event, this.last_tweet_id).subscribe(
+            tweetIds => {
+                this.tweetIds = tweetIds.concat(this.tweetIds)
+                if (tweetIds.length > 0) {
+                    this.last_tweet_id = Number(tweetIds[0])
+                }
+            }
         );
     }
 
@@ -47,9 +53,10 @@ export class EventDetailComponent implements OnInit {
     private setEvent(event: Event) {
         this.event = event;
         if (this.event && this.event.coverage) {
-            this.eventService.getTweetIds(this.event).subscribe(
-                tweetIds => this.tweetIds = tweetIds
-            );
+            this.refreshTweetIds();
+            setInterval(() => {
+                this.refreshTweetIds();
+            }, 20000);
         }
     }
 }

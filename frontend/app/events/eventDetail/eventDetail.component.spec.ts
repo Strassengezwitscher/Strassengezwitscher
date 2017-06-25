@@ -54,7 +54,7 @@ describe("EventDetailComponent", () => {
     it("Should set a new active & not covered Event", inject([EventDetailComponent], (evDComponent) =>  {
         evDComponent.getEvent(1);
         expect(evDComponent.event.id).toBe(1);
-        expect(evDComponent.tweetIds).toEqual(null);
+        expect(evDComponent.tweetIds).toEqual([]);
     }));
 
     it("Should set a new active & covered Event", inject([EventDetailComponent], (evDComponent) =>  {
@@ -73,10 +73,10 @@ describe("EventDetailComponent", () => {
         expect(evDComponent.errorMessage).toBe("ErrorMessage");
     }));
 
-    it("Should call getTweetIds on onRefresh", inject([EventDetailComponent], (evDComponent) =>  {
+    it("Should call getTweetIds on refreshTweetIds", inject([EventDetailComponent], (evDComponent) =>  {
         spyOn(evDComponent.eventService, "getTweetIds").and.callThrough();
-        expect(evDComponent.tweetIds).toEqual(null);
-        evDComponent.onRefresh();
+        expect(evDComponent.tweetIds).toEqual([]);
+        evDComponent.refreshTweetIds();
         expect(evDComponent.tweetIds).toEqual(["1"]);
         expect(evDComponent.eventService.getTweetIds).toHaveBeenCalledTimes(1);
     }));

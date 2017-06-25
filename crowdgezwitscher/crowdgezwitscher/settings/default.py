@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'contact.apps.ContactConfig',
     'captcha.apps.CaptchaConfig',
     'blog.apps.BlogConfig',
+    'twitter.apps.TwitterConfig',
     'rest_framework',
     'ckeditor',
 ]
@@ -137,9 +138,6 @@ RECAPTCHA_SECRET_KEY = ['6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe']
 ######################################################################################################
 #                                           Twitter settings
 ######################################################################################################
-# number of tweets to request from Twitter's REST API
-TWITTER_TWEET_COUNT = 50
-
 # override Twitter settings with sane values in sensitive_settings.py
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''  # noqa

@@ -23,8 +23,7 @@ class Event(MapObject):
     counter_event = models.BooleanField(default=False)
     coverage = models.BooleanField(default=False)
     participants = models.CharField(max_length=20, blank=True)
-    twitter_account_names = models.CharField(max_length=150, blank=True)
-    twitter_hashtags = models.CharField(max_length=150, blank=True)
+    notes = models.TextField(blank=True)
     coverage_start = models.DateField(blank=True, null=True)
     coverage_end = models.DateField(blank=True, null=True)
 
@@ -42,23 +41,6 @@ class Event(MapObject):
 
     def get_absolute_url(self):
         return reverse('events:detail', kwargs={'pk': self.pk})
-
-    def _is_ready_for_twitter(self):
-        """Checks that all fields required for getting tweets have some value."""
-        return all([self.twitter_account_names, self.coverage_start, self.coverage_end])
-
-    def build_twitter_search_query(self):
-        """Returns search query for Twitter from hashtags and account names."""
-        if not self._is_ready_for_twitter():
-            return
-        accounts = [account.strip() for account in self.twitter_account_names.split(',')]
-        accounts = [account[1:] if account[0] == '@' else account for account in accounts]  # remove leading '@'
-        query = ' OR '.join(['from:%s' % acc for acc in accounts])
-        if self.twitter_hashtags:
-            hashtags = [hashtag.strip() for hashtag in self.twitter_hashtags.split(',')]
-            hashtags = [hashtag if hashtag[0] == '#' else '#' + hashtag for hashtag in hashtags]  # require leading '#'
-            query += ' %s' % ' OR '.join(hashtags)
-        return query
 
 
 class Attachment(models.Model):
