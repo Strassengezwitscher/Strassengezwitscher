@@ -187,7 +187,8 @@ class TwitterAccountModelTests(TestCase):
     def test_fetch_tweets_unlocks_if_get_utc_offset_throws_unknown_error(self, logger, unlock_mock):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
         twitter_account.fetch_tweets()
-        logger.assert_called_once_with("Got unexpected exception while fetching tweets.")
+        logger.assert_called_once_with(
+            "Got unexpected exception while fetching tweets: <class 'Exception'> - wow, much error, such bad")
         self.assertEqual(unlock_mock.call_count, 1)
 
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[]))
