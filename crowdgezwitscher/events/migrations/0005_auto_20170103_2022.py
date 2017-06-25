@@ -13,12 +13,12 @@ def forwards_func(apps, schema_editor):
         'streetcoverage': 3079082955,
         'coverage_le': 4884120381,
         'coverage_che': 707960814423166978,
-        'reDDakteur': 97706519,
+        'reddakteur': 97706519,
         'streetphotose': 705825972617125888,
-        'MDR_SN': 581765861,
+        'mdr_sn': 581765861,
         'durchgezaehlt': 3224192729,
-        'FelixMSteiner': 1976366144,
-        'SimonTelemann': 4533756861,
+        'felixmsteiner': 1976366144,
+        'simontelemann': 4533756861,
     }
 
     event_account_dict = {}
@@ -27,6 +27,9 @@ def forwards_func(apps, schema_editor):
         event_account_dict[event.id] = []
         for account in event.twitter_account_names.split(','):
             if account:
+                account = account.lower()
+                if account.startswith('@'):
+                    account = account[1:]
                 try:
                     new_account = TwitterAccount.objects.using(db_alias).get(name=account)
                 except TwitterAccount.DoesNotExist:

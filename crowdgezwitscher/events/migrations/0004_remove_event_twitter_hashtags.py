@@ -8,6 +8,12 @@ class Migration(migrations.Migration):
     dependencies = [
         ('events', '0003_auto_20170103_1741'),
         ('twitter', '0002_hashtag_events'),
+        # This migration's RemoveField operation internally renames the existing event table, creates a new one without
+        # the twitter_hashtags column and migrates the data to the new event table.
+        # When this migration was originally written, 0006_event_internal_notes did not exist yet. However, to keep the
+        # changes introduced in the migration branch including 0006_event_internal_notes, we had to add a reference to
+        # it. Otherwise, when creating the new event table the other branch's changes would have been lost.
+        ('events', '0006_event_internal_notes'),
     ]
 
     operations = [

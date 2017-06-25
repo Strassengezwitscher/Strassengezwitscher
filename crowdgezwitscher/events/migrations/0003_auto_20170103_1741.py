@@ -14,9 +14,12 @@ def forwards_func(apps, schema_editor):
 
     for event in Event.objects.using(db_alias).all():
         event_hashtag_dict[event.id] = []
-        for hashtag in event.twitter_hashtags.split(','):
-            new_hashtag, _ = Hashtag.objects.using(db_alias).get_or_create(hashtag_text=hashtag)
-            event_hashtag_dict[event.id].append(new_hashtag)
+        if event.twitter_hashtags:
+            for hashtag in event.twitter_hashtags.split(','):
+                if hashtag.startswith('#'):
+                    hashtag = hashtag[1:]
+                new_hashtag, _ = Hashtag.objects.using(db_alias).get_or_create(hashtag_text=hashtag)
+                event_hashtag_dict[event.id].append(new_hashtag)
 
     for event_id in event_hashtag_dict:
         for hashtag in event_hashtag_dict[event_id]:
