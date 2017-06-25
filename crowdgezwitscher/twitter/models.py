@@ -73,7 +73,7 @@ class TwitterAccount(models.Model):
     def _get_utc_offset(self, twitter):
         tweets = self._fetch_tweets_from_api(twitter, None, None, 1, False)
         if len(tweets) > 0:
-            return tweets[0]['user']['utc_offset']
+            return tweets[0]['user']['utc_offset'] or 0
 
     def fetch_tweets(self):
         # Fetching tweets can require multiple request to Twitter's API.
@@ -153,7 +153,10 @@ class TwitterAccount(models.Model):
                 TwitterConnectionError: "Could not connect to Twitter.",
                 KeyError: "Got unexpected result while fetching tweets."
             }
-            logger.warning(exception_log_map.get(type(e), "Got unexpected exception while fetching tweets."))
+            logger.warning(exception_log_map.get(
+                type(e),
+                "Got unexpected exception while fetching tweets: %s - %s" % (type(e), e)
+            ))
 
             utils.unlock_twitter()
 
