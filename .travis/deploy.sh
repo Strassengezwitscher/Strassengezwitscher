@@ -3,7 +3,7 @@
 DEPLOY_BRANCHES=(master develop)
 
 if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
-    if [[ "$TRAVIS_PYTHON_VERSION" = "2.7" ]]; then
+    if [[ "$TRAVIS_PYTHON_VERSION" = "3.5" ]]; then
         for i in "${DEPLOY_BRANCHES[@]}"; do
             if [[ "$i" = $TRAVIS_BRANCH ]]; then
             	openssl aes-256-cbc -K $encrypted_423a58ca66b3_key -iv $encrypted_423a58ca66b3_iv -in deploy_key.pem.enc -out deploy_key.pem -d
