@@ -48,7 +48,7 @@ class TwitterAccount(models.Model):
             logger.warning("Could not find user with provided name.")
             raise ValidationError("Could not find user with provided name.")
 
-        if len(TwitterAccount.objects.filter(account_id=self.account_id)) > 0:
+        if TwitterAccount.objects.filter(account_id=self.account_id):
             logger.warning("TwitterAccount with account_id is already in database.")
             raise ValidationError("Twitter account with this name already exists.")
 
