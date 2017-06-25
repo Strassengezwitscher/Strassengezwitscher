@@ -270,3 +270,11 @@ class TwitterAccountModelTests(TestCase):
         # ToDo: This is not optimal, but I don't know of any better way to ensure that the body of fetch_tweets was not
         # executed
         self.assertFalse(mock_twitter_init.called)
+
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
+    def test_add_account_with_same_name_but_different_capitalization(self):
+        TwitterAccount.objects.create(name="Strassengezwitscher", account_id=1337)
+        twitter_account_new = TwitterAccount(name="STRASSENGEZWITSCHER")
+
+        self.assertRaisesMessage(ValidationError, 'Twitter account with this name already exists.', twitter_account_new.clean)

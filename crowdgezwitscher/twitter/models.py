@@ -48,6 +48,10 @@ class TwitterAccount(models.Model):
             logger.warning("Could not find user with provided name.")
             raise ValidationError("Could not find user with provided name.")
 
+        if len(TwitterAccount.objects.filter(account_id=self.account_id)) > 0:
+            logger.warning("TwitterAccount with account_id is already in database.")
+            raise ValidationError("Twitter account with this name already exists.")
+
     def _fetch_tweets_from_api(self, twitter, max_id=None, since_id=None, count=200, trim_user=True):
         request_parameters = {
             'count': count,
