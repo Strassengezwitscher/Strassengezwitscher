@@ -124,6 +124,33 @@ class EventViewCorrectPermissionMixin(object):
         self.assertEqual(event.twitter_accounts.count(), 3)
         self.assertEqual(event.hashtags.count(), 4)
 
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('TwitterAPI.TwitterAPI.request', mocked_requests_get)
+    def test_post_create_with_twitter_coverage_and_existing_hashtag_with_wrong_case(self):
+        """
+        The difference to the test 'test_post_create_with_twitter_coverage' is that this one indicates a new hashtag
+        which actually already exists: yolo is in the DB already, YOLO is not. This test makes sure we interally clean
+        data before checking if it exists already.
+        """
+        hashtag_cnt_old = Hashtag.objects.count()
+        yolo_hashtag = Hashtag.objects.get(hashtag_text='yolo')
+        self.post_data.update({
+            'twitter_account_names': [
+                1,
+            ],
+            'twitter_hashtags': [
+                1,
+                '__new_hashtag__YOLO',  # no new hashtag! yolo (lower case) already exists in DB.
+            ],
+        })
+        response = self.client.post(reverse('events:create'), self.post_data, follow=True)
+        self.assertRedirects(response, reverse('events:detail', kwargs={'pk': 4}))
+        self.assertEqual(Hashtag.objects.count(), hashtag_cnt_old)
+
+        event = Event.objects.get(pk=4)
+        self.assertEqual(event.hashtags.count(), 2)
+        self.assertIn(yolo_hashtag, event.hashtags.all())
+
     @mock.patch('random.choice', lambda *args, **kwargs: 'x')
     def test_post_create_view_with_one_attachment(self):
         attachment_name = "dolphin      diary.TXT"

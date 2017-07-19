@@ -100,11 +100,16 @@ class ModelMultipleChoiceImplicitCreationField(forms.ModelMultipleChoiceField):
         if hasattr(self, 'new_elements'):
             model = self.queryset.model
             for elem in self.new_elements:
+                # Before checking if an object with value elem for attribute attr_name already exists, we need to run
+                # the object's clean method. It might lead to saving a modified value, possibly not elem directly.
+                obj = model(**{'%s' % self.attr_name: elem})
+                obj.clean()
                 try:
-                    obj = model.objects.get(**{'%s' % self.attr_name: elem})
+                    # We can then check if there already is an object of the same model with the cleaned value for the
+                    # attribute attr_name. If so, we take the existing one ...
+                    obj = model.objects.get(**{'%s' % self.attr_name: getattr(obj, self.attr_name)})
                 except model.DoesNotExist:
-                    obj = model(**{'%s' % self.attr_name: elem})
-                    obj.clean()
+                    # ... otherwise we save the new one.
                     obj.save()
                 new_objs.append(obj)
         return new_objs
