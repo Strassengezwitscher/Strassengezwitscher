@@ -17,8 +17,8 @@
         <ul>
             <li>Twitter:
                 <ul>
-                    <li>Accountname: {{ event.twitter_account_names }}</li>
-                    <li>Hashtags: {{ event.twitter_hashtags }}</li>
+                    <li>Accountname: {% for twitter_account in event.twitter_accounts.all %}{{ twitter_account }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
+                    <li>Hashtags: {% for hashtag in event.hashtags.all %}{{ hashtag }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
                 </ul>
             </li>
             <li>Start: {{ event.coverage_start }}</li>

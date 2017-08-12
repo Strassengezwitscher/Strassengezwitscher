@@ -2,13 +2,14 @@
 from django import forms
 from extra_views import InlineFormSet
 
-from base.fields import RoundingDecimalField
+from base.fields import ModelMultipleChoiceImplicitCreationField, RoundingDecimalField
 from base.widgets import (
-    SelectizeSelectMultiple, SelectizeCSVInput, AttachmentInput,
+    SelectizeSelectMultiple, AttachmentInput,
     BootstrapDatePicker, ClearableBootstrapDatePicker, ClearableBootstrapTimePicker,
 )
 from events.models import Event, Attachment
 from facebook.models import FacebookPage
+from twitter.models import Hashtag, TwitterAccount
 
 
 class AttachmentForm(forms.ModelForm):
@@ -52,6 +53,20 @@ class EventForm(forms.ModelForm):
         widget=SelectizeSelectMultiple()
     )
 
+    twitter_hashtags = ModelMultipleChoiceImplicitCreationField(
+        queryset=Hashtag.objects.all().order_by('hashtag_text'),
+        prefix='__new_hashtag__',
+        attr_name='hashtag_text',
+        required=False
+    )
+
+    twitter_account_names = ModelMultipleChoiceImplicitCreationField(
+        queryset=TwitterAccount.objects.all().order_by('name'),
+        prefix='__new_account__',
+        attr_name='name',
+        required=False,
+    )
+
     class Meta:
         model = Event
         fields = (
@@ -89,8 +104,6 @@ class EventForm(forms.ModelForm):
             'organizer': forms.TextInput(attrs={'class': 'form-control'}),
             'repetition_cycle': forms.TextInput(attrs={'class': 'form-control'}),
             'time': ClearableBootstrapTimePicker(),
-            'twitter_account_names': SelectizeCSVInput(),
-            'twitter_hashtags': SelectizeCSVInput(),
             'type': forms.TextInput(attrs={'class': 'form-control'}),
             'url': forms.URLInput(attrs={'class': 'form-control'}),
         }
@@ -100,6 +113,8 @@ class EventForm(forms.ModelForm):
 
         if self.instance.pk:
             self.initial['facebook_pages'] = self.instance.facebook_pages.values_list('pk', flat=True)
+            self.initial['twitter_hashtags'] = self.instance.hashtags.values_list('pk', flat=True)
+            self.initial['twitter_account_names'] = self.instance.twitter_accounts.values_list('pk', flat=True)
 
     def clean(self):
         cleaned_data = super(EventForm, self).clean()
@@ -135,4 +150,10 @@ class EventForm(forms.ModelForm):
         if instance.pk:
             instance.facebook_pages.clear()
             instance.facebook_pages.add(*self.cleaned_data['facebook_pages'])
+
+            instance.hashtags.clear()
+            instance.hashtags.add(*self.cleaned_data['twitter_hashtags'])
+
+            instance.twitter_accounts.clear()
+            instance.twitter_accounts.add(*self.cleaned_data['twitter_account_names'])
         return instance

@@ -1,18 +1,16 @@
 import json
-from unittest import mock
 
 from django.urls import reverse
 from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITestCase
-from TwitterAPI import TwitterResponse, TwitterConnectionError
 
 from base.tests.test_api_views import MapObjectApiViewTestTemplate
 from events.models import Event
 
 
 class EventAPIViewTests(APITestCase):
-    fixtures = ['events_views_testdata.json']
+    fixtures = ['events_views_testdata.json', 'twitter_views_testdata']
     model = Event
 
     # Test correct behavior for all CRUD operations (CREATE, READ, UPDATE, DELETE)
@@ -95,7 +93,7 @@ class EventAPIViewTests(APITestCase):
 
     # GET /api/events/1/
     def test_read_detail_events_with_non_public_attachments(self):
-        # set all but one attachments' public fields
+        # set all but one attachment's public fields
 
         event = Event.objects.get(pk=1)
         for att in event.attachments.all():
@@ -195,83 +193,6 @@ class EventAPIViewTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def mock_twitter_rest_api_search_tweets(*args, **kwargs):
-        return [{'id_str': '123'}, {'id_str': '456'}]
-
-    def mock_twitter_rest_api_search_tweets_missing_field(*args, **kwargs):
-        return [{'foo': 'bar'}, {'id_str': '456'}]
-
-    def mock_twitter_rest_api_search_tweets_connection_error(*args, **kwargs):
-        raise TwitterConnectionError("wow, much error, such bad")
-
-    def mock_twitter_rest_api_search_tweets_rate_limit_exhausted(*args, **kwargs):
-        m = mock.Mock()
-        m.status_code = 429  # Twitter uses 429 for exhausted rate limits
-        return TwitterResponse(m, None)
-
-    def mock_twitter_rest_api_search_tweets_some_error(*args, **kwargs):
-        m = mock.Mock()
-        m.status_code = 500  # just some error we do not handle specifically
-        return TwitterResponse(m, None)
-
-    # GET /api/events/1/tweets
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
-    def test_get_tweets(self):
-        url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, ['123', '456'])
-
-    def test_get_tweets_coverage_disabled(self):
-        url = reverse('events_api:tweets', kwargs={'pk': 3})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [])
-
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets)
-    def test_no_tweets_for_misconfigured_event(self):
-        pk = 2
-        event = Event.objects.get(pk=pk)
-        self.assertEqual(type(event), Event)  # just make sure object exists despite returned 404 below
-        url = reverse('events_api:tweets', kwargs={'pk': pk})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)
-        self.assertEqual(response.data['status'], 'error')
-        self.assertTrue('improperly configured' in response.data['errors'])
-
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_missing_field)
-    def test_twitter_unexpected_answer(self):
-        url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, ['456'])
-
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_connection_error)
-    def test_twitter_connection_error(self):
-        url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [])
-
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_rate_limit_exhausted)
-    def test_twitter_rate_limit_exceeded(self):
-        url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [])
-
-    @mock.patch('TwitterAPI.TwitterAPI.__init__', lambda *args, **kwargs: None)
-    @mock.patch('TwitterAPI.TwitterAPI.request', mock_twitter_rest_api_search_tweets_some_error)
-    def test_twitter_some_error(self):
-        url = reverse('events_api:tweets', kwargs={'pk': 1})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [])
-
     # Test correct json urls
     # GET /api/events.json
     def test_json_list_events(self):
@@ -296,6 +217,88 @@ class EventAPIViewTests(APITestCase):
         url = '/api/events1.json'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /api/events/1/tweets
+    def test_get_tweets(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # As this view combines quite some data, this tests needs some documenentation.
+        # Please update it if you change the fixtures.
+        #
+        # The event is limited to the hashtags "wow" and "awesome".
+        # Only tweets from 2016-07-24 until 2016-07-25 are considered.
+        # The event is limited to the twitter accounts "streetcoverage", "inglor.basterds" and "stalingrad42".
+        # There are 3 tweets, each from one of the accounts with at least one of the specified hashtags and within the
+        # creation date range:
+        response_json = ['11', '22', '66']
+        self.assertEqual(sorted(json.loads(response.content.decode("utf-8"))), sorted(response_json))
+
+    # The following five tests are testing filter functionality for tweets_ids
+    # GET /api/events/1/tweets?since_id=1
+    def test_get_tweets_filter_matches_all(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': 1})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = ['66', '22', '11']
+        self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
+
+    # GET /api/events/1/tweets?since_id=22
+    def test_get_tweets_filter_single_tweet_id(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': 22})  # also test > instead of ≥, i.e. '22' must not be returned
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = ['66']
+        self.assertEqual(json.loads(response.content.decode("utf-8")), response_json)
+
+    # GET /api/events/1/tweets?since_id=50.0
+    def test_get_tweets_filter_invalid_float_id(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': 50.0})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(json.loads(response.content.decode("utf-8"))['message'], "Please provide since_id as int.")
+
+    # GET /api/events/1/tweets?since_id=422
+    def test_get_tweets_filter_empty_result_for_high_filter(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': "422"})  # also test string handling
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content.decode("utf-8")), [])
+
+    # GET /api/events/1/tweets?since_id=-50
+    def test_get_tweets_filter_invalid_negative_id(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        response = self.client.get(url, {'since_id': -50})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(json.loads(response.content.decode("utf-8"))['message'], "since_id must be ≥ 0.")
+
+    # GET /api/events/1000/tweets
+    def test_get_tweets_not_existant_event(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1000})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /api/events/2/tweets
+    def test_get_tweets_inactive_event(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 2})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    # GET /api/events/3/tweets
+    def test_get_tweets_no_coverage_event(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 3})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json.loads(response.content.decode("utf-8")), [])
+
+    # POST /api/events/1/tweets
+    def test_get_tweets_post_request(self):
+        url = reverse('events_api:tweets', kwargs={'pk': 1})
+        data = {
+            'id': '1',
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class EventFilterAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):

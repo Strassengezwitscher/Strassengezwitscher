@@ -1,15 +1,14 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterRequestError
-
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import generics, status
 from rest_framework.decorators import authentication_classes, api_view, parser_classes
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
 
-from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from base.models import MapObjectFilterBackend
 from crowdgezwitscher.log import logger
@@ -17,6 +16,7 @@ from crowdgezwitscher.auth import CsrfExemptSessionAuthentication
 from events.filters import DateFilterBackend
 from events.models import Event
 from events.serializers import EventSerializer, EventSerializerShortened, EventSerializerCreate
+from twitter.models import Tweet
 
 
 class EventAPIList(generics.ListAPIView):
@@ -33,47 +33,60 @@ class EventAPIDetail(generics.RetrieveAPIView):
     serializer_class = EventSerializer
 
 
-@api_view(['GET'])
-def get_tweets(request, pk, format=None):
-    """Get tweets for Event with primary key pk.
+class EventAPIGetTweets(APIView):
+    def get(self, request, pk, format=None):
+        """Get tweets for Event with primary key pk.
 
-    Searches for tweets matching the Event's registered hashtags, accounts and dates. The dates form an open interval.
-    Modify TWITTER_TWEET_COUNT to change the maximum number of returned tweet IDs.
-    """
-    event = get_object_or_404(Event, pk=pk)
-    if not event.coverage:
-        return Response([])
-    query = event.build_twitter_search_query()
-    if not query:
-        return Response({'status': 'error', 'errors': 'Twitter not or improperly configured for this event.'},
-                        status=status.HTTP_503_SERVICE_UNAVAILABLE)
-    since = event.coverage_start.strftime('%Y-%m-%d')
-    until = (event.coverage_end + timedelta(days=1)).strftime('%Y-%m-%d')  # to get tweets including coverage_end
-    twitter = TwitterAPI(settings.TWITTER_CONSUMER_KEY,
-                         settings.TWITTER_CONSUMER_SECRET,
-                         auth_type='oAuth2')
-    try:
-        tweets = twitter.request('search/tweets', {'q': query,
-                                                   'count': settings.TWITTER_TWEET_COUNT,
-                                                   'since': since,
-                                                   'until': until})
-    except TwitterConnectionError:
-        logger.warning("Could not connect to Twitter.")
-        return Response([])
-    res = []
-    try:
-        for tweet in tweets:
-            try:
-                res.append(tweet['id_str'])
-            except KeyError:
-                logger.warning("Got tweet without expected fields.")
-                continue
-    except TwitterRequestError as e:
-        if e.status_code == 429:
-            logger.warning("Twitter rate limit exhausted")
-        else:
-            logger.warning("TwitterRequestError, status code: %d", e.status_code)
-    return Response(res)
+        Searches for saved tweets matching the Event's registered hashtags, accounts and dates.
+        The dates form an open interval.
+        """
+        event = get_object_or_404(Event, pk=pk, active=True)
+        if not event.coverage:
+            return Response([])
+
+        event_hashtag_ids = [hashtag.id for hashtag in event.hashtags.all()]
+
+        try:
+            since_id = int(request.query_params.get('since_id', 0))
+        except ValueError:
+            raise ValidationError({'message': "Please provide since_id as int."})
+        if since_id < 0:
+            raise ValidationError({'message': "since_id must be ≥ 0."})
+
+        # Convert event coverage dates to datetimes as they will be compared to Tweets' creation datetimes.
+        # The time part will be set to 00:00:00.
+        # tweets_till would therefore be the earliest possible datetime for coverage_end. As we want to includes dates
+        # from that date, we add another day to tweets_till.
+        tweets_from = timezone.make_aware(datetime(
+            event.coverage_start.year,
+            event.coverage_start.month,
+            event.coverage_start.day
+        ))
+        tweets_till = timezone.make_aware(datetime(
+            event.coverage_end.year,
+            event.coverage_end.month,
+            event.coverage_end.day
+        )) + timedelta(days=1)
+
+        # It would be possible also use the __date field lookup of created_at before using __range.
+        # This would allow using coverage_start and coverage_end, so no need for tweets_from and tweets_till.
+        # However, this would nearly double the processing time.
+        # The tweets are sorted in descending order to return the newest tweets first.
+        tweets = Tweet.objects.filter(
+            account__in=event.twitter_accounts.all(),
+            created_at__range=(tweets_from, tweets_till),
+            tweet_id__gt=since_id,
+        ).order_by('-tweet_id')
+
+        # If the event specifies hashtags, each tweet needs to include at least one of them.
+        # Otherwise, there are no restrictions on tweets' hashtags.
+        if event_hashtag_ids:
+            tweets = tweets.filter(hashtags__in=event_hashtag_ids)
+
+        # If a tweet and the event have multiple hashtags in common, the tweet is included multiple times.
+        # We therefore need to call distinct().
+        return Response([str(tweet.tweet_id) for tweet in tweets.distinct()])
+
 
 @api_view(['POST'])
 @authentication_classes((CsrfExemptSessionAuthentication,))

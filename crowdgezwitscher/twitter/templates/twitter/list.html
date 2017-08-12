@@ -1,0 +1,62 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h1>Autorisierte Twitter-Accounts</h1>
+{% if accounts %}
+Die Aufnahme der Tweets in unsere Datenbank kann ein paar Minuten in Anspruch nehmen.<br>
+<br>
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Twitter-ID</th>
+        <th></th>
+    </tr>
+    {% for account in accounts %}
+    <tr>
+        <td>
+            {% if perms.twitter.view_twitteraccount %}
+                <a href="{% url 'twitter:detail' account.id %}">{{ account.name }}</a>
+            {% else %}
+                {{ account.name }}
+            {% endif %}
+        </td>
+        <td>
+            {{ account.account_id }}
+        </td>
+        <td>
+            {% if debug and perms.twitter.add_twitteraccount %}
+                <button class="btn btn-default btn-sm tweet_fetch_button" data-fetch-url="{% url 'twitter:fetch_tweets' account.id %}">Tweets einlesen</button>
+            {% endif %}
+            {% if perms.twitter.delete_twitteraccount %}
+                <a class="btn btn-default btn-sm" href="{% url 'twitter:delete' account.id %}">Löschen</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Keine Twitter-Accounts verfügbar.</p>
+{% endif %}
+
+{% if perms.twitter.add_twitteraccount %}
+    <a class="btn btn-primary" href="{% url 'twitter:create' %}">Twitter-Account hinzufügen</a>
+{% endif %}
+
+<script type="text/javascript">
+    $(".tweet_fetch_button").click(function(event) {
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+        var button = $(event.target);
+        button_text = button.text();
+        $.post(button.data("fetch-url"), function() {
+            button.text(button_text);
+            button.prop("disabled", false);
+        });
+        button.text("Loading");
+        button.prop("disabled", true);
+    });
+</script>
+
+{% endblock %}

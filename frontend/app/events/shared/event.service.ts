@@ -25,8 +25,8 @@ export class EventService {
             .catch(this.handleError);
     }
 
-    public getTweetIds(event: Event): Observable<string[]> {
-        return this.http.get(this.tweetsUrl(event.id))
+    public getTweetIds(event: Event, since_id: number = 0): Observable<string[]> {
+        return this.http.get(this.tweetsUrl(event.id, since_id))
             .map(this.extractTweetData)
             .catch(error => Observable.of([]));
     }
@@ -45,8 +45,8 @@ export class EventService {
         return `${this.eventBaseUrl}${eventId}`;
     }
 
-    private tweetsUrl(eventId: number): string {
-        return `${this.eventUrl(eventId)}/tweets.json`;
+    private tweetsUrl(eventId: number, since_id: number): string {
+        return `${this.eventUrl(eventId)}/tweets.json?since_id=${since_id}`;
     }
 
     private extractEventData(response: Response): Event {
