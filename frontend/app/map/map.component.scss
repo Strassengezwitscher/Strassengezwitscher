@@ -12,17 +12,17 @@ $card-padding: 10px;
   width: 100vw;
 }
 
-.map-modification-button {
-  width: 100%;
-}
-
-.map-settings {
+.map-controls {
   margin: 0;
-  padding: 8px 24px;
   position: absolute;
   right: $card-padding;
   top: #{$height-navbar + $card-padding};
-  width: 180px;
+}
+
+.map-settings {
+
+  padding: 8px 24px;
+  width: 170px;
 
   .map-setting {
     md-slide-toggle {
@@ -50,6 +50,12 @@ $card-padding: 10px;
     overflow: hidden;
     white-space: normal;
   }
+}
+
+.map-modification-button {
+  background-color: white;
+  margin-top: 8px;
+  width: 100%;
 }
 
 .map-infos {

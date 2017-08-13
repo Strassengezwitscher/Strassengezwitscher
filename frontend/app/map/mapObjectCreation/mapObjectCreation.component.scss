@@ -1,3 +1,7 @@
+$height-navbar: 64px;
+$top-padding: 10px;
+$bottom-padding: 226px;
+
 .moc-card {
   white-space: pre-line;
   width: 100%;
@@ -5,4 +9,17 @@
 
 [hidden] {
 	display: none;
+}
+
+.map-object-creation {
+  display: flex;
+  max-height: calc(100vh - #{$height-navbar + $top-padding + $bottom-padding});
+  overflow: scroll;
+}
+
+.moc-submit-button {
+  background-color: #444444;
+  color: white;
+  margin-top: 8px;
+  width: 100%;
 }
