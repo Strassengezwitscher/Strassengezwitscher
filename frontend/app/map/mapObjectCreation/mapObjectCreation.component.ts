@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, OnInit, NgZone, OnDestroy } from "@angular/core";
 
 import { MapService } from "../map.service";
-import { MapObjectType, MapObjectTypeNaming } from "../mapObject.model";
+import { MapObjectType } from "../mapObject.model";
 import { CaptchaService } from "../../captcha/captcha.service";
 import { Config } from "../../../config/config";
 import { FacebookPageService } from "../../facebook/facebookPage.service";
@@ -20,9 +20,8 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     @Output() public onSuccess = new EventEmitter<string>();
     @Output() public onDestroy = new EventEmitter<boolean>();
     @Input("map") public map: google.maps.Map;
-    public selectedMapObjectType;
+    @Input("mapObjectType") selectedMapObjectType: MapObjectType;
     public mapObjectType = MapObjectType;
-    public mapObjectTypes = MapObjectTypeNaming;
     public marker = null;
     public captchaVerified;
     public config: Config;
@@ -62,8 +61,12 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         });
     }
 
+    public setType(type: MapObjectType) {
+        this.selectedMapObjectType = type
+    }
+
     public send(moc) {
-        switch (parseInt(this.selectedMapObjectType, 10)) {
+        switch (this.selectedMapObjectType) {
             case MapObjectType.EVENTS:
                 // TODO constructing event should be changed with JSONAPI
                 let event = new Event();

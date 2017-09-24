@@ -1,54 +1,101 @@
 <md-card class="map-object-creation">
 	<md-card-content>
-		<md-select placeholder="Kategorie" [(ngModel)]="selectedMapObjectType" required>
+		<!-- <md-select placeholder="Kategorie" [(ngModel)]="selectedMapObjectType" required>
 			<md-option *ngFor="let mot of mapObjectTypes" [value]="mot.id">{{mot.name}}</md-option>
-		</md-select>
+		</md-select> -->
+		<div [ngSwitch]= "selectedMapObjectType">
+			<h3 *ngSwitchCase="0">Veranstaltung melden</h3>
+			<h3 *ngSwitchCase="1">Facebook-Seite melden</h3>
+		</div>
 		<form mapObjectCreation #moc="ngForm" class="moc-card">
-			<md-input-container>
-				<input md-input placeholder="Name" type="text" required ngModel name="name">
-			</md-input-container>
-			<md-input-container>
-				<input md-input placeholder="Ort" type="text" required ngModel name="location">
-			</md-input-container>
-			<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()">
-				Marker gesetzt*
-				<md-icon style="font-size:16px;" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="above">info</md-icon>
-			</md-slide-toggle>
-			<div *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
-				<md-input-container>
-					<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
-				</md-input-container>
-				<md-input-container>
-					<input md-input placeholder="Wiederholungszyklus" type="text" ngModel name="repetitionCycle">
-				</md-input-container>
-				<md-input-container>
-					<input md-input placeholder="Organisator" type="text" ngModel name="organizer">
-				</md-input-container>
-				<md-input-container>
-					<input md-input placeholder="Veranstaltungsart" type="text" ngModel name="type">
-				</md-input-container>
-				<md-input-container>
-					<input md-input placeholder="Webseite" type="url" ngModel name="url">
-				</md-input-container>
-				<md-checkbox ngModel name="counterEvent">Gegenveranstaltung?</md-checkbox>
-				<md-input-container>
-					<input md-input placeholder="Teilnehmeranzahl" type="number" min="0" ngModel name="participants">
-				</md-input-container>
-			</div>
-			<div *ngIf="selectedMapObjectType == mapObjectType.FACEBOOK_PAGES">
-				<md-input-container>
-					<input md-input placeholder="Notizen" type="text" ngModel name="notes">
-				</md-input-container>
-				<md-input-container>
-					<input md-input placeholder="Facebook Link" type="url" required ngModel name="facebookId">
-				</md-input-container>
-			</div>
-			<p>* Pflichtfelder</p>
-			<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
-			<input type="number" required [ngModel]="marker?.position.lat()" (change)="changeMarkerLat($event.target.value)" name="locationLat" hidden>
-			<input type="number" required [ngModel]="marker?.position.lng()" (change)="changeMarkerLng($event.target.value)" name="locationLong" hidden>
+			<table style="width: 100%" cellspacing="4px">
+				<tr>
+					<td colspan="2" style="width: 100%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Name" type="text" required ngModel name="name">
+						</md-input-container>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Ort" type="text" required ngModel name="location">
+						</md-input-container>
+					</td>
+					<td style="width: 50%">
+						<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()">
+								Marker gesetzt*
+							<md-icon style="font-size:16px;" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="before">info</md-icon>
+						</md-slide-toggle>
+					</td>
+				</tr>
+
+				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+					<td colspan="2">
+						<md-input-container dividerColor="accent">
+							<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
+						</md-input-container>
+					</td>
+				</tr>
+				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Wiederholungszyklus" type="text" ngModel name="repetitionCycle">
+						</md-input-container>
+					</td>
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Organisator" type="text" ngModel name="organizer">
+						</md-input-container>
+					</td>
+				</tr>
+				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Veranstaltungsart" type="text" ngModel name="type">
+						</md-input-container>
+					</td>
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Webseite" type="url" ngModel name="url">
+						</md-input-container>
+					</td>
+				</tr>
+				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Teilnehmeranzahl" type="text" ngModel name="participants">
+						</md-input-container>
+					</td>
+					<td style="width: 50%">
+						<md-checkbox ngModel name="counterEvent" dividerColor="accent">Gegenveranstaltung?</md-checkbox>
+					</td>
+				</tr>
+
+				<tr *ngIf="selectedMapObjectType == mapObjectType.FACEBOOK_PAGES">
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Notizen" type="text" ngModel name="notes">
+						</md-input-container>
+					</td>
+					<td style="width: 50%">
+						<md-input-container dividerColor="accent" style="width: 100%">
+							<input md-input placeholder="Facebook Link" type="url" required ngModel name="facebookId">
+						</md-input-container>
+					</td>
+				</tr>
+
+				<tr >
+					<td colspan="2" style="width: 100%">
+						<p>* Pflichtfelder</p>
+						<div id="contact-recaptcha" class="g-recaptcha" [attr.data-sitekey]="config.dataSitekey" data-callback="verifyCallback"></div>
+						<input type="number" required [ngModel]="marker?.position.lat()" (change)="changeMarkerLat($event.target.value)" name="locationLat" hidden>
+						<input type="number" required [ngModel]="marker?.position.lng()" (change)="changeMarkerLng($event.target.value)" name="locationLong" hidden>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</md-card-content>
 </md-card>
 
-<button md-raised-button md-button class="moc-submit-button" (click)="send(moc)" [disabled]="!(moc.form.valid && captchaVerified)">Melden</button>
+<button md-raised-button md-button class="moc-submit-button" (click)="send(moc)" [style.background-color]="!(moc.form.valid && captchaVerified) ? '#cccccc': '#444444'" [disabled]="!(moc.form.valid && captchaVerified)">Melden</button>

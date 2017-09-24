@@ -28,8 +28,8 @@
 
         <div class="map-choosing-controls">
             <div class="map-choosing-buttons" *ngIf="mapState == mapStateEnum.CHOOSING || mapState == mapStateEnum.ADDING" [@advancedSlideInOut]="mapState == mapStateEnum.CHOOSING || mapState == mapStateEnum.ADDING">
-                <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.ADDING">Veranstaltung melden</button>
-                <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.ADDING">Facebook-Seite melden</button>
+                <button md-raised-button class="map-modification-button" (click)="showFormForMapObject(0)">Veranstaltung melden</button>
+                <button md-raised-button class="map-modification-button" (click)="showFormForMapObject(1)">Facebook-Seite melden</button>
             </div>
 
             <button md-raised-button class="map-modification-button" *ngIf="mapState == mapStateEnum.VIEWING" (click)="mapState = mapStateEnum.CHOOSING">Aktivität melden</button>
@@ -38,7 +38,7 @@
     </div>
 
     <div *ngIf="mapState == mapStateEnum.ADDING" [@flyInOut]="mapState == mapStateEnum.ADDING">
-        <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" (onSuccess)="setSuccessMessage($event)" (onDestroy)="addMapListener()"></cg-map-object-creation>
+        <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" [mapObjectType]="mapObjectTypeForAdding" (onSuccess)="setSuccessMessage($event)" (onDestroy)="addMapListener()"></cg-map-object-creation>
         <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.VIEWING">Abrechen</button>
     </div>
 </div>

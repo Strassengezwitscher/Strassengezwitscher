@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate, keyframes } from "@angular/
 
 import { Helper } from "../helper";
 import { MapObject, MapObjectType, MapStateType } from "./mapObject.model";
+import { MapObjectCreationComponent } from "./mapObjectCreation/mapObjectCreation.component";
 import { MapService } from "./map.service";
 
 export enum DateFilter {
@@ -90,6 +91,7 @@ export class MapComponent implements AfterViewInit {
     public mapStateEnum = MapStateType;
     @ViewChild("mapCanvas") public mapCanvas;
     public map: google.maps.Map;
+    public mapObjectTypeForAdding: MapObjectType;
     private errorMessageDisplayTime: number = 5000;
     private successMessageDisplayTime: number = 5000;
     // Value list of different MapObject types to decrease redundant code
@@ -136,6 +138,11 @@ export class MapComponent implements AfterViewInit {
 
     public addMapListener() {
         this.map.addListener("click", () =>  this.updateSelectedMapObjectInfo(null, null, null));
+    }
+
+    public showFormForMapObject(type: MapObjectType) {
+        this.mapObjectTypeForAdding = type;
+        this.mapState = MapStateType.ADDING;
     }
 
     private initMap() {

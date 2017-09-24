@@ -4,7 +4,7 @@ $bottom-padding: 226px;
 
 .moc-card {
   white-space: pre-line;
-  width: 100%;
+  width: 350px;
 }
 
 [hidden] {
@@ -22,4 +22,9 @@ $bottom-padding: 226px;
   color: white;
   margin-top: 8px;
   width: 100%;
+}
+
+h3 {
+  margin: 0;
+  margin-bottom: -16px;
 }
