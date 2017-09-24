@@ -28,7 +28,7 @@
 					<input md-input placeholder="Veranstaltungsart" type="text" ngModel name="type">
 				</md-input-container>
 				<md-input-container>
-					<input md-input placeholder="Webseite http://" type="url" ngModel name="url">
+					<input md-input placeholder="Webseite" type="url" ngModel name="url">
 				</md-input-container>
 				<md-checkbox ngModel name="counterEvent">Gegenveranstaltung?</md-checkbox>
 				<md-input-container>
@@ -51,4 +51,4 @@
 	</md-card-content>
 </md-card>
 
-<button md-raised-button md-button class="moc-submit-button" (click)="send(moc)" *ngIf="moc.form.valid && captchaVerified" [disabled]="!(moc.form.valid && captchaVerified)">Melden</button>
+<button md-raised-button md-button class="moc-submit-button" (click)="send(moc)" [disabled]="!(moc.form.valid && captchaVerified)">Melden</button>

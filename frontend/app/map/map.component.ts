@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
-import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
+import { trigger, state, style, transition, animate, keyframes } from "@angular/core"; // animation import
 
 import { Helper } from "../helper";
 import { MapObject, MapObjectType, MapStateType } from "./mapObject.model";
@@ -44,6 +44,40 @@ class MapObjectSetting {
                 animate("250ms ease-out", style({height: "*"})),
             ]),
         ]),
+        trigger("advancedSlideInOut", [
+            state("in", style({height: "*", "overflow-x": "initial"})),
+            transition("* => void", [
+                animate("250ms ease-out", keyframes([
+                    style({height: "*", "overflow-x": "initial", offset: 0}),
+                    style({height: "*", "overflow-x": "hidden", offset: 0.0000001}),
+                    style({height: 0, "overflow-x": "hidden", offset: 1.0}),
+                ]))
+            ]),
+            transition("void => *", [
+                animate("250ms ease-out", keyframes([
+                    style({height: 0, "overflow-x": "hidden", offset: 0}),
+                    style({height: "*", "overflow-x": "hidden", offset: 0.99999}),
+                    style({height: "*", "overflow-x": "initial", offset: 1.0}),
+                ]))
+            ]),
+        ]),
+        trigger("flyInOut", [
+            state("in", style({height: "*", transform: "translateX(0)"})),
+            transition("* => void", [
+                animate("0.3s ease-in", keyframes([
+                    style({display: "block", height: "*", transform: 'translateX(0)', offset: 0}),
+                    style({display: "block", height: "*", transform: 'translateX(200%)', offset: 0.7}),
+                    style({display: "none", height: 0, transform: 'translateX(200%)', offset: 1.0}),
+                ]))
+            ]),
+            transition("void => *", [
+                animate("0.3s 0.3s ease-out", keyframes([
+                    style({display: "none", height: 0, transform: "translateX(200%)", offset: 0}),
+                    style({display: "block", height: "*", transform: "translateX(200%)", offset: 0.3}),
+                    style({display: "block", height: "*", transform: "translateX(0)", offset: 1.0}),
+                ]))
+            ]),
+        ])
     ],
 })
 export class MapComponent implements AfterViewInit {
@@ -68,7 +102,7 @@ export class MapComponent implements AfterViewInit {
     constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
         this.initializeMapObjectSettings();
-        this.viewingState();
+        this.mapState = MapStateType.VIEWING;
     }
 
     public ngAfterViewInit() {
@@ -90,14 +124,6 @@ export class MapComponent implements AfterViewInit {
 
     public clearInfoBox() {
         this.updateSelectedMapObjectInfo(null, null, null);
-    }
-
-    public addEventState() {
-        this.mapState = MapStateType.ADDING;
-    }
-
-    public viewingState() {
-        this.mapState = MapStateType.VIEWING;
     }
 
     public setSuccessMessage(successMessage: string) {
