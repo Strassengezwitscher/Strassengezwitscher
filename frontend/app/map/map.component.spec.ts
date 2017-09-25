@@ -52,14 +52,8 @@ describe("MapComponent", () => {
     });
 
     it("Should set the mapState to Adding", done => {
-        this.mapComponent.addEventState();
+        this.mapComponent.showFormForMapObject(MapObjectType.EVENTS);
         expect(this.mapComponent.mapState).toEqual(MapStateType.ADDING);
-        done();
-    });
-
-    it("Should set the mapState to Viewing", done => {
-        this.mapComponent.viewingState();
-        expect(this.mapComponent.mapState).toEqual(MapStateType.VIEWING);
         done();
     });
 
