@@ -128,6 +128,11 @@ export class MapComponent implements AfterViewInit {
         this.updateSelectedMapObjectInfo(null, null, null);
     }
 
+    public successfulMapObjectCreation(successMessage: string) {
+        this.mapState = MapStateType.VIEWING;
+        this.setSuccessMessage(successMessage);
+    }
+
     public setSuccessMessage(successMessage: string) {
         this.successMessage = successMessage;
         const tmpScope = this;

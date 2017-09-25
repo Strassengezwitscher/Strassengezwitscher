@@ -38,7 +38,7 @@
     </div>
 
     <div *ngIf="mapState == mapStateEnum.ADDING" [@flyInOut]="mapState == mapStateEnum.ADDING">
-        <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" [mapObjectType]="mapObjectTypeForAdding" (onSuccess)="setSuccessMessage($event)" (onDestroy)="addMapListener()"></cg-map-object-creation>
+        <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" [mapObjectType]="mapObjectTypeForAdding" (onSuccess)="successfulMapObjectCreation($event)" (onDestroy)="addMapListener()"></cg-map-object-creation>
         <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.VIEWING">Abrechen</button>
     </div>
 </div>

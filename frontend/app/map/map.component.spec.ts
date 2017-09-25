@@ -57,6 +57,13 @@ describe("MapComponent", () => {
         done();
     });
 
+    it("Should set the mapState to Viewing", done => {
+        this.mapComponent.successfulMapObjectCreation("successful MapObject creation");
+        expect(this.mapComponent.mapState).toEqual(MapStateType.VIEWING);
+        expect(this.mapComponent.successMessage).toEqual("successful MapObject creation");
+        done();
+    });
+
     it("Should set the successMessage", done => {
         this.mapComponent.setSuccessMessage("Test Nachricht");
         expect(this.mapComponent.successMessage).toEqual("Test Nachricht");
