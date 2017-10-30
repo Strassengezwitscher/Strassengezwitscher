@@ -184,7 +184,7 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         super(FacebookPageAPIViewTests, self).test_correct_filter(url, rect_params)
 
     #
-    # Test receiving of new FB event
+    # Test receiving of new FB page
     #
     def test_incomplete_data(self):
         """Test sending not all required fields."""
@@ -195,7 +195,6 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()['status'], 'error')
         self.assertTrue('Fehler beim Speichern der Informationen.' in response.json()['message'])
-        self.assertEqual(len(mail.outbox), 0)
 
     def test_invalid_data(self):
         """Test sending forbidden values."""
@@ -206,7 +205,6 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response.json()['status'], 'error')
         self.assertEqual(response.json()['message'], "Fehler beim Speichern der Informationen.")
-        self.assertEqual(len(mail.outbox), 0)
 
     def test_valid_data(self):
         """Test sending correct values."""
