@@ -182,3 +182,36 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
             'max_long': 14.084714
         }
         super(FacebookPageAPIViewTests, self).test_correct_filter(url, rect_params)
+
+    #
+    # Test receiving of new FB event
+    #
+    def test_incomplete_data(self):
+        """Test sending not all required fields."""
+        response = self.client.post(reverse('facebook_api:send_form'),
+                                    json.dumps({'facebookId': "foo", 'location': "Dresden",
+                                     'locationLong': 52.1,'name':"TestEvent", 'notes': "N"}),
+                                     content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()['status'], 'error')
+        self.assertTrue('Fehler beim Speichern der Informationen.' in response.json()['message'])
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_invalid_data(self):
+        """Test sending forbidden values."""
+        response = self.client.post(reverse('facebook_api:send_form'),
+                                    json.dumps({'facebookId': "foo", 'location': "Dresden",
+                                     'locationLat': "NORTH", 'locationLong': 52.1,'name':"TestEvent", 'notes': "N"}),
+                                     content_type='application/json')
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()['status'], 'error')
+        self.assertEqual(response.json()['message'], "Fehler beim Speichern der Informationen.")
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_valid_data(self):
+        """Test sending correct values."""
+        response = self.client.post(reverse('facebook_api:send_form'),
+                                    json.dumps({'facebookId': "foo", 'location': "Dresden",
+                                     'locationLat': 51.3, 'locationLong': 52.1,'name':"TestEvent", 'notes': "N"}),
+                                     content_type='application/json')
+        self.assertEqual(response.status_code, 200)
