@@ -196,16 +196,6 @@ class FacebookPageAPIViewTests(APITestCase, MapObjectApiViewTestTemplate):
         self.assertEqual(response.json()['status'], 'error')
         self.assertTrue('Fehler beim Speichern der Informationen.' in response.json()['message'])
 
-    def test_invalid_data(self):
-        """Test sending forbidden values."""
-        response = self.client.post(reverse('facebook_api:send_form'),
-                                    json.dumps({'facebookId': "foo", 'location': "Dresden",
-                                     'locationLat': "NORTH", 'locationLong': 52.1,'name':"TestEvent", 'notes': "N"}),
-                                     content_type='application/json')
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json()['status'], 'error')
-        self.assertEqual(response.json()['message'], "Fehler beim Speichern der Informationen.")
-
     def test_valid_data(self):
         """Test sending correct values."""
         response = self.client.post(reverse('facebook_api:send_form'),

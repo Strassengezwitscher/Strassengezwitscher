@@ -42,8 +42,14 @@ class FacebookPageSerializerShortened(serializers.ModelSerializer):
         )
 
 class FacebookPageSerializerCreate(serializers.ModelSerializer):
-    locationLong = serializers.CharField(source='location_long')
-    locationLat = serializers.CharField(source='location_lat')
+    locationLong = serializers.DecimalField(source='location_long',
+                                            max_digits=17,
+                                            decimal_places=15,
+                                            )
+    locationLat = serializers.DecimalField(source='location_lat',
+                                            max_digits=17,
+                                            decimal_places=15,
+                                            )
     facebookId = serializers.CharField(source='facebook_id')
 
     class Meta:

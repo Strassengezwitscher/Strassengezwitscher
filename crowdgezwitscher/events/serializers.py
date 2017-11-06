@@ -85,8 +85,14 @@ class EventSerializerShortened(serializers.ModelSerializer):
         )
 
 class EventSerializerCreate(serializers.ModelSerializer):
-    locationLong = serializers.CharField(source='location_long')
-    locationLat = serializers.CharField(source='location_lat')
+    locationLong = serializers.DecimalField(source='location_long',
+                                            max_digits=17,
+                                            decimal_places=15,
+                                            )
+    locationLat = serializers.DecimalField(source='location_lat',
+                                            max_digits=17,
+                                            decimal_places=15,
+                                            )
     date = serializers.DateField(input_formats=["%Y-%m-%dT%H:%M"])
     repetitionCycle = serializers.CharField(source='repetition_cycle')
     counterEvent = serializers.CharField(source='counter_event')
