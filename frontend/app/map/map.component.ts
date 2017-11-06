@@ -92,8 +92,7 @@ export class MapComponent implements AfterViewInit {
     @ViewChild("mapCanvas") public mapCanvas;
     public map: google.maps.Map;
     public mapObjectTypeForAdding: MapObjectType;
-    private errorMessageDisplayTime: number = 5000;
-    private successMessageDisplayTime: number = 5000;
+    private messageDisplayTime: number = 5000;
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
@@ -138,7 +137,7 @@ export class MapComponent implements AfterViewInit {
         const tmpScope = this;
         setTimeout(function() {
             tmpScope.successMessage = "";
-        }, this.successMessageDisplayTime);
+        }, this.messageDisplayTime);
     }
 
     public addMapListener() {
@@ -302,7 +301,7 @@ export class MapComponent implements AfterViewInit {
         const tmpScope = this;
         setTimeout(function(){
             tmpScope.errorMessage = "";
-        }, this.errorMessageDisplayTime);
+        }, this.messageDisplayTime);
     }
 
     private willInfoBoxHideMarker(marker: google.maps.Marker) {
