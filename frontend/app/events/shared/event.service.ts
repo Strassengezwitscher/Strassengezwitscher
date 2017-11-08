@@ -8,6 +8,7 @@ import "rxjs/add/observable/throw";
 @Injectable()
 export class EventService {
     private eventBaseUrl = "api/events/";
+    private eventCreateUrl = "api/events/new/";
     private lastEvent: Event = null;
 
     constructor(private http: Http) {}
@@ -30,6 +31,16 @@ export class EventService {
             .catch(error => Observable.of([]));
     }
 
+    public addEvent (event: Event) {
+        let headers = new Headers({ "Content-Type": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.eventCreateUrl, event, options)
+                        .map( res => { return "Vielen Dank für Ihren Beitrag.\n " +
+                                              "Nach einer Prüfung werden wir das Event hinzufügen!"})
+                        .catch(this.handleError);
+
+    }
+
     private eventUrl(eventId: number): string {
         return `${this.eventBaseUrl}${eventId}`;
     }
@@ -49,9 +60,13 @@ export class EventService {
     }
 
     private handleError(error: any) {
-        let errorMessage = "Server error";
-        if (error.message) {
-            errorMessage = error.message;
+        let errorMessage = "Interner Serverfehler";
+        let parsedError = {'message':''};
+        try {
+            parsedError = (error._body) ? JSON.parse(error._body) : parsedError;
+        } catch (e) { }
+        if (parsedError.message) {
+            errorMessage = parsedError.message;
         } else if (error.status) {
             errorMessage = `${error.status} - ${error.statusText}`;
         }

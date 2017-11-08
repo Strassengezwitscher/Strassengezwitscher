@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -6,7 +7,6 @@ from django.urls import reverse_lazy
 
 from facebook.forms import FacebookPageForm
 from facebook.models import FacebookPage
-
 
 class FacebookPageListView(PermissionRequiredMixin, ListView):
     permission_required = 'facebook.view_facebookpage'

@@ -1,17 +1,21 @@
 from datetime import datetime, timedelta
 
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics, status
+from rest_framework.decorators import authentication_classes, api_view, parser_classes
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from base.models import MapObjectFilterBackend
+from crowdgezwitscher.log import logger
+from crowdgezwitscher.auth import CsrfExemptSessionAuthentication
 from events.filters import DateFilterBackend
 from events.models import Event
-from events.serializers import EventSerializer, EventSerializerShortened
+from events.serializers import EventSerializer, EventSerializerShortened, EventSerializerCreate
 from twitter.models import Tweet
 
 
@@ -82,3 +86,20 @@ class EventAPIGetTweets(APIView):
         # If a tweet and the event have multiple hashtags in common, the tweet is included multiple times.
         # We therefore need to call distinct().
         return Response([str(tweet.tweet_id) for tweet in tweets.distinct()])
+
+
+@api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication,))
+@parser_classes((JSONParser,))
+def send_form(request):
+    serializer = EventSerializerCreate(data=request.data)
+    if not serializer.is_valid():
+        return Response({'status': 'error', 'message': 'Fehler beim Speichern der Informationen. \n' + '\n'.join([serializer.errors[msg][0] for msg in serializer.errors])},
+                        status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer.save()
+    except Exception as e:
+        return Response({'status': 'error', 'message': 'Fehler beim Speichern der Informationen.'},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response({'status': 'success'})

@@ -12,13 +12,20 @@ $card-padding: 10px;
   width: 100vw;
 }
 
-.map-settings {
+.map-controls {
   margin: 0;
-  padding: 8px 24px;
   position: absolute;
   right: $card-padding;
   top: #{$height-navbar + $card-padding};
-  width: 180px;
+}
+
+.map-settings-wrapper {
+  width: 219px;
+}
+
+.map-settings {
+  padding: 8px 24px;
+  width: 170px;
 
   .map-setting {
     md-slide-toggle {
@@ -48,6 +55,28 @@ $card-padding: 10px;
   }
 }
 
+.map-modification-button {
+  background-color: white;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.map-choosing-controls {
+  padding-top: 8px;
+}
+
+.map-choosing-buttons {
+  padding-top: 8px;
+
+  .map-modification-button {
+    margin-top: 0;
+  }
+
+  .map-modification-button ~ .map-modification-button {
+    margin-top: 1px;
+  }
+}
+
 .map-infos {
   left: $card-padding;
   margin: 0;
@@ -70,4 +99,20 @@ $card-padding: 10px;
   position: absolute;
   text-align: center;
   transform: translateX(-50%);
+  white-space: pre-line;
+}
+
+.success-message {
+  background-color: map-get($message, success);
+  bottom: $card-padding;
+  left: 50vw;
+  min-width: 200px;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%);
+  white-space: pre-line;
+}
+
+.transform-origin-zero {
+  transform-origin: 0% 0%;
 }

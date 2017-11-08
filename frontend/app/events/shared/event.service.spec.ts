@@ -77,15 +77,39 @@ describe("EventService", () => {
         }
     }));
 
+    it("Should send a fake event and return success on addEvent",
+        inject([MockBackend, EventService], (mockBackend, service) => {
+
+        mockBackend.connections.subscribe(connection => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({'status': 'success'})})));
+        });
+        service.addEvent(1).subscribe(res => {
+            expect(res).toBe("Vielen Dank für Ihren Beitrag.\n "+
+                "Nach einer Prüfung werden wir das Event hinzufügen!");
+        });
+    }));
+
     it("Should return server error message if Internal Server Error occurs",
        inject([MockBackend, EventService], (mockBackend, service) => {
         mockBackend.connections.subscribe(connection => {
-            connection.mockError(new Error("Internal Server Error 500"));
+            connection.mockError(new Error("Interner Serverfehler"));
         });
         try {
             service.getEvent(1).subscribe();
         } catch (error) {
-            expect(error).toBe("Internal Server Error 500");
+            expect(error).toBe("Interner Serverfehler");
+        }
+    }));
+
+    it("Should return parsed error message",
+       inject([MockBackend, EventService], (mockBackend, service) => {
+        mockBackend.connections.subscribe(connection => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({'status': 'error','message':'Fataler Fehler'})})));
+        });
+        try {
+            service.getEvent(1).subscribe();
+        } catch (error) {
+            expect(error).toBe("Fataler Fehler");
         }
     }));
 
