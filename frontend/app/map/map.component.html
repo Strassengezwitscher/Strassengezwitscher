@@ -1,6 +1,6 @@
 <div class="map-canvas" #mapCanvas></div>
 <div class="map-controls">
-    <div class="map-settings-wrapper transform-origin-zero" *ngIf="mapState == mapStateEnum.VIEWING || mapState == mapStateEnum.CHOOSING" [@flyInOut]="mapState == mapStateEnum.VIEWING || mapState == mapStateEnum.CHOOSING">
+    <div class="map-settings-wrapper transform-origin-zero" *ngIf="mapState == mapStateEnum.VIEWING" [@flyInOut]="mapState == mapStateEnum.VIEWING">
         <md-card class="map-settings">
             <md-card-content>
                 <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
@@ -27,13 +27,10 @@
         </md-card>
 
         <div class="map-choosing-controls">
-            <div class="map-choosing-buttons" *ngIf="mapState == mapStateEnum.CHOOSING || mapState == mapStateEnum.ADDING" [@advancedSlideInOut]="mapState == mapStateEnum.CHOOSING || mapState == mapStateEnum.ADDING">
-                <button md-raised-button class="map-modification-button" (click)="showFormForMapObject(0)">Veranstaltung melden</button>
-                <button md-raised-button class="map-modification-button" (click)="showFormForMapObject(1)">Facebook-Seite melden</button>
+            <div class="map-choosing-buttons">
+                <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.ADDING; showFormForMapObject(0)">Veranstaltung melden</button>
+                <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.ADDING; showFormForMapObject(1)">Facebook-Seite melden</button>
             </div>
-
-            <button md-raised-button class="map-modification-button" *ngIf="mapState == mapStateEnum.VIEWING" (click)="mapState = mapStateEnum.CHOOSING">Aktivität melden</button>
-            <button md-raised-button class="map-modification-button" *ngIf="mapState == mapStateEnum.CHOOSING" (click)="mapState = mapStateEnum.VIEWING">Abrechen</button>
         </div>
     </div>
 

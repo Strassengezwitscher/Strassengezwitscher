@@ -16,6 +16,5 @@ export enum MapObjectType {
 
 export enum MapStateType {
     VIEWING = 0,
-    CHOOSING,
     ADDING,
 }

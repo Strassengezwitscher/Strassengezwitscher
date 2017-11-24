@@ -45,23 +45,6 @@ class MapObjectSetting {
                 animate("250ms ease-out", style({height: "*"})),
             ]),
         ]),
-        trigger("advancedSlideInOut", [
-            state("in", style({height: "*", "overflow-x": "initial"})),
-            transition("* => void", [
-                animate("250ms ease-out", keyframes([
-                    style({height: "*", "overflow-x": "initial", offset: 0}),
-                    style({height: "*", "overflow-x": "hidden", offset: 0.0000001}),
-                    style({height: 0, "overflow-x": "hidden", offset: 1.0}),
-                ]))
-            ]),
-            transition("void => *", [
-                animate("250ms ease-out", keyframes([
-                    style({height: 0, "overflow-x": "hidden", offset: 0}),
-                    style({height: "*", "overflow-x": "hidden", offset: 0.99999}),
-                    style({height: "*", "overflow-x": "initial", offset: 1.0}),
-                ]))
-            ]),
-        ]),
         trigger("flyInOut", [
             state("in", style({height: "*", transform: "translateX(0)"})),
             transition("* => void", [
