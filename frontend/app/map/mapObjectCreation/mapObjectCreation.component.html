@@ -32,6 +32,7 @@
 
 				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
 					<td colspan="2">
+						<md-icon style="font-size:16px;" mdTooltip="Datum im Format YYYY-MM-DDThh:mm eintragen" mdTooltipPosition="before">info</md-icon>
 						<md-input-container dividerColor="accent">
 							<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
 						</md-input-container>
