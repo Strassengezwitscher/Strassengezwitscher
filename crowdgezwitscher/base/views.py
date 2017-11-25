@@ -1,9 +1,11 @@
 from django.conf import settings
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
+from base.forms import BootstrapPasswordChangeForm
 from facebook.models import FacebookPage
 from events.models import Event
 from blog.models import BlogEntry
@@ -35,3 +37,18 @@ def intern_index(request):
 @login_required
 def intern_mattermost(request):
     return render(request, 'mattermost.html')
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = BootstrapPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            form.success = True
+    else:
+        form = BootstrapPasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
+    })
