@@ -43,9 +43,10 @@ export class MapService {
         const eventUrlMap = new Map<DateFilter, string>();
         eventUrlMap.set(DateFilter.year2015, "api/events.json?from=2015-01-01&to=2015-12-31");
         eventUrlMap.set(DateFilter.year2016, "api/events.json?from=2016-01-01&to=2016-12-31");
+        eventUrlMap.set(DateFilter.year2017, "api/events.json?from=2017-01-01&to=2017-12-31");
 
         const today = new Date();
-        eventUrlMap.set(DateFilter.year2017, `api/events.json?from=2017-01-01&to=${Helper.dateToYMD(today)}`);
+        eventUrlMap.set(DateFilter.year2018, `api/events.json?from=2018-01-01&to=${Helper.dateToYMD(today)}`);
 
         const aMonthBefore = Helper.subtract30Days(today);
         eventUrlMap.set(DateFilter.upcoming, `api/events.json?from=${Helper.dateToYMD(aMonthBefore)}`);
