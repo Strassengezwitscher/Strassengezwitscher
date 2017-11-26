@@ -46,19 +46,19 @@ class MapObjectSetting {
             ]),
         ]),
         trigger("flyInOut", [
-            state("in", style({height: "*", transform: "translateX(0)"})),
+            state("in", style({height: "*", transform: "translateZ(0) translateX(0)"})),
             transition("* => void", [
                 animate("0.3s ease-in", keyframes([
-                    style({display: "block", height: "*", transform: 'translateX(0)', offset: 0}),
-                    style({display: "block", height: "*", transform: 'translateX(200%)', offset: 0.7}),
-                    style({display: "none", height: 0, transform: 'translateX(200%)', offset: 1.0}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(0)", offset: 0}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(200%)", offset: 0.7}),
+                    style({display: "none", height: 0, transform: "translateZ(0) translateX(200%)", offset: 1.0}),
                 ]))
             ]),
             transition("void => *", [
                 animate("0.3s 0.3s ease-out", keyframes([
-                    style({display: "none", height: 0, transform: "translateX(200%)", offset: 0}),
-                    style({display: "block", height: "*", transform: "translateX(200%)", offset: 0.3}),
-                    style({display: "block", height: "*", transform: "translateX(0)", offset: 1.0}),
+                    style({display: "none", height: 0, transform: "translateZ(0) translateX(200%)", offset: 0}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(200%)", offset: 0.3}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(0)", offset: 1.0}),
                 ]))
             ]),
         ])
