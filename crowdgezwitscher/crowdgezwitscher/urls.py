@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^intern/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^intern/logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^intern/mattermost/$', views.intern_mattermost, name='mattermost'),
+    url(r'^intern/change_password/$', views.change_password, name='change_password'),
 
     # User area URLs
     url(r'^$', views.landingpage, name='landingpage'),
