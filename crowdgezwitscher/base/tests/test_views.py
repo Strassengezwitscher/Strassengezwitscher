@@ -67,3 +67,53 @@ class CrowdgezwitscherViewTests(TestCase):
     def test_landingpage_url(self):
         response = self.client.get(reverse('landingpage'))
         self.assertEqual(response.status_code, 200)
+
+    def test_change_password_get_form(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
+        url = reverse('change_password')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+
+    def test_change_password(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
+        data = {
+            'old_password': 'password',
+            'new_password1': 'password-new',
+            'new_password2': 'password-new',
+        }
+        response = self.client.post(reverse('change_password'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+        self.assertTrue(response.context['form'].success)
+
+    def test_change_password_old_password_not_matching(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
+        url = reverse('change_password')
+        data = {
+            'old_password': 'password-wrong',
+            'new_password1': 'password-new',
+            'new_password2': 'password-new',
+        }
+        response = self.client.post(reverse('change_password'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+        self.assertFalse(response.context['form'].success)
+        self.assertIn('old_password', response.context['form'].errors)
+
+    def test_change_password_new_passwords_not_matching(self):
+        self.user = User.objects.create_user('user', 'user@host.org', 'password')
+        self.client.login(username='user', password='password')
+        data = {
+            'old_password': 'password',
+            'new_password1': 'password-new',
+            'new_password2': 'password-new-wrong',
+        }
+        response = self.client.post(reverse('change_password'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+        self.assertFalse(response.context['form'].success)
+        self.assertIn('new_password2', response.context['form'].errors)
