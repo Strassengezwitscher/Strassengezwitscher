@@ -25,12 +25,14 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public marker = null;
     public captchaVerified;
     public config: Config;
+    public showDateTooltip = true;
     private script;
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
         this.config = new Config();
         this.captchaVerified = false;
+        this.showDateTooltip = window.navigator.userAgent.indexOf("Chrome/") == -1  // hide tooltip on chrome
         window["verifyCallback"] = this.verifyCallback.bind(this);
     }
 
