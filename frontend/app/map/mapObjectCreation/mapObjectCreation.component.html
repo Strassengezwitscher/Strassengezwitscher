@@ -23,15 +23,16 @@
 						</md-input-container>
 					</td>
 					<td style="width: 50%">
-						<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()">
+						<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="left">
 								Marker gesetzt*
-							<md-icon style="font-size:16px;" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="before">info</md-icon>
+							<md-icon style="font-size:16px;">info</md-icon>
 						</md-slide-toggle>
 					</td>
 				</tr>
 
 				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
 					<td colspan="2">
+						<md-icon *ngIf="showDateTooltip" style="font-size:16px;" mdTooltip="Datum im Format YYYY-MM-DDThh:mm eintragen" mdTooltipPosition="after">info</md-icon>
 						<md-input-container dividerColor="accent">
 							<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
 						</md-input-container>
