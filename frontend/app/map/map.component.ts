@@ -1,13 +1,15 @@
 import { Component, ViewChild, AfterViewInit, NgZone } from "@angular/core";
-import { trigger, state, style, transition, animate } from "@angular/core"; // animation import
+import { trigger, state, style, transition, animate, keyframes } from "@angular/core"; // animation import
 
 import { Helper } from "../helper";
-import { MapObject, MapObjectType } from "./mapObject.model";
+import { MapObject, MapObjectType, MapStateType } from "./mapObject.model";
+import { MapObjectCreationComponent } from "./mapObjectCreation/mapObjectCreation.component";
 import { MapService } from "./map.service";
 
 export enum DateFilter {
     all = 0,
     upcoming,
+    year2018,
     year2017,
     year2016,
     year2015,
@@ -44,16 +46,37 @@ class MapObjectSetting {
                 animate("250ms ease-out", style({height: "*"})),
             ]),
         ]),
+        trigger("flyInOut", [
+            state("in", style({height: "*", transform: "translateZ(0) translateX(0)"})),
+            transition("* => void", [
+                animate("0.3s ease-in", keyframes([
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(0)", offset: 0}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(200%)", offset: 0.7}),
+                    style({display: "none", height: 0, transform: "translateZ(0) translateX(200%)", offset: 1.0}),
+                ]))
+            ]),
+            transition("void => *", [
+                animate("0.3s 0.3s ease-out", keyframes([
+                    style({display: "none", height: 0, transform: "translateZ(0) translateX(200%)", offset: 0}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(200%)", offset: 0.3}),
+                    style({display: "block", height: "*", transform: "translateZ(0) translateX(0)", offset: 1.0}),
+                ]))
+            ]),
+        ])
     ],
 })
 export class MapComponent implements AfterViewInit {
     public errorMessage: string;
+    public successMessage: string;
     // Utilized for holding status and name of different types of MapObjects
     public mapObjectSettings: Array<MapObjectSetting> = new Array<MapObjectSetting>();
     public selectedMapObjectType: MapObjectType;
+    public mapState: MapStateType;
+    public mapStateEnum = MapStateType;
     @ViewChild("mapCanvas") public mapCanvas;
-    private errorMessageDisplayTime: number = 5000;
-    private map: google.maps.Map;
+    public map: google.maps.Map;
+    public mapObjectTypeForAdding: MapObjectType;
+    private messageDisplayTime: number = 5000;
     // Value list of different MapObject types to decrease redundant code
     private mapObjectTypes = Object.keys(MapObjectType).map(k => MapObjectType[k]).filter(v => typeof v === "number");
     private markers: Map<MapObjectType, Array<google.maps.Marker>> =
@@ -64,6 +87,7 @@ export class MapComponent implements AfterViewInit {
     constructor(private mapService: MapService, private zone: NgZone) {
         this.initializeMarkerMap();
         this.initializeMapObjectSettings();
+        this.mapState = MapStateType.VIEWING;
     }
 
     public ngAfterViewInit() {
@@ -85,6 +109,28 @@ export class MapComponent implements AfterViewInit {
 
     public clearInfoBox() {
         this.updateSelectedMapObjectInfo(null, null, null);
+    }
+
+    public successfulMapObjectCreation(successMessage: string) {
+        this.mapState = MapStateType.VIEWING;
+        this.setSuccessMessage(successMessage);
+    }
+
+    public setSuccessMessage(successMessage: string) {
+        this.successMessage = successMessage;
+        const tmpScope = this;
+        setTimeout(function() {
+            tmpScope.successMessage = "";
+        }, this.messageDisplayTime);
+    }
+
+    public addMapListener() {
+        this.map.addListener("click", () =>  this.updateSelectedMapObjectInfo(null, null, null));
+    }
+
+    public showFormForMapObject(type: MapObjectType) {
+        this.mapObjectTypeForAdding = type;
+        this.mapState = MapStateType.ADDING;
     }
 
     private initMap() {
@@ -135,7 +181,8 @@ export class MapComponent implements AfterViewInit {
         } else {
             if (this.mapObjectSettings[mapObjectType].mapFilter.name === "2015" ||
                 this.mapObjectSettings[mapObjectType].mapFilter.name === "2016" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2017") {
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2017" ||
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2018") {
                 this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
                                         "static/img/schild_aktiv_schwarz.png", 1.0);
             } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
@@ -175,6 +222,9 @@ export class MapComponent implements AfterViewInit {
         let mapEventFilterOptions = [
             new MapFilter(
                 "aktuell", "Kommende & vergangene Veranstaltungen (30 Tage)", DateFilter.upcoming,
+            ),
+            new MapFilter(
+                "2018", null, DateFilter.year2018,
             ),
             new MapFilter(
                 "2017", null, DateFilter.year2017,
@@ -239,7 +289,7 @@ export class MapComponent implements AfterViewInit {
         const tmpScope = this;
         setTimeout(function(){
             tmpScope.errorMessage = "";
-        }, this.errorMessageDisplayTime);
+        }, this.messageDisplayTime);
     }
 
     private willInfoBoxHideMarker(marker: google.maps.Marker) {

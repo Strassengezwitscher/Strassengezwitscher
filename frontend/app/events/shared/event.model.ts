@@ -2,6 +2,8 @@ export class Event {
     public id: number;
     public name: string;
     public location: string;
+    public locationLong: number;
+    public locationLat: number;
     public date: string;
     public time: string;
     public repetitionCycle: string;

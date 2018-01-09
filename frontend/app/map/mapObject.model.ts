@@ -10,6 +10,11 @@ export class MapObject {
 }
 
 export enum MapObjectType {
-            EVENTS = 0,
-            FACEBOOK_PAGES
+    EVENTS = 0,
+    FACEBOOK_PAGES,
+}
+
+export enum MapStateType {
+    VIEWING = 0,
+    ADDING,
 }

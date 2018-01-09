@@ -1,30 +1,49 @@
 <div class="map-canvas" #mapCanvas></div>
-<md-card class="map-settings">
-    <md-card-content>
-        <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
-            <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange(mapObjectSetting)">
-                {{mapObjectSetting.name}}
-            </md-slide-toggle>
-            <div class="map-sub-settings" *ngIf="mapObjectSetting.visible && mapObjectSetting.mapFilterOptions.length > 1" [@slideInOut]="mapObjectSetting.visible">
-                <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter" (ngModelChange)="onRadioChange()">
-                    <md-radio-button class="map-sub-setting" *ngFor="let option of mapObjectSetting.mapFilterOptions" [value]="option">
-                        <div>
-                            <div (mouseenter)="option.showInfo = true" (mouseleave)="option.showInfo = false">
-                                {{ option.name }}
-                                <md-icon class="infoIcon" *ngIf="option.infoText">info</md-icon>
-                            </div>
-                            <div class="infoText" *ngIf="option.showInfo" [@slideInOut]="option.showInfo">
-                                {{ option.infoText }}
-                            </div>
-                        </div>
-                    </md-radio-button>
-                </md-radio-group>
+<div class="map-controls">
+    <div class="map-settings-wrapper transform-origin-zero" *ngIf="mapState == mapStateEnum.VIEWING" [@flyInOut]="mapState == mapStateEnum.VIEWING">
+        <md-card class="map-settings">
+            <md-card-content>
+                <div class="map-setting" *ngFor="let mapObjectSetting of mapObjectSettings">
+                    <md-slide-toggle [(ngModel)]="mapObjectSetting.visible" (ngModelChange)="onCheckboxChange(mapObjectSetting)">
+                        {{mapObjectSetting.name}}
+                    </md-slide-toggle>
+                    <div class="map-sub-settings" *ngIf="mapObjectSetting.visible && mapObjectSetting.mapFilterOptions.length > 1" [@slideInOut]="mapObjectSetting.visible">
+                        <md-radio-group [(ngModel)]="mapObjectSetting.mapFilter" (ngModelChange)="onRadioChange()">
+                            <md-radio-button class="map-sub-setting" *ngFor="let option of mapObjectSetting.mapFilterOptions" [value]="option">
+                                <div>
+                                    <div (mouseenter)="option.showInfo = true" (mouseleave)="option.showInfo = false">
+                                        {{ option.name }}
+                                        <md-icon class="infoIcon" *ngIf="option.infoText">info</md-icon>
+                                    </div>
+                                    <div class="infoText" *ngIf="option.showInfo" [@slideInOut]="option.showInfo">
+                                        {{ option.infoText }}
+                                    </div>
+                                </div>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+
+        <div class="map-choosing-controls">
+            <div class="map-choosing-buttons">
+                <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.ADDING; showFormForMapObject(0)">Veranstaltung melden</button>
+                <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.ADDING; showFormForMapObject(1)">Facebook-Seite melden</button>
             </div>
         </div>
-    </md-card-content>
-</md-card>
-<div [ngSwitch]= "selectedMapObjectType" class="map-infos">
+    </div>
+
+    <div *ngIf="mapState == mapStateEnum.ADDING" [@flyInOut]="mapState == mapStateEnum.ADDING">
+        <cg-map-object-creation (onError)="setErrorMessage($event)" [map]="map" [mapObjectType]="mapObjectTypeForAdding" (onSuccess)="successfulMapObjectCreation($event)" (onDestroy)="addMapListener()"></cg-map-object-creation>
+        <button md-raised-button class="map-modification-button" (click)="mapState = mapStateEnum.VIEWING">Abrechen</button>
+    </div>
+</div>
+
+<div class="transform-origin-zero" [ngSwitch]= "selectedMapObjectType" class="map-infos" *ngIf="mapState == mapStateEnum.VIEWING">
     <cg-event-detail *ngSwitchCase="0" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-event-detail>
     <cg-fb-detail *ngSwitchCase="1" [id]="selectedMapObject.id" (onError)="setErrorMessage($event)" (onClose)="clearInfoBox()"></cg-fb-detail>
 </div>
+
 <md-card class="error-message" *ngIf="errorMessage">{{errorMessage}}</md-card>
+<md-card class="success-message" *ngIf="successMessage">{{successMessage}}</md-card>

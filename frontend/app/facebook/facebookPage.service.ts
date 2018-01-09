@@ -7,6 +7,7 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class FacebookPageService {
     private facebookPageUrl = "api/facebook/";
+    private facebookPageCreateUrl = "api/facebook/new/";
 
     constructor(private http: Http) {}
 
@@ -18,15 +19,30 @@ export class FacebookPageService {
                         .catch(this.handleError);
     }
 
+    public addFacebookPage (fbPage: FacebookPage) {
+        let headers = new Headers({ "Content-Type": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this.facebookPageCreateUrl, fbPage, options)
+                        .map( res => { return "Vielen Dank für Ihren Beitrag.\n " +
+                                              "Nach einer Prüfung werden wir die Facebook Seite hinzufügen!" })
+                        .catch(this.handleError);
+
+    }
+
     private extractData(response: Response): FacebookPage {
         let data = response.json();
         return <FacebookPage> data;
     }
 
     private handleError(error: any) {
-        let errorMessage = "Server error";
-        if (error.message) {
-            errorMessage = error.message;
+        let errorMessage = "Interner Serverfehler";
+        let parsedError = {'message':''};
+        try {
+            parsedError = (error._body) ? JSON.parse(error._body) : parsedError;
+        } catch (e) { }
+        if (parsedError.message) {
+            errorMessage = parsedError.message;
         } else if (error.status) {
             errorMessage = `${error.status} - ${error.statusText}`;
         }
