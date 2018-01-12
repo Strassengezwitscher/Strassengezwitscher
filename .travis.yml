@@ -15,6 +15,7 @@ install:
   - gem install coveralls-lcov
   - pip install -r requirements.txt
   - pip install coveralls
+  - sudo rm -rf /usr/local/phantomjs
   - npm install
 before_script:
   - node_modules/gulp/bin/gulp.js build
