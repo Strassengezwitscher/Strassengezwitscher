@@ -1,27 +1,32 @@
 import os
+import pathlib
 
-LOCK_PATH = ".tweets.lock"
+LOCK_PATH = pathlib.Path('.tweets.lock')
 
 
 def lock_twitter():
     """Must be called by TwitterAccount's fetch_tweets method when it starts."""
-
-    if os.path.exists(LOCK_PATH):
-        pidfile = open(LOCK_PATH, "r")
-        old_pid = pidfile.readline()
+    if LOCK_PATH.exists():
         try:
-            os.kill(int(old_pid), 0)  # will fail if no process with ID old_pid exists
-            return False              # process is still running -> still locked
-        except OSError:
-            os.remove(LOCK_PATH)      # found orphaned PID file
+            old_pid = int(LOCK_PATH.read_text())
+        except ValueError:
+            LOCK_PATH.unlink()  # corrupt lock file. it's useless, so remove it.
+        else:
+            try:
+                # Check if process with PID old_pid still exists.
+                # The null signal is actually not sent, but error checking is performed, so old_pid is validated.
+                # If no process with PID old_pid is found OSError is raised.
+                os.kill(old_pid, 0)
+                return False  # process is still running -> still locked
+            except OSError:
+                LOCK_PATH.unlink()  # found orphaned PID file
 
-    pidfile = open(LOCK_PATH, "w")
-    pidfile.write("%s" % os.getpid())
-    pidfile.close()
+    with LOCK_PATH.open('w') as pidfile:
+        pidfile.write('%d' % os.getpid())
     return True
 
 
 def unlock_twitter():
     """Must be called by TwitterAccount's fetch_tweets method when it ends."""
-    if os.path.exists(LOCK_PATH):
-        os.remove(LOCK_PATH)
+    if LOCK_PATH.exists():
+        LOCK_PATH.unlink()
