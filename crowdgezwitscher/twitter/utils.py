@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-LOCK_PATH = pathlib.Path('.tweets.lock')
+LOCK_PATH = pathlib.Path(__file__).parent / '.tweets.lock'
 
 
 def lock_twitter():
