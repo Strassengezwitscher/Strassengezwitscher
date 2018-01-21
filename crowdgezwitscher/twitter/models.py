@@ -240,7 +240,7 @@ class Hashtag(models.Model):
 
 class Tweet(models.Model):
     tweet_id = UnsignedBigIntegerField(unique=True)
-    content = models.CharField(max_length=250)
+    content = models.CharField(max_length=560)
     account = models.ForeignKey(TwitterAccount, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag)
     created_at = models.DateTimeField(default=timezone.now)
