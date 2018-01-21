@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import mock
 
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.core.exceptions import ValidationError
 from TwitterAPI import TwitterAPI, TwitterConnectionError, TwitterResponse
 
@@ -304,3 +304,36 @@ class TwitterAccountModelTests(TestCase):
         twitter_account_new = TwitterAccount(name="STRASSENGEZWITSCHER")
 
         self.assertRaisesMessage(ValidationError, 'Twitter account with this name already exists.', twitter_account_new.clean)
+
+
+class TwitterAccountModelTransactionTests(TransactionTestCase):
+    @mock.patch('multiprocessing.Process', MockProcess)
+    @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
+    @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
+    @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(side_effect=[[
+        {
+            'id': 1234,
+            'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
+            'in_reply_to_user_id': None,
+            'text': 'wow, much inconsistency, such duplication',
+            'entities': {
+                'hashtags': []
+            }
+        },
+    ], []]))
+    @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
+    @mock.patch('crowdgezwitscher.log.logger.warning')
+    def test_reset_last_known_tweet_id(self, logger):
+        twitter_account = TwitterAccount.objects.create(name="Strassengezwitscher", account_id=1)
+        Tweet.objects.create(
+            tweet_id=1234,
+            content="I will be fetched even though I am already in the DB",
+            account=twitter_account,
+        )
+        tweet_count_old = twitter_account.tweet_set.count()
+
+        twitter_account.fetch_tweets()
+        tweet_count_new = twitter_account.tweet_set.count()
+        self.assertEqual(tweet_count_old, tweet_count_new)
+        self.assertEqual(logger.call_count, 1)
+        self.assertEqual(twitter_account.last_known_tweet_id, 1234)
