@@ -93,7 +93,6 @@ class TwitterAccount(models.Model):
                 os.kill(p.pid, signal.SIGKILL)  # nuke it. RIP.
             p.join()
 
-
     def _fetch_tweets(self):
         # Fetching tweets can require multiple request to Twitter's API.
         # This algorithm first fetches the newest tweets and fetches increasingly older ones with every subsequent
