@@ -42,6 +42,22 @@ class TweetModelTests(TestCase):
         self.assertEqual(str(tweet), 'Peter at 2012-12-21 19:09:00 - Erster Tweet, #cool!')
 
 
+class MockProcess(object):
+    def __init__(self, target):
+        self.func = target
+
+    def start(self):
+        self.func()
+
+    def is_alive(self):
+        return False
+
+    def skip(*args, **kwargs):
+        pass
+
+    terminate = join = skip
+
+
 class TwitterAccountModelTests(TestCase):
     def test_representation(self):
         twitter_account = TwitterAccount(name="Strassengezwitscher")
@@ -56,6 +72,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.save()
         self.assertEqual(twitter_account.get_absolute_url(), '/intern/twitter_accounts/1/')
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
@@ -100,6 +117,7 @@ class TwitterAccountModelTests(TestCase):
         self.assertEqual(Hashtag.objects.count(), 3)
         self.assertTrue(all([tweet.account == twitter_account for tweet in Tweet.objects.all()]))
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
@@ -113,6 +131,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.fetch_tweets()
         logger.assert_called_once_with('Got unexpected result while fetching tweets and parsing their creation times.')
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
@@ -125,6 +144,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.fetch_tweets()
         self.assertEqual(twitter_account.tweet_set.count(), 0)
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('TwitterAPI.TwitterAPI.__init__', mock.Mock(return_value=None))
@@ -144,6 +164,7 @@ class TwitterAccountModelTests(TestCase):
         self.assertNotEqual(twitter_account.last_known_tweet_id, last_known_tweet_id_old)
         self.assertEqual(twitter_account.last_known_tweet_id, 1234)
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset', mock.Mock(return_value=3600))
     @mock.patch('twitter.models.TwitterAccount._fetch_tweets_from_api', mock.Mock(return_value=[{'id': 1234}]))
@@ -154,6 +175,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.fetch_tweets()
         self.assertEqual(unlock_mock.call_count, 1)
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
                 mock.Mock(side_effect=KeyError("wow, much error, such bad")))
@@ -166,6 +188,7 @@ class TwitterAccountModelTests(TestCase):
         logger.assert_called_once_with("Got unexpected result while fetching tweets.")
         self.assertEqual(unlock_mock.call_count, 1)
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
                 mock.Mock(side_effect=TwitterConnectionError("wow, much error, such bad")))
@@ -178,6 +201,7 @@ class TwitterAccountModelTests(TestCase):
         logger.assert_called_once_with("Could not connect to Twitter.")
         self.assertEqual(unlock_mock.call_count, 1)
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=True))
     @mock.patch('twitter.models.TwitterAccount._get_utc_offset',
                 mock.Mock(side_effect=Exception("wow, much error, such bad")))
@@ -263,6 +287,7 @@ class TwitterAccountModelTests(TestCase):
         twitter_account.clean()
         self.assertEqual(twitter_account.account_id, 1337)
 
+    @mock.patch('multiprocessing.Process', MockProcess)
     @mock.patch('twitter.utils.lock_twitter', mock.Mock(return_value=False))
     @mock.patch('TwitterAPI.TwitterAPI.__init__')
     def test_fetch_tweets_returns_after_cannot_acquire_lock(self, mock_twitter_init):

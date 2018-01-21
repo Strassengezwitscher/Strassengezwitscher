@@ -1,4 +1,7 @@
 from datetime import datetime
+import multiprocessing
+import os
+import signal
 import time
 
 from django.conf import settings
@@ -75,7 +78,22 @@ class TwitterAccount(models.Model):
         if len(tweets) > 0:
             return tweets[0]['user']['utc_offset'] or 0
 
-    def fetch_tweets(self):
+    def fetch_tweets(self, timeout=300):
+        """Runs _fetch_tweets with the given timeout in seconds."""
+        p = multiprocessing.Process(target=self._fetch_tweets)
+        p.start()
+        p.join(timeout)
+        if p.is_alive():
+            logger.warning("Timeout for _fetch_tweets. Terminating.")
+            p.terminate()  # SIGTERM
+            time.sleep(0.5)  # give the termination some time
+            if p.is_alive():
+                logger.warning("_fetch_tweets refuses to terminate. Will kill it.")
+                os.kill(p.pid, signal.SIGKILL)  # nuke it. RIP.
+            p.join()
+
+
+    def _fetch_tweets(self):
         # Fetching tweets can require multiple request to Twitter's API.
         # This algorithm first fetches the newest tweets and fetches increasingly older ones with every subsequent
         # request.
