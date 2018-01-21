@@ -29,6 +29,13 @@ class TwitterUtilTests(TestCase):
         os_kill.assert_called_once_with(-4, 0)
         utils.unlock_twitter()
 
+    def test_lock_removes_corrupt_file(self):
+        utils.LOCK_PATH.touch()  # we have an invalid (empty) lock file now
+        self.assertTrue(utils.lock_twitter())
+        pid_from_file = int(utils.LOCK_PATH.read_text())
+        self.assertEqual(pid_from_file, os.getpid())
+        utils.unlock_twitter()
+
     @mock.patch('os.kill', mock.Mock(side_effect=OSError()))
     def test_lock_on_already_locked_orphaned(self):
         with utils.LOCK_PATH.open('w') as pidfile:
