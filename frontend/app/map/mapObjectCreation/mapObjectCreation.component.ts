@@ -42,10 +42,12 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
                 position: location,
                 map: this.map,
             });
+            this.toggleMarkerColor(true);
             this.marker.addListener("click", () => {
                 this.zone.run(() => {
                     this.marker.setMap(null);
                     this.marker = null;
+                    this.toggleMarkerColor(false);
                 });
             });
         } else {
@@ -179,6 +181,20 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         this.script.async = true;
         this.script.defer = true;
         doc.appendChild(this.script);
+    }
+
+    private toggleMarkerColor(colored: boolean) {
+        const toggle = document.getElementById("markerToggle");
+        const bar = <HTMLElement>toggle.querySelector(".md-slide-toggle-bar");
+        const thumb = <HTMLElement>toggle.querySelector(".md-slide-toggle-thumb");
+
+        if (colored) {
+            bar.style.backgroundColor = "rgba(156, 39, 176, 0.5)";
+            thumb.style.backgroundColor = "#9c27b0";
+        } else {
+            bar.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+            thumb.style.backgroundColor = "#bdbdbd";
+        }
     }
 
 }

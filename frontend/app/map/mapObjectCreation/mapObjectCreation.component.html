@@ -23,7 +23,7 @@
 						</md-input-container>
 					</td>
 					<td style="width: 50%">
-						<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="left">
+						<md-slide-toggle id="markerToggle" disabled required [checked]="marker?.position.lat() || marker?.position.lng()" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="left">
 								Marker gesetzt*
 							<md-icon style="font-size:16px;">info</md-icon>
 						</md-slide-toggle>
