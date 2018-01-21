@@ -25,14 +25,14 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public marker = null;
     public captchaVerified;
     public config: Config;
-    public showDateTooltip = true;
+    public userAgentIsChrome = true;
     private script;
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
         this.config = new Config();
         this.captchaVerified = false;
-        this.showDateTooltip = window.navigator.userAgent.indexOf("Chrome/") == -1  // hide tooltip on chrome
+        this.userAgentIsChrome = window.navigator.userAgent.indexOf("Chrome/") !== -1;  // hide tooltip on chrome
         window["verifyCallback"] = this.verifyCallback.bind(this);
     }
 
@@ -70,11 +70,18 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public send(moc) {
         switch (this.selectedMapObjectType) {
             case MapObjectType.EVENTS:
+                let date;
+                if (this.userAgentIsChrome) {
+                    date = moc.form._value.date;
+                } else {
+                    date = moc.form._value.date + "T" + moc.form._value.time;
+                }
+
                 // TODO constructing event should be changed with JSONAPI
                 let event = new Event();
                 event.counterEvent = (moc.form.controls.counterEvent.touched) ?  moc.form._value.counterEvent : false;
-                event.date = moc.form._value.date;
-                event.time = moc.form._value.date;
+                event.date = date;
+                event.time = date;
                 event.location = moc.form._value.location;
                 event.locationLat = moc.form._value.locationLat;
                 event.locationLong = moc.form._value.locationLong;
