@@ -9,6 +9,12 @@ import { FacebookPage } from "../../facebook/facebookPage.model";
 import { EventService } from "../../events/shared/event.service";
 import { Event } from "../../events/shared/event.model";
 
+export enum DateComponentSupport {
+    datetimeLocal = 0,
+    dateAndTime,
+    none,
+}
+
 @Component({
     moduleId: module.id,
     selector: "cg-map-object-creation",
@@ -25,16 +31,20 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public marker = null;
     public captchaVerified;
     public config: Config;
-    public userAgentIsChrome = true;
     private script;
+    private DateComponentSupport = DateComponentSupport;
+    private dateComponentSupport: DateComponentSupport = DateComponentSupport.none;
+
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
         this.config = new Config();
         this.captchaVerified = false;
-        this.userAgentIsChrome = window.navigator.userAgent.indexOf("Chrome/") !== -1;  // hide tooltip on chrome
         window["verifyCallback"] = this.verifyCallback.bind(this);
+
+        this.dateComponentSupport = this.determineDateTimeComponentSupport();
     }
+
 
     public moveMarker(location) {
         if ( this.marker == null ) {
@@ -73,12 +83,11 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         switch (this.selectedMapObjectType) {
             case MapObjectType.EVENTS:
                 let date;
-                if (this.userAgentIsChrome) {
+                if (this.dateComponentSupport === DateComponentSupport.datetimeLocal) {
                     date = moc.form._value.date;
                 } else {
                     date = moc.form._value.date + "T" + moc.form._value.time;
                 }
-
                 // TODO constructing event should be changed with JSONAPI
                 let event = new Event();
                 event.counterEvent = (moc.form.controls.counterEvent.touched) ?  moc.form._value.counterEvent : false;
@@ -194,6 +203,33 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         } else {
             bar.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
             thumb.style.backgroundColor = "#bdbdbd";
+        }
+    }
+
+    private determineDateTimeComponentSupport() {
+        const supportedTypes = {
+            "date": false,
+            "time": false,
+            "datetime-local": false,
+        };
+        const testComponent = document.createElement("input");
+
+        // tslint:disable-next-line:forin
+        for (let type in supportedTypes) {
+            testComponent.type = type;
+            testComponent.value = ":(";
+
+            if (testComponent.type === type && testComponent.value === "") {
+                supportedTypes[type] = true;
+            }
+        }
+
+        if (supportedTypes["datetime-local"]) {
+            return DateComponentSupport.datetimeLocal;
+        } else if (supportedTypes.date && supportedTypes.time) {
+            return DateComponentSupport.dateAndTime;
+        } else {
+            return DateComponentSupport.none;
         }
     }
 
