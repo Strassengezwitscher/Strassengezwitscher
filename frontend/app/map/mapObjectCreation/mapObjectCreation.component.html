@@ -42,12 +42,12 @@
 						</md-input-container>
 					</td>
 					<!-- This is also used for DateComponentSupport.none because unknown types fall back to type=text -->
-					<td *ngIf="dateComponentSupport == DateComponentSupport.dateAndTime" style="width: 50%">
+					<td *ngIf="dateComponentSupport == DateComponentSupport.dateAndTime || dateComponentSupport == DateComponentSupport.none" style="width: 50%">
 						<md-input-container dividerColor="accent">
 							<input md-input placeholder="Datum" type="date" required ngModel name="date">
 						</md-input-container>
 					</td>
-					<td *ngIf="dateComponentSupport == DateComponentSupport.dateAndTime" style="width: 50%">
+					<td *ngIf="dateComponentSupport == DateComponentSupport.dateAndTime || dateComponentSupport == DateComponentSupport.none" style="width: 50%">
 						<md-input-container dividerColor="accent">
 							<input md-input placeholder="Uhrzeit" type="time" required ngModel name="time">
 						</md-input-container>
