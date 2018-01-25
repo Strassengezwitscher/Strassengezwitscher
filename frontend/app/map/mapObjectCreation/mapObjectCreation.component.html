@@ -23,18 +23,33 @@
 						</md-input-container>
 					</td>
 					<td style="width: 50%">
-						<md-slide-toggle disabled required [checked]="marker?.position.lat() || marker?.position.lng()" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="left">
+						<md-slide-toggle id="markerToggle" disabled required [checked]="marker?.position.lat() || marker?.position.lng()" mdTooltip="Durch Klicken auf die Karte muss ein ungefährer Ort gesetzt werden" mdTooltipPosition="left">
 								Marker gesetzt*
 							<md-icon style="font-size:16px;">info</md-icon>
 						</md-slide-toggle>
 					</td>
 				</tr>
 
-				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS && dateComponentSupport == DateComponentSupport.none">
 					<td colspan="2">
-						<md-icon *ngIf="showDateTooltip" style="font-size:16px;" mdTooltip="Datum im Format YYYY-MM-DDThh:mm eintragen" mdTooltipPosition="after">info</md-icon>
+						Datum und Uhrzeit bitte im Format YYYY-MM-DD und HH:MM eintragen.
+					</td>
+				</tr>
+				<tr *ngIf="selectedMapObjectType == mapObjectType.EVENTS">
+					<td *ngIf="dateComponentSupport == DateComponentSupport.datetimeLocal" colspan="2">
 						<md-input-container dividerColor="accent">
 							<input md-input placeholder="Datum und Uhrzeit" type="datetime-local" required ngModel name="date">
+						</md-input-container>
+					</td>
+					<!-- This is also used for DateComponentSupport.none because unknown types fall back to type=text -->
+					<td *ngIf="dateComponentSupport == DateComponentSupport.dateAndTime || dateComponentSupport == DateComponentSupport.none" style="width: 50%">
+						<md-input-container dividerColor="accent">
+							<input md-input placeholder="Datum" type="date" required ngModel name="date">
+						</md-input-container>
+					</td>
+					<td *ngIf="dateComponentSupport == DateComponentSupport.dateAndTime || dateComponentSupport == DateComponentSupport.none" style="width: 50%">
+						<md-input-container dividerColor="accent">
+							<input md-input placeholder="Uhrzeit" type="time" required ngModel name="time">
 						</md-input-container>
 					</td>
 				</tr>

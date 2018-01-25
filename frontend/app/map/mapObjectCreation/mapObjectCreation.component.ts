@@ -9,6 +9,12 @@ import { FacebookPage } from "../../facebook/facebookPage.model";
 import { EventService } from "../../events/shared/event.service";
 import { Event } from "../../events/shared/event.model";
 
+export enum DateComponentSupport {
+    datetimeLocal = 0,
+    dateAndTime,
+    none,
+}
+
 @Component({
     moduleId: module.id,
     selector: "cg-map-object-creation",
@@ -25,16 +31,20 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public marker = null;
     public captchaVerified;
     public config: Config;
-    public showDateTooltip = true;
+    public DateComponentSupport = DateComponentSupport;
+    public dateComponentSupport: DateComponentSupport = DateComponentSupport.none;
     private script;
+
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
                 private zone: NgZone) {
         this.config = new Config();
         this.captchaVerified = false;
-        this.showDateTooltip = window.navigator.userAgent.indexOf("Chrome/") == -1  // hide tooltip on chrome
         window["verifyCallback"] = this.verifyCallback.bind(this);
+
+        this.dateComponentSupport = this.determineDateTimeComponentSupport();
     }
+
 
     public moveMarker(location) {
         if ( this.marker == null ) {
@@ -42,10 +52,12 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
                 position: location,
                 map: this.map,
             });
+            this.toggleMarkerColor(true);
             this.marker.addListener("click", () => {
                 this.zone.run(() => {
                     this.marker.setMap(null);
                     this.marker = null;
+                    this.toggleMarkerColor(false);
                 });
             });
         } else {
@@ -70,11 +82,17 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public send(moc) {
         switch (this.selectedMapObjectType) {
             case MapObjectType.EVENTS:
+                let date;
+                if (this.dateComponentSupport === DateComponentSupport.datetimeLocal) {
+                    date = moc.form._value.date;
+                } else {
+                    date = moc.form._value.date + "T" + moc.form._value.time;
+                }
                 // TODO constructing event should be changed with JSONAPI
                 let event = new Event();
                 event.counterEvent = (moc.form.controls.counterEvent.touched) ?  moc.form._value.counterEvent : false;
-                event.date = moc.form._value.date;
-                event.time = moc.form._value.date;
+                event.date = date;
+                event.time = date;
                 event.location = moc.form._value.location;
                 event.locationLat = moc.form._value.locationLat;
                 event.locationLong = moc.form._value.locationLong;
@@ -172,6 +190,47 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
         this.script.async = true;
         this.script.defer = true;
         doc.appendChild(this.script);
+    }
+
+    private toggleMarkerColor(colored: boolean) {
+        const toggle = document.getElementById("markerToggle");
+        const bar = <HTMLElement>toggle.querySelector(".md-slide-toggle-bar");
+        const thumb = <HTMLElement>toggle.querySelector(".md-slide-toggle-thumb");
+
+        if (colored) {
+            bar.style.backgroundColor = "rgba(156, 39, 176, 0.5)";
+            thumb.style.backgroundColor = "#9c27b0";
+        } else {
+            bar.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+            thumb.style.backgroundColor = "#bdbdbd";
+        }
+    }
+
+    private determineDateTimeComponentSupport() {
+        const supportedTypes = {
+            "date": false,
+            "time": false,
+            "datetime-local": false,
+        };
+        const testComponent = document.createElement("input");
+
+        // tslint:disable-next-line:forin
+        for (let type in supportedTypes) {
+            testComponent.type = type;
+            testComponent.value = ":(";
+
+            if (testComponent.type === type && testComponent.value === "") {
+                supportedTypes[type] = true;
+            }
+        }
+
+        if (supportedTypes["datetime-local"]) {
+            return DateComponentSupport.datetimeLocal;
+        } else if (supportedTypes.date && supportedTypes.time) {
+            return DateComponentSupport.dateAndTime;
+        } else {
+            return DateComponentSupport.none;
+        }
     }
 
 }
