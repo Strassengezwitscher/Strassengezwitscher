@@ -32,8 +32,8 @@ export class MapObjectCreationComponent implements OnInit, OnDestroy {
     public captchaVerified;
     public config: Config;
     public DateComponentSupport = DateComponentSupport;
+    public dateComponentSupport: DateComponentSupport = DateComponentSupport.none;
     private script;
-    private dateComponentSupport: DateComponentSupport = DateComponentSupport.none;
 
     constructor(private mapService: MapService, private captchaService: CaptchaService,
                 private fbPageService: FacebookPageService, private eventService: EventService,
