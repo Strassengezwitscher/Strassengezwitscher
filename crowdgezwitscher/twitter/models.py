@@ -1,9 +1,13 @@
 from datetime import datetime
+import multiprocessing
+import os
+import signal
 import time
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.utils import IntegrityError
 from django.urls import reverse
 from django.utils import timezone
 from TwitterAPI import TwitterAPI, TwitterConnectionError
@@ -75,7 +79,21 @@ class TwitterAccount(models.Model):
         if len(tweets) > 0:
             return tweets[0]['user']['utc_offset'] or 0
 
-    def fetch_tweets(self):
+    def fetch_tweets(self, timeout=300):
+        """Runs _fetch_tweets with the given timeout in seconds."""
+        p = multiprocessing.Process(target=self._fetch_tweets)
+        p.start()
+        p.join(timeout)
+        if p.is_alive():
+            logger.warning("Timeout for _fetch_tweets. Terminating.")
+            p.terminate()  # SIGTERM
+            time.sleep(0.5)  # give the termination some time
+            if p.is_alive():
+                logger.warning("_fetch_tweets refuses to terminate. Will kill it.")
+                os.kill(p.pid, signal.SIGKILL)  # nuke it. RIP.
+            p.join()
+
+    def _fetch_tweets(self):
         # Fetching tweets can require multiple request to Twitter's API.
         # This algorithm first fetches the newest tweets and fetches increasingly older ones with every subsequent
         # request.
@@ -173,9 +191,25 @@ class TwitterAccount(models.Model):
         new_tweets.reverse()
 
         for tweet in new_tweets:
-            tweet.save()
-            tweet.hashtags.add(*(tweet_hashtag_mappings.get(tweet.tweet_id, [])))
-            tweet.save()
+            try:
+                tweet.save()
+            except IntegrityError as e:
+                # This should not have happened.
+                # Assumption: We have an inconsistent state where an account's last_known_tweet_id has not been updated
+                # after saving a tweet. The reason might be a crash or the server shutting down or whatever.
+                # So the DB now complains about saving a new tweet with a non-unique tweet_id.
+                # To fix this we reset the account's last_known_tweet_id to its latest known tweet's ID. As new_tweets
+                # has been fetched with a wrong last_known_tweet_id, we stop saving more of them and will try again the
+                # next time this method is called.
+                logger.warning(
+                    "Failed to save tweet for account #%i. Setting last_known_tweet_id to latest tweet's ID. "
+                    "Exception: %s", self.id, e
+                )
+                last_known_tweet_id = self.tweet_set.latest('pk').tweet_id
+                break
+            else:
+                tweet.hashtags.add(*(tweet_hashtag_mappings.get(tweet.tweet_id, [])))
+                tweet.save()
 
         if last_known_tweet_id:
             self.last_known_tweet_id = last_known_tweet_id
@@ -206,10 +240,10 @@ class Hashtag(models.Model):
 
 class Tweet(models.Model):
     tweet_id = UnsignedBigIntegerField(unique=True)
-    content = models.CharField(max_length=250)
+    content = models.CharField(max_length=560)
     account = models.ForeignKey(TwitterAccount, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag)
-    created_at = models.DateTimeField(default=datetime.now)
+    created_at = models.DateTimeField(default=timezone.now)
     is_reply = models.BooleanField(default=False)
 
     def __repr__(self):
