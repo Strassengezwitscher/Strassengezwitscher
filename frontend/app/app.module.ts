@@ -9,6 +9,7 @@ import { AppRouterModule } from "./app.routing";
 import { AboutModule } from "./about/about.module";
 import { BlogModule } from "./blog/blog.module";
 import { ContactModule } from "./contact/contact.module";
+import { DonateModule } from "./donate/donate.module";
 import { EventModule } from "./events/event.module";
 import { FacebookPageModule } from "./facebook/facebookPage.module";
 import { ImprintModule } from "./imprint/imprint.module";
@@ -24,6 +25,7 @@ import { TwitterModule } from "./twitter/twitter.module";
         AboutModule,
         BlogModule,
         ContactModule,
+	DonateModule,
         EventModule,
         FacebookPageModule,
         ImprintModule,
