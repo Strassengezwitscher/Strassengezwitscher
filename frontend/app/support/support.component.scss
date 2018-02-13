@@ -60,4 +60,10 @@ a {
       width: calc(50% - #{$card-padding});
     }
   }
+
+  md-card {
+    @media #{$medium-and-up} {
+      width: 800px;
+    }
+  }
 }

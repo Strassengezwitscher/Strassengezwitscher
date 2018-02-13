@@ -98,11 +98,11 @@ body {
   flex-basis: 40px;
 
   @media #{$medium-and-up} {
-    flex-basis: 230px;
+    flex-basis: 300px;
   }
 
   @media #{$large-and-up} {
-    flex-basis: 390px;
+    flex-basis: 410px;
   }
 }
 

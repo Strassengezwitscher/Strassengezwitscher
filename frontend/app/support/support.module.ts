@@ -1,12 +1,12 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { MaterialModule } from "@angular/material";
 
-import { DonateComponent } from "./donate.component";
-import { routing } from "./donate.routing";
+import { SupportComponent } from "./support.component";
+import { routing } from "./support.routing";
 
 @NgModule({
   imports: [MaterialModule, routing],
-  declarations: [DonateComponent],
+  declarations: [SupportComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class DonateModule {}
+export class SupportModule {}

@@ -1,8 +1,8 @@
 import { ModuleWithProviders } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { DonateComponent } from "./donate.component";
+import { SupportComponent } from "./support.component";
 
 export const routing: ModuleWithProviders = RouterModule.forChild([
-  { path: "donate", component: DonateComponent},
+  { path: "support", component: SupportComponent},
 ]);
