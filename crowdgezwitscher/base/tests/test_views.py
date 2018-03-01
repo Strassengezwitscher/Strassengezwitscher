@@ -6,7 +6,7 @@ from django.contrib import auth
 
 class CrowdgezwitscherViewTests(TestCase):
     def test_serves_angular_tag(self):
-        url_names = ['map', 'contact', 'imprint', 'about', 'eventDetail', 'blog']
+        url_names = ['map', 'contact', 'imprint', 'about', 'support', 'eventDetail', 'blog']
         for url_name in url_names:
             response = self.client.get(reverse(url_name))
             self.assertEqual(response.status_code, 200)
