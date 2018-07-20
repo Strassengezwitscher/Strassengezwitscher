@@ -13,6 +13,28 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <link href="{% static 'css/frontend.css' %}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="static/cookieconsent/build/cookieconsent.min.css" />
+	<script src="static/cookieconsent/build/cookieconsent.min.js"></script>
+	<script>
+		window.addEventListener("load", function(){
+			window.cookieconsent.initialise({
+				"palette": {
+					"popup": {
+						"background": "#f5f5f5",
+						"text": "#000000"
+					},
+					"button": {
+						"background": "#9c27b0"
+					}
+				},
+				"content": {
+					"message": "Wir verwenden Cookies um die Funktionen unserer Webseite zu Erweitern (z.B. Spendenformulare) und  soziale Medien einzubinden.",
+					"dismiss": "OK",
+					"link": "Datenschutzerklärung",
+					"href": "/imprint"
+				}
+			})});
+	</script>
     </head>
     <body>
         <cg-app>

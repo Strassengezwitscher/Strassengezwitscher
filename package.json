@@ -28,6 +28,7 @@
     "@types/hammerjs": "2.0.34",
     "@types/node": "7.0.0",
     "bootstrap": "3.3.7",
+    "cookieconsent": "^3.0.6",
     "core-js": "2.4.1",
     "django-formset": "0.1.9",
     "eonasdan-bootstrap-datetimepicker": "4.17.43",
