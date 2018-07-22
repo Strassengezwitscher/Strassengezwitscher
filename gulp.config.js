@@ -55,6 +55,8 @@ module.exports = function () {
             path.npm + 'systemjs/dist/system.src.js',
             path.npm + 'symbol-observable/**/*',
             path.npm + 'traceur/bin/traceur.js',
+            path.npm + 'cookieconsent/build/cookieconsent.min.js',
+            path.npm + 'cookieconsent/build/cookieconsent.min.css'
         ],
         shared_files: [
             path.npm + 'bootstrap/dist/css/bootstrap.min.css',
