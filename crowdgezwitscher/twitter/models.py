@@ -148,7 +148,7 @@ class TwitterAccount(models.Model):
                         continue
                     is_reply = tweet_from_api['in_reply_to_user_id'] is not None
                     tweet = Tweet(tweet_id=tweet_from_api['id'],
-                                  content=tweet_from_api['text'],
+                                  content=tweet_from_api['full_text'],
                                   created_at=created_at,
                                   is_reply=is_reply,
                                   account=self)
