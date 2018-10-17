@@ -63,6 +63,7 @@ class TwitterAccount(models.Model):
             'trim_user': trim_user,
             'exclude_replies': False,
             'contributor_details': False,
+            'tweet_mode': 'extended',
         }
 
         # max_id is optional and not known for first request
