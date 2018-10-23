@@ -81,7 +81,7 @@ class TwitterAccountModelTests(TestCase):
             'id': 1234,
             'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
             'in_reply_to_user_id': None,
-            'text': 'Hallo, so ein toller Tweet!',
+            'full_text': 'Hallo, so ein toller Tweet!',
             'entities': {
                 'hashtags': [
                     {
@@ -97,7 +97,7 @@ class TwitterAccountModelTests(TestCase):
             'id': 1235,
             'created_at': 'Wed Aug 29 17:14:59 +0000 2012',
             'in_reply_to_user_id': None,
-            'text': 'Hey, wie toll ist dieser Tweet?',
+            'full_text': 'Hey, wie toll ist dieser Tweet?',
             'entities': {
                 'hashtags': [
                     {
@@ -152,7 +152,7 @@ class TwitterAccountModelTests(TestCase):
         'id': 1234,
         'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
         'in_reply_to_user_id': None,
-        'text': 'Hallo, so ein toller Tweet!',
+        'full_text': 'Hallo, so ein toller Tweet!',
         'entities': {
             'hashtags': []
         }
@@ -315,7 +315,7 @@ class TwitterAccountModelTransactionTests(TransactionTestCase):
             'id': 1234,
             'created_at': 'Wed Aug 29 17:12:58 +0000 2012',
             'in_reply_to_user_id': None,
-            'text': 'wow, much inconsistency, such duplication',
+            'full_text': 'wow, much inconsistency, such duplication',
             'entities': {
                 'hashtags': []
             }

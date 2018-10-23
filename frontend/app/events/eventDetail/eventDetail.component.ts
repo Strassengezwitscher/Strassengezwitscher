@@ -17,7 +17,7 @@ export class EventDetailComponent implements OnInit {
     public tweetIds: string[] = [];
     public errorMessage: string;
     public twttrIsBlocked: boolean = (typeof twttr === "undefined");
-    private last_tweet_id: number = 0;
+    private last_tweet_id: string = "0";
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
@@ -33,7 +33,7 @@ export class EventDetailComponent implements OnInit {
             tweetIds => {
                 this.tweetIds = tweetIds.concat(this.tweetIds)
                 if (tweetIds.length > 0) {
-                    this.last_tweet_id = Number(tweetIds[0])
+                    this.last_tweet_id = tweetIds[0]
                 }
             }
         );
