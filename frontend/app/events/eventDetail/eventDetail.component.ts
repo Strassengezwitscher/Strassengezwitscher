@@ -17,7 +17,7 @@ export class EventDetailComponent implements OnInit {
     public tweetIds: string[] = [];
     public errorMessage: string;
     public twttrIsBlocked: boolean = (typeof twttr === "undefined");
-    private last_tweet_id: string = "";
+    private last_tweet_id: string = "0";
 
     constructor(private eventService: EventService, private route: ActivatedRoute) {}
 
