@@ -183,7 +183,8 @@ export class MapComponent implements AfterViewInit {
             if (this.mapObjectSettings[mapObjectType].mapFilter.name === "2015" ||
                 this.mapObjectSettings[mapObjectType].mapFilter.name === "2016" ||
                 this.mapObjectSettings[mapObjectType].mapFilter.name === "2017" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2018") {
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2018" ||
+                this.mapObjectSettings[mapObjectType].mapFilter.name === "2019") {
                 this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
                                         "static/img/schild_aktiv_schwarz.png", 1.0);
             } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
