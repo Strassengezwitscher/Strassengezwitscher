@@ -5,4 +5,4 @@ requests==2.20
 django-ckeditor==5.6.1
 TwitterAPI==2.4.2
 django-extra-views==0.8.0
-Pillow==3.4.2
+Pillow==6.2.0
