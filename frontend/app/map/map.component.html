@@ -17,6 +17,7 @@
                                     </div>
                                     <div class="infoText" *ngIf="option.showInfo" [@slideInOut]="option.showInfo">
                                         {{ option.infoText }}
+                                        {{  mapObjectSetting.mapFilterOptions | json }}
                                     </div>
                                 </div>
                             </md-radio-button>

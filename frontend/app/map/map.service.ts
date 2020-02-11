@@ -53,8 +53,6 @@ export class MapService {
       } else {
         this.getEventYears().then(years => {
           this.years = years.sort((a,b)=>b-a);
-          1/0;
-          console.log(this.years);
           this.yearsS$.next(years);
           const datefilter: any = {};
           datefilter.all = 0;
@@ -113,7 +111,6 @@ export class MapService {
 
     eventUrlMap.set(this.dateFilter.all, "api/events.json");
 
-    console.log(new Map<number, string>(Array.from(eventUrlMap.entries()).sort()));
     // sort the url map
     //
     return new Map<number, string>(Array.from(eventUrlMap.entries()).sort());

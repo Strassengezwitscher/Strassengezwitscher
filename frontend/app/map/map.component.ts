@@ -21,7 +21,7 @@ import "rxjs/add/observable/combineLatest";
 
 class MapFilter {
     constructor(
-        public name: string, public infoText: string, public filter: any,
+        public name: string, public infoText: string, public filter: number,
         public showInfo: boolean = false,
     ) {}
 }
@@ -243,6 +243,7 @@ export class MapComponent implements AfterViewInit {
             );
           }
         });
+      mapEventFilterOptions.sort((a, b) => a.filter - b.filter);
         this.mapObjectSettings[MapObjectType.EVENTS] =
             new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0],
                                 mapEventFilterOptions);
