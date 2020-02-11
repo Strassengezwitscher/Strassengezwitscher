@@ -6,6 +6,9 @@ import { MapObject, MapObjectType } from "./mapObject.model";
 
 import { Helper } from "../helper";
 import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/toPromise";
 
 @Injectable()
 export class MapService {
@@ -20,6 +23,11 @@ export class MapService {
         return this.http.get(requestUrl)
                         .map(this.extractData)
                         .catch(this.handleError);
+    }
+
+    private async getEventYears(): Promise<number[]> {
+      const response = await this.http.get("api/events/years/").toPromise();
+      return response.json();
     }
 
     private extractData(response: Response): MapObject[] {
@@ -65,8 +73,11 @@ export class MapService {
         return fpPagesUrlMap;
     }
 
-    private initializeUrlMap() {
+    private async initializeUrlMap() {
+        const years = await this.getEventYears();
+        console.log(years);
         this.urlMap.set(MapObjectType.EVENTS, this.getEventUrlMap());
         this.urlMap.set(MapObjectType.FACEBOOK_PAGES, this.getFBPagesUrlMap());
     }
+
 }
