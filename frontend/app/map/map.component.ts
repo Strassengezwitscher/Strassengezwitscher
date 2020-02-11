@@ -6,19 +6,22 @@ import { MapObject, MapObjectType, MapStateType } from "./mapObject.model";
 import { MapObjectCreationComponent } from "./mapObjectCreation/mapObjectCreation.component";
 import { MapService } from "./map.service";
 
-export enum DateFilter {
-    all = 0,
-    upcoming,
-    year2019,
-    year2018,
-    year2017,
-    year2016,
-    year2015,
-}
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/combineLatest";
+
+// export enum DateFilter {
+//     all = 0,
+//     upcoming,
+//     year2019,
+//     year2018,
+//     year2017,
+//     year2016,
+//     year2015,
+// }
 
 class MapFilter {
     constructor(
-        public name: string, public infoText: string, public filter: DateFilter,
+        public name: string, public infoText: string, public filter: any,
         public showInfo: boolean = false,
     ) {}
 }
@@ -84,15 +87,21 @@ export class MapComponent implements AfterViewInit {
         new Map<MapObjectType, Array<google.maps.Marker>>();
     private selectedMapObject: MapObject;
     private selectedMarker: google.maps.Marker;
+    private dateFilter: any;
+    private years: number[];
 
     constructor(private mapService: MapService, private zone: NgZone) {
-        this.initializeMarkerMap();
-        this.initializeMapObjectSettings();
-        this.mapState = MapStateType.VIEWING;
     }
 
     public ngAfterViewInit() {
-        this.initMap();
+        Observable.combineLatest(this.mapService.dateFilter$, this.mapService.years$).subscribe(([dateFilter, years]) => {
+          this.dateFilter = dateFilter;
+          this.years = years;
+          this.initializeMarkerMap();
+          this.initializeMapObjectSettings();
+          this.mapState = MapStateType.VIEWING;
+          this.initMap();
+        });
     }
 
     public onCheckboxChange(mapObjectSetting: MapObjectSetting) {
@@ -180,14 +189,7 @@ export class MapComponent implements AfterViewInit {
             this.setIconsAndOpacity(mapObject, "static/img/facebook.png",
                                         "static/img/facebook_aktiv.png", 1.0);
         } else {
-            if (this.mapObjectSettings[mapObjectType].mapFilter.name === "2015" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2016" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2017" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2018" ||
-                this.mapObjectSettings[mapObjectType].mapFilter.name === "2019") {
-                this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
-                                        "static/img/schild_aktiv_schwarz.png", 1.0);
-            } else if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
+          if (this.mapObjectSettings[mapObjectType].mapFilter.name === "aktuell") {
                 const today = new Date();
                 if (Helper.nextDay(mapObject.date) >= today) {
                     this.setIconsAndOpacity(mapObject, "static/img/schild_magenta.png",
@@ -196,7 +198,10 @@ export class MapComponent implements AfterViewInit {
                     this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
                                         "static/img/schild_aktiv_schwarz.png", 0.3);
                 }
-            }
+          } else {
+            this.setIconsAndOpacity(mapObject, "static/img/schild_schwarz.png",
+                                        "static/img/schild_aktiv_schwarz.png", 1.0);
+          }
         }
     }
 
@@ -223,31 +228,28 @@ export class MapComponent implements AfterViewInit {
     private initializeMapObjectSettings() {
         let mapEventFilterOptions = [
             new MapFilter(
-                "aktuell", "Kommende & vergangene Veranstaltungen (30 Tage)", DateFilter.upcoming,
+                "aktuell", "Kommende & vergangene Veranstaltungen (30 Tage)", this.dateFilter.upcoming,
             ),
             new MapFilter(
-                "2019", null, DateFilter.year2019,
-            ),
-            new MapFilter(
-                "2018", null, DateFilter.year2018,
-            ),
-            new MapFilter(
-                "2017", null, DateFilter.year2017,
-            ),
-            new MapFilter(
-                "2016", null, DateFilter.year2016,
-            ),
-            new MapFilter(
-                "2015", "Mit freundlicher Genehmigung von rechtes-sachsen.de", DateFilter.year2015,
+                "2015", "Mit freundlicher Genehmigung von rechtes-sachsen.de", this.dateFilter.year2015,
             ),
         ];
+        this.years.forEach((year, i) => {
+          if (year != 2015) {
+            mapEventFilterOptions.push(
+              new MapFilter(
+                year.toString(), null, this.dateFilter["year" + year.toString()],
+              )
+            );
+          }
+        });
         this.mapObjectSettings[MapObjectType.EVENTS] =
             new MapObjectSetting(true, "Veranstaltungen", mapEventFilterOptions[0],
                                 mapEventFilterOptions);
 
         let mapFacebookPagesFilterOptions = [
             new MapFilter(
-                "alle", null, DateFilter.all,
+                "alle", null, this.dateFilter.all,
             ),
         ];
         this.mapObjectSettings[MapObjectType.FACEBOOK_PAGES] =

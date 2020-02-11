@@ -2,9 +2,19 @@ import { TestBed, inject } from "@angular/core/testing";
 import { BaseRequestOptions, Http, Response, ResponseOptions } from "@angular/http";
 import { MockBackend } from "@angular/http/testing";
 
-import { DateFilter } from "./map.component";
 import { MapObjectType } from "./mapObject.model";
 import { MapService } from "./map.service";
+
+// tbd old hardcoded version
+enum DateFilter {
+    all = 0,
+    upcoming,
+    year2019,
+    year2018,
+    year2017,
+    year2016,
+    year2015,
+}
 
 describe("MapService", () => {
     beforeEach(() => {
