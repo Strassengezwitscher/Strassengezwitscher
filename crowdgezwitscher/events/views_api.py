@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.db.models.functions import TruncYear
 
 from base.models import MapObjectFilterBackend
 from crowdgezwitscher.log import logger
@@ -86,6 +87,15 @@ class EventAPIGetTweets(APIView):
         # If a tweet and the event have multiple hashtags in common, the tweet is included multiple times.
         # We therefore need to call distinct().
         return Response([str(tweet.tweet_id) for tweet in tweets.distinct()])
+
+class EventAPIYears(APIView):
+    def get(self, request):
+        years_queryset = Event.objects.all().annotate(year=TruncYear('date'))\
+                                            .values('year')\
+                                            .distinct()\
+                                            .order_by('year')
+        years_list = [entry['year'].year for entry in years_queryset]
+        return Response(years_list)
 
 
 @api_view(['POST'])

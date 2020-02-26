@@ -1,72 +1,126 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 
-import { DateFilter } from "./map.component";
 import { MapObject, MapObjectType } from "./mapObject.model";
 
 import { Helper } from "../helper";
 import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/mergeMap";
+import "rxjs/add/operator/toPromise";
 
 @Injectable()
 export class MapService {
-    private urlMap: Map<MapObjectType, Map<DateFilter, string>> = new Map<MapObjectType, Map<DateFilter, string>>();
+  public years$: Observable<number[]>;
+  public dateFilter$: Observable<any>;
+  private yearsS$: BehaviorSubject<number[]> = new BehaviorSubject([]);
+  private dateFilterS$: BehaviorSubject<any> = new BehaviorSubject({});
+  private years: number[];
+  private dateFilter: any;
+  private urlMap$: Observable<Map<MapObjectType, Map<number, string>>>;
 
-    constructor(private http: Http) {
-        this.initializeUrlMap();
+  constructor(private http: Http) {
+    this.years$ = this.yearsS$.asObservable();
+    this.dateFilter$ = this.dateFilterS$.asObservable();
+    this.initializeUrlMap();
+  }
+
+  public getMapObjects(
+    type: MapObjectType,
+    dateFilter: any
+  ): Observable<MapObject[]> {
+    return this.urlMap$.mergeMap(urlMap => {
+      let requestUrl = urlMap.get(type).get(dateFilter);
+      return this.http
+        .get(requestUrl)
+        .map(this.extractData)
+        .catch(this.handleError);
+    });
+  }
+
+  private initializeUrlMap() {
+    this.urlMap$ = Observable.create(observer => {
+      const buildUrlMap = (years: number[]) => {
+        const urlMap = new Map<MapObjectType, Map<any, string>>();
+        urlMap.set(MapObjectType.EVENTS, this.getEventUrlMap(years));
+        urlMap.set(MapObjectType.FACEBOOK_PAGES, this.getFBPagesUrlMap());
+        return urlMap;
+      };
+      if (this.years) {
+        observer.next(buildUrlMap(this.years));
+      } else {
+        this.getEventYears().then(years => {
+          this.years = years.sort((a,b)=>b-a);
+          this.yearsS$.next(years);
+          const datefilter: any = {};
+          datefilter.all = 0;
+          datefilter.upcoming = 1;
+          years.forEach(
+            (elem, i) => (datefilter["year" + elem.toString()] = i + 2)
+          );
+          this.dateFilter = datefilter;
+          this.dateFilterS$.next(datefilter);
+          observer.next(buildUrlMap(years));
+        });
+      }
+    });
+  }
+
+  private async getEventYears(): Promise<number[]> {
+    const response = await this.http.get("api/events/years/").toPromise();
+    return response.json();
+  }
+
+  private extractData(response: Response): MapObject[] {
+    let data = response.json() || [];
+    return <MapObject[]> data;
+  }
+
+  private handleError(error: any) {
+    let errorMessage = "Server error";
+    if (error.message) {
+      errorMessage = error.message;
+    } else if (error.status) {
+      errorMessage = `${error.status} - ${error.statusText}`;
     }
+    console.error(errorMessage);
+    return Observable.throw(errorMessage);
+  }
 
-    public getMapObjects(type: MapObjectType, dateFilter: DateFilter): Observable<MapObject[]> {
-        let requestUrl = this.urlMap.get(type).get(dateFilter);
-        return this.http.get(requestUrl)
-                        .map(this.extractData)
-                        .catch(this.handleError);
-    }
+  // TODO(anyone): Use URLSearchParams
+  private getEventUrlMap(years: number[]): Map<number, string> {
+    const eventUrlMap = new Map<number, string>();
 
-    private extractData(response: Response): MapObject[] {
-        let data = response.json() || [];
-        return <MapObject[]> data;
-    }
+    this.years.forEach((year) => {
+      eventUrlMap.set(
+        this.dateFilter["year" + year.toString()],
+        `api/events.json?from=${year.toString()}-01-01&to=${year.toString()}-12-31`,
+      );
+    });
 
-    private handleError(error: any) {
-        let errorMessage = "Server error";
-        if (error.message) {
-            errorMessage = error.message;
-        } else if (error.status) {
-            errorMessage = `${error.status} - ${error.statusText}`;
-        }
-        console.error(errorMessage);
-        return Observable.throw(errorMessage);
-    }
+    const today = new Date();
+    // eventUrlMap.set(DateFilter.year2019, `api/events.json?from=2019-01-01&to=${Helper.dateToYMD(today)}`);
 
-    // TODO(anyone): Use URLSearchParams
-    private getEventUrlMap(): Map<DateFilter, string> {
-        const eventUrlMap = new Map<DateFilter, string>();
-        eventUrlMap.set(DateFilter.year2015, "api/events.json?from=2015-01-01&to=2015-12-31");
-        eventUrlMap.set(DateFilter.year2016, "api/events.json?from=2016-01-01&to=2016-12-31");
-        eventUrlMap.set(DateFilter.year2017, "api/events.json?from=2017-01-01&to=2017-12-31");
-        eventUrlMap.set(DateFilter.year2018, "api/events.json?from=2018-01-01&to=2018-12-31");
+    const aMonthBefore = Helper.subtract30Days(today);
+    eventUrlMap.set(
+      this.dateFilter.upcoming,
+      `api/events.json?from=${Helper.dateToYMD(aMonthBefore)}`,
+    );
 
-        const today = new Date();
-        eventUrlMap.set(DateFilter.year2019, `api/events.json?from=2019-01-01&to=${Helper.dateToYMD(today)}`);
+    eventUrlMap.set(this.dateFilter.all, "api/events.json");
 
-        const aMonthBefore = Helper.subtract30Days(today);
-        eventUrlMap.set(DateFilter.upcoming, `api/events.json?from=${Helper.dateToYMD(aMonthBefore)}`);
+    // sort the url map
+    //
+    return new Map<number, string>(Array.from(eventUrlMap.entries()).sort());
+  }
 
-        eventUrlMap.set(DateFilter.all, "api/events.json");
+  // TODO(anyone): Use URLSearchParams
+  private getFBPagesUrlMap(): Map<number, string> {
+    const fpPagesUrlMap = new Map<number, string>();
+    fpPagesUrlMap.set(this.dateFilter.all, "api/facebook.json");
 
-        return eventUrlMap;
-    }
-
-    // TODO(anyone): Use URLSearchParams
-    private getFBPagesUrlMap(): Map<DateFilter, string> {
-        const fpPagesUrlMap = new Map<DateFilter, string>();
-        fpPagesUrlMap.set(DateFilter.all, "api/facebook.json");
-
-        return fpPagesUrlMap;
-    }
-
-    private initializeUrlMap() {
-        this.urlMap.set(MapObjectType.EVENTS, this.getEventUrlMap());
-        this.urlMap.set(MapObjectType.FACEBOOK_PAGES, this.getFBPagesUrlMap());
-    }
+    return fpPagesUrlMap;
+  }
 }

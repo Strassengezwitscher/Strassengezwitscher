@@ -10,5 +10,6 @@ urlpatterns_raw = (
     url(r'^events/(?P<pk>[0-9]+)/$', views.EventAPIDetail.as_view(), name='detail'),
     url(r'^events/(?P<pk>[0-9]+)/tweets$', views.EventAPIGetTweets.as_view(), name='tweets'),
     url(r'^events/new/$', views.send_form, name='send_form'),
+    url(r'^events/years/$', views.EventAPIYears.as_view(), name='years'),
 )
 urlpatterns = format_suffix_patterns(urlpatterns_raw, allowed=['json'])
