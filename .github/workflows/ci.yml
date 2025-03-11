@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04  # Equivalent to 'dist: trusty'
+
+    strategy:
+      matrix:
+        python-version: [3.5, 3.6]
+
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install system dependencies
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lcov
+          gem install coveralls-lcov
+
+      # Install pip dependencies
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install coveralls
+
+      # Install Node.js and dependencies
+      - name: Install Node.js and dependencies
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+          source ~/.nvm/nvm.sh
+          nvm install 6
+          npm install -g npm@latest
+          npm install
+
+      # Run prebuild steps
+      - name: Run gulp build
+        run: |
+          node_modules/gulp/bin/gulp.js build
+          node_modules/gulp/bin/gulp.js build --production
+
+      # Apply Django migrations
+      - name: Apply Django migrations
+        run: |
+          export DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production
+          python crowdgezwitscher/manage.py migrate
+
+      # Run the server in the background
+      - name: Run Django development server
+        run: |
+          export DJANGO_SETTINGS_MODULE=crowdgezwitscher.settings.production
+          python crowdgezwitscher/manage.py runserver --insecure &
+
+      # Run tests
+      - name: Run tests (Python coverage)
+        run: node_modules/gulp/bin/gulp.js coverage:python
+
+      - name: Run tests (TypeScript coverage)
+        run: node_modules/gulp/bin/gulp.js coverage:typescript
+
+      - name: Run end-to-end tests
+        run: node_modules/gulp/bin/gulp.js test:e2e
+
+      # Upload coverage results to Coveralls
+      - name: Upload coverage to Coveralls
+        run: |
+          coveralls-lcov -v -n ./.report/remap/lcov.info > ./.report/coverage.json
+          coveralls --merge=./.report/coverage.json
+
+      # Deploy (optional, similar to Travis deploy step)
+      #- name: Deploy
+      #  run: |
+      #    cd .travis
+      #    ./deploy.sh
