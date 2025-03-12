@@ -16,12 +16,12 @@
              url('/2gather/wp-content/uploads/blender-book-webfont.ttf')  format('truetype');
       }
       
-      /* Global settings */
+      /* Global settings for Desktop */
       html, body {
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 100%;
+        height: 100%;  /* Desktop uses a fixed height */
         background-color: #ffffff;
         font-family: 'blender_book', 'Helvetica Neue', sans-serif;
       }
@@ -34,34 +34,17 @@
         color: #333;
       }
       
+      /* Desktop body layout */
       body {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-flex;
-        display: -ms-flexbox;
         display: flex;
-        -webkit-flex-direction: column;
-        -moz-flex-direction: column;
-        -ms-flex-direction: column;
         flex-direction: column;
-        -webkit-flex-wrap: no-wrap;
-        -moz-flex-wrap: no-wrap;
-        -ms-flex-wrap: no-wrap;
-        flex-wrap: no-wrap;
-        justify-content: center;
+        justify-content: center;  /* Vertically centered for desktop */
       }
       
       /* Centered white stripe */
       .centered {
         background-color: #ffffff;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-flex;
-        display: -ms-flexbox;
         display: flex;
-        -webkit-flex-direction: column;
-        -moz-flex-direction: column;
-        -ms-flex-direction: column;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
@@ -96,9 +79,6 @@
       /* ========== DESKTOP LAYOUT ========== */
       @media screen and (min-width: 1350px) {
         .centered {
-          -webkit-flex-direction: row;
-          -moz-flex-direction: row;
-          -ms-flex-direction: row;
           flex-direction: row;
           justify-content: space-around;
           padding: 40px 0;  /* Increased padding on the white box */
@@ -107,13 +87,17 @@
       
       /* ========== MOBILE LAYOUT ========== */
       @media screen and (max-width: 1349px) {
-        /* Increase vertical gap on mobile */
+        /* Override height and vertical alignment for mobile */
+        html, body {
+          height: auto;         /* Allow the body to expand */
+          min-height: 100vh;     /* Ensure it fills at least the viewport */
+        }
+        body {
+          justify-content: flex-start;  /* Align items at the top */
+        }
         .centered {
-          -webkit-flex-direction: column;
-          -moz-flex-direction: column;
-          -ms-flex-direction: column;
           flex-direction: column;
-          gap: 60px;  /* increased gap */
+          gap: 60px;  /* Increased gap */
           padding: 20px 0;
         }
       }
@@ -126,13 +110,13 @@
     <div class="centered">
       <a href="https://x.com/streetcoverage">
         <img src="{% static 'img/streetcoverage.png' %}" alt="streetcoverage"/>
-	  </a>
-	  <a href="https://einhundertvier-film.de/">
-		<img src="{% static 'img/104film_queer.png' %}" alt="104film queer"/>
-	  </a>
-	  <a href="https://x.com/seacoverage">
-		<img src="{% static 'img/seacoverage.png' %}" alt="seacoverage"/>
-	  </a>
+      </a>
+      <a href="https://einhundertvier-film.de/">
+        <img src="{% static 'img/104film_queer.png' %}" alt="104film queer"/>
+      </a>
+      <a href="https://x.com/seacoverage">
+        <img src="{% static 'img/seacoverage.png' %}" alt="seacoverage"/>
+      </a>
       <a href="https://open.spotify.com/show/1tBx3VhZagiuv5KPTquhPJ">
         <img src="{% static 'img/wug_3.png' %}" alt="spotify podcast"/>
       </a>
