@@ -32,7 +32,7 @@
     "core-js": "2.4.1",
     "django-formset": "0.1.9",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
-    "gulp": "3.9.1",
+    "gulp": "4.0.2",
     "gulp-clean": "0.3.2",
     "gulp-concat": "2.6.1",
     "gulp-cssnano": "2.1.2",
@@ -71,7 +71,7 @@
     "karma-mocha-reporter": "2.2.1",
     "karma-phantomjs-launcher": "1.0.2",
     "karma-sourcemap-loader": "0.3.7",
-    "remap-istanbul": "0.6.4",
+    "remap-istanbul": "0.13.0",
     "tslint": "4.3.1"
   }
 }
